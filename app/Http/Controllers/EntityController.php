@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomFormRequest;
 use App\library\service;
+use Redirect;
 
 class EntityController extends Controller
 {
@@ -16,6 +17,10 @@ class EntityController extends Controller
   }
 
   public function add() {
+
+    if(empty($this->query['type'])) {
+      return Redirect::to('entity/create');
+    }
 
     $this->form->district();
 
