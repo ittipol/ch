@@ -1,0 +1,181 @@
+@extends('layouts.blackbox.main')
+@section('content')
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk5a17EumB5aINUjjRhWCvC1AgfxqrDQk&libraries=places"></script>
+
+<div class="container">
+  
+  <div class="container-header">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12">
+        <div class="title">
+          เพิ่มบริษัท องค์กร หรือ ธุรกิจชุมชน
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php if(!empty($errors->all())): ?>
+    <div class="form-error-messages">
+      <div class="form-error-messages-inner">
+        <h3>เกิดข้อผิดพลาด!!!</h3>
+          <ul>
+          <?php foreach ($errors->all() as $message) { ?>
+            <li class="error-messages"><?php echo $message; ?></li>
+          <?php } ?>
+        </ul>
+      </div>
+    </div>
+  <?php endif; ?>
+
+  <?php 
+    echo Form::open(['id' => 'main_form','method' => 'post', 'enctype' => 'multipart/form-data']);
+  ?>
+
+  <div class="form-section">
+
+    <div class="title">
+      รายละเอียด
+    </div>
+
+    <!-- <div class="form-section-inner"> -->
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('name', 'ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชน', array(
+            'class' => 'required'
+          ));
+          echo Form::text('name', null, array(
+            'placeholder' => 'ชื่อบริษัทหรือร้านค้าของคุณ',
+            'autocomplete' => 'off'
+          ));
+        ?>
+        <p class="notice info">ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชนจะมีผลโดยตรงต่อการค้นหา</p>
+      </div>
+
+
+      <div class="form-row">
+      <?php 
+        echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
+            'class' => 'required'
+        ));
+        echo Form::text('Contact[phone_number]', null, array(
+          'placeholder' => 'เบอร์โทรศัพท์',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      </div>
+
+      <div class="form-row">
+      <?php
+        echo Form::label('Contact[website]', 'เว็บไซต์');
+        echo Form::text('Contact[website]', null, array(
+          'placeholder' => 'เว็บไซต์',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      </div>
+
+      <div class="form-row">
+      <?php
+        echo Form::label('Contact[email]', 'อีเมล');
+        echo Form::text('Contact[email]', null, array(
+          'placeholder' => 'อีเมล',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      </div>
+
+      <div class="form-section">
+
+        <div class="title">
+          ที่อยู่
+        </div>
+
+        <div class="form-row">
+          <?php 
+            echo Form::label('Address[address]', 'ที่อยู่');
+            echo Form::text('Address[address]', null, array(
+            'placeholder' => 'ที่อยู่',
+            'autocomplete' => 'off'
+          ));
+          ?>
+        </div>
+
+        <div class="form-row">
+          <?php 
+            echo Form::label('province', 'จังหวัด');
+            echo Form::text('province', 'ชลบุรี', array(
+              'placeholder' => 'จังหวัด',
+              'autocomplete' => 'off',
+              'disabled' => 'disabled'
+            ));
+          ?>
+        </div>
+
+        <div class="form-row">
+          <?php 
+            echo Form::label('Address[district_id]', 'อำเภอ', array(
+              'class' => 'required'
+            ));
+            echo Form::select('Address[district_id]', $districts ,null, array(
+              'id' => 'district'
+            ));
+          ?>
+        </div>
+
+        <div class="form-row">
+          <?php 
+            echo Form::label('Address[sub_district_id]', 'ตำบล', array(
+              'class' => 'required'
+            ));
+            echo Form::select('Address[sub_district_id]', array('0' => '-') , null, array(
+              'id' => 'sub_district'
+            ));
+          ?>
+        </div>
+
+        <?php 
+          echo Form::label('Address[zip_code]', 'รหัสไปรษณีย์');
+          echo Form::text('Address[zip_code]', null, array(
+          'placeholder' => 'รหัสไปรษณีย์',
+          'autocomplete' => 'off'
+        ));
+        ?>
+
+        <div class="form-row">
+          <?php echo Form::label('', 'ระบุตำแหน่งบริษัทหรือร้านค้าของคุณบนแผนที่'); ?>
+          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+          <div id="map"></div>
+        </div>
+
+      </div>
+
+    <!-- </div> -->
+
+  </div>
+
+  <?php
+    echo Form::submit('เพิ่ม' , array(
+      'class' => 'button'
+    ));
+  ?>
+
+  <?php
+    echo Form::close();
+  ?>
+
+</div>
+
+<script type="text/javascript">
+  const district = new District();
+  district.load();
+
+  const map = new Map();
+  map.load();
+
+  const form = new Form();
+  form.load();
+</script>
+
+@stop

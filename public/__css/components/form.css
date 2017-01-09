@@ -1,0 +1,256 @@
+form {
+	margin: 0 0 20px;
+}
+
+form form {
+	margin: 0;
+}
+
+input[type="text"],
+input[type="password"] {
+	padding: 10px;
+	width: 80%;
+	border: 1px solid rgb(169,169,169);
+}
+
+textarea {
+	padding: 10px;
+	width: 60%;
+	resize: none;
+}
+
+.select-group select:nth-of-type(n+2) {
+	margin-left: 10px;
+}
+
+select {
+	padding: 10px;
+}
+
+.form-row {
+	margin: 20px 0;
+}
+
+.form-row input[type="checkbox"] {
+	vertical-align: top;
+}
+
+.form-row input[type="checkbox"] + label {
+	width: 90%;
+}
+
+.form-section .form-section-inner .form-row {
+	margin-left: 15px;
+}
+
+.form-section .form-row .sub-form {
+	margin: 0;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #1976D2;
+}
+
+.form-section .form-row .sub-form .form-row {
+	margin: 15px 10px;
+}
+
+.form-section .form-row .sub-form-inner {
+	border-left: 5px solid #1976D2;
+	padding-left: 15px;
+	background-color: #eaeaea;
+	padding: 15px;
+}
+
+form .title {
+	font-size: 18px;
+	border-bottom: 2px solid #1976D2;
+	position: relative;
+	color: #000000;
+	padding: 10px 10px 10px 0;
+}
+
+form .sub-title {
+	font-size: 20px;
+	border-bottom: 2px solid rgb(66,133,244);
+	margin-bottom: 15px;
+}
+
+form .notice {
+	font-size: 14px;
+	margin-top: 5px;
+	color: #000000;
+} 
+
+form .notice.warning {
+	color: #D50000;
+}
+
+form .notice.info {
+	color: rgb(66,133,244);
+}
+
+.form-error-messages {
+	background-color: rgb(233,95,98);
+	background-image: url('/images/common/error.png');
+	background-repeat: no-repeat;
+	background-position: 108% 60%;
+	background-size: 200px;
+}
+
+.form-error-messages .form-error-messages-inner ul {
+	padding-left: 0;
+	margin-bottom: 0;
+	border-top: 1px solid rgb(249,107,111);
+	margin-left: 20px;
+	padding: 20px;
+}
+
+.form-error-messages .error-messages {
+	color: #ffffff;
+	font-size: 16px;
+  line-height: 24px;
+}
+
+.form-error-messages h2,
+.form-error-messages h3 {
+	color: #ffffff;
+	margin: 0;
+	padding: 20px;
+	border-bottom: 1px solid rgb(226,87,90);
+}
+
+.error-message {
+	color: #D50000;
+}
+
+form label {
+	font-size: 16px;
+	display: block;
+	font-weight: 100;
+}
+
+form label.required::after {
+	content: "*";
+	color: red;
+}
+
+form input[type="checkbox"]+label {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+form .error {
+	background-color: #FFCDD2;
+	border-color: #D50000;
+}
+
+.image-panel {
+	width: 200px;
+  display: inline-block;
+  position: relative;
+  margin-right: 20px;
+}
+
+.image-panel input[type="text"] {
+	width: 100%;
+	margin-top: 15px;
+}
+
+label.image-label {
+  width: 200px;
+	height: 200px;
+	position: relative;
+	background-color: #EEEEEE;
+	border: 1px solid #E0E0E0;
+	overflow: hidden;
+  cursor: pointer;
+}
+
+label.image-label.added {
+	cursor: default;
+}
+
+label.image-label input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+label.image-label img.preview-image {
+	height: 100%;
+	margin: 0 auto;
+	padding: 0;
+	display: block;
+}
+
+label.image-label .error-message {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	color: #ffffff;
+	background-color: red;
+	margin: 0;
+	padding: 5px 10px;
+	display: none;
+}
+
+label.image-label a {
+	position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #ffffff;
+  font-size: 14px;
+  text-align: center;
+  background-color: #BDBDBD;
+  width: 20px;
+  line-height: 20px;
+  border-radius: 20px;
+  z-index: 10;
+  display: none;
+}
+
+label.image-label a:hover {
+	background-color: red;
+}
+
+.image-panel .progress-bar {
+	width: 100%;
+	height: 20px;
+	background-color: #eaeaea;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	display: none;
+}
+
+.image-panel .progress-bar > .status {
+	width: 0;
+	height: 100%;
+	background-color: rgb(3,192,37);
+}
+
+select[name^="OfficeHour"] {
+	font-weight: bold;
+}
+
+select[name^="OfficeHour"].disabled {
+	color: #aaaaaa;
+}
+
+.office-hour span {
+	width: 60px;
+	display: inline-block;
+}
+
+/*.office-status {
+	width: 14px;
+	height: 14px;
+	border-radius: 14px;
+	margin-left: 10px;
+	background-color: red;
+	border: 1px solid #eaeaea;
+	display: inline-block;
+}
+
+.office-status.active {
+	background-color: rgb(28,156,1);
+}*/

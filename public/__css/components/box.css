@@ -1,0 +1,14 @@
+.box {
+	background-color: #dedede;
+	height: 400px;
+}
+
+.box .inner {
+	padding: 20px;
+}
+
+.box a.button {
+	padding: 6px 25px;
+	color: #ffffff;
+	background-color: #0288D1;
+}
