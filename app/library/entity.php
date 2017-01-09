@@ -14,6 +14,13 @@ class Entity
 
   public function buildData() {
 
+    // switch ($this->model->entity_type_id) {
+    //   case 'value':
+    //     # code...
+    //     break;
+    
+    // }
+
     return array_merge(
       array(
         'model' => $this->model,
@@ -29,8 +36,8 @@ class Entity
   public function getInfo() {
     return array(
       'name' => $this->model->name,
-      'description' => $this->model->description,
-      'short_description' => strip_tags(String::subString($this->model->description,800)),
+      // 'description' => $this->model->description,
+      // 'short_description' => strip_tags(String::subString($this->model->description,800)),
       // 'brand_story'
       // 'logo' => $logo,
       // 'cover' => $cover,
@@ -39,22 +46,21 @@ class Entity
 
   public function getPermission() {
 
+    $person = Service::loadModel('PersonToEntity')->getData(array(
+      'conditions' => array(
+        ['person_id','=',session()->get('Person.id')],
+        ['entity_id','=',$this->model->id],
+      ),
+      'fields' => array('role_id')
+    ));
+
     $permission = array();
-
-    $personhasEntity = $this->model->getRalatedModelData('PersonHasEntity',
-      array(
-        'first' => true,
-        'conditions' => [['person_id','=',session()->get('Person.id')]]
-      )
-    );
-
-    if(!empty($personhasEntity)) {
-      $pagePermission = $personhasEntity->role;
-
+    if(!empty($person)) {
+      $role = $person->role;
       $permission = array(
-        'add' => $personhasEntity->role->adding_permission,
-        'edit' => $personhasEntity->role->editing_permission,
-        'delete' => $personhasEntity->role->deleting_permission,
+        'add' => $role->adding_permission,
+        'edit' => $role->editing_permission,
+        'delete' => $role->deleting_permission,
       );
     }
 
@@ -65,14 +71,18 @@ class Entity
   public function getData() {
 
     $additionalData = array();
-    if(!empty($this->model->relatedModel)){
-      foreach ($this->model->relatedModel as $key => $modelName) {
+    if(!empty($this->model->modelRelated)){
+      foreach ($this->model->modelRelated as $modelName) {
 
-        if(is_array($modelName)){
-          $modelName = $key;
-        }
+        // if(is_array($modelName)){
+        //   $modelName = $key;
+        // }
 
         $model = Service::loadModel($modelName);
+
+        if(empty($model)){
+          continue;
+        }
         
         $data = array();
         switch ($modelName) {

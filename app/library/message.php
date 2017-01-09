@@ -2,7 +2,6 @@
 
 namespace App\library;
 
-// use Auth;
 use Session;
 
 class Message

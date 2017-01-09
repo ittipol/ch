@@ -5,7 +5,7 @@ namespace App\library;
 class Form {
   
   private $model;
-  private $data;
+  private $data = array();
 
   public function __construct($model = null) {
     $this->model = $model;
@@ -161,6 +161,13 @@ class Form {
   }
 
   public function get() {
+
+    if(!empty($this->model)) {
+      $this->data = array_merge($this->data,array(
+        'modelName' => $this->model->modelName
+      ));
+    }
+
     return $this->data;
   }
 

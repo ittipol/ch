@@ -50,10 +50,11 @@ class Model extends BaseModel
     // ),
     // 'requiredModelData' => array(),
   );
-  // Validation rules
+
   public $validation = array(
     'rules' => array(),
     'messages' => array(),
+    'except' => array()
   );
   // sorting field
   public $sortingFields;
@@ -76,9 +77,9 @@ class Model extends BaseModel
     // before saving
     parent::saving(function($model){
 
-      if(empty($model->formToken) || empty(Session::get($model->formToken))) {
-        return false;
-      }
+      // if(empty($model->formToken) || empty(Session::get($model->formToken))) {
+      //   return false;
+      // }
 
       // if(!empty($model->requireValue)) {
       //   foreach ($model->requireValue as $field) {
@@ -109,8 +110,14 @@ class Model extends BaseModel
     // after saving
     parent::saved(function($model){
 
-      if($model->state == 'create') {
-        $model->createDir();  
+      if(($model->state == 'create') && $model->exists) {
+        // $model->createDir();  
+
+        if($model->behavior['Slug']) {
+          $slug = new Slug;
+          $slug->__saveRelatedData($model);
+        }
+
       }
       $model->saveRelatedData();
    
@@ -133,8 +140,8 @@ class Model extends BaseModel
     //   }
     // }
 
-    if(!empty($relatedModel)){
-      foreach ($relatedModel as $key => $modelName) {
+    if(!empty($attributes) && !empty($this->modelRelated)){
+      foreach ($this->modelRelated as $key => $modelName) {
 
         if(is_array($modelName)){
           $modelName = $key;
@@ -154,10 +161,10 @@ class Model extends BaseModel
       unset($attributes['__token']);
     }
 
-    if(!empty($attributes['wiki'])) {
-      $this->createWiki = true;
-      unset($attributes['wiki']);
-    }
+    // if(!empty($attributes['wiki'])) {
+    //   $this->createWiki = true;
+    //   unset($attributes['wiki']);
+    // }
 
     return parent::fill($attributes);
 
@@ -166,64 +173,62 @@ class Model extends BaseModel
   public function _save($value) {
     $model = Service::loadModel($this->modelName);
     $model->fill($value);
-    $model->setFormToken($this->formToken);
     $model->save();
   }
 
   public function saveRelatedData() {
 
-    if (!$this->exists || empty($this->formToken)) {
+    if (!$this->exists) {
       return false;
     }
 
-    if(($this->state == 'create') && $this->behavior['Slug']) {
-      $slug = new Slug;
-      $slug->setFormToken($this->formToken)->__saveRelatedData($this);
-
-      $personHasEntity = new PersonHasEntity;
-      $personHasEntity->setFormToken($this->formToken)->__saveRelatedData($this,array(
-        'person_id' => Session::get('Person.id'),
-        'role_alias' => 'admin'
-      ));
-    }
-
-    // if($this->alloxxxwedImage) {
-    //   $imageModel = new Image;
-    //   $imageModel->setFormToken($this->formToken)->__saveRelatedData($this,array(
-    //     'person_id' => Session::get('Person.id')
-    //   ));
+    // if($this->behavior['Wiki']){
+    //   $wiki = new Wiki;
+    //   $wiki->__saveRelatedData($this);
     // }
 
-    if($this->behavior['Wiki']){
-      $wiki = new Wiki;
-      $wiki->setFormToken($this->formToken)->__saveRelatedData($this);
-    }
+    if(!empty($this->formModelData)) {
+      
+      foreach ($this->formModelData as $modelName => $value) {
 
-    if(!empty($relatedModel)){
-      foreach ($relatedModel as $key => $modelName) {
+        // $options = array_merge($options,array(
+        //   'value' => $this->formModelData[$modelName]
+        // ));
 
-        if(is_array($modelName)){
-          $data = $modelName;
-          $modelName = $key;
-        }
-
-        if(empty($this->formModelData[$modelName])) {
-          continue;
-        }
-
-        $options = array();
-        if(!empty($data['options'])) {
-          $options = Service::parseRelatedModelOptions($data['options']);
-        }
-
-        $options = array_merge($options,array(
-          'value' => $this->formModelData[$modelName]
-        ));
+        $options = array(
+          'value' => $value
+        );
 
         $this->_saveRelatedData($modelName,$options);
 
       }
     }
+
+    // if(!empty($relatedModel)){
+    //   foreach ($relatedModel as $key => $modelName) {
+
+    //     if(is_array($modelName)){
+    //       $data = $modelName;
+    //       $modelName = $key;
+    //     }
+
+    //     if(empty($this->formModelData[$modelName])) {
+    //       continue;
+    //     }
+
+    //     $options = array();
+    //     if(!empty($data['options'])) {
+    //       $options = Service::parseRelatedModelOptions($data['options']);
+    //     }
+
+    //     $options = array_merge($options,array(
+    //       'value' => $this->formModelData[$modelName]
+    //     ));
+
+    //     $this->_saveRelatedData($modelName,$options);
+
+    //   }
+    // }
     
   }
 
@@ -235,7 +240,7 @@ class Model extends BaseModel
       return false;
     }
 
-    return $model->setFormToken($this->formToken)->__saveRelatedData($this,$options);
+    return $model->__saveRelatedData($this,$options);
     
   }
 
@@ -283,6 +288,22 @@ class Model extends BaseModel
     return $this->find($id)->exists();
   }
 
+  public function getIdByalias($alias) {
+    
+    if(!Schema::hasColumn($this->getTable(), 'alias')){
+      return false;
+    }
+
+    $record = $this->getData(array(
+      'conditions' => array(
+        ['alias','like',$alias]
+      ),
+      'fields' => array('id')
+    ));
+
+    return $record->id;
+  }
+
   public function getData($options = array()) {
     $model = $this;
 
@@ -322,7 +343,7 @@ class Model extends BaseModel
     }
 
     $conditions = array(
-      ['model','=',$this->modelName],
+      ['model','like',$this->modelName],
       ['model_id','=',$this->id],
     );
 

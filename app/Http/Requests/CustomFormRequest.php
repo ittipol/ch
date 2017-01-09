@@ -4,8 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\library\service;
-// use Auth;
-// use Route;
 use Request;
 use Session;
 
@@ -16,8 +14,7 @@ class CustomFormRequest extends FormRequest
 
   public function __construct() {
     $data = Request::all();
-    $this->formTokenData = Session::get($data['__token']);
-    $this->model = service::loadModel($this->formTokenData['modelName']);
+    $this->model = service::loadModel($data['model']);
   }
 
   /**
@@ -38,10 +35,6 @@ class CustomFormRequest extends FormRequest
 
   public function rules()
   {
-
-    // '__token' => 'required',
-    // 'model' => 'required'
-
     $rules = array();
     foreach ($this->model->validation['rules'] as $key => $value) {
 

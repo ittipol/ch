@@ -27,16 +27,22 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('avatar', 'StaticFileController@avatar');
 });
 
-// ======================================
+// Entity ======================================
+Route::get('{entity_slug}','EntityController@index');
 Route::get('entity/create','EntityController@create');
 Route::get('entity/add','EntityController@add');
 Route::post('entity/add','EntityController@submit');
+
 // Route::get('{modelAlias}/form/{action}','FormController@form');
 // ======================================
-// entity/add
-// product/add
 
-Route::get('{modelAlias}/add','FormController@add');
+// Route::get('{modelAlias}/add','FormController@add');
+
+// Product ======================================
+Route::get('product/add','ProductController@add');
+
+
+
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'auth'], function () {
   Route::get('get_sub_district/{districtId}', 'ApiController@GetSubDistrict');

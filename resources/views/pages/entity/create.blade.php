@@ -1,6 +1,21 @@
 @extends('layouts.blackbox.main')
 @section('content')
+
   <div class="container">
+
+    <div class="row">
+      <div class="container-header">
+        <div class="col-lg-6 col-sm-12">
+          <div class="title">
+            เพิ่มธุรกิจของคุณ หรือ สถานที่
+          </div>
+          <div>เพิ่มธุรกิจของคุณ และให้เราทำหน้าที่เชื่อมต่อธุรกิจกับผู้คนในขลบุรี</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="line space-top-bottom-30"></div>
+
     <div class="row">
       <div class="col-lg-4 col-sm-12">
         <div class="box">

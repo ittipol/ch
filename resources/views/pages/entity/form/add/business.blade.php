@@ -15,28 +15,22 @@
     </div>
   </div>
 
-  <?php if(!empty($errors->all())): ?>
-    <div class="form-error-messages">
-      <div class="form-error-messages-inner">
-        <h3>เกิดข้อผิดพลาด!!!</h3>
-          <ul>
-          <?php foreach ($errors->all() as $message) { ?>
-            <li class="error-messages"><?php echo $message; ?></li>
-          <?php } ?>
-        </ul>
-      </div>
-    </div>
-  <?php endif; ?>
+  @include('components.form_error') 
 
   <?php 
     echo Form::open(['id' => 'main_form','method' => 'post', 'enctype' => 'multipart/form-data']);
   ?>
 
+  <?php
+    echo Form::hidden('model', $modelName);
+    echo Form::hidden('entity_type_id', $entityTypeId);
+  ?>
+
   <div class="form-section">
 
-    <div class="title">
+    <!-- <div class="title">
       รายละเอียด
-    </div>
+    </div> -->
 
     <!-- <div class="form-section-inner"> -->
 
@@ -46,21 +40,20 @@
             'class' => 'required'
           ));
           echo Form::text('name', null, array(
-            'placeholder' => 'ชื่อบริษัทหรือร้านค้าของคุณ',
+            'placeholder' => 'ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชน',
             'autocomplete' => 'off'
           ));
         ?>
-        <p class="notice info">ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชนจะมีผลโดยตรงต่อการค้นหา</p>
+        <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
       </div>
-
 
       <div class="form-row">
       <?php 
-        echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
+        echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์', array(
             'class' => 'required'
         ));
         echo Form::text('Contact[phone_number]', null, array(
-          'placeholder' => 'เบอร์โทรศัพท์',
+          'placeholder' => 'หมายเลขโทรศัพท์',
           'autocomplete' => 'off'
         ));
       ?>
@@ -135,16 +128,18 @@
           ?>
         </div>
 
-        <?php 
-          echo Form::label('Address[zip_code]', 'รหัสไปรษณีย์');
-          echo Form::text('Address[zip_code]', null, array(
-          'placeholder' => 'รหัสไปรษณีย์',
-          'autocomplete' => 'off'
-        ));
-        ?>
+        <div class="form-row">
+          <?php 
+            echo Form::label('Address[zip_code]', 'รหัสไปรษณีย์');
+            echo Form::text('Address[zip_code]', null, array(
+            'placeholder' => 'รหัสไปรษณีย์',
+            'autocomplete' => 'off'
+          ));
+          ?>
+        </div>
 
         <div class="form-row">
-          <?php echo Form::label('', 'ระบุตำแหน่งบริษัทหรือร้านค้าของคุณบนแผนที่'); ?>
+          <?php echo Form::label('', 'ระบุตำแหน่งบริษัท องค์กร หรือ ธุรกิจชุมชนบนแผนที่'); ?>
           <input id="pac-input" class="controls" type="text" placeholder="Search Box">
           <div id="map"></div>
         </div>
