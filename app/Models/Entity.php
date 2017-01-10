@@ -13,6 +13,17 @@ class Entity extends Model
   public $behavior = array(
     'Slug' => array(
       'field' => 'name'
+    ),
+    // 'Wiki' => array(
+    //   'format' =>  array(
+    //     'subject' => '{{name}}',
+    //     'description' => '{{description}}',
+    //   )
+    // ),
+    'Lookup' => array(
+      'format' =>  array(
+        'keyword' => '{{name}}'
+      )
     )
   );
 
@@ -28,7 +39,11 @@ class Entity extends Model
       'Contact.phone_number.min' => 'หมายเลขโทรศัพท์ไม่ถูกต้อง',
       'Contact.email.email' => 'อีเมลไม่ถูกต้อง',
     ),
-    'except' => array()
+    'except' => array(
+      'Contact.phone_number' => array(
+        'entity_type_id' => 2
+      )
+    )
   );
 
   public static function boot() {
@@ -49,9 +64,9 @@ class Entity extends Model
         ));
       }
 
-      // $lookup = new Lookup;
-      // $lookup__saveRelatedData($entity);
-
+      $lookup = new Lookup;
+      $lookup->__saveRelatedData($entity);
+dd('cxxx');
     });
   }
 

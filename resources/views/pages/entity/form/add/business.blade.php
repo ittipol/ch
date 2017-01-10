@@ -28,125 +28,117 @@
 
   <div class="form-section">
 
-    <!-- <div class="title">
-      รายละเอียด
-    </div> -->
+    <div class="form-row">
+      <?php 
+        echo Form::label('name', 'ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชน', array(
+          'class' => 'required'
+        ));
+        echo Form::text('name', null, array(
+          'placeholder' => 'ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชน',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
+    </div>
 
-    <!-- <div class="form-section-inner"> -->
+    <div class="form-row">
+    <?php 
+      echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์', array(
+          'class' => 'required'
+      ));
+      echo Form::text('Contact[phone_number]', null, array(
+        'placeholder' => 'หมายเลขโทรศัพท์',
+        'autocomplete' => 'off'
+      ));
+    ?>
+    </div>
+
+    <div class="form-row">
+    <?php
+      echo Form::label('Contact[website]', 'เว็บไซต์');
+      echo Form::text('Contact[website]', null, array(
+        'placeholder' => 'เว็บไซต์',
+        'autocomplete' => 'off'
+      ));
+    ?>
+    </div>
+
+    <div class="form-row">
+    <?php
+      echo Form::label('Contact[email]', 'อีเมล');
+      echo Form::text('Contact[email]', null, array(
+        'placeholder' => 'อีเมล',
+        'autocomplete' => 'off'
+      ));
+    ?>
+    </div>
+
+    <div class="form-section">
+
+      <div class="title">
+        ที่อยู่
+      </div>
 
       <div class="form-row">
         <?php 
-          echo Form::label('name', 'ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชน', array(
-            'class' => 'required'
-          ));
-          echo Form::text('name', null, array(
-            'placeholder' => 'ชื่อบริษัท องค์กร หรือ ธุรกิจชุมชน',
-            'autocomplete' => 'off'
+          echo Form::label('Address[address]', 'ที่อยู่');
+          echo Form::text('Address[address]', null, array(
+          'placeholder' => 'ที่อยู่',
+          'autocomplete' => 'off'
+        ));
+        ?>
+      </div>
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('province', 'จังหวัด');
+          echo Form::text('province', 'ชลบุรี', array(
+            'placeholder' => 'จังหวัด',
+            'autocomplete' => 'off',
+            'disabled' => 'disabled'
           ));
         ?>
-        <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
       </div>
 
       <div class="form-row">
-      <?php 
-        echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์', array(
+        <?php 
+          echo Form::label('Address[district_id]', 'อำเภอ', array(
             'class' => 'required'
-        ));
-        echo Form::text('Contact[phone_number]', null, array(
-          'placeholder' => 'หมายเลขโทรศัพท์',
-          'autocomplete' => 'off'
-        ));
-      ?>
+          ));
+          echo Form::select('Address[district_id]', $districts ,null, array(
+            'id' => 'district'
+          ));
+        ?>
       </div>
 
       <div class="form-row">
-      <?php
-        echo Form::label('Contact[website]', 'เว็บไซต์');
-        echo Form::text('Contact[website]', null, array(
-          'placeholder' => 'เว็บไซต์',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Address[sub_district_id]', 'ตำบล', array(
+            'class' => 'required'
+          ));
+          echo Form::select('Address[sub_district_id]', array('0' => '-') , null, array(
+            'id' => 'sub_district'
+          ));
+        ?>
       </div>
 
       <div class="form-row">
-      <?php
-        echo Form::label('Contact[email]', 'อีเมล');
-        echo Form::text('Contact[email]', null, array(
-          'placeholder' => 'อีเมล',
+        <?php 
+          echo Form::label('Address[zip_code]', 'รหัสไปรษณีย์');
+          echo Form::text('Address[zip_code]', null, array(
+          'placeholder' => 'รหัสไปรษณีย์',
           'autocomplete' => 'off'
         ));
-      ?>
+        ?>
       </div>
 
-      <div class="form-section">
-
-        <div class="title">
-          ที่อยู่
-        </div>
-
-        <div class="form-row">
-          <?php 
-            echo Form::label('Address[address]', 'ที่อยู่');
-            echo Form::text('Address[address]', null, array(
-            'placeholder' => 'ที่อยู่',
-            'autocomplete' => 'off'
-          ));
-          ?>
-        </div>
-
-        <div class="form-row">
-          <?php 
-            echo Form::label('province', 'จังหวัด');
-            echo Form::text('province', 'ชลบุรี', array(
-              'placeholder' => 'จังหวัด',
-              'autocomplete' => 'off',
-              'disabled' => 'disabled'
-            ));
-          ?>
-        </div>
-
-        <div class="form-row">
-          <?php 
-            echo Form::label('Address[district_id]', 'อำเภอ', array(
-              'class' => 'required'
-            ));
-            echo Form::select('Address[district_id]', $districts ,null, array(
-              'id' => 'district'
-            ));
-          ?>
-        </div>
-
-        <div class="form-row">
-          <?php 
-            echo Form::label('Address[sub_district_id]', 'ตำบล', array(
-              'class' => 'required'
-            ));
-            echo Form::select('Address[sub_district_id]', array('0' => '-') , null, array(
-              'id' => 'sub_district'
-            ));
-          ?>
-        </div>
-
-        <div class="form-row">
-          <?php 
-            echo Form::label('Address[zip_code]', 'รหัสไปรษณีย์');
-            echo Form::text('Address[zip_code]', null, array(
-            'placeholder' => 'รหัสไปรษณีย์',
-            'autocomplete' => 'off'
-          ));
-          ?>
-        </div>
-
-        <div class="form-row">
-          <?php echo Form::label('', 'ระบุตำแหน่งบริษัท องค์กร หรือ ธุรกิจชุมชนบนแผนที่'); ?>
-          <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-          <div id="map"></div>
-        </div>
-
+      <div class="form-row">
+        <?php echo Form::label('', 'ระบุตำแหน่งบริษัท องค์กร หรือ ธุรกิจชุมชนบนแผนที่'); ?>
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div id="map"></div>
       </div>
 
-    <!-- </div> -->
+    </div>
 
   </div>
 

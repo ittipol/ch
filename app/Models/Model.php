@@ -319,18 +319,16 @@ class Model extends BaseModel
       $model = $model->select($options['fields']);
     }
 
-    
-
-    if($model->count() > 1) {
-
-      if(!empty($options['first']) && $options['first']) {
+    if(isset($options['first'])) {
+      if($options['first']) {
         return $model->first();
       }
-
-      return $model->get(); 
+      return $model->get();
+    }elseif($model->count() == 1) {
+      return $model->first();
     }
 
-    return $model->first();
+    return $model->get();
 
   }
 

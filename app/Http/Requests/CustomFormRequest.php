@@ -9,8 +9,7 @@ use Session;
 
 class CustomFormRequest extends FormRequest
 {
-  // private $model;
-  public $formTokenData;
+  private $model;
 
   public function __construct() {
     $data = Request::all();
@@ -35,11 +34,23 @@ class CustomFormRequest extends FormRequest
 
   public function rules()
   {
+    $data = Request::all();
+
     $rules = array();
     foreach ($this->model->validation['rules'] as $key => $value) {
 
-      if(!empty($this->model->validation['except'][$key]) && in_array($this->formTokenData['action'], $this->model->validation['except'][$key])) {
-        continue;
+      if(!empty($this->model->validation['except'][$key])) {
+
+        $skip = false;
+        foreach ($this->model->validation['except'][$key] as $_key => $_value) {
+          if(!empty($data[$_key]) && ($data[$_key] == $_value)) {
+            $skip = true;
+          }
+        }
+
+        if($skip) {
+          continue;
+        }
       }
       
       $rules[$key] = $value;

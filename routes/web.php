@@ -44,7 +44,7 @@ Route::get('product/add','ProductController@add');
 
 
 
-Route::group(['prefix' => 'api/v1', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {
   Route::get('get_sub_district/{districtId}', 'ApiController@GetSubDistrict');
 });
 
