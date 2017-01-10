@@ -19,46 +19,12 @@ class Model extends BaseModel
   public $storagePath = 'app/public/';
   public $dirPath;
   public $formModelData;
-  public $relatedModel;
+  protected $relatedModel;
 
-  // Form
-  public $form = array(
-    // 'title' => '',
-    // 'template' => array(
-    //   'add' => array(
-    //     'textHeader' => '',
-    //     'textButton' => ''
-    //   ),
-    //   'edit' => array(
-    //     'textHeader' => '',
-    //     'textButton' => ''
-    //   )
-    // ),
-    // 'messages' => array(
-    //   'add' => array(
-    //     'success' => '',
-    //     'fail' => ''
-    //   ),
-    //   'edit' => array(
-    //     'success' => '',
-    //     'fail' => ''
-    //   )
-    // ),
-    // 'fieldsExceptValidation' => array(
-    //   'add' => array(),
-    //   'edit' => array()
-    // ),
-    // 'requiredModelData' => array(),
-  );
-
-  public $validation = array(
-    'rules' => array(),
-    'messages' => array(),
-    'except' => array()
-  );
+  protected $validation;
   // sorting field
   public $sortingFields;
-  public $behavior;
+  protected $behavior;
   
   public function __construct(array $attributes = []) { 
 
@@ -391,6 +357,10 @@ dd('ddeeele');
       'model_id' => $this->id
     ));
 
+  }
+
+  public function getValidation() {
+    return $this->validation;
   }
 
 }

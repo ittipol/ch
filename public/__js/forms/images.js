@@ -232,7 +232,7 @@ class Images {
 	createUploader(index){
 
 		let html = '';
-		html += '<div class="image-panel clearfix">';
+		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label">';
 		html += '<input id="'+this.code+'_image_'+this.runningNumber+'" class="'+this.code+'-image" type="file">';
 		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+this.defaultImage+'">';

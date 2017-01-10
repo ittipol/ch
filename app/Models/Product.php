@@ -4,11 +4,11 @@ namespace App\Models;
 
 class Product extends Model
 {
-  public $table = 'products';
+  protected $table = 'products';
   protected $fillable = ['name','description','sku','quantity','stock_status_id','price','weight','weight_id','length','length_id','width','height'];
-  public $modelRelated = array('Image','Address');
+  protected $modelRelated = array('Image','Address');
 
-  public $validation = array(
+  protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
       'price' => 'required|regex:/^\d*(\.\d{1,2})?$/',

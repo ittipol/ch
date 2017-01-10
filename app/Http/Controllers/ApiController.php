@@ -64,11 +64,12 @@ class ApiController extends Controller
       );
 
       if($tempFile->fill($value)->save()){
-        $file->temporaryFile();
+        // $tempFile->moveTemporaryFile($file->getRealPath());
+        $file->saveTemporaryFile();
 
         $result = array(
           'success' => true,
-          'filename' => $tempFile->file_name
+          'filename' => $tempFile->filename
         );
 
       }

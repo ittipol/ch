@@ -4,31 +4,25 @@ namespace App\Models;
 
 use App\library\token;
 use App\library\service;
-use App\library\image AS ImageLib;
+use App\library\file;
+// use App\library\image AS ImageLib;
 use Auth;
 use Storage;
-use File;
+// use File;
 use Session;
 
 class Image extends Model
 {
   protected $table = 'images';
-  protected $fillable = ['model','model_id','name','description','created_by'];
+  protected $fillable = ['model','model_id','filename','description','created_by'];
   public $noImagePath = '/images/common/no-img.png';
+
+  private $maxFileSizes = 3145728;
+  private $acceptedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];
 
   public function __construct() {  
     parent::__construct();
   }
-
-  // public function saveImage($model,$image,$filename) {
-  //   if($this->checkMaxSize($image->getSize()) && $this->checkType($image->getMimeType())) {
-  //     $image->move(storage_path($model->dirPath).$this->attributes['model_id'].'/images', $filename);
-  //     // use disk in filesystems.php
-  //     // Storage::disk($model->disk)->put($this->attributes['model_id'].'/images'.'/'.$filename, file_get_contents($image->getRealPath()));
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   public function __saveRelatedData($model,$options = array()) {
     $this->saveImages($model,$options['value'],$options);
@@ -39,27 +33,58 @@ class Image extends Model
 
     $temporaryFile = new TemporaryFile;
 
-    foreach ($images as $token => $image) {
-      foreach ($image as $value) {
-        
-        if(empty($value['filename'])) {
+    foreach ($images as $token => $imageGroup) {
+
+      foreach ($imageGroup as $image) {
+
+        if(empty($image['filename'])) {
           continue;
         }
 
-        $record = $temporaryFile->getData(array(
-          'conditions' => array(
-            ['filename','like',$value['filename']],
-            ['file_type','like','image'],
-            ['token','like',$token],
-            ['created_by','like',Session::get('Person.id')]
-          )
-        ));
+        $path = $temporaryFile->getFilePath($image['filename']);
 
-        $path = storage_path($tempFileModel->tempFileDir).$token.'/'.$filename;
+        if(!file_exists($path)){
+          continue;
+        }
 
-        dd($record);
+        $value = array(
+          'filename' => $image['filename'],
+        );
+
+        if(!empty($image['description'])) {
+          $value = array_merge($value,array(
+            'description' => $image['description']
+          ));
+        }
+
+        $this->_save($model->includeModelAndModelId($value));
 
       }
+dd('sae');
+    //   $records = $temporaryFile->getData(array(
+    //     'conditions' => array(
+    //       ['file_type','like','image'],
+    //       ['token','like',$token],
+    //       ['created_by','like',Session::get('Person.id')]
+    //     ),
+    //     'fields' => array('filename')
+    //   ));
+
+    //   foreach ($records as $_temporaryFile) {
+    //     dd($images);
+    //     $path = $_temporaryFile->getFilePath();
+
+    //     if(!file_exists($path)){
+    //       continue;
+    //     }
+
+    //     $value = array(
+    //       'filename' => $filename,
+    //     );
+
+    //     $this->fill($model->includeModelAndModelId($value))->save();
+
+    //   }
     }
 
     $images = $imagesTemp->get();
@@ -147,8 +172,9 @@ class Image extends Model
   public function getImageUrl() {
 
     $dirPath = $this->storagePath.Service::generateModelDirName($this->model).'/';
-    $path = $this->noImagePath;
+    // $path = $this->noImagePath;
 
+    $path = '';
     if(File::exists(storage_path($dirPath.$this->model_id.'/'.$this->type.'/'.$this->name))){
       $path = '/safe_image/'.$this->name;
     }
@@ -166,6 +192,28 @@ class Image extends Model
     }
 
     return base64_encode(File::get($path));
+  }
+
+  public function checkMaxSize($size) {
+    if($size <= $this->maxFileSizes) {
+      return true;
+    }
+    return false;
+  }
+
+  public function checkType($type) {
+    if (in_array($type, $this->acceptedFileTypes)) {
+      return true;
+    }
+    return false;
+  }
+
+  public function getMaxFileSizes() {
+    return $this->maxFileSizes;
+  }
+
+  public function getAcceptedFileTypes() {
+    return $this->acceptedFileTypes;
   }
 
 }

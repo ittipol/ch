@@ -8,9 +8,9 @@ class Entity extends Model
 {
   protected $table = 'entities';
   protected $fillable = ['name','entity_type_id'];
-  public $modelRelated = array('Address','Contact');
+  protected $modelRelated = array('Address','Contact');
 
-  public $behavior = array(
+  protected $behavior = array(
     'Slug' => array(
       'field' => 'name'
     ),
@@ -27,7 +27,7 @@ class Entity extends Model
     )
   );
 
-  public $validation = array(
+  protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
       'Contact.phone_number' => 'required|min:8',
@@ -50,22 +50,22 @@ class Entity extends Model
 
     parent::boot();
 
-    Entity::saved(function($entity){
+    Entity::saved(function($model){
 
-      if($entity->state == 'create') {
+      if($model->state == 'create') {
 
         $role = new Role();
 
         $personToEntity = new PersonToEntity;
         $personToEntity->saveSpecial(array(
-          'entity_id' => $entity->id,
+          'entity_id' => $model->id,
           'person_id' => Session::get('Person.id'),
           'role_id' => $role->getIdByalias('admin')
         ));
       }
 
       $lookup = new Lookup;
-      $lookup->__saveRelatedData($entity);
+      $lookup->__saveRelatedData($model);
 
     });
   }

@@ -10,10 +10,12 @@ use Session;
 class CustomFormRequest extends FormRequest
 {
   private $model;
+  private $validation;
 
   public function __construct() {
     $data = Request::all();
     $this->model = service::loadModel($data['model']);
+    $this->validation = $this->model->getValidation();
   }
 
   /**
@@ -29,7 +31,11 @@ class CustomFormRequest extends FormRequest
 
   public function messages()
   {
-    return $this->model->validation['messages'];
+    if(!empty($this->validation['messages'])) {
+      return $this->validation['messages'];
+    }
+
+    return [];
   }
 
   public function rules()
@@ -37,25 +43,27 @@ class CustomFormRequest extends FormRequest
     $data = Request::all();
 
     $rules = array();
-    foreach ($this->model->validation['rules'] as $key => $value) {
+    if(!empty($this->validation['rules'])){
+      foreach ($this->validation['rules'] as $key => $value) {
 
-      if(!empty($this->model->validation['except'][$key])) {
+        if(!empty($this->validation['except'][$key])) {
 
-        $skip = false;
-        foreach ($this->model->validation['except'][$key] as $_key => $_value) {
-          if(!empty($data[$_key]) && ($data[$_key] == $_value)) {
-            $skip = true;
+          $skip = false;
+          foreach ($this->validation['except'][$key] as $_key => $_value) {
+            if(!empty($data[$_key]) && ($data[$_key] == $_value)) {
+              $skip = true;
+            }
+          }
+
+          if($skip) {
+            continue;
           }
         }
-
-        if($skip) {
-          continue;
-        }
+        
+        $rules[$key] = $value;
       }
-      
-      $rules[$key] = $value;
     }
-
+    
     return $rules;
   }
 }

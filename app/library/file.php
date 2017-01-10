@@ -2,37 +2,53 @@
 
 namespace App\library;
 
-use App\library\token;
-
 class File
 {
 	private $file;
-	private $fileName;
+	private $filename;
 	private $fileType;
-	private $maxFileSizes = array(
-		'image' => 3145728,
-		'pdf' => 1048576
-	);
-  private $acceptedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg', 'application/pdf'];
-  private $temporaryPath = 'temporary/';
+	private $maxFileSizes;
+  private $acceptedFileTypes;
 
-	public function __construct($file) {
-	  $this->file = $file;
-	  $this->generateFileName();
+	public function __construct($file = null) {
 
-	  foreach (array('image','pdf') as $type) {
-	   	if(!empty(strstr($this->file->getMimeType(), $type))) {
-	   		$this->fileType = $type;
-	   	}
-	  }
+		if(!empty($file)) {
+
+		  $this->file = $file;
+
+		  $this->generateFileName();
+
+		  foreach (array('image','pdf') as $type) {
+		   	if(!empty(strstr($this->file->getMimeType(), $type))) {
+		   		$this->fileType = $type;
+		   	}
+		  }
+
+		  switch ($this->fileType) {
+		  	case 'image':
+		  		
+		  		$model = Service::loadModel('Image');
+		  		$this->maxFileSizes = $model->getMaxFileSizes();
+		  		$this->acceptedFileTypes = $model->getAcceptedFileTypes();
+
+		  		break;
+		  	
+		  	case 'pdf':
+		  		# code...
+		  		break;
+
+		  }
+
+		}
+
 	}
 
 	private function generateFileName() {
-	  $this->fileName = time().Token::generateNumber(15).$this->file->getSize().'.'.$this->file->getClientOriginalExtension();
+	  $this->filename = time().Token::generateNumber(15).$this->file->getSize().'.'.$this->file->getClientOriginalExtension();
 	}
 
 	public function getFileName() {
-		return $this->fileName;
+		return $this->filename;
 	}
 
 	public function getOriginalFileName() {
@@ -43,36 +59,23 @@ class File
 		return $this->fileType;
 	}
 
+	public function getRealPath() {
+		return $this->file->getRealPath();
+	}
+
 	public function checkFileType() {
 		return in_array($this->file->getMimeType(), $this->acceptedFileTypes);
 	}
 
 	public function checkFileSize() {
-		if($this->file->getSize() <= $this->maxFileSizes[$this->fileType]){
+		if($this->file->getSize() <= $this->maxFileSizes){
 			return true;
 		}
 		return false;
 	}
 
-	public function temporaryFile() {
-	  $this->file->move(storage_path($this->temporaryPath), $this->fileName);
+	public function saveTemporaryFile() {
+	  return $this->file->move(storage_path(Service::loadModel('TemporaryFile')->getTemporaryPath()), $this->filename);
 	}
 
-	public function getFilePath() {
-		// return storage_path($this->temporaryPath).'/'.$filename;
-	}
-
-	// public function getMimeType() {
-	//     // $mimetype = false;
-	//     // if(function_exists('finfo_fopen')) {
-	//     //     // open with FileInfo
-	//     // } elseif(function_exists('getimagesize')) {
-	//     //     // getimagesize($this->file);
-	//     // } elseif(function_exists('exif_imagetype')) {
-	//     //    // exif_imagetype($this->file)
-	//     // } elseif(function_exists('mime_content_type')) {
-	//     //    $mimetype = mime_content_type($filename);
-	//     // }
-	//     // return $mimetype;
-	// }
 }
