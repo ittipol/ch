@@ -44,11 +44,11 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('name', 'ราคา', array(
+        echo Form::label('price', 'ราคาสินค้าที่ต้องการขาย', array(
           'class' => 'required'
         ));
-        echo Form::text('name', null, array(
-          'placeholder' => 'ราคา',
+        echo Form::text('price', null, array(
+          'placeholder' => 'ราคาสินค้าที่ต้องการขาย',
           'autocomplete' => 'off'
         ));
       ?>
@@ -162,7 +162,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group','images',5,'default');
+    const images = new Images('_image_group','images',5,'description');
     images.load();
 
     const district = new District();

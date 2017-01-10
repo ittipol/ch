@@ -1,5 +1,5 @@
 class Images {
-	constructor(panel,type,limit,style) {
+	constructor(panel,type,limit,style = 'default') {
 		this.panel = panel;
 		this.type = type;
 		this.limit = limit;
@@ -11,7 +11,7 @@ class Images {
 		this.filenames = []; 
 		this.defaultImage = '/images/common/image.svg';
 		this.allowedClick = true;
-		this.style = style;
+		this.style = style; // default, description
 	}
 
 	load(imageJson){
@@ -35,6 +35,7 @@ class Images {
 	init(){
 		let token = new Token();
 		this.code = token.generateToken();
+		// this.createHiddenField();
 	}
 
 	bind(){
@@ -55,16 +56,10 @@ class Images {
 
 		if (input.files && input.files[0]) {
 
-			if(typeof $('input[name="__token"]').val() == 'undefined') {
-				alert('Error, token not found');
-				return false;
-			} 
-
 			let _this = this;
 
 			let parent = $(input).parent();
 			let CSRF_TOKEN = $('input[name="_token"]').val();    
-			let formToken = $('input[name="__token"]').val();
 			let proceed = true;
 
 			if(!window.File && window.FileReader && window.FileList && window.Blob){ //if browser doesn't supports File API
@@ -85,7 +80,7 @@ class Images {
 			  		parent.find('.error-message').css('display','none').text('');
 			  	}else{
 			  		parent.css('borderColor','red');
-			  		parent.find('.error-message').css('display','block').text('ไม่รองรับรูปภาพนี้');
+			  		parent.find('.error-message').css('display','block').text('ไม่รองรับไฟล์นี้');
 			  		parent.find('input[type="hidden"]').remove();
 			  		parent.find('input').val('');
 			  		parent.find('img').css('display','none');
@@ -101,11 +96,12 @@ class Images {
 			}
 
 			if(proceed) {
+
 				let formData = new FormData();
-				formData.append('_token', CSRF_TOKEN);formToken
-				formData.append('formToken', formToken);
+				formData.append('_token', CSRF_TOKEN);  
+				formData.append('model', $('input[name="model"]').val());
+				formData.append('imageToken', this.code);
 				formData.append('file', input.files[0]);
-				formData.append('type', this.type);
 
 				this.uploadImage(parent,input,formData);
 			}
@@ -162,11 +158,13 @@ class Images {
 	  		parent.find('a').css('display','block');
 	  		parent.parent().find('.progress-bar').css('display','none');
 
-	  		let _input = document.createElement('input');
-			  _input.setAttribute('type','hidden');
-			  _input.setAttribute('name','filenames['+(_this.runningNumber-1)+']');
-			  _input.setAttribute('value',response.filename);
-			  parent.append(_input);
+	  		let key = parent.attr('id').split('_');
+
+	  		let hidden = document.createElement('input');
+			  hidden.setAttribute('type','hidden');
+			  hidden.setAttribute('name','Image['+key[0]+']['+key[1]+'][filename]');
+			  hidden.setAttribute('value',response.filename);
+			  parent.append(hidden);
 
 	  		if(_this.imagesPlaced.indexOf(id) < 0){
 	  			_this.imagesPlaced.push(id);
@@ -175,6 +173,14 @@ class Images {
 	  				_this.index = _this.createUploader(_this.index);
 	  			}
 	  		}
+
+	  		// if(_this.style == 'description') {
+	  		// 	let textarea = document.createElement('textarea');
+	  		// 	textarea.setAttribute('name','Image['+key[0]+']['+key[1]+'][description]');
+	  		// 	textarea.setAttribute('placeholder','คำอธิบายรูปภาพ');
+	  		// 	parent.parent().append(textarea);
+	  		// }
+
 	  	}else{
 
 	  		if(typeof response.message == 'object') {
@@ -198,10 +204,6 @@ class Images {
 
 	removePreview(input){
 
-		if(typeof $('input[name="__token"]').val() == 'undefined') {
-			return false;
-		}
-
 		if(this.allowedClick){
 
 			this.allowedClick = false;
@@ -209,74 +211,38 @@ class Images {
 			let parent = $(input).parent(); 
 			parent.fadeOut(220);  
 
-			let data = {
-				'_token': $('input[name="_token"]').val(),
-				'formToken': $('input[name="__token"]').val(),
-				'filename': parent.find('input[type="hidden"]').val(),
-				'type': this.type
-			};
+			--this.index;
 
-			this.deleteImage(parent,input,data);
+			if(this.imagesPlaced.length == this.limit){
+				this.index = this.createUploader(this.index);
+			}
+
+			this.imagesPlaced.splice(this.imagesPlaced.indexOf($(parent).find('input').attr('id')),1); 
+
+			parent.parent().remove();
+
+			setTimeout(function(){
+				this.allowedClick = true;
+			},800);
 
 		}
 		
 	}
 
-	deleteImage(parent,input,data) {
-
-		let _this = this;
-
-		let request = $.ajax({
-		  url: "/delete_image",
-		  type: "POST",
-		  data: data,
-		  dataType: 'json'
-		});
-
-		request.done(function (response, textStatus, jqXHR){
-
-			if(response.success){
-				--_this.index;
-
-				if(_this.imagesPlaced.length == _this.limit){
-					_this.index = _this.createUploader(_this.index);
-				}
-
-				_this.imagesPlaced.splice(_this.imagesPlaced.indexOf($(parent).find('input').attr('id')),1); 
-
-				parent.parent().remove();
-			}else{
-				parent.fadeIn(100); 
-				parent.css('borderColor','red');
-				parent.find('.error-message').css('display','block').text('เกิดข้อผิดพลาด ไม่สามารถลบรูปภาพได้');
-			}
-			
-		});
-
-		request.fail(function (jqXHR, textStatus, errorThrown){
-
-	    console.error(
-	        "The following error occurred: "+
-	        textStatus, errorThrown
-	    );
-	  });
-
-	  request.always(function () {
-	  	_this.allowedClick = true;
-	  });
-	}
-
 	createUploader(index){
 
 		let html = '';
-		html += '<div id="'+this.code+'_panel_'+this.runningNumber+'" class="image-panel">';
+		html += '<div class="image-panel clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label">';
 		html += '<input id="'+this.code+'_image_'+this.runningNumber+'" class="'+this.code+'-image" type="file">';
 		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+this.defaultImage+'">';
 		html += '<a id="'+this.code+'_button_'+this.runningNumber+'" href="javscript:void(0);" class="'+this.code+'-remove-btn">×</a>'
 		html += '<p class="error-message"></p>';
-		html += '</label>';
 		html += '<div id="'+this.code+'_progress+bar_'+this.runningNumber+'" class="progress-bar"><div class="status"></div></div>'
+		html += '</label>';
+		if(this.style == 'description'){
+			html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ"></textarea>';
+		}
 		html += '</div>';
 
 		++this.runningNumber;
@@ -304,6 +270,14 @@ class Images {
 		return ++index;
 
 	}
+
+	// createHiddenField(index,id,tagName) {
+	// 	let input = document.createElement('input');
+	//   input.setAttribute('type','hidden');
+	//   input.setAttribute('name','Image['+this.code+']');
+	//   input.setAttribute('value',this.code);
+	//   $('form').append(input);
+	// }
 
 	checkImageType(type){
 		let allowedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];

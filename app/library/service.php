@@ -2,7 +2,7 @@
 
 namespace App\library;
 
-use App\library\token;
+// use App\library\token;
 use Session;
 
 class Service
@@ -37,12 +37,12 @@ class Service
     return $ipaddress;
   }
 
-  public static function generateFileName($file) {
-    $name = time().'_'.Token::generateNumber(15).'_'.$file->getSize();
-    return $name.'.'.$file->getClientOriginalExtension(); 
-  }
+  // public static function generateFileName($file) {
+  //   $name = time().'_'.Token::generateNumber(15).'_'.$file->getSize();
+  //   return $name.'.'.$file->getClientOriginalExtension(); 
+  // }
 
-  public static function generateModelDirName($modelName) {
+  public static function generateModelDir($modelName) {
 
     $alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $len = strlen($modelName);
@@ -69,39 +69,39 @@ class Service
 
   }
 
-  public static function generateModelNameByModelAlias($modelAlias) {
+  // public static function generateModelNameByModelAlias($modelAlias) {
 
-    $modelAlias = str_replace('-', ' ', $modelAlias);
-    $parts = explode(' ', $modelAlias);
+  //   $modelAlias = str_replace('-', ' ', $modelAlias);
+  //   $parts = explode(' ', $modelAlias);
 
-    $modelName = '';
-    foreach ($parts as $part) {
-      $modelName .= ucfirst($part); 
-    }
+  //   $modelName = '';
+  //   foreach ($parts as $part) {
+  //     $modelName .= ucfirst($part); 
+  //   }
 
-    return $modelName;
+  //   return $modelName;
 
-  }
+  // }
 
-  public static function parseRelatedModelOptions($options = array()) {
+  // public static function parseRelatedModelOptions($options = array()) {
 
-    if(empty($options)) {
-      return false;
-    }
+  //   if(empty($options)) {
+  //     return false;
+  //   }
 
-    $_options = array();
-    foreach ($options as $key => $option) {
-      $parts = explode('|', $option);
+  //   $_options = array();
+  //   foreach ($options as $key => $option) {
+  //     $parts = explode('|', $option);
 
-      switch ($parts[0]) {
-        case 'Session':
-          $_options[$key] = Session::get($parts[1]);
-          break;
-      }
-    }
+  //     switch ($parts[0]) {
+  //       case 'Session':
+  //         $_options[$key] = Session::get($parts[1]);
+  //         break;
+  //     }
+  //   }
 
-    return $_options;
+  //   return $_options;
 
-  }
+  // }
 
 }

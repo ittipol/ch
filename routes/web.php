@@ -40,6 +40,7 @@ Route::post('entity/add','EntityController@submit');
 
 // Product ======================================
 Route::get('product/add','ProductController@add');
+Route::post('product/add','ProductController@submit');
 
 
 
@@ -49,7 +50,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-  Route::post('upload_image', 'ApiController@uploadTempImage');
-  Route::post('delete_image', 'ApiController@deleteTempImage');
+  Route::post('upload_image', 'ApiController@uploadImage');
+  // Route::post('delete_image', 'ApiController@deleteImage');
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomFormRequest;
 use App\library\service;
 use App\library\message;
+use App\library\file;
 use Redirect;
 
 class ProductController extends Controller
@@ -19,6 +20,18 @@ class ProductController extends Controller
 
     $this->form->district();
     return $this->view('pages.product.form.add.product');
+
+  }
+
+  public function submit(CustomFormRequest $request) {
+
+    // dd($request->all());
+
+    $message = new Message();
+
+    if($this->model->fill($request->all())->save()) {
+
+    }
 
   }
 

@@ -55,10 +55,10 @@ class Lookup extends Model
       $value['address'] = $_addresses;
     }
 
-    // $options = array(
-    //   'data' => $data,
-    //   'format' => $model->behavior['Lookup']['format']
-    // );
+    $options = array(
+      'data' => $data,
+      'format' => $model->behavior['Lookup']['format']
+    );
 
     // Parser
     $result = $this->parser($model,$options);
@@ -129,16 +129,16 @@ class Lookup extends Model
 
           foreach ($matches[0] as $value) {
 
-            preg_match_all($parseValue, $value, $_matches);
+            preg_match($parseValue, $value, $_matches);
 
-            if(!empty($_matches[0][0])){
+            if(!empty($_matches[0])){
 
-              if(substr($_matches[0][0],0,2) == '__'){
-                $_value = $this->{$_matches[0][0]}($model);
-              }elseif(array_key_exists($_matches[0][0],$options['data'])) {
-                $_value = $options['data'][$_matches[0][0]];
+              if(substr($_matches[0],0,2) == '__'){
+                $_value = $this->{$_matches[0]}($model);
+              }elseif(array_key_exists($_matches[0],$options['data'])) {
+                $_value = $options['data'][$_matches[0]];
               }else{
-                $parts = explode('|', $_matches[0][0]);
+                $parts = explode('|', $_matches[0]);
 
                 if(!empty($parts[1])){
 

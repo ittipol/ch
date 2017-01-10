@@ -65,7 +65,7 @@ class Model extends BaseModel
     parent::__construct($attributes);
     
     $this->modelName = class_basename(get_class($this));
-    $this->modelAlias = $this->disk = Service::generateModelDirName($this->modelName);
+    $this->modelAlias = $this->disk = Service::generateModelDir($this->modelName);
     $this->dirPath = $this->storagePath.$this->disk.'/';
 
   }
@@ -119,6 +119,12 @@ class Model extends BaseModel
         }
 
       }
+
+      // if($this->behavior['Wiki']){
+      //   $wiki = new Wiki;
+      //   $wiki->__saveRelatedData($this);
+      // }
+
       $model->saveRelatedData();
    
     });
@@ -181,11 +187,6 @@ class Model extends BaseModel
     if (!$this->exists) {
       return false;
     }
-
-    // if($this->behavior['Wiki']){
-    //   $wiki = new Wiki;
-    //   $wiki->__saveRelatedData($this);
-    // }
 
     if(!empty($this->formModelData)) {
       
@@ -278,7 +279,7 @@ class Model extends BaseModel
     if(empty($formToken)) {
       $formToken = $this->formToken;
     }
-
+dd('ddeeele');
     $tempFile = new TempFile;
     $tempFile->deleteRecordByToken($formToken,Session::get('Person.id'));
     $tempFile->deleteTempDir($formToken);

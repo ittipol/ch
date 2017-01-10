@@ -66,7 +66,7 @@ class Entity extends Model
 
       $lookup = new Lookup;
       $lookup->__saveRelatedData($entity);
-dd('cxxx');
+
     });
   }
 
