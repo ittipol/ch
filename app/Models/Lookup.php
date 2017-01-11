@@ -53,7 +53,7 @@ class Lookup extends Model
     }
 
     $_addresses = $this->__getAddress($model);
-    if(!empty($_addresses)){
+    if(!empty($_addresses)) {
       $value['address'] = $_addresses;
     }
 
@@ -80,7 +80,6 @@ class Lookup extends Model
 
     if(($model->state == 'update') && !empty($lookup)){
       return $lookup
-      ->setFormToken($this->formToken)
       ->fill($value)
       ->save();
     }else{
@@ -289,27 +288,40 @@ class Lookup extends Model
   }
 
   private function __getAddress($model) {
-    $addresses = $model->getRalatedModelData('Address',array(
+    // $addresses = $model->getRalatedModelData('Address',array(
+    //   'fields' => array(
+    //     'address','district_id','sub_district_id'
+    //   ),
+    //   'first' => false
+    // ));
+
+    // if(empty($addresses)) {
+    //   return null;
+    // }
+
+    // $_address = array();
+    // if(!empty($addresses)){
+    //   foreach ($addresses as $address) {
+    //     $_address[] = trim($address->district->name.' '.$address->subDistrict->name.' '.$address->address);
+    //   }
+
+    //   $_address = implode(' ', $_address);
+    // }
+
+    $address = $model->getRalatedModelData('Address',array(
       'fields' => array(
         'address','district_id','sub_district_id'
       ),
-      'first' => false
+      'first' => true
     ));
 
-    if(empty($addresses)) {
+    if(empty($address)) {
       return null;
     }
 
-    $_address = array();
-    if(!empty($addresses)){
-      foreach ($addresses as $address) {
-        $_address[] = trim($address->district->name.' '.$address->subDistrict->name.' '.$address->address);
-      }
+    $address = trim($address->district->name.' '.$address->subDistrict->name.' '.$address->address);
 
-      $_address = implode(' ', $_address);
-    }
-
-    return $this->_clean($_address);
+    return $this->_clean($address);
 
   }
 

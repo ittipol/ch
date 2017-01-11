@@ -5,7 +5,7 @@ namespace App\Models;
 class Address extends Model
 {
   protected $table = 'addresses';
-  protected $fillable = ['model','model_id','place_name','address','district_id','sub_district_id','description','lat','lng'];
+  protected $fillable = ['model','model_id','address','district_id','sub_district_id','description','lat','lng'];
 
   public function __construct() {  
     parent::__construct();

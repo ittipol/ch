@@ -48,4 +48,8 @@ class ProductController extends Controller
 
   }
 
+  public function edit($productId) {
+    dd($productId);
+  }
+
 }

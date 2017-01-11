@@ -31,8 +31,25 @@ class Product extends Model
       )
     )
   );
+
   public function __construct() {  
     parent::__construct();
+  }
+
+  public static function boot() {
+
+    parent::boot();
+
+    Product::saved(function($model){
+
+      // if($model->state == 'create') {
+      // }
+
+      $lookup = new Lookup;
+      $lookup->__saveRelatedData($model);
+  dd('look');
+    });
+
   }
 
 }

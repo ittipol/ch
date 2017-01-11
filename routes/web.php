@@ -45,11 +45,13 @@ Route::post('entity/add','EntityController@submit');
 
 // Product ======================================
 Route::get('product','ProductController@index');
-// > view
-Route::get('product/{product_slug}','ProductController@detail');
 // > add
 Route::get('product/add','ProductController@add');
 Route::post('product/add','ProductController@submit');
+// > edit
+Route::get('product/edit/{product_id}','ProductController@edit');
+// > view
+Route::get('product/{product_slug}','ProductController@detail');
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {

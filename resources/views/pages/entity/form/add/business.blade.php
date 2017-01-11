@@ -123,16 +123,6 @@
       </div>
 
       <div class="form-row">
-        <?php 
-          echo Form::label('Address[zip_code]', 'รหัสไปรษณีย์');
-          echo Form::text('Address[zip_code]', null, array(
-          'placeholder' => 'รหัสไปรษณีย์',
-          'autocomplete' => 'off'
-        ));
-        ?>
-      </div>
-
-      <div class="form-row">
         <?php echo Form::label('', 'ระบุตำแหน่งบริษัท องค์กร หรือ ธุรกิจชุมชนบนแผนที่'); ?>
         <input id="pac-input" class="controls" type="text" placeholder="Search Box">
         <div id="map"></div>
