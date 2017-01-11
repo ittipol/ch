@@ -162,7 +162,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group','images',5,'description');
+    const images = new Images('_image_group',5,'description');
     images.load();
 
     const district = new District();

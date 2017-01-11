@@ -7,6 +7,7 @@ class Product extends Model
   protected $table = 'products';
   protected $fillable = ['name','description','sku','quantity','stock_status_id','price','weight','weight_id','length','length_id','width','height'];
   protected $modelRelated = array('Image','Address');
+  protected $directory = true;
 
   protected $validation = array(
     'rules' => array(

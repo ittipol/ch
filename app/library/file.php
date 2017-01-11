@@ -74,8 +74,8 @@ class File
 		return false;
 	}
 
-	public function saveTemporaryFile() {
-	  return $this->file->move(storage_path(Service::loadModel('TemporaryFile')->getTemporaryPath()), $this->filename);
-	}
+	// public function saveTemporaryFile() {
+	//   return $this->file->move(storage_path(Service::loadModel('TemporaryFile')->getTemporaryPath()), $this->filename);
+	// }
 
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2017 at 02:53 PM
+-- Generation Time: Jan 11, 2017 at 05:31 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -40,35 +40,6 @@ CREATE TABLE `addresses` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `addresses`
---
-
-INSERT INTO `addresses` (`id`, `model`, `model_id`, `place_name`, `address`, `district_id`, `sub_district_id`, `description`, `lat`, `lng`, `created_at`, `updated_at`) VALUES
-(1, 'Entity', 35, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:26:10', '2017-01-09 18:26:10'),
-(2, 'Entity', 36, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:29:16', '2017-01-09 18:29:16'),
-(3, 'Entity', 37, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:30:40', '2017-01-09 18:30:40'),
-(4, 'Entity', 38, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:30:59', '2017-01-09 18:30:59'),
-(5, 'Entity', 39, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:34:28', '2017-01-09 18:34:28'),
-(6, 'Entity', 40, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:34:49', '2017-01-09 18:34:49'),
-(7, 'Entity', 41, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:35:19', '2017-01-09 18:35:19'),
-(8, 'Entity', 42, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:35:50', '2017-01-09 18:35:50'),
-(9, 'Entity', 43, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:36:07', '2017-01-09 18:36:07'),
-(10, 'Entity', 44, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:37:05', '2017-01-09 18:37:05'),
-(11, 'Entity', 45, NULL, '', 1, 1, NULL, '', '', '2017-01-09 18:37:57', '2017-01-09 18:37:57'),
-(12, 'Entity', 46, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:12:23', '2017-01-09 19:12:23'),
-(13, 'Entity', 47, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:12:31', '2017-01-09 19:12:31'),
-(14, 'Entity', 48, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:12:56', '2017-01-09 19:12:56'),
-(15, 'Entity', 49, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:13:03', '2017-01-09 19:13:03'),
-(16, 'Entity', 50, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:17:18', '2017-01-09 19:17:18'),
-(17, 'Entity', 51, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:17:25', '2017-01-09 19:17:25'),
-(18, 'Entity', 52, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:18:38', '2017-01-09 19:18:38'),
-(19, 'Entity', 53, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:19:12', '2017-01-09 19:19:12'),
-(20, 'Entity', 54, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:19:35', '2017-01-09 19:19:35'),
-(21, 'Entity', 55, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:21:42', '2017-01-09 19:21:42'),
-(22, 'Entity', 56, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:27:48', '2017-01-09 19:27:48'),
-(23, 'Entity', 57, NULL, '', 1, 1, NULL, '', '', '2017-01-09 19:30:46', '2017-01-09 19:30:46');
 
 -- --------------------------------------------------------
 
@@ -142,69 +113,6 @@ CREATE TABLE `entities` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `entities`
---
-
-INSERT INTO `entities` (`id`, `name`, `entity_type_id`, `created_by`, `created_at`) VALUES
-(1, '', 1, 1, '2017-01-09 17:43:20'),
-(2, '', 1, 1, '2017-01-09 17:43:52'),
-(3, '', 1, 1, '2017-01-09 17:44:38'),
-(4, '', 1, 1, '2017-01-09 17:45:04'),
-(5, '', 1, 1, '2017-01-09 17:45:15'),
-(6, '', 1, 1, '2017-01-09 17:45:24'),
-(7, '', 1, 1, '2017-01-09 17:49:48'),
-(8, '', 1, 1, '2017-01-09 17:50:00'),
-(9, '', 1, 1, '2017-01-09 17:53:57'),
-(10, '', 1, 1, '2017-01-09 17:54:19'),
-(11, '', 1, 1, '2017-01-09 17:54:30'),
-(12, '', 1, 1, '2017-01-09 17:55:25'),
-(13, '', 1, 1, '2017-01-09 17:55:41'),
-(14, '', 1, 1, '2017-01-09 17:55:54'),
-(15, '', 1, 1, '2017-01-09 17:56:06'),
-(16, '', 1, 1, '2017-01-09 17:58:45'),
-(17, '', 1, 1, '2017-01-09 17:58:53'),
-(18, '', 1, 1, '2017-01-09 17:59:16'),
-(19, '', 1, 1, '2017-01-09 17:59:24'),
-(20, '', 1, 1, '2017-01-09 17:59:30'),
-(21, '', 1, 1, '2017-01-09 17:59:38'),
-(22, '', 1, 1, '2017-01-09 17:59:52'),
-(23, '', 1, 1, '2017-01-09 17:59:59'),
-(24, 'aaa', 1, 1, '2017-01-09 18:07:06'),
-(25, 'aaa', 1, 1, '2017-01-09 18:07:36'),
-(26, 'aaa', 1, 1, '2017-01-09 18:18:42'),
-(27, 'aaa', 1, 1, '2017-01-09 18:19:07'),
-(28, 'aaa', 1, 1, '2017-01-09 18:19:37'),
-(29, 'aaa', 1, 1, '2017-01-09 18:19:48'),
-(30, 'aaa', 1, 1, '2017-01-09 18:19:59'),
-(31, 'aaa', 1, 1, '2017-01-09 18:22:22'),
-(32, 'aaa', 1, 1, '2017-01-09 18:22:32'),
-(33, 'aaa', 1, 1, '2017-01-09 18:23:08'),
-(34, 'aaa', 1, 1, '2017-01-09 18:23:37'),
-(35, 'aaa', 1, 1, '2017-01-09 18:26:10'),
-(36, 'aaa', 1, 1, '2017-01-09 18:29:16'),
-(37, 'aaa', 1, 1, '2017-01-09 18:30:39'),
-(38, 'aaa', 1, 1, '2017-01-09 18:30:59'),
-(39, 'aaa', 1, 1, '2017-01-09 18:34:28'),
-(40, 'aaa', 1, 1, '2017-01-09 18:34:48'),
-(41, 'aaa', 1, 1, '2017-01-09 18:35:19'),
-(42, 'aaa', 1, 1, '2017-01-09 18:35:50'),
-(43, 'aaa', 1, 1, '2017-01-09 18:36:07'),
-(44, 'aaa', 1, 1, '2017-01-09 18:37:05'),
-(45, 'aaaa', 1, 1, '2017-01-09 18:37:57'),
-(46, 'www', 1, 1, '2017-01-09 19:12:23'),
-(47, 'www', 1, 1, '2017-01-09 19:12:31'),
-(48, 'www', 1, 1, '2017-01-09 19:12:56'),
-(49, 'www', 1, 1, '2017-01-09 19:13:03'),
-(50, 'www', 1, 1, '2017-01-09 19:17:18'),
-(51, 'www', 1, 1, '2017-01-09 19:17:25'),
-(52, 'www', 1, 1, '2017-01-09 19:18:38'),
-(53, 'www', 1, 1, '2017-01-09 19:19:12'),
-(54, 'www', 1, 1, '2017-01-09 19:19:35'),
-(55, 'www', 1, 1, '2017-01-09 19:21:42'),
-(56, 'www', 1, 1, '2017-01-09 19:27:48'),
-(57, 'www', 1, 1, '2017-01-09 19:30:46');
-
 -- --------------------------------------------------------
 
 --
@@ -225,6 +133,64 @@ INSERT INTO `entity_types` (`id`, `name`, `alias`) VALUES
 (1, 'บริษัท, องค์กร, ร้านค้า', 'business'),
 (2, 'สถานที่', 'place'),
 (3, 'ร้านค้าออนไลน์', 'online-shop');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `files`
+--
+
+CREATE TABLE `files` (
+  `id` int(11) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `model_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `file_type_id` int(11) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `images`
+--
+
+CREATE TABLE `images` (
+  `id` int(11) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `model_id` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `description` text,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lookups`
+--
+
+CREATE TABLE `lookups` (
+  `id` int(11) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `model_id` int(11) NOT NULL,
+  `keyword` varchar(255) DEFAULT NULL,
+  `description` text,
+  `keyword_1` varchar(255) DEFAULT NULL,
+  `keyword_2` varchar(255) DEFAULT NULL,
+  `keyword_3` varchar(255) DEFAULT NULL,
+  `keyword_4` varchar(255) DEFAULT NULL,
+  `description_1` text,
+  `address` text,
+  `tags` text,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -273,7 +239,88 @@ CREATE TABLE `person_to_entities` (
 --
 
 INSERT INTO `person_to_entities` (`id`, `entity_id`, `person_id`, `role_id`, `created_at`) VALUES
-(1, 57, 1, 1, '2017-01-09 19:30:46');
+(1, 57, 1, 1, '2017-01-09 19:30:46'),
+(2, 58, 1, 1, '2017-01-10 08:54:11'),
+(3, 59, 1, 1, '2017-01-10 08:55:12'),
+(4, 60, 1, 1, '2017-01-10 08:55:46'),
+(5, 61, 1, 1, '2017-01-10 09:25:22'),
+(6, 62, 1, 1, '2017-01-10 09:25:44'),
+(7, 63, 1, 1, '2017-01-10 09:25:58'),
+(8, 64, 1, 1, '2017-01-10 09:26:13'),
+(9, 65, 1, 1, '2017-01-10 09:26:23'),
+(10, 66, 1, 1, '2017-01-10 09:26:56'),
+(11, 67, 1, 1, '2017-01-10 09:27:59'),
+(12, 68, 1, 1, '2017-01-10 09:28:29'),
+(13, 69, 1, 1, '2017-01-10 09:29:02'),
+(14, 70, 1, 1, '2017-01-10 09:29:14'),
+(15, 71, 1, 1, '2017-01-10 09:29:25'),
+(16, 72, 1, 1, '2017-01-10 09:29:48'),
+(17, 77, 1, 1, '2017-01-10 09:31:14'),
+(18, 78, 1, 1, '2017-01-10 09:32:38'),
+(19, 79, 1, 1, '2017-01-10 09:32:58'),
+(20, 82, 1, 1, '2017-01-10 09:36:29'),
+(21, 83, 1, 1, '2017-01-10 09:37:26'),
+(22, 84, 1, 1, '2017-01-10 09:38:28'),
+(23, 85, 1, 1, '2017-01-10 09:39:01'),
+(24, 86, 1, 1, '2017-01-10 09:39:48'),
+(25, 87, 1, 1, '2017-01-10 09:40:03'),
+(26, 88, 1, 1, '2017-01-10 09:40:17'),
+(27, 89, 1, 1, '2017-01-10 09:40:30'),
+(28, 90, 1, 1, '2017-01-10 09:40:45'),
+(29, 91, 1, 1, '2017-01-10 09:42:00'),
+(30, 92, 1, 1, '2017-01-10 09:42:13'),
+(31, 93, 1, 1, '2017-01-10 09:42:18'),
+(32, 94, 1, 1, '2017-01-10 09:42:22'),
+(33, 95, 1, 1, '2017-01-10 09:42:31'),
+(34, 96, 1, 1, '2017-01-10 09:42:38'),
+(35, 97, 1, 1, '2017-01-10 09:43:13'),
+(36, 98, 1, 1, '2017-01-10 09:43:20'),
+(37, 99, 1, 1, '2017-01-10 09:43:36'),
+(38, 100, 1, 1, '2017-01-10 09:43:58'),
+(39, 101, 1, 1, '2017-01-10 09:44:18'),
+(40, 102, 1, 1, '2017-01-10 09:44:30'),
+(41, 103, 1, 1, '2017-01-10 09:44:47'),
+(42, 104, 1, 1, '2017-01-10 09:45:32'),
+(43, 105, 1, 1, '2017-01-10 09:45:57'),
+(44, 106, 1, 1, '2017-01-10 09:46:08'),
+(45, 107, 1, 1, '2017-01-10 09:46:13'),
+(46, 108, 1, 1, '2017-01-10 09:47:31'),
+(47, 109, 1, 1, '2017-01-10 09:47:36'),
+(48, 110, 1, 1, '2017-01-10 09:47:43'),
+(49, 111, 1, 1, '2017-01-10 09:47:46'),
+(50, 112, 1, 1, '2017-01-10 09:48:13'),
+(51, 113, 1, 1, '2017-01-10 09:48:31'),
+(52, 114, 1, 1, '2017-01-10 09:49:08'),
+(53, 115, 1, 1, '2017-01-10 09:49:14'),
+(54, 116, 1, 1, '2017-01-10 09:49:20'),
+(55, 117, 1, 1, '2017-01-10 09:49:26'),
+(56, 118, 1, 1, '2017-01-10 09:49:42'),
+(57, 119, 1, 1, '2017-01-10 09:49:47'),
+(58, 120, 1, 1, '2017-01-10 09:49:54'),
+(59, 121, 1, 1, '2017-01-10 09:50:30'),
+(60, 122, 1, 1, '2017-01-10 11:30:52'),
+(61, 123, 1, 1, '2017-01-10 11:31:43'),
+(62, 124, 1, 1, '2017-01-10 11:31:55'),
+(63, 125, 1, 1, '2017-01-10 11:32:23'),
+(64, 126, 1, 1, '2017-01-10 11:32:34'),
+(65, 127, 1, 1, '2017-01-10 11:32:40'),
+(66, 128, 1, 1, '2017-01-10 11:33:22'),
+(67, 129, 1, 1, '2017-01-10 11:36:10'),
+(68, 130, 1, 1, '2017-01-10 14:53:23'),
+(69, 131, 1, 1, '2017-01-10 14:53:28'),
+(70, 132, 1, 1, '2017-01-10 14:53:34'),
+(71, 133, 1, 1, '2017-01-10 14:54:06'),
+(72, 134, 1, 1, '2017-01-10 14:58:01'),
+(73, 135, 1, 1, '2017-01-10 14:58:13'),
+(74, 136, 1, 1, '2017-01-10 14:58:24'),
+(75, 137, 1, 1, '2017-01-10 15:00:25'),
+(76, 138, 1, 1, '2017-01-10 15:00:31'),
+(77, 139, 1, 1, '2017-01-10 15:00:39'),
+(78, 140, 1, 1, '2017-01-10 15:01:05'),
+(79, 141, 1, 1, '2017-01-10 15:01:13'),
+(80, 142, 1, 1, '2017-01-10 15:01:24'),
+(81, 143, 1, 1, '2017-01-10 15:02:01'),
+(82, 144, 1, 1, '2017-01-10 15:18:02');
 
 -- --------------------------------------------------------
 
@@ -358,44 +405,6 @@ CREATE TABLE `slugs` (
   `name` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `slugs`
---
-
-INSERT INTO `slugs` (`id`, `model`, `model_id`, `name`, `created_at`) VALUES
-(1, 'Entity', 26, 'aaa-26', '2017-01-09 18:18:42'),
-(2, 'Entity', 27, 'aaa-27', '2017-01-09 18:19:07'),
-(3, 'Entity', 28, 'aaa-28', '2017-01-09 18:19:37'),
-(4, 'Entity', 29, 'aaa-29', '2017-01-09 18:19:48'),
-(5, 'Entity', 30, 'aaa-30', '2017-01-09 18:19:59'),
-(6, 'Entity', 31, 'aaa-31', '2017-01-09 18:22:22'),
-(7, 'Entity', 32, 'aaa-32', '2017-01-09 18:22:32'),
-(8, 'Entity', 33, 'aaa-33', '2017-01-09 18:23:08'),
-(9, 'Entity', 34, 'aaa-34', '2017-01-09 18:23:37'),
-(10, 'Entity', 35, 'aaa-35', '2017-01-09 18:26:10'),
-(11, 'Entity', 36, 'aaa-36', '2017-01-09 18:29:16'),
-(12, 'Entity', 37, 'aaa-37', '2017-01-09 18:30:39'),
-(13, 'Entity', 38, 'aaa-38', '2017-01-09 18:30:59'),
-(14, 'Entity', 39, 'aaa-39', '2017-01-09 18:34:28'),
-(15, 'Entity', 40, 'aaa-40', '2017-01-09 18:34:48'),
-(16, 'Entity', 41, 'aaa-41', '2017-01-09 18:35:19'),
-(17, 'Entity', 42, 'aaa-42', '2017-01-09 18:35:50'),
-(18, 'Entity', 43, 'aaa-43', '2017-01-09 18:36:07'),
-(19, 'Entity', 44, 'aaa-44', '2017-01-09 18:37:05'),
-(20, 'Entity', 45, 'aaaa-45', '2017-01-09 18:37:57'),
-(21, 'Entity', 46, 'www-46', '2017-01-09 19:12:23'),
-(22, 'Entity', 47, 'www-47', '2017-01-09 19:12:31'),
-(23, 'Entity', 48, 'www-48', '2017-01-09 19:12:56'),
-(24, 'Entity', 49, 'www-49', '2017-01-09 19:13:03'),
-(25, 'Entity', 50, 'www-50', '2017-01-09 19:17:18'),
-(26, 'Entity', 51, 'www-51', '2017-01-09 19:17:25'),
-(27, 'Entity', 52, 'www-52', '2017-01-09 19:18:38'),
-(28, 'Entity', 53, 'www-53', '2017-01-09 19:19:12'),
-(29, 'Entity', 54, 'www-54', '2017-01-09 19:19:35'),
-(30, 'Entity', 55, 'www-55', '2017-01-09 19:21:42'),
-(31, 'Entity', 56, 'www-56', '2017-01-09 19:27:48'),
-(32, 'Entity', 57, 'www-57', '2017-01-09 19:30:46');
 
 -- --------------------------------------------------------
 
@@ -518,6 +527,22 @@ INSERT INTO `sub_districts` (`id`, `district_id`, `name`, `name_en`, `descriptio
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `temporary_files`
+--
+
+CREATE TABLE `temporary_files` (
+  `id` int(11) NOT NULL,
+  `model` varchar(255) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `file_type` varchar(255) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -574,6 +599,25 @@ ALTER TABLE `entity_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `images`
+--
+ALTER TABLE `images`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lookups`
+--
+ALTER TABLE `lookups`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `model` (`model`,`model_id`);
+
+--
 -- Indexes for table `people`
 --
 ALTER TABLE `people`
@@ -616,6 +660,12 @@ ALTER TABLE `sub_districts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `temporary_files`
+--
+ALTER TABLE `temporary_files`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -629,7 +679,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `business_entities`
 --
@@ -644,12 +694,27 @@ ALTER TABLE `districts`
 -- AUTO_INCREMENT for table `entities`
 --
 ALTER TABLE `entities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `entity_types`
 --
 ALTER TABLE `entity_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `images`
+--
+ALTER TABLE `images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `lookups`
+--
+ALTER TABLE `lookups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `people`
 --
@@ -659,7 +724,7 @@ ALTER TABLE `people`
 -- AUTO_INCREMENT for table `person_to_entities`
 --
 ALTER TABLE `person_to_entities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -679,12 +744,17 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `slugs`
 --
 ALTER TABLE `slugs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sub_districts`
 --
 ALTER TABLE `sub_districts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+--
+-- AUTO_INCREMENT for table `temporary_files`
+--
+ALTER TABLE `temporary_files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --

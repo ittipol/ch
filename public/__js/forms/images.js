@@ -1,7 +1,7 @@
 class Images {
-	constructor(panel,type,limit,style = 'default') {
+	constructor(panel,limit,style = 'default') {
 		this.panel = panel;
-		this.type = type;
+		// this.type = type;
 		this.limit = limit;
 		this.id = null;
 		this.code = null;
@@ -255,12 +255,15 @@ class Images {
 	_createUploader(index,image){
 
 		let html = '';
-		html += '<div id="'+this.code+'_panel_'+this.runningNumber+'" class="image-panel">';
+		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label added">';
 		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+image.url+'">';
 		html += '<a id="'+this.code+'_button_'+this.runningNumber+'" href="javscript:void(0);" class="'+this.code+'-remove-btn" style="display:block;">×</a>'
 		html += '<p class="error-message"></p>';
-		html += '<input type="hidden" name="filenames['+index+']" value="'+image.name+'">'
+		html += '<input type="hidden" name="Image['+this.code+']['+index+'][filename]" value="'+image.name+'">'
+		// if(this.style == 'description'){
+		// 	html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ">'+image.description+'</textarea>';
+		// }
 		html += '</label>';
 		html += '</div>';
 

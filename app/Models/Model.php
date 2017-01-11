@@ -11,28 +11,28 @@ use Schema;
 
 class Model extends BaseModel
 {
+  protected $storagePath = 'app/public/';
+  protected $state = 'create';
   public $modelName;
   public $modelAlias;
-  public $state = 'create';
-  public $formToken;
-  public $disk;
-  public $storagePath = 'app/public/';
-  public $dirPath;
-  public $formModelData;
+  // public $formToken;
+  // public $disk;
+  protected $formModelData;
   protected $relatedModel;
-
-  protected $validation;
-  // sorting field
-  public $sortingFields;
+  protected $sortingFields;
   protected $behavior;
+  protected $validation;
+  protected $directory = false;
+  protected $directoryPath;
   
   public function __construct(array $attributes = []) { 
 
     parent::__construct($attributes);
     
     $this->modelName = class_basename(get_class($this));
-    $this->modelAlias = $this->disk = Service::generateModelDir($this->modelName);
-    $this->dirPath = $this->storagePath.$this->disk.'/';
+    // $this->modelAlias = $this->disk = Service::generateModelDir($this->modelName);
+    $this->modelAlias = Service::generateModelDir($this->modelName);
+    $this->directoryPath = $this->storagePath.$this->modelAlias.'/';
 
   }
 
@@ -77,7 +77,7 @@ class Model extends BaseModel
     parent::saved(function($model){
 
       if(($model->state == 'create') && $model->exists) {
-        // $model->createDir();  
+        $model->createDirectory();  
 
         if($model->behavior['Slug']) {
           $slug = new Slug;
@@ -142,11 +142,17 @@ class Model extends BaseModel
 
   }
 
-  public function _save($value) {
-    $model = Service::loadModel($this->modelName);
-    $model->fill($value);
-    $model->save();
-  }
+  // public function _save($value) {
+  //   $model = Service::loadModel($this->modelName);
+  //   $model->fill($value);
+    
+  //   if($model->save()) {
+  //     return $model;
+  //   }
+
+  //   return false;
+    
+  // }
 
   public function saveRelatedData() {
 
@@ -216,40 +222,38 @@ class Model extends BaseModel
     return $this;
   }
 
-  public function createDir() {
+  public function createDirectory() {
 
-    // if(empty($this->alloxxxwedDir)) {
-    //   return false;
-    // }
+    if(empty($this->directory) || empty($this->directoryPath)) {
+      return false;
+    }
 
-    $path = storage_path($this->dirPath).'/'.$this->id;
+    $path = storage_path($this->directoryPath).'/'.$this->id;
     if(!is_dir($path)){
       mkdir($path,0777,true);
     }
 
-    // if(!empty($this->alloxxxwedDir['dirNames'])){
-    //   foreach ($this->alloxxxwedDir['dirNames'] as $dir) {
-    //     $dirName = $path.'/'.$dir;
-    //     if(!is_dir($dirName)){
-    //       mkdir($dirName,0777,true);
-    //     }
-    //   }
-    // }
-
-    // return true;
-
   }
 
-  public function deleteTempData($formToken = null) {
+  public function getDirectory() {
 
-    if(empty($formToken)) {
-      $formToken = $this->formToken;
+    if(empty($this->directoryPath)) {
+      return false;
     }
-dd('ddeeele');
-    $tempFile = new TempFile;
-    $tempFile->deleteRecordByToken($formToken,Session::get('Person.id'));
-    $tempFile->deleteTempDir($formToken);
+
+    return storage_path($this->directoryPath).$this->id.'/';
   }
+
+  // public function deleteTempData($formToken = null) {
+
+  //   if(empty($formToken)) {
+  //     $formToken = $this->formToken;
+  //   }
+
+  //   $tempFile = new TempFile;
+  //   $tempFile->deleteRecordByToken($formToken,Session::get('Person.id'));
+  //   $tempFile->deleteTempDir($formToken);
+  // }
 
   public function checkExistById($id) {
     return $this->find($id)->exists();

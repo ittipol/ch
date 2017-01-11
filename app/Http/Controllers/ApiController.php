@@ -64,8 +64,9 @@ class ApiController extends Controller
       );
 
       if($tempFile->fill($value)->save()){
-        // $tempFile->moveTemporaryFile($file->getRealPath());
-        $file->saveTemporaryFile();
+        $tempFile->moveTemporaryFile($file->getRealPath(),$tempFile->filename,array(
+          'directoryName' => $tempFile->model.'_'.$tempFile->token
+        ));
 
         $result = array(
           'success' => true,

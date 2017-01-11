@@ -4,11 +4,8 @@ namespace App\Models;
 
 use App\library\token;
 use App\library\service;
-use App\library\file;
 // use App\library\image AS ImageLib;
-use Auth;
-use Storage;
-// use File;
+use File;
 use Session;
 
 class Image extends Model
@@ -35,13 +32,17 @@ class Image extends Model
 
     foreach ($images as $token => $imageGroup) {
 
+      $directoryName = $model->modelName.'_'.$token;
+
       foreach ($imageGroup as $image) {
 
         if(empty($image['filename'])) {
           continue;
         }
 
-        $path = $temporaryFile->getFilePath($image['filename']);
+        $path = $temporaryFile->getFilePath($image['filename'],array(
+          'directoryName' => $directoryName
+        ));
 
         if(!file_exists($path)){
           continue;
@@ -57,117 +58,61 @@ class Image extends Model
           ));
         }
 
-        $this->_save($model->includeModelAndModelId($value));
+        $imageInstance = $this->newInstance();
+        if($imageInstance->fill($model->includeModelAndModelId($value))->save()) {
+          $this->moveImage($model,$path,$imageInstance->filename);
+        }
 
       }
-dd('sae');
-    //   $records = $temporaryFile->getData(array(
-    //     'conditions' => array(
-    //       ['file_type','like','image'],
-    //       ['token','like',$token],
-    //       ['created_by','like',Session::get('Person.id')]
-    //     ),
-    //     'fields' => array('filename')
-    //   ));
 
-    //   foreach ($records as $_temporaryFile) {
-    //     dd($images);
-    //     $path = $_temporaryFile->getFilePath();
+      // remove temp dir
+      $temporaryFile->deleteTemporaryDirectory($directoryName);
 
-    //     if(!file_exists($path)){
-    //       continue;
-    //     }
+      $temporaryFile->deleteTemporaryRecords($model->modelName,$token);
 
-    //     $value = array(
-    //       'filename' => $filename,
-    //     );
-
-    //     $this->fill($model->includeModelAndModelId($value))->save();
-
-    //   }
     }
-
-    $images = $imagesTemp->get();
-
-    foreach ($images as $image) {
-
-      // if(!in_array($image->type,$model->allowedImage['type'])) {
-      //   continue;
-      // }
-
-      $filename = $image->name;
-
-      $path = storage_path($tempFileModel->tempFileDir).$token.'/'.$filename;
-
-      if(!file_exists($path)){
-        continue;
-      }
-
-      // Crop image
-      // $imageLib = new ImageLib($path);
-      // $imageLib->crop(200,600,400,800);
-      // $imageLib->save(storage_path($tempFileModel->tempFileDir).$token.'/'.$filename);
-
-      $value = array(
-        'model' => $model->modelName,
-        'model_id' => $model->id,
-        'name' => $filename,
-        'type' => $image->type
-      );
-
-      if($this->_save($value)) {
-
-        $to = storage_path($model->dirPath).$model->id.'/'.$image->type.'/'.$filename;
-
-        // move to real dir
-        File::move($path, $to);
-
-        //
-        // $tempFile->find($image['attributes']['id'])->delete();
-      }
-      
-    }
-    
-    // remove temp dir
-    $tempFileModel->deleteTempDir($token);
-
-    // delete temp file records
-    $imagesTemp->delete();
-
+dd('ccc');
   }
 
-  public function deleteImages($model,$options = array()) {
-
-    if(empty($this->formToken)) {
-      return false;
-    }
-
-    $token = $this->formToken;
-
-    $tempFileModel = new TempFile;
-    $imagesTemp = $tempFileModel->where([
-      ['token','=',$token],
-      ['status','=','delete'],
-      ['created_by','=',$personId]
-    ]);
-
-    $images = $imagesTemp->get();
-
-    foreach ($images as $image) {
-
-      $this->where([
-        ['model','=',$model->modelName],
-        ['model_id','=',$model->id],
-        ['name','=',$image->name]
-      ])->delete();
-
-      File::Delete(storage_path($model->dirPath).$model->id.'/images/'.$image->name);
-    }
-
-    // delete temp file records
-    $imagesTemp->delete();
-
+  public function moveImage($model,$oldPath,$filename) {
+    // to
+    $to = $model->getDirectory().$filename;
+    // move image
+    return File::move($oldPath, $to);
   }
+
+  // public function deleteImages($model,$options = array()) {
+
+  //   if(empty($this->formToken)) {
+  //     return false;
+  //   }
+
+  //   $token = $this->formToken;
+
+  //   $tempFileModel = new TempFile;
+  //   $imagesTemp = $tempFileModel->where([
+  //     ['token','=',$token],
+  //     ['status','=','delete'],
+  //     ['created_by','=',$personId]
+  //   ]);
+
+  //   $images = $imagesTemp->get();
+
+  //   foreach ($images as $image) {
+
+  //     $this->where([
+  //       ['model','=',$model->modelName],
+  //       ['model_id','=',$model->id],
+  //       ['name','=',$image->name]
+  //     ])->delete();
+
+  //     File::Delete(storage_path($model->dirPath).$model->id.'/images/'.$image->name);
+  //   }
+
+  //   // delete temp file records
+  //   $imagesTemp->delete();
+
+  // }
 
   public function getImageUrl() {
 
