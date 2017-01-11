@@ -26,7 +26,9 @@ class Lookup extends Model
 
   public function __saveRelatedData($model,$options = array()) {
 
-    if(empty($model->behavior['Lookup']['format'])) {
+    $behavior = $model->getBehavior('Lookup');
+
+    if(empty($behavior['format'])) {
       return false;
     }
 
@@ -57,7 +59,7 @@ class Lookup extends Model
 
     $options = array(
       'data' => $data,
-      'format' => $model->behavior['Lookup']['format']
+      'format' => $behavior['format']
     );
 
     // Parser

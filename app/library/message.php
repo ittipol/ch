@@ -6,7 +6,7 @@ use Session;
 
 class Message
 {
-  public function display($title = '',$type = 'info') {
+  public static function display($title = '',$type = 'info') {
     Session::flash('message.title', $title);
     Session::flash('message.type', $type); 
   }

@@ -22,48 +22,61 @@ class Slug extends Model
 
   public function __saveRelatedData($model,$options = array()) {
 
-    if(empty($model->behavior['Slug']['field'])) {
+    $behavior = $model->getBehavior('Slug');
+
+    if(empty($behavior['field'])) {
       return false;
     }
-
-    $options = array(
-      'field' => $model->behavior['Slug']['field']
-    );
 
     $save = true;
 
-    do {
-      $slug = $this->generateSlug($model,$options); 
+    // do {
+    //   $slug = $this->generateSlug($model,$behavior['field']); 
 
-      if(empty($slug)){
-        $save = false;
-      }
+    //   if(empty($slug)){
+    //     $save = false;
+    //   }
 
-    } while ($this->checkDataExistBySlug($slug));
+    // } while ($this->checkDataExistBySlug($model,$slug));
 
-    if($save) {
-      return $this->_save($model->includeModelAndModelId(array('name' => $slug)));
+    // if(!$save) {
+    //   return false;
+    // }
+
+    $slug = $this->generateSlug($model,$behavior['field']);
+
+    if(empty($slug)){
+      $slug = $model->id.'-'.Token::generateNumber(10);
     }
 
-    return $save;
+    if($this->checkDataExistBySlug($model,$slug)) {
+      $slug .= '-'.Token::generateNumber(8);
+    }
+
+    return $this->fill($model->includeModelAndModelId(array('name' => $slug)))->save();
 
   }
 
-  private function generateSlug($model,$options = array()) {
+  private function generateSlug($model,$field) {
 
-    if(empty($options['field']) || empty($model->{$options['field']})){
+    if(empty($field) || empty($model->{$field})) {
       return false;
     }
 
-    $slug = str_replace(' ', '-', trim($model->{$options['field']}));
+    $slug = str_replace(' ', '-', trim($model->{$field}));
     $slug .= '-'.$model->id;
 
     return $slug;
 
   }
 
-  public function checkDataExistBySlug($slug) {
-    return $this->where('name','like',$slug)->exists();
+  public function checkDataExistBySlug($model,$slug) {
+    return $this->where([
+      ['model','like',$model->modelName],
+      ['model_id','like',$model->id],
+      ['name','like',$slug]
+    ]
+    )->exists();
   }
 
   public function setUpdatedAt($value) {}

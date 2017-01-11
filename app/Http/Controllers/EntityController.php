@@ -37,11 +37,12 @@ class EntityController extends Controller
     ));
 
     if(empty($entityType)) {
+      Message::display('ไม่พบประเภทของข้อมูลนี้ โปรดเลือกใหม่อีกครั้ง','error');
       return Redirect::to('entity/create');
     }
 
     $this->form->district();
-    $this->form->set('entityTypeId',$entityType->id);
+    $this->form->set('entityType',$this->query['type']);
 
     return $this->view('pages.entity.form.add.'.$this->query['type']);
   }
@@ -54,11 +55,28 @@ class EntityController extends Controller
 
       $slugName = $this->model->getRalatedModelData('Slug',array(
         'fields' => 'name'
-      ));
+      ))->name;
 
-      $message->display('ข้อมูลถูกเพิ่มแล้ว','success');
-      return Redirect::to($slugName->name);
+      Message::display('ข้อมูลถูกเพิ่มแล้ว','success');
+      return Redirect::to($slugName);
     }else{
+
+      if(!empty($this->model->errorType)) {
+        switch ($this->model->errorType) {
+          case 1;
+            $EntityTypeName = Service::loadModel('EntityType')->find($this->model->entity_type_id)->name;
+            
+            $_message = 'คุณได้เพิ่ม'.$EntityTypeName.'ชื่อว่า '.$this->model->name.' ไปแล้ว โปรดใช้ชื่ออื่น';
+            return Redirect::back()->withErrors([$_message]);
+            break;
+
+          case 2;
+            $_message = 'มี'.$EntityTypeName.'ไปแล้ว';
+            return Redirect::back()->withErrors([$_message]);
+            break;
+        }
+      }
+
       return Redirect::back();
     }
 

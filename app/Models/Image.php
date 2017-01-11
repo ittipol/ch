@@ -23,10 +23,9 @@ class Image extends Model
 
   public function __saveRelatedData($model,$options = array()) {
     $this->saveImages($model,$options['value'],$options);
-    $this->deleteImages($model,$options);
   }
 
-  public function saveImages($model,$images,$options = array()) {
+  private function saveImages($model,$images,$options = array()) {
 
     $temporaryFile = new TemporaryFile;
 
@@ -71,7 +70,7 @@ class Image extends Model
       $temporaryFile->deleteTemporaryRecords($model->modelName,$token);
 
     }
-dd('ccc');
+
   }
 
   public function moveImage($model,$oldPath,$filename) {

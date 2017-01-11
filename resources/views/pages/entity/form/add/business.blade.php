@@ -23,7 +23,7 @@
 
   <?php
     echo Form::hidden('model', $modelName);
-    echo Form::hidden('entity_type_id', $entityTypeId);
+    echo Form::hidden('entity_type', $entityType);
   ?>
 
   <div class="form-section">

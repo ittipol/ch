@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\library\message;
 use Session;
 
 class Entity extends Model
@@ -41,14 +42,37 @@ class Entity extends Model
     ),
     'except' => array(
       'Contact.phone_number' => array(
-        'entity_type_id' => 2
+        'entity_type' => 'place'
       )
     )
   );
 
+  public $errorType;
+
   public static function boot() {
 
     parent::boot();
+
+    Entity::saving(function($model){
+
+      if($model->where([
+        ['name','like',$model->name],
+        ['entity_type_id','=',$model->entity_type_id],
+        ['created_by','=',Session::get('Person.id')]
+        ])
+        ->exists()) {
+        $model->errorType = 1;
+        return false;
+      }elseif($model->where([
+        ['name','like',$model->name],
+        ['entity_type_id','=',$model->entity_type_id]
+        ])
+        ->exists()) {
+        $model->errorType = 2;
+        return false;
+      }
+
+    });
 
     Entity::saved(function($model){
 
@@ -68,6 +92,22 @@ class Entity extends Model
       $lookup->__saveRelatedData($model);
 
     });
+  }
+
+  protected function filling(array $attributes) {
+
+    $attributes = parent::filling($attributes);
+
+    if(!empty($attributes['entity_type'])){
+
+      $entityTypeId = EntityType::where('alias','like',$attributes['entity_type'])->first()->id;
+
+      $attributes['entity_type_id'] = $entityTypeId;
+      unset($attributes['entity_type']);
+
+    };
+
+    return $attributes;
   }
 
   public function setUpdatedAt($value) {}

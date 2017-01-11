@@ -11,12 +11,12 @@ use Schema;
 
 class Model extends BaseModel
 {
-  protected $storagePath = 'app/public/';
-  protected $state = 'create';
-  public $modelName;
-  public $modelAlias;
   // public $formToken;
   // public $disk;
+  public $modelName;
+  public $modelAlias;
+  protected $storagePath = 'app/public/';
+  protected $state = 'create';
   protected $formModelData;
   protected $relatedModel;
   protected $sortingFields;
@@ -42,18 +42,6 @@ class Model extends BaseModel
 
     // before saving
     parent::saving(function($model){
-
-      // if(empty($model->formToken) || empty(Session::get($model->formToken))) {
-      //   return false;
-      // }
-
-      // if(!empty($model->requireValue)) {
-      //   foreach ($model->requireValue as $field) {
-      //     if(empty($model->{$field})) {
-      //       return false;
-      //     }
-      //   }
-      // }
 
       if(!$model->exists){ // Create new record
 
@@ -97,20 +85,7 @@ class Model extends BaseModel
 
   }
 
-  public function fill(array $attributes) {
-
-    // remove code below and use session formtoken collect required data
-    // if(!empty($this->temporaryData)) {
-    //   $_temporaryData = array();
-    //   foreach ($this->temporaryData as $key => $value) {
-    //     if(!empty($attributes[$value])) {
-    //       $_temporaryData[$value] = $attributes[$value];
-    //     }
-    //   } 
-    //   if(!empty($_temporaryData)) {
-    //     $this->temporaryData = $_temporaryData;
-    //   }
-    // }
+  protected function filling(array $attributes) {
 
     if(!empty($attributes) && !empty($this->modelRelated)){
       foreach ($this->modelRelated as $key => $modelName) {
@@ -128,31 +103,28 @@ class Model extends BaseModel
       }
     }
 
-    if(!empty($attributes['__token'])) {
-      $this->formToken = $attributes['__token'];
-      unset($attributes['__token']);
-    }
+    $attributes = array_map('trim', $attributes);
+    
+    return $attributes;
+  }
+
+  public function fill(array $attributes) {
+
+    // if(!empty($attributes['__token'])) {
+    //   $this->formToken = $attributes['__token'];
+    //   unset($attributes['__token']);
+    // }
 
     // if(!empty($attributes['wiki'])) {
     //   $this->createWiki = true;
     //   unset($attributes['wiki']);
     // }
 
+    $attributes = $this->filling($attributes);
+
     return parent::fill($attributes);
 
   }
-
-  // public function _save($value) {
-  //   $model = Service::loadModel($this->modelName);
-  //   $model->fill($value);
-    
-  //   if($model->save()) {
-  //     return $model;
-  //   }
-
-  //   return false;
-    
-  // }
 
   public function saveRelatedData() {
 
@@ -243,17 +215,6 @@ class Model extends BaseModel
 
     return storage_path($this->directoryPath).$this->id.'/';
   }
-
-  // public function deleteTempData($formToken = null) {
-
-  //   if(empty($formToken)) {
-  //     $formToken = $this->formToken;
-  //   }
-
-  //   $tempFile = new TempFile;
-  //   $tempFile->deleteRecordByToken($formToken,Session::get('Person.id'));
-  //   $tempFile->deleteTempDir($formToken);
-  // }
 
   public function checkExistById($id) {
     return $this->find($id)->exists();
@@ -363,7 +324,21 @@ class Model extends BaseModel
 
   }
 
+  public function getBehavior($modelName) {
+
+    if(empty($this->behavior[$modelName])) {
+      return false;
+    }
+
+    return $this->behavior[$modelName];
+  }
+
   public function getValidation() {
+
+    if(empty($this->validation)) {
+      return false;
+    }
+    
     return $this->validation;
   }
 

@@ -27,22 +27,29 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('avatar', 'StaticFileController@avatar');
 });
 
+// pattern
+// Route::get('{modelAlias}/add','FormController@add');
+// ---------------------------------------------------------
+
 // Entity ======================================
+// > index
 Route::get('{entity_slug}','EntityController@index');
+// > create
 Route::get('entity/create','EntityController@create');
+// > add
 Route::get('entity/add','EntityController@add');
 Route::post('entity/add','EntityController@submit');
 
 // Route::get('{modelAlias}/form/{action}','FormController@form');
 // ======================================
 
-// Route::get('{modelAlias}/add','FormController@add');
-
 // Product ======================================
+Route::get('product','ProductController@index');
+// > view
+Route::get('product/{product_slug}','ProductController@detail');
+// > add
 Route::get('product/add','ProductController@add');
 Route::post('product/add','ProductController@submit');
-
-
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {

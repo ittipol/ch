@@ -20,8 +20,19 @@ class Product extends Model
       'price.regex' => 'จำนวนราคาไม่ถูกต้อง',
     )
   );
-  
+
+  protected $behavior = array(
+    'Slug' => array(
+      'field' => 'name'
+    ),
+    'Lookup' => array(
+      'format' =>  array(
+        'keyword' => '{{name}}'
+      )
+    )
+  );
   public function __construct() {  
     parent::__construct();
   }
+
 }
