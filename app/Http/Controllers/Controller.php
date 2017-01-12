@@ -95,10 +95,11 @@ class Controller extends BaseController
         $this->data['entity'] = $this->entity;
       }
 
-      if(!empty($this->form->build())){
-        $this->data = array_merge($this->data,$this->form->build());
+      $form = $this->form->build();
+      if(!empty($form)){
+        $this->data = array_merge($this->data,$form);
       }
-// dd($this->data['formData']);
+
     	return view($view,$this->data);
     }
 

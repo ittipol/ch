@@ -43,7 +43,6 @@ class Product extends Model
     Product::saved(function($model){
       $lookup = new Lookup;
       $lookup->__saveRelatedData($model);
-  dd('look');
     });
 
   }

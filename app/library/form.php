@@ -170,13 +170,14 @@ class Form {
 
     $images = $this->model->getRalatedModelData('Image',array(
       'fields' => array('model','model_id','filename','description'),
+      'first' => false
     ));
 
     $_images = array();
     if(!empty($images)){
       foreach ($images as $image) {
         $_images[] = array(
-          'name' => $image->filename,
+          'filename' => $image->filename,
           'description' => $image->description,
           'url' => $image->getImageUrl()
         );
@@ -227,6 +228,10 @@ class Form {
   }
 
   public function build() {
+
+    if(empty($this->model)) {
+      return false;
+    }
 
     $data = array(
       'formModel' => array(

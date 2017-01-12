@@ -12,7 +12,7 @@ class Image extends Model
 {
   protected $table = 'images';
   protected $fillable = ['model','model_id','filename','description','created_by'];
-  public $noImagePath = '/images/common/no-img.png';
+  // public $noImagePath = 'images/common/no-img.png';
 
   private $maxFileSizes = 3145728;
   private $acceptedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];
@@ -32,6 +32,14 @@ class Image extends Model
     foreach ($images as $token => $imageGroup) {
 
       $directoryName = $model->modelName.'_'.$token;
+
+      if(!empty($imageGroup['remove'])) {
+        $removeFiles = $imageGroup['remove'];
+        unset($imageGroup['remove']);
+
+        $this->deleteImages($model,$removeFiles);
+
+      }
 
       foreach ($imageGroup as $image) {
 
@@ -73,6 +81,34 @@ class Image extends Model
 
   }
 
+  private function deleteImages($model,$images) {
+
+    $images = $this
+    ->whereIn('filename', $images)
+    ->where([
+      ['model','=',$model->modelName],
+      ['model_id','=',$model->id],
+      ['created_by','=',Session::get('Person.id')]
+    ]);
+    
+    $_images = $images->get();
+
+    foreach ($_images as $image) {
+      
+      $path = $image->getImagePath();
+
+      if(!file_exists($path)){
+        continue;
+      }
+
+      File::Delete($path);
+
+    }
+
+    $images->delete();
+
+  }
+
   public function moveImage($model,$oldPath,$filename) {
     // to
     $to = $model->getDirectory().$filename;
@@ -80,13 +116,15 @@ class Image extends Model
     return File::move($oldPath, $to);
   }
 
-  public function getImageUrl() {
+  public function getImagePath() {
+    return storage_path($this->storagePath.Service::generateModelDir($this->model)).'/'.$this->model_id.'/'.$this->filename;
+  }
 
-    $dirPath = $this->storagePath.Service::generateModelDir($this->model).'/';
+  public function getImageUrl() {
     // $path = $this->noImagePath;
 
     $path = '';
-    if(File::exists(storage_path($dirPath.$this->model_id.'/'.$this->filename))){
+    if(File::exists($this->getImagePath())){
       $path = '/safe_image/'.$this->filename;
     }
 
@@ -96,9 +134,10 @@ class Image extends Model
   public function base64Encode() {
 
     $dirPath = 'image/'.strtolower($this->model).'/';
-    $path = $this->noImagePath;
+    // $path = $this->noImagePath;
 
-    if(File::exists(storage_path($dirPath.$this->model_id.'/'.$this->type.'/'.$this->name))){
+    $path = '';
+    if(File::exists($this->getImagePath())){
       $path = '/safe_image/'.$this->name;
     }
 

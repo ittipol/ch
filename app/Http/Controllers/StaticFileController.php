@@ -2,31 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
+// use Illuminate\Http\Request;
+// use App\Http\Requests;
 use App\Models\User;
-use App\Models\Image;
 use App\library\service;
 use Auth;
-use Response;
+// use Response;
 use File;
-use Storage;
+// use Storage;
 
 class StaticFileController extends Controller
 {
-  public function serveImages($file){
-    $image = Image::where('name','=',$file)->first();
+  private $noImagePath = 'images/common/no-img.png';
 
-    $path = null;
-    if(!empty($image)){
-      $model = Service::loadModel($image->model);
-      $path = storage_path($model->dirPath.$image->model_id.'/'.$image->type.'/'.$image->name);
-      // $dirPath = $image->storagePath.strtolower($image->model).'/';
-      // $path = storage_path($dirPath.$image->model_id.'/images/'.$image->name);
+  public function serveImages($file){
+    $image = Service::loadModel('Image')
+    ->where('filename','=',$file)
+    ->select(array('model','model_id','filename'))
+    ->first();
+
+    if(empty($image)) {
+      // return response()->download($this->noImagePath, null, [], null);
+      return '';
     }
 
+    $path = $image->getImagePath();
+
     if(!File::exists($path)){
-      $path = $image->noImagePath;
+      $path = $this->noImagePath;
     }
 
     return response()->download($path, null, [], null);

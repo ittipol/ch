@@ -34,15 +34,13 @@ class ProductController extends Controller
 
   public function addingSubmit(CustomFormRequest $request) {
 
-    $message = new Message();
-
     if($this->model->fill($request->all())->save()) {
 
       $slugName = $this->model->getRalatedModelData('Slug',array(
         'fields' => 'name'
       ))->name;
 
-      $message->display('ข้อมูลถูกเพิ่มแล้ว','success');
+      Message::display('ข้อมูลถูกเพิ่มแล้ว','success');
       return Redirect::to('product/'.$slugName);
     }else{
       return Redirect::back();
@@ -57,14 +55,14 @@ class ProductController extends Controller
 
     if(empty($product)) {
       $this->error = array(
-        'message' => 'ไม่พบสินค้านี้'
+        'message' => 'ไม่พบประกาศขายนี้'
       );
       return $this->error();
     }
 
     if($product->created_by != Session::get('Person.id')) {
       $this->error = array(
-        'message' => 'คุณไม่สามารถแก้ไขการประกาศสินค้านี้ได้'
+        'message' => 'คุณไม่สามารถแก้ไขประกาศขายนี้ได้'
       );
       return $this->error();
     }
@@ -74,6 +72,23 @@ class ProductController extends Controller
     
     return $this->view('pages.product.form.edit.product');
 
+  }
+
+  public function editingSubmit(CustomFormRequest $request,$productId) {
+
+    $product = $this->model->find($productId);
+
+    if($product->fill($request->all())->save()) {
+
+      $slugName = $product->getRalatedModelData('Slug',array(
+        'fields' => 'name'
+      ))->name;
+
+      Message::display('ข้อมูลถูกเพิ่มแล้ว','success');
+      return Redirect::to('product/'.$slugName);
+    }else{
+      return Redirect::back();
+    }
   }
 
 }

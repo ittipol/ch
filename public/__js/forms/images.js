@@ -164,20 +164,17 @@ class Images {
 			  hidden.setAttribute('value',response.filename);
 			  parent.append(hidden);
 
-	  		if(_this.imagesPlaced.indexOf(id) < 0){
-	  			_this.imagesPlaced.push(id);
+			  if(_this.style == 'description'){
+			  	document.getElementById(key[0]+'_textarea_'+key[1]).setAttribute('name','Image['+key[0]+']['+key[1]+'][description]');
+			  }
+
+	  		if(_this.imagesPlaced.indexOf(parent.attr('id')) < 0){
+	  			_this.imagesPlaced.push(parent.attr('id'));
 
 	  			if(_this.index < _this.limit){
 	  				_this.index = _this.createUploader(_this.index);
 	  			}
 	  		}
-
-	  		// if(_this.style == 'description') {
-	  		// 	let textarea = document.createElement('textarea');
-	  		// 	textarea.setAttribute('name','Image['+key[0]+']['+key[1]+'][description]');
-	  		// 	textarea.setAttribute('placeholder','คำอธิบายรูปภาพ');
-	  		// 	parent.parent().append(textarea);
-	  		// }
 
 	  	}else{
 
@@ -202,9 +199,9 @@ class Images {
 
 	removePreview(input){
 
-		let _this = this;
-
 		if(this.allowedClick){
+
+			let _this = this;
 
 			this.allowedClick = false;
 
@@ -217,7 +214,16 @@ class Images {
 				this.index = this.createUploader(this.index);
 			}
 
-			this.imagesPlaced.splice(this.imagesPlaced.indexOf($(parent).find('input').attr('id')),1); 
+			this.imagesPlaced.splice(this.imagesPlaced.indexOf($(parent).attr('id')),1);
+
+			if(input.getAttribute('data-id') != null) {
+				let key = $(parent).attr('id').split('_');
+				let hidden = document.createElement('input');
+			  hidden.setAttribute('type','hidden');
+			  hidden.setAttribute('name','Image['+_this.code+'][remove]['+key[1]+']');
+			  hidden.setAttribute('value',input.getAttribute('data-id'));
+			  parent.parent().parent().append(hidden);
+			}
 
 			parent.parent().remove();
 
@@ -236,12 +242,12 @@ class Images {
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label">';
 		html += '<input id="'+this.code+'_image_'+this.runningNumber+'" class="'+this.code+'-image" type="file">';
 		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+this.defaultImage+'">';
-		html += '<a id="'+this.code+'_button_'+this.runningNumber+'" href="javscript:void(0);" class="'+this.code+'-remove-btn">×</a>'
+		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn">×</a>'
 		html += '<p class="error-message"></p>';
-		html += '<div id="'+this.code+'_progress+bar_'+this.runningNumber+'" class="progress-bar"><div class="status"></div></div>'
+		html += '<div class="progress-bar"><div class="status"></div></div>'
 		html += '</label>';
 		if(this.style == 'description'){
-			html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ"></textarea>';
+			html += '<textarea id="'+this.code+'_textarea_'+this.runningNumber+'" placeholder="คำอธิบายรูปภาพ"></textarea>';
 		}
 		html += '</div>';
 
@@ -258,13 +264,13 @@ class Images {
 		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label added">';
 		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+image.url+'">';
-		html += '<a id="'+this.code+'_button_'+this.runningNumber+'" href="javscript:void(0);" class="'+this.code+'-remove-btn" style="display:block;">×</a>'
+		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn" data-id="'+image.filename+'" style="display:block;">×</a>'
 		html += '<p class="error-message"></p>';
-		html += '<input type="hidden" name="Image['+this.code+']['+index+'][filename]" value="'+image.name+'">'
-		// if(this.style == 'description'){
-		// 	html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ">'+image.description+'</textarea>';
-		// }
+		html += '<input type="hidden" name="Image['+this.code+']['+index+'][filename]" value="'+image.filename+'">'
 		html += '</label>';
+		if(this.style == 'description'){
+			html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ">'+image.description+'</textarea>';
+		}
 		html += '</div>';
 
 		++this.runningNumber;

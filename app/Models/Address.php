@@ -29,7 +29,6 @@ class Address extends Model
 
     if(($model->state == 'update') && !empty($address)){
       return $address
-      ->setFormToken($this->formToken)
       ->fill($options['value'])
       ->save();
     }else{

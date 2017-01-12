@@ -153,7 +153,7 @@
   </div>
 
   <?php
-    echo Form::submit('ลงประกาศขาย' , array(
+    echo Form::submit('แก้ไขประกาศขาย' , array(
       'class' => 'button'
     ));
   ?>
@@ -168,16 +168,15 @@
 
   $(document).ready(function(){
     const images = new Images('_image_group',5,'description');
-    images.load();
-
     const district = new District();
-    district.load('<?php echo $formData['Address']['sub_district_id']; ?>');
-
     const map = new Map();
-    map.load('<?php echo $formData['Address']['geographic']; ?>');
-    
     const form = new Form();
+
+    images.load('<?php echo $formData['Image']; ?>');
+    district.load('<?php echo $formData['Address']['sub_district_id']; ?>');
+    map.load('<?php echo $formData['Address']['geographic']; ?>');
     form.load();
+    
   });
 
 </script>
