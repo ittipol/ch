@@ -73,6 +73,7 @@
     '__css/components/custom-scroll.css',
     '__css/components/filter-panel.css',
     '__css/components/box.css',
+    '__css/components/error.css',
     '__css/pages/entity.css',
     '__css/layouts/blackbox/wrapper.css',
     '__css/layouts/blackbox/components/action-bar.css',
