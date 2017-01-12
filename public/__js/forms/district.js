@@ -6,7 +6,7 @@ class District {
   load(subDistrictId) {
     this.init();
     this.bind();
-
+console.log(subDistrictId);
     if (typeof subDistrictId != 'undefined') {
       this.subDistrictId = subDistrictId;
     }

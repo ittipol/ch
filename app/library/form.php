@@ -6,18 +6,25 @@ class Form {
   
   private $model;
   private $data = array();
+  private $formData = array();
 
   public function __construct($model = null) {
     $this->model = $model;
-    // $this->data[lcfirst($this->model->modelName)] = $this->model->getAttributes();
   }
 
   public function setModel($model = null) {
     $this->model = $model;
   }
 
-  public function getRelatedData($relatedModel = array()) {
-    foreach ($relatedModel as $key => $modelName) {
+  public function loadFormData() {
+
+    if(empty($this->model)) {
+      return false;
+    }
+
+    $modeldNames = $this->model->getModelRelated();
+
+    foreach ($modeldNames as $key => $modelName) {
 
       if(is_array($modelName)){
         $modelName = $key;
@@ -32,28 +39,11 @@ class Form {
 
     switch ($modelName) {
       case 'Address':
-        $address = $this->model->getRalatedModelData('Address',
-          array(
-            'first' => true,
-            'fields' => array('address','district_id','sub_district_id','description','lat','lng')
-          )
-        );
+        $this->loadAddress();
+        break;
 
-        if(empty($address)) {
-          $this->data['address'] = array();
-          $this->data['geographic'] = json_encode(array());
-          break;
-        }
-
-        $geographic = array();
-        if(!empty($address['lat']) && !empty($address['lng'])) {
-          $geographic['lat'] = $address['lat'];
-          $geographic['lng'] = $address['lng'];
-        }
-
-        $this->data['address'] = $address->getAttributes();
-        $this->data['geographic'] = json_encode($geographic);
-
+      case 'Image':
+        $this->loadImage(true);
         break;
 
       case 'Tagging':
@@ -138,6 +128,69 @@ class Form {
 
   }
 
+  public function loadAddress($json = false) {
+    $address = $this->model->getRalatedModelData('Address',
+      array(
+        'first' => true,
+        'fields' => array('address','district_id','sub_district_id','description','latitude','longitude')
+      )
+    );
+
+    if(empty($address)) {
+      $address = array();
+    }else{
+
+      $geographic['latitude'] = $address->latitude;
+      $geographic['longitude'] = $address->longitude;
+
+      // dd(json_encode($geographic));
+
+      // if(!empty($address->latitude) && !empty($address->longitude)) {
+
+      //   $geographic['latitude'] = $address->latitude;
+      //   $geographic['longitude'] = $address->longitude;
+
+      // }
+
+      $address = array_merge($address->getAttributes(),array(
+        'geographic' => json_encode($geographic)
+      ));
+
+    }
+
+    if($json) {
+      $address = json_encode($address);
+    }
+
+    $this->formData['Address'] = $address;
+
+  }
+
+  public function loadImage($json = false) {
+
+    $images = $this->model->getRalatedModelData('Image',array(
+      'fields' => array('model','model_id','filename','description'),
+    ));
+
+    $_images = array();
+    if(!empty($images)){
+      foreach ($images as $image) {
+        $_images[] = array(
+          'name' => $image->filename,
+          'description' => $image->description,
+          'url' => $image->getImageUrl()
+        );
+      }
+    }
+
+    if($json) {
+      $_images = json_encode($_images);
+    }
+
+    $this->formData['Image'] = $_images;
+
+  }
+
   public function district() {
     $records = Service::loadModel('District')->all();
     $districts = array();
@@ -160,12 +213,10 @@ class Form {
     $this->data[$index] = $value;
   }
 
-  public function get() {
+  public function get($index = '') {
 
-    if(!empty($this->model)) {
-      $this->data = array_merge($this->data,array(
-        'modelName' => $this->model->modelName
-      ));
+    if(!empty($index) && !empty($this->data[$index])){
+      return $this->data[$index];
     }
 
     return $this->data;
@@ -173,6 +224,23 @@ class Form {
 
   public function clear() {
     $this->data = null;
+  }
+
+  public function build() {
+
+    $data = array(
+      'formModel' => array(
+        'id' => $this->model->id,
+        'modelName' => $this->model->modelName
+      ),
+      'fieldData' => $this->data,
+      'formData' => array_merge(
+        $this->model->getAttributes(),
+        $this->formData
+      )
+    );
+
+    return $data;
   }
 
 }

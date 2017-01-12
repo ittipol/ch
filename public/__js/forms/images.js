@@ -1,7 +1,6 @@
 class Images {
 	constructor(panel,limit,style = 'default') {
 		this.panel = panel;
-		// this.type = type;
 		this.limit = limit;
 		this.id = null;
 		this.code = null;
@@ -35,7 +34,6 @@ class Images {
 	init(){
 		let token = new Token();
 		this.code = token.generateToken();
-		// this.createHiddenField();
 	}
 
 	bind(){
@@ -204,6 +202,8 @@ class Images {
 
 	removePreview(input){
 
+		let _this = this;
+
 		if(this.allowedClick){
 
 			this.allowedClick = false;
@@ -222,7 +222,7 @@ class Images {
 			parent.parent().remove();
 
 			setTimeout(function(){
-				this.allowedClick = true;
+				_this.allowedClick = true;
 			},800);
 
 		}
@@ -273,14 +273,6 @@ class Images {
 		return ++index;
 
 	}
-
-	// createHiddenField(index,id,tagName) {
-	// 	let input = document.createElement('input');
-	//   input.setAttribute('type','hidden');
-	//   input.setAttribute('name','Image['+this.code+']');
-	//   input.setAttribute('value',this.code);
-	//   $('form').append(input);
-	// }
 
 	checkImageType(type){
 		let allowedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];

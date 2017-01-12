@@ -50,9 +50,13 @@ Route::get('product','ProductController@index');
 Route::group(['middleware' => 'auth'], function () {
   // > add
   Route::get('product/add','ProductController@add');
-  Route::post('product/add','ProductController@submit');
+  Route::post('product/add','ProductController@addingSubmit');
   // > edit
   Route::get('product/edit/{product_id}','ProductController@edit');
+  Route::patch('product/edit/{product_id}',[
+    'as' => 'product.edit',
+    'uses' => 'ProductController@editingSubmit'
+  ]);
 });
 // > view
 Route::get('product/{product_slug}','ProductController@detail');

@@ -12,7 +12,6 @@ class EntityController extends Controller
   public function __construct() { 
     parent::__construct();
     $this->model = Service::loadModel('Entity');
-    $this->form->setModel($this->model);
   }
 
   public function index() {
@@ -24,6 +23,8 @@ class EntityController extends Controller
   }
 
   public function add() {
+
+    $this->form->setModel($this->model);
 
     if(empty($this->query['type'])) {
       return Redirect::to('entity/create');

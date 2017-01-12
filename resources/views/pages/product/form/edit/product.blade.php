@@ -20,11 +20,16 @@
   @include('components.form_error') 
 
   <?php 
-    echo Form::open(['id' => 'main_form','method' => 'post', 'enctype' => 'multipart/form-data']);
+    echo  Form::model($formData, [
+      'id' => 'main_form',
+      'method' => 'PATCH',
+      'route' => ['product.edit', $formModel['id']],
+      'enctype' => 'multipart/form-data'
+    ]);
   ?>
 
   <?php
-    echo Form::hidden('model', $modelName);
+    echo Form::hidden('model', $formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -120,7 +125,7 @@
           echo Form::label('Address[district_id]', 'อำเภอ', array(
             'class' => 'required'
           ));
-          echo Form::select('Address[district_id]', $districts ,null, array(
+          echo Form::select('Address[district_id]', $fieldData['districts'] ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -166,10 +171,10 @@
     images.load();
 
     const district = new District();
-    district.load();
+    district.load('<?php echo $formData['Address']['sub_district_id']; ?>');
 
     const map = new Map();
-    map.load();
+    map.load('<?php echo $formData['Address']['geographic']; ?>');
     
     const form = new Form();
     form.load();

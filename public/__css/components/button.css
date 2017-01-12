@@ -8,6 +8,10 @@
 	display: inline-block;
 }
 
+a.button:hover {
+	color: #ffffff;
+}
+
 .button.warning {
 	background-color: #D50000;
 }

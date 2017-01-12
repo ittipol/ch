@@ -80,47 +80,14 @@ class Image extends Model
     return File::move($oldPath, $to);
   }
 
-  // public function deleteImages($model,$options = array()) {
-
-  //   if(empty($this->formToken)) {
-  //     return false;
-  //   }
-
-  //   $token = $this->formToken;
-
-  //   $tempFileModel = new TempFile;
-  //   $imagesTemp = $tempFileModel->where([
-  //     ['token','=',$token],
-  //     ['status','=','delete'],
-  //     ['created_by','=',$personId]
-  //   ]);
-
-  //   $images = $imagesTemp->get();
-
-  //   foreach ($images as $image) {
-
-  //     $this->where([
-  //       ['model','=',$model->modelName],
-  //       ['model_id','=',$model->id],
-  //       ['name','=',$image->name]
-  //     ])->delete();
-
-  //     File::Delete(storage_path($model->dirPath).$model->id.'/images/'.$image->name);
-  //   }
-
-  //   // delete temp file records
-  //   $imagesTemp->delete();
-
-  // }
-
   public function getImageUrl() {
 
-    $dirPath = $this->storagePath.Service::generateModelDirName($this->model).'/';
+    $dirPath = $this->storagePath.Service::generateModelDir($this->model).'/';
     // $path = $this->noImagePath;
 
     $path = '';
-    if(File::exists(storage_path($dirPath.$this->model_id.'/'.$this->type.'/'.$this->name))){
-      $path = '/safe_image/'.$this->name;
+    if(File::exists(storage_path($dirPath.$this->model_id.'/'.$this->filename))){
+      $path = '/safe_image/'.$this->filename;
     }
 
     return $path;

@@ -6,13 +6,13 @@ use App\Http\Requests\CustomFormRequest;
 use App\library\service;
 use App\library\message;
 use Redirect;
+use Session;
 
 class ProductController extends Controller
 {
   public function __construct() { 
     parent::__construct();
     $this->model = Service::loadModel('Product');
-    $this->form->setModel($this->model);
   }
 
   public function index() {
@@ -25,12 +25,14 @@ class ProductController extends Controller
 
   public function add() {
 
+    $this->form->setModel($this->model);
     $this->form->district();
+
     return $this->view('pages.product.form.add.product');
 
   }
 
-  public function submit(CustomFormRequest $request) {
+  public function addingSubmit(CustomFormRequest $request) {
 
     $message = new Message();
 
@@ -49,7 +51,29 @@ class ProductController extends Controller
   }
 
   public function edit($productId) {
-    dd($productId);
+
+    $product = $this->model->find($productId);
+    $this->form->setModel($product);
+
+    if(empty($product)) {
+      $this->error = array(
+        'message' => 'ไม่พบสินค้านี้'
+      );
+      return $this->error();
+    }
+
+    if($product->created_by != Session::get('Person.id')) {
+      $this->error = array(
+        'message' => 'คุณไม่สามารถแก้ไขการประกาศสินค้านี้ได้'
+      );
+      return $this->error();
+    }
+
+    $this->form->loadFormData();
+    $this->form->district();
+    
+    return $this->view('pages.product.form.edit.product');
+
   }
 
 }

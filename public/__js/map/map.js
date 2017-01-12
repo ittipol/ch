@@ -12,9 +12,9 @@ class Map {
     if (typeof geographic != 'undefined') {
       let _geographic = JSON.parse(geographic);
 
-      if ((typeof _geographic.lat != 'undefined') && (typeof _geographic.lng != 'undefined')) {
-        lat = _geographic.lat;
-        lng = _geographic.lng;
+      if ((typeof _geographic.latitude != 'undefined') && (typeof _geographic.longitude != 'undefined')) {
+        lat = _geographic.latitude;
+        lng = _geographic.longitude;
 
         $("#lat").val(lat);
         $("#lng").val(lng);
@@ -131,12 +131,12 @@ class Map {
   createHiddenData() {
     let lat = document.createElement('input');
     lat.setAttribute('type','hidden');
-    lat.setAttribute('name','Address[lat]');
+    lat.setAttribute('name','Address[latitude]');
     lat.setAttribute('id','lat');
 
     let lng = document.createElement('input');
     lng.setAttribute('type','hidden');
-    lng.setAttribute('name','Address[lng]');
+    lng.setAttribute('name','Address[longitude]');
     lng.setAttribute('id','lng');
 
     $('form').append(lat);

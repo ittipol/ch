@@ -148,32 +148,6 @@ class Model extends BaseModel
 
       }
     }
-
-    // if(!empty($relatedModel)){
-    //   foreach ($relatedModel as $key => $modelName) {
-
-    //     if(is_array($modelName)){
-    //       $data = $modelName;
-    //       $modelName = $key;
-    //     }
-
-    //     if(empty($this->formModelData[$modelName])) {
-    //       continue;
-    //     }
-
-    //     $options = array();
-    //     if(!empty($data['options'])) {
-    //       $options = Service::parseRelatedModelOptions($data['options']);
-    //     }
-
-    //     $options = array_merge($options,array(
-    //       'value' => $this->formModelData[$modelName]
-    //     ));
-
-    //     $this->_saveRelatedData($modelName,$options);
-
-    //   }
-    // }
     
   }
 
@@ -322,6 +296,10 @@ class Model extends BaseModel
       'model_id' => $this->id
     ));
 
+  }
+
+  public function getModelRelated() {
+    return $this->modelRelated;
   }
 
   public function getBehavior($modelName) {

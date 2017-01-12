@@ -57,7 +57,7 @@
         echo Form::label('Address[district_id]', 'อำเภอ', array(
           'class' => 'required'
         ));
-        echo Form::select('Address[district_id]', $districts ,null, array(
+        echo Form::select('Address[district_id]', $fieldData['districts'] ,null, array(
           'id' => 'district'
         ));
       ?>

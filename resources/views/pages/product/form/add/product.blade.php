@@ -24,7 +24,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $modelName);
+    echo Form::hidden('model', $formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -120,7 +120,7 @@
           echo Form::label('Address[district_id]', 'อำเภอ', array(
             'class' => 'required'
           ));
-          echo Form::select('Address[district_id]', $districts ,null, array(
+          echo Form::select('Address[district_id]', $fieldData['districts'] ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -163,16 +163,16 @@
 
   $(document).ready(function(){
     const images = new Images('_image_group',5,'description');
-    images.load();
-
     const district = new District();
-    district.load();
-
     const map = new Map();
-    map.load();
-    
     const form = new Form();
+
+    images.load();
+    district.load();
+    map.load();
     form.load();
+
+
   });
 
 </script>

@@ -26,6 +26,7 @@ class Controller extends BaseController
     protected $query;
     protected $entity;
     protected $form;
+    protected $error;
 
     public function __construct() { 
 
@@ -71,21 +72,33 @@ class Controller extends BaseController
 
     }
 
-    protected function view($view = null) {
+    protected function error() {
+      $data = array();
 
-      // if(empty($view)) {
-      //   $message = new Message;
-      //   $message->error('ไม่พบหน้านี้');
-      //   return \Redirect::back()->withErrors(['ไม่พบหน้านี้']);
-      // }
-
-      $this->data['entity'] = $this->entity;
-      $this->data['__token'] = $this->formToken;
-
-      if(!empty($this->form->get())){
-        $this->data = array_merge($this->data,$this->form->get());
+      if(!empty($this->error)) {
+        $data['error'] = $this->error;
       }
 
+      return view('errors.error',$data);
+    }
+
+    protected function view($view = null) {
+
+      if(empty($view)) {
+        $this->error = array(
+          'message' => 'ขออภัย หน้านี้ไม่พร้อมใช้งาน'
+        );
+        return $this->error();
+      }
+
+      if(!empty($this->entity)) {
+        $this->data['entity'] = $this->entity;
+      }
+
+      if(!empty($this->form->build())){
+        $this->data = array_merge($this->data,$this->form->build());
+      }
+// dd($this->data['formData']);
     	return view($view,$this->data);
     }
 

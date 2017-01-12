@@ -41,10 +41,6 @@ class Product extends Model
     parent::boot();
 
     Product::saved(function($model){
-
-      // if($model->state == 'create') {
-      // }
-
       $lookup = new Lookup;
       $lookup->__saveRelatedData($model);
   dd('look');
