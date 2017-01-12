@@ -37,19 +37,23 @@ Route::get('{entity_slug}','EntityController@index');
 // > create
 Route::get('entity/create','EntityController@create');
 // > add
-Route::get('entity/add','EntityController@add');
-Route::post('entity/add','EntityController@submit');
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('entity/add','EntityController@add');
+  Route::post('entity/add','EntityController@submit');
+});
 
 // Route::get('{modelAlias}/form/{action}','FormController@form');
 // ======================================
 
 // Product ======================================
 Route::get('product','ProductController@index');
-// > add
-Route::get('product/add','ProductController@add');
-Route::post('product/add','ProductController@submit');
-// > edit
-Route::get('product/edit/{product_id}','ProductController@edit');
+Route::group(['middleware' => 'auth'], function () {
+  // > add
+  Route::get('product/add','ProductController@add');
+  Route::post('product/add','ProductController@submit');
+  // > edit
+  Route::get('product/edit/{product_id}','ProductController@edit');
+});
 // > view
 Route::get('product/{product_slug}','ProductController@detail');
 

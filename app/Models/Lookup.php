@@ -5,7 +5,7 @@ namespace App\Models;
 class Lookup extends Model
 {
   protected $table = 'lookups';
-  protected $fillable = ['model','model_id','keyword','description','keyword_1','keyword_2','keyword_3','keyword_4','address','tags'];
+  protected $fillable = ['model','model_id','keyword','description','keyword_1','keyword_2','keyword_3','address','tags'];
 
   //  Lookup Special Format
   // 'keyword' => '{{Department.name|Company.id=>CompanyHasDepartment.company_id,CompanyHasDepartment.department_id=>Department.id}}',
@@ -319,7 +319,24 @@ class Lookup extends Model
       return null;
     }
 
-    $address = trim($address->district->name.' '.$address->subDistrict->name.' '.$address->address);
+    // village
+    $village = new Village;
+    $villages = $village->getData(array(
+      'conditions' => array(
+        ['district_id','=',$address->district->id],
+        ['sub_district_id','=',$address->subDistrict->id]
+      ),
+      'fields' => array('name') 
+    ));
+
+
+    $address = trim($address->address.' '.$address->subDistrict->name.' '.$address->district->name.' '.$address->subDistrict->zip_code);
+
+    if(!empty($villages)) {
+      foreach ($villages as $village) {
+        $address .= ' '.$village->name;
+      }
+    }
 
     return $this->_clean($address);
 
