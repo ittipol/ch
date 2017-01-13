@@ -70,59 +70,59 @@ class Form {
 
         break;
 
-      case 'OfficeHour':
+      // case 'OfficeHour':
 
-        $officeHour = $this->model->getRalatedModelData('OfficeHour',array(
-          'first' => true,
-          'fields' => array('same_time','time')
-        ));
+      //   $officeHour = $this->model->getRalatedModelData('OfficeHour',array(
+      //     'first' => true,
+      //     'fields' => array('same_time','time')
+      //   ));
 
-        if(empty($officeHour)){
-          $this->data['officeHour'] = array();
-          break;
-        }
+      //   if(empty($officeHour)){
+      //     $this->data['officeHour'] = array();
+      //     break;
+      //   }
 
-        $this->data['sameTime'] = $officeHour->same_time;
+      //   $this->data['sameTime'] = $officeHour->same_time;
 
-        $time = json_decode($officeHour->time,true);
-        $officeHour = array();
-        foreach ($time as $day => $value) {
+      //   $time = json_decode($officeHour->time,true);
+      //   $officeHour = array();
+      //   foreach ($time as $day => $value) {
 
-          $startTime = explode(':', $value['start_time']);
-          $endTime = explode(':', $value['end_time']);
+      //     $startTime = explode(':', $value['start_time']);
+      //     $endTime = explode(':', $value['end_time']);
 
-          $officeHour[$day] = array(
-            'open' => $value['open'],
-            'start_time' => array(
-              'hour' => (int)$startTime[0],
-              'min' => (int)$startTime[1]
-            ),
-            'end_time' => array(
-              'hour' => (int)$endTime[0],
-              'min' => (int)$endTime[1]
-            )
-          );
-        }
+      //     $officeHour[$day] = array(
+      //       'open' => $value['open'],
+      //       'start_time' => array(
+      //         'hour' => (int)$startTime[0],
+      //         'min' => (int)$startTime[1]
+      //       ),
+      //       'end_time' => array(
+      //         'hour' => (int)$endTime[0],
+      //         'min' => (int)$endTime[1]
+      //       )
+      //     );
+      //   }
 
-        $this->data['officeHour'] = json_encode($officeHour);
+      //   $this->data['officeHour'] = json_encode($officeHour);
 
-        break;
+      //   break;
 
-      case 'Contact':
+      // case 'Contact':
 
-        $contact = $this->model->getRalatedModelData('Contact',array(
-          'first' => true,
-          'fields' => array('phone_number','email','website','facebook','instagram','line')
-        ));
+      //   $contact = $this->model->getRalatedModelData('Contact',array(
+      //     'first' => true,
+      //     'fields' => array('phone_number','email','website','facebook','instagram','line')
+      //   ));
 
-        if(empty($contact)) {
-          $this->data['contact'] = array();
-          break;
-        }
+      //   if(empty($contact)) {
+      //     $this->data['contact'] = array();
+      //     break;
+      //   }
 
-        $this->data['contact'] = $contact->getAttributes();
+      //   $this->data['contact'] = $contact->getAttributes();
 
-        break;
+      //   break;
 
     }
 
@@ -202,12 +202,21 @@ class Form {
   }
 
   public function businessEntity() {
-    $records = BusinessEntity::all();
+    $records = Service::loadModel('BusinessEntity')->all();
     $businessEntities = array();
-    foreach ($$records as $businessEntity) {
+    foreach ($records as $businessEntity) {
       $businessEntities[$businessEntity->id] = $businessEntity->name;
     }
     $this->data['businessEntities'] = $businessEntities;
+  }
+
+  public function productCategory() {
+    $records = Service::loadModel('ProductCategory')->all();
+    $productCategories = array();
+    foreach ($records as $productCategory) {
+      $productCategories[$productCategory->id] = $productCategory->name;
+    }
+    $this->data['productCategories'] = $productCategories;
   }
 
   public function set($index,$value) {

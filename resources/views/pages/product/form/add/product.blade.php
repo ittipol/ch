@@ -1,7 +1,7 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk5a17EumB5aINUjjRhWCvC1AgfxqrDQk&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
 <div class="container">
 
@@ -40,6 +40,32 @@
         ));
       ?>
       <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('product_category_id', 'หมวดหมู่หลักสินค้า', array(
+          'class' => 'required'
+        ));
+        echo Form::select('product_category_id', $fieldData['productCategories'] ,null, array(
+          'id' => 'district'
+        ));
+      ?>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('tagging', 'หมวดหมู่รองสินค้า', array(
+          'class' => 'required'
+        ));
+      ?>
+      <p class="error-message">* กำหนดหมวดหมู่รองของสินค้านี้ หมวดหมู่รองจะช่วยจัดสินค้าของคุณให้ชัดเจนมากขึ้น</p>
+      <?php
+        echo Form::text('tagging', null, array(
+          'placeholder' => 'ราคาสินค้าที่ต้องการขาย',
+          'autocomplete' => 'off'
+        ));
+      ?>
     </div>
 
     <div class="form-row">

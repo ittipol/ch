@@ -286,21 +286,20 @@ select[name^="OfficeHour"].disabled {
 
 /* Extra Small Devices, Phones */ 
 @media only screen and (max-width : 480px) {
-	.image-panel.description > textarea {
-		width: 55%;
-	}
-}
-
-/* Custom */ 
-@media only screen and (max-width : 360px) {
 	.image-panel.description {
 		width: 200px;
 	}
 
 	.image-panel.description > textarea {
 		width: 100%;
+		height: 120px;
 		margin-left: 0;
 	}
+}
+
+/* Custom */ 
+@media only screen and (max-width : 360px) {
+
 }
 
 /* Custom, iPhone Retina */ 

@@ -22,8 +22,8 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $modelName);
-    echo Form::hidden('entity_type', $entityType);
+    echo Form::hidden('model', $formModel['modelName']);
+    echo Form::hidden('entity_type', $fieldData['entityType']);
   ?>
 
   <div class="form-section">
@@ -88,8 +88,12 @@
 </div>
 
 <script type="text/javascript">
-  const form = new Form();
-  form.load();
+
+  $(document).ready(function(){
+    const form = new Form();
+    form.load();
+  });
+  
 </script>
 
 @stop

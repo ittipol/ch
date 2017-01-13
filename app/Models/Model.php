@@ -163,11 +163,6 @@ class Model extends BaseModel
     
   }
 
-  // public function setFormToken($formToken) {
-  //   $this->formToken = $formToken;
-  //   return $this;
-  // }
-
   public function createDirectory() {
 
     if(empty($this->directory) || empty($this->directoryPath)) {

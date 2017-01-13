@@ -22,8 +22,8 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $modelName);
-    echo Form::hidden('entity_type', $entityType);
+    echo Form::hidden('model', $formModel['modelName']);
+    echo Form::hidden('entity_type', $fieldData['entityType']);
   ?>
 
   <div class="form-section">
@@ -95,14 +95,20 @@
 </div>
 
 <script type="text/javascript">
-  const district = new District();
-  district.load();
 
-  const map = new Map();
-  map.load();
+  $(document).ready(function(){
+    
+    const district = new District();
+    district.load();
 
-  const form = new Form();
-  form.load();
+    const map = new Map();
+    map.load();
+
+    const form = new Form();
+    form.load();
+
+  });
+
 </script>
 
 @stop

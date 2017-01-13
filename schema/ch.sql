@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2017 at 03:56 PM
+-- Generation Time: Jan 13, 2017 at 11:01 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -48,60 +48,22 @@ CREATE TABLE `addresses` (
 
 CREATE TABLE `business_entities` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `business_entities`
 --
 
-INSERT INTO `business_entities` (`id`, `name`, `description`) VALUES
-(1, 'บุคคลธรรมดา', NULL),
-(2, 'ห้างหุ้นส่วน', NULL),
-(3, 'บริษัทเอกชนจำกัด', NULL),
-(4, 'บริษัทมหาชนจำกัด', NULL),
-(5, 'สหกรณ์', NULL),
-(6, 'รัฐวิสาหกิจ', NULL),
-(7, 'หน่วยงานของรัฐ', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `categories`
---
-
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text,
-  `image` varchar(255) DEFAULT NULL,
-  `top` tinyint(1) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `parent_id`, `name`, `description`, `image`, `top`, `active`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'เสื้อผ้าและเครื่องแต่งกายสุภาพบุรุษ', NULL, NULL, 0, 1, '2017-01-12 21:29:36', '2017-01-12 21:29:36'),
-(2, NULL, 'เสื้อผ้าและเครื่องแต่งกายสุภาพสตรี', NULL, NULL, 0, 1, '2017-01-12 21:29:36', '2017-01-12 21:29:36'),
-(3, NULL, 'อุปกรณ์กีฬาและอุปกรณ์ช่วยออกกำลังกาย', NULL, NULL, 0, 1, '2017-01-12 21:30:22', '2017-01-12 21:30:22'),
-(4, NULL, 'สุขภาพและความงาม', NULL, NULL, 0, 1, '2017-01-12 21:30:22', '2017-01-12 21:30:22'),
-(5, NULL, 'แม่และเด็ก', NULL, NULL, 0, 1, '2017-01-12 21:32:55', '2017-01-12 21:32:55'),
-(6, NULL, 'ยานพาหนะ', NULL, NULL, 0, 1, '2017-01-12 21:32:55', '2017-01-12 21:32:55'),
-(7, NULL, 'ชุดและอุปกรณ์สำหรับขับขี่ยานพาหนะ', NULL, NULL, 0, 1, '2017-01-12 21:33:17', '2017-01-12 21:33:17'),
-(8, NULL, 'อะไหล่รถ ประดับยนต์', NULL, NULL, 0, 1, '2017-01-12 21:33:17', '2017-01-12 21:33:17'),
-(9, NULL, 'คอมพิวเตอร์และโน๊ตบุค', NULL, NULL, 0, 1, '2017-01-12 21:40:58', '2017-01-12 21:44:42'),
-(10, NULL, 'โทรศัพท์มือถือและแท็บเล็ต', NULL, NULL, 0, 1, '2017-01-12 21:40:58', '2017-01-12 21:40:58'),
-(11, NULL, 'ทีวีและมอนิเตอร์', NULL, NULL, 0, 1, '2017-01-12 21:42:25', '2017-01-12 21:42:25'),
-(12, NULL, 'เครื่องเกม', NULL, NULL, 0, 1, '2017-01-12 21:44:58', '2017-01-12 21:44:58'),
-(13, NULL, 'Gaming Gear', NULL, NULL, 0, 1, '2017-01-12 21:47:40', '2017-01-12 21:47:40'),
-(14, NULL, 'กล้องและอุปกรณ์เสริม', NULL, NULL, 0, 1, '2017-01-12 21:48:18', '2017-01-12 21:48:18');
+INSERT INTO `business_entities` (`id`, `name`) VALUES
+(1, 'บุคคลธรรมดา'),
+(2, 'ห้างหุ้นส่วน'),
+(3, 'บริษัทเอกชนจำกัด'),
+(4, 'บริษัทมหาชนจำกัด'),
+(5, 'แฟรนไชส์'),
+(6, 'หน่วยงานของรัฐ'),
+(7, 'รัฐวิสาหกิจ'),
+(8, 'วิสาหกิจชุมชน');
 
 -- --------------------------------------------------------
 
@@ -147,6 +109,19 @@ CREATE TABLE `entities` (
   `name` varchar(255) NOT NULL,
   `entity_type_id` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `entity_categories`
+--
+
+CREATE TABLE `entity_categories` (
+  `id` int(11) NOT NULL,
+  `entity_type_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -383,6 +358,7 @@ CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text,
+  `product_model` varchar(255) DEFAULT NULL,
   `sku` int(255) DEFAULT NULL,
   `quantity` int(5) DEFAULT NULL,
   `stock_status_id` int(11) DEFAULT NULL,
@@ -397,6 +373,59 @@ CREATE TABLE `products` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_categories`
+--
+
+CREATE TABLE `product_categories` (
+  `id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `image` varchar(255) DEFAULT NULL,
+  `top` tinyint(1) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `product_categories`
+--
+
+INSERT INTO `product_categories` (`id`, `parent_id`, `name`, `description`, `image`, `top`, `active`, `created_at`, `updated_at`) VALUES
+(1, NULL, 'เสื้อผ้าและเครื่องแต่งกายสุภาพบุรุษ', NULL, NULL, 0, 1, '2017-01-12 21:29:36', '2017-01-12 21:29:36'),
+(2, NULL, 'เสื้อผ้าและเครื่องแต่งกายสุภาพสตรี', NULL, NULL, 0, 1, '2017-01-12 21:29:36', '2017-01-12 21:29:36'),
+(3, NULL, 'อุปกรณ์กีฬาและอุปกรณ์ช่วยออกกำลังกาย', NULL, NULL, 0, 1, '2017-01-12 21:30:22', '2017-01-12 21:30:22'),
+(4, NULL, 'อาหารเสริมและความงาม', NULL, NULL, 0, 1, '2017-01-12 21:30:22', '2017-01-13 15:24:54'),
+(5, NULL, 'แม่และเด็ก', NULL, NULL, 0, 1, '2017-01-12 21:32:55', '2017-01-12 21:32:55'),
+(6, NULL, 'ยานพาหนะ', NULL, NULL, 0, 1, '2017-01-12 21:32:55', '2017-01-12 21:32:55'),
+(7, NULL, 'ชุดและอุปกรณ์สำหรับขับขี่ยานพาหนะ', NULL, NULL, 0, 1, '2017-01-12 21:33:17', '2017-01-12 21:33:17'),
+(8, NULL, 'อะไหล่รถ ประดับยนต์', NULL, NULL, 0, 1, '2017-01-12 21:33:17', '2017-01-12 21:33:17'),
+(9, NULL, 'คอมพิวเตอร์และโน๊ตบุค', NULL, NULL, 0, 1, '2017-01-12 21:40:58', '2017-01-12 21:44:42'),
+(10, NULL, 'โทรศัพท์มือถือและแท็บเล็ต', NULL, NULL, 0, 1, '2017-01-12 21:40:58', '2017-01-12 21:40:58'),
+(11, NULL, 'ทีวีและมอนิเตอร์', NULL, NULL, 0, 1, '2017-01-12 21:42:25', '2017-01-12 21:42:25'),
+(12, NULL, 'เครื่องเกม', NULL, NULL, 0, 1, '2017-01-12 21:44:58', '2017-01-12 21:44:58'),
+(13, NULL, 'Gaming Gear', NULL, NULL, 0, 1, '2017-01-12 21:47:40', '2017-01-12 21:47:40'),
+(14, NULL, 'กล้องและอุปกรณ์เสริม', NULL, NULL, 0, 1, '2017-01-12 21:48:18', '2017-01-12 21:48:18'),
+(15, NULL, 'เครื่องดนตรีและอุปกรณ์เสริม', NULL, NULL, 0, 1, '2017-01-13 15:10:41', '2017-01-13 15:12:55'),
+(16, NULL, 'เครื่องเสียงและชุดหูฟัง', NULL, NULL, 0, 1, '2017-01-13 15:12:28', '2017-01-13 15:12:28'),
+(17, NULL, 'เครื่องใช้ในครัวเรือนและเครื่องใช้ไฟฟ้า', NULL, NULL, 0, 1, '2017-01-13 15:13:37', '2017-01-13 15:13:37'),
+(18, NULL, 'สวนและเฟอร์นิเจอร์ตกแต่งบ้าน', NULL, NULL, 0, 1, '2017-01-13 15:15:18', '2017-01-13 15:15:18'),
+(19, NULL, 'เครื่องมือและอุปกรณ์ทำสวน', NULL, NULL, 0, 1, '2017-01-13 15:16:41', '2017-01-13 15:16:41'),
+(20, NULL, 'เครื่องมือและอุปกรณ์ช่าง', NULL, NULL, 0, 1, '2017-01-13 15:17:05', '2017-01-13 15:17:05'),
+(21, NULL, 'หนังสือ', NULL, NULL, 0, 1, '2017-01-13 15:18:55', '2017-01-13 15:18:55'),
+(22, NULL, 'สัตว์เลี้ยงและอุปกรณ์สำหรับสัตว์เลี้ยง', NULL, NULL, 0, 1, '2017-01-13 15:19:51', '2017-01-13 15:19:51'),
+(23, NULL, 'กระเป๋าและอุปกรณ์สำหรับการเดินทาง', NULL, NULL, 0, 1, '2017-01-13 15:21:39', '2017-01-13 15:21:39'),
+(24, NULL, 'ของเล่นและของสะสม ', NULL, NULL, 0, 1, '2017-01-13 15:22:01', '2017-01-13 15:22:01'),
+(25, NULL, 'เครื่องเขียนและอุปกรณ์การเรียน', NULL, NULL, 0, 1, '2017-01-13 15:23:09', '2017-01-13 15:23:09'),
+(26, NULL, 'อาหารและของกินเล่น', NULL, NULL, 0, 1, '2017-01-13 15:27:30', '2017-01-13 15:35:17'),
+(27, NULL, 'เครื่องดื่ม', NULL, NULL, 0, 1, '2017-01-13 15:27:30', '2017-01-13 15:27:30'),
+(28, NULL, 'ขนมนำเข้าจากต่างประเทศ', NULL, NULL, 0, 1, '2017-01-13 15:27:49', '2017-01-13 15:27:49'),
+(29, NULL, 'อสังหาริมทรัพย์', NULL, NULL, 0, 1, '2017-01-13 16:47:07', '2017-01-13 16:47:07');
 
 -- --------------------------------------------------------
 
@@ -1334,12 +1363,6 @@ ALTER TABLE `business_entities`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `districts`
 --
 ALTER TABLE `districts`
@@ -1349,6 +1372,12 @@ ALTER TABLE `districts`
 -- Indexes for table `entities`
 --
 ALTER TABLE `entities`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `entity_categories`
+--
+ALTER TABLE `entity_categories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1392,6 +1421,12 @@ ALTER TABLE `person_to_entities`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_categories`
+--
+ALTER TABLE `product_categories`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1449,12 +1484,7 @@ ALTER TABLE `addresses`
 -- AUTO_INCREMENT for table `business_entities`
 --
 ALTER TABLE `business_entities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `districts`
 --
@@ -1465,6 +1495,11 @@ ALTER TABLE `districts`
 --
 ALTER TABLE `entities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT for table `entity_categories`
+--
+ALTER TABLE `entity_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `entity_types`
 --
@@ -1501,6 +1536,11 @@ ALTER TABLE `person_to_entities`
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
+-- AUTO_INCREMENT for table `product_categories`
+--
+ALTER TABLE `product_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+--
 -- AUTO_INCREMENT for table `profiles`
 --
 ALTER TABLE `profiles`
@@ -1524,7 +1564,7 @@ ALTER TABLE `sub_districts`
 -- AUTO_INCREMENT for table `temporary_files`
 --
 ALTER TABLE `temporary_files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 --
 -- AUTO_INCREMENT for table `users`
 --

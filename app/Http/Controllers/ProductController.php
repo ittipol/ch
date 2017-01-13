@@ -27,6 +27,7 @@ class ProductController extends Controller
 
     $this->form->setModel($this->model);
     $this->form->district();
+    $this->form->productCategory();
 
     return $this->view('pages.product.form.add.product');
 

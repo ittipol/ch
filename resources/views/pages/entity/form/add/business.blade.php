@@ -1,7 +1,7 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCk5a17EumB5aINUjjRhWCvC1AgfxqrDQk&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
 <div class="container">
   
@@ -22,8 +22,8 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $modelName);
-    echo Form::hidden('entity_type', $entityType);
+    echo Form::hidden('model', $formModel['modelName']);
+    echo Form::hidden('entity_type', $fieldData['entityType']);
   ?>
 
   <div class="form-section">
@@ -39,6 +39,16 @@
         ));
       ?>
       <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('business_type', 'ประเภทของธุรกิจ');
+        echo Form::select('business_type', array() ,null, array(
+          'id' => 'business_type'
+        ));
+      ?>
+      <p class="notice info">เช่น โรงเรียน การศึกษา</p>
     </div>
 
     <div class="form-row">
@@ -126,6 +136,7 @@
         <?php echo Form::label('', 'ระบุตำแหน่งบริษัท องค์กร หรือ ธุรกิจชุมชนบนแผนที่'); ?>
         <input id="pac-input" class="controls" type="text" placeholder="Search Box">
         <div id="map"></div>
+        <p class="notice info">คลิกบนแผนที่เพื่อระบุตำแหน่ง</p>
       </div>
 
     </div>
@@ -145,14 +156,20 @@
 </div>
 
 <script type="text/javascript">
-  const district = new District();
-  district.load();
 
-  const map = new Map();
-  map.load();
+  $(document).ready(function(){
 
-  const form = new Form();
-  form.load();
+    const district = new District();
+    district.load();
+
+    const map = new Map();
+    map.load();
+
+    const form = new Form();
+    form.load();
+
+  });
+  
 </script>
 
 @stop
