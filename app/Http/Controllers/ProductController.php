@@ -24,13 +24,11 @@ class ProductController extends Controller
   }
 
   public function add() {
-
     $this->form->setModel($this->model);
     $this->form->district();
     $this->form->productCategory();
 
     return $this->view('pages.product.form.add.product');
-
   }
 
   public function addingSubmit(CustomFormRequest $request) {

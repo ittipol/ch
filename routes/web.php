@@ -27,39 +27,47 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('avatar', 'StaticFileController@avatar');
 });
 
-// pattern
-// Route::get('{modelAlias}/add','FormController@add');
-// ---------------------------------------------------------
 
-// Entity ======================================
-// > index
+
 Route::get('{entity_slug}','EntityController@index');
-// > create
 Route::get('entity/create','EntityController@create');
-// > add
+
 Route::group(['middleware' => 'auth'], function () {
   Route::get('entity/add','EntityController@add');
   Route::post('entity/add','EntityController@submit');
 });
 
-// Route::get('{modelAlias}/form/{action}','FormController@form');
-// ======================================
 
-// Product ======================================
+// announcement
+Route::get('announcement/create','AnnouncementController@create');
+
+
 Route::get('product','ProductController@index');
+
 Route::group(['middleware' => 'auth'], function () {
-  // > add
   Route::get('product/add','ProductController@add');
   Route::post('product/add','ProductController@addingSubmit');
-  // > edit
+
   Route::get('product/edit/{product_id}','ProductController@edit');
   Route::patch('product/edit/{product_id}',[
     'as' => 'product.edit',
     'uses' => 'ProductController@editingSubmit'
   ]);
 });
-// > view
+
 Route::get('product/{product_slug}','ProductController@detail');
+
+
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('real-estate/add','RealEstateController@add');
+  Route::post('real-estate/add','RealEstateController@addingSubmit');
+
+  // Route::get('real-estate/edit/{realEstateId}','RealEstateController@edit');
+  // Route::patch('real-estate/edit/{realEstateId}',[
+  //   'as' => 'real-estate.edit',
+  //   'uses' => 'RealEstateController@editingSubmit'
+  // ]);
+});
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {

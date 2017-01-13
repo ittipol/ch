@@ -81,6 +81,7 @@
   cursor: pointer;
   text-decoration: none;
   font-weight: 400;
+  font-size: 15px;
   transition: all .3s ease-in-out;
 }
 
@@ -103,14 +104,8 @@
 .navigation-primary-menu ul.submenu > li > a { 
 	position: relative;
   padding: 8px 0 8px 40px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 18px;
-/*  display: block;
-  color: #ffffff;
-  cursor: pointer;
-  text-decoration: none;
-  font-weight: 400;
-  transition: all .3s ease-in-out;*/
 }
 
 .main-navigation .line {

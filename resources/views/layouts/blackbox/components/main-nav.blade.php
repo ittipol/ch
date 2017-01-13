@@ -12,9 +12,9 @@
   <nav>
     <div class="navigation-top">
 
-      <!-- <div class="logo">
+      <div class="logo">
         <a class="logo-link" href="{{URL::to('/')}}">Chonburi Square</a>
-      </div> -->
+      </div>
 
       @if (!Auth::check())
 
@@ -67,19 +67,20 @@
 
             <li class="line space-top-bottom-10"></li>
             <li class="item">
-              <a href="{{URL::to('entity/create')}}">เพิ่ม</a>
+              <a href="javascript:void(0)">เพิ่มประกาศและโฆษณา</a>
               <div class="additional-option">
                 <div class="dot"></div>
                 <div class="dot"></div>
                 <div class="dot"></div>
                 <div class="additional-option-content">
-                  <a href="javascript:void(0);">เรียนรู้เพิ่มเติม</a>
+                  <a href="{{URL::to('announcement/create')}}">แสดงรายละเอียด</a>
                 </div>
               </div>
               <ul class="submenu">
                 <li class="submenu-item">
-                  <a href="{{URL::to('online-shop/add')}}">ร้านค้าออนไลน์</a>
-                  <a href="{{URL::to('company/add')}}">บริษัทหรือร้านค้าของคุณ</a>
+                  <a href="{{URL::to('product/add')}}">ประกาศขายสินค้า</a>
+                  <a href="{{URL::to('job/add')}}">ประกาศรับสมัครพนักงาน</a>
+                  <a href="{{URL::to('real-estate/add')}}">โฆษณาเช่า-ขายอสังหาริมทรัพย์</a>
                 </li>
               </ul>
             </li>

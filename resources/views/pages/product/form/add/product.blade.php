@@ -5,8 +5,8 @@
 
 <div class="container">
 
-  <div class="row">
-    <div class="container-header">
+  <div class="container-header">
+    <div class="row">
       <div class="col-lg-6 col-sm-12">
         <div class="title">
           เพิ่มสินค้าที่ต้องการขาย
@@ -55,17 +55,14 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('tagging', 'หมวดหมู่รองสินค้า', array(
+        echo Form::label('tagging', 'หมวดหมู่ย่อยสินค้า', array(
           'class' => 'required'
         ));
       ?>
-      <p class="error-message">* กำหนดหมวดหมู่รองของสินค้านี้ หมวดหมู่รองจะช่วยจัดสินค้าของคุณให้ชัดเจนมากขึ้น</p>
-      <?php
-        echo Form::text('tagging', null, array(
-          'placeholder' => 'ราคาสินค้าที่ต้องการขาย',
-          'autocomplete' => 'off'
-        ));
-      ?>
+      <!-- <p class="error-message">* กำหนดหมวดหมู่ย่อยของสินค้านี้</p> -->
+      <div id="_sub_cat" class="tag"></div>
+      <p class="notice info">หมวดหมู่ย่อยสินค้าจะมีผลโดยตรงต่อการค้นหา</p>
+
     </div>
 
     <div class="form-row">
@@ -91,16 +88,6 @@
 
     <div class="form-row">
 
-      <?php 
-        echo Form::label('promotion_id', 'โปรโมชั่น');
-      ?>
-      <p class="error-message">* ไม่สามารถใช้งานได้</p>
-      <p class="error-message">* สร้างร้านค้าของคุณเพื่อการใช่งานโปรโมชั่น</p>
-
-    </div>
-
-    <div class="form-row">
-
       <div class="sub-title">รูปภาพ</div>
 
       <div>
@@ -108,18 +95,9 @@
         <p class="error-message">* รองรับรูปภาพขนาดไม่เกิน 3MB</p>
       </div>
 
-      <div class="sub-form">
-
-        <div class="sub-form-inner">
-
-          <div class="form-row">
-            <?php echo Form::label('', 'รูปภาพแผนก (สูงสุด 5 รูป)'); ?>
-            <div id="_image_group">
-            </div>
-          </div>
-
+      <div class="form-row">
+        <div id="_image_group">
         </div>
-      
       </div>
 
     </div>
@@ -188,16 +166,17 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group',5,'description');
+    const images = new Images('_image_group',5);
     const district = new District();
     const map = new Map();
+    const tagging = new Tagging('_sub_cat','SubCategory','หมวดหมู่ย่อย');
     const form = new Form();
 
     images.load();
     district.load();
     map.load();
+    tagging.load();
     form.load();
-
 
   });
 

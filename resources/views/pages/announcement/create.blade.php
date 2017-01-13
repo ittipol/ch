@@ -1,0 +1,55 @@
+@extends('layouts.blackbox.main')
+@section('content')
+
+<div class="container">
+
+  <div class="container-header">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12">
+        <div class="title">
+          เพิ่มประกาศ
+        </div>
+        <div>เพิ่มประกาศของคุณ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="line space-top-bottom-30"></div>
+
+    <div class="row">
+
+      <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+        <div class="box">
+          <div class="inner">
+            <h4>ประกาศขายสินค้า</h4>
+            <p>ประกาศขายสินค้า</p>
+            <a href="{{URL::to('product/add')}}" class="button">เพิ่มประกาศขายสินค้า</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+        <div class="box">
+          <div class="inner">
+            <h4>ประกาศรับสมัครพนักงาน</h4>
+            <p>ประกาศรับสมัครพนักงาน</p>
+            <a href="{{URL::to('job/add')}}" class="button">เพิ่มประกาศรับสมัครพนักงาน</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+        <div class="box">
+          <div class="inner">
+            <h4>โฆษณาเช่า-ขายอสังหาริมทรัพย์</h4>
+            <p>โฆษณาเช่า-ขายอสังหาริมทรัพย์</p>
+            <a href="{{URL::to('real-estate/add')}}" class="button">เพิ่มโฆษณาอสังหาริมทรัพย์</a>
+          </div>
+        </div>
+      </div>
+
+    </div> 
+
+
+</div>
+@stop
