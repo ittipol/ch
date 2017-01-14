@@ -47,10 +47,26 @@
         echo Form::label('product_category_id', 'หมวดหมู่หลักสินค้า', array(
           'class' => 'required'
         ));
-        echo Form::select('product_category_id', $fieldData['productCategories'] ,null, array(
-          'id' => 'district'
-        ));
+        // echo Form::select('product_category_id', $fieldData['productCategories'] ,null, array(
+        //   'id' => 'district'
+        // ));
       ?>
+      <div class="form-item-group">
+        <div class="row">
+          <?php 
+            foreach ($fieldData['productCategories'] as $id => $category):
+          ?>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
+              <label class="box">
+                <input type="radio" name="product_category_id" value="<?php echo $id; ?>" >  
+                <div class="inner"><?php echo $category; ?></div>
+              </label>
+            </div>
+          <?php
+            endforeach;
+          ?>
+        </div>
+      </div>
     </div>
 
     <div class="form-row">
@@ -59,7 +75,6 @@
           'class' => 'required'
         ));
       ?>
-      <!-- <p class="error-message">* กำหนดหมวดหมู่ย่อยของสินค้านี้</p> -->
       <div id="_sub_cat" class="tag"></div>
       <p class="notice info">หมวดหมู่ย่อยสินค้าจะมีผลโดยตรงต่อการค้นหา</p>
 
@@ -166,7 +181,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group',5);
+    const images = new Images('_image_group',6);
     const district = new District();
     const map = new Map();
     const tagging = new Tagging('_sub_cat','SubCategory','หมวดหมู่ย่อย');

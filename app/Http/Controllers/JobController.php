@@ -8,14 +8,14 @@ class JobController extends Controller
 {
   public function __construct() { 
     parent::__construct();
-    $this->model = Service::loadModel('Product');
+    $this->model = Service::loadModel('Job');
   }
 
   public function add() {
-    $this->form->setModel($this->model);
-    $this->form->district();
-    $this->form->productCategory();
 
-    return $this->view('pages.product.form.add.product');
+    $this->form->setModel($this->model);
+    $this->form->employmentType();
+
+    return $this->view('pages.job.form.add.job');
   }
 }

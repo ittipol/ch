@@ -13,3 +13,25 @@
 	color: #ffffff;
 	background-color: #0288D1;
 }
+
+label.box {
+	height: auto;
+	/*background-color: #C8E6C9;*/
+	background-color: #dedede;
+}
+
+label.box input[type="radio"] {
+	display: none;
+}
+
+label.box input[type="radio"] + .inner {
+	color: #000000;
+	padding: 20px;
+	cursor: pointer;
+}
+
+label.box input[type="radio"]:checked + .inner {
+	color: #ffffff;
+	background-color: #4CAF50;
+	box-shadow: 0 0 10px 2px rgba(28,156,1,.85);
+}

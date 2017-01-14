@@ -37,13 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('entity/add','EntityController@submit');
 });
 
-
 // announcement
 Route::get('announcement/create','AnnouncementController@create');
 
-
-Route::get('product','ProductController@index');
-
+//
 Route::group(['middleware' => 'auth'], function () {
   Route::get('product/add','ProductController@add');
   Route::post('product/add','ProductController@addingSubmit');
@@ -54,10 +51,22 @@ Route::group(['middleware' => 'auth'], function () {
     'uses' => 'ProductController@editingSubmit'
   ]);
 });
-
+Route::get('product','ProductController@index');
 Route::get('product/{product_slug}','ProductController@detail');
 
+//
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('job/add','JobController@add');
+  Route::post('job/add','JobController@addingSubmit');
 
+  // Route::get('job/edit/{job_id}','JobController@edit');
+  // Route::patch('job/edit/{job_id}',[
+  //   'as' => 'job.edit',
+  //   'uses' => 'JobController@editingSubmit'
+  // ]);
+});
+
+//
 Route::group(['middleware' => 'auth'], function () {
   Route::get('real-estate/add','RealEstateController@add');
   Route::post('real-estate/add','RealEstateController@addingSubmit');

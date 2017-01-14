@@ -71,7 +71,8 @@ class Images {
 
 			  reader.onload = function (e) {
 
-			  	parent.find('img').css('display','none').attr('src', e.target.result);
+			  	// parent.find('img').css('display','none').attr('src', e.target.result);
+			  	parent.find('div.preview-image').css('display','none').css('background-image', 'url(' + e.target.result + ')');
 
 			  	if(_this.checkImageType(mimeType) && _this.checkImageSize(fileSize)) {
 			  		parent.css('borderColor','#E0E0E0');
@@ -81,7 +82,7 @@ class Images {
 			  		parent.find('.error-message').css('display','block').text('ไม่รองรับไฟล์นี้');
 			  		parent.find('input[type="hidden"]').remove();
 			  		parent.find('input').val('');
-			  		parent.find('img').css('display','none');
+			  		// parent.find('img').css('display','none');
 			  	}
 
 			  }
@@ -152,7 +153,8 @@ class Images {
 	  	if(response.success){
 
 	  		parent.addClass('added');
-	  		parent.find('img').fadeIn(450);
+	  		// parent.find('img').fadeIn(450);
+	  		parent.find('div.preview-image').fadeIn(450);
 	  		parent.find('a').css('display','block');
 	  		parent.parent().find('.progress-bar').css('display','none');
 
@@ -241,7 +243,9 @@ class Images {
 		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label">';
 		html += '<input id="'+this.code+'_image_'+this.runningNumber+'" class="'+this.code+'-image" type="file">';
-		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+this.defaultImage+'">';
+		// html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+this.defaultImage+'">';
+		// html +=	'<img class="preview-image" src="'+this.defaultImage+'">';
+		html +=	'<div class="preview-image" style="background-image:url('+this.defaultImage+')"></div>';
 		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn">×</a>'
 		html += '<p class="error-message"></p>';
 		html += '<div class="progress-bar"><div class="status"></div></div>'
@@ -263,7 +267,8 @@ class Images {
 		let html = '';
 		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label added">';
-		html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+image.url+'">';
+		// html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+image.url+'">';
+		html +=	'<div class="preview-image" style="background-image:url('+image.url+')"></div>';
 		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn" data-id="'+image.filename+'" style="display:block;">×</a>'
 		html += '<p class="error-message"></p>';
 		html += '<input type="hidden" name="Image['+this.code+']['+index+'][filename]" value="'+image.filename+'">'

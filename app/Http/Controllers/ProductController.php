@@ -32,7 +32,7 @@ class ProductController extends Controller
   }
 
   public function addingSubmit(CustomFormRequest $request) {
-
+dd($request->all());
     if($this->model->fill($request->all())->save()) {
 
       $slugName = $this->model->getRalatedModelData('Slug',array(

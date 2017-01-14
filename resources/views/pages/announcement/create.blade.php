@@ -48,6 +48,16 @@
         </div>
       </div>
 
+      <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+        <div class="box">
+          <div class="inner">
+            <h4>โฆษณาร้านค้าและการบริการของคุณ</h4>
+            <p>โฆษณาร้านค้าและการบริการของคุณ</p>
+            <a href="{{URL::to('real-estate/add')}}" class="button">เพิ่มโฆษณาโฆษณาร้านค้าและการบริการ</a>
+          </div>
+        </div>
+      </div>
+
     </div> 
 
 

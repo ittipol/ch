@@ -219,6 +219,15 @@ class Form {
     $this->data['productCategories'] = $productCategories;
   }
 
+  public function employmentType() {
+    $employmentTypes = Service::loadModel('EmploymentType')->all();
+    $_employmentTypes = array();
+    foreach ($employmentTypes as $employmentType) {
+      $_employmentTypes[$employmentType->id] = $employmentType->name;
+    }
+    $this->data['employmentTypes'] = $_employmentTypes;
+  }
+
   public function set($index,$value) {
     $this->data[$index] = $value;
   }
