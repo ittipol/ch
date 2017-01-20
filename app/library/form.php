@@ -192,6 +192,10 @@ class Form {
 
   }
 
+  public function loadFieldData($modelName) {
+    // $model = Service::loadModel($modelName);
+  }
+
   public function district() {
     $records = Service::loadModel('District')->all();
     $districts = array();
@@ -210,22 +214,40 @@ class Form {
     $this->data['businessEntities'] = $businessEntities;
   }
 
-  public function productCategory() {
-    $records = Service::loadModel('ProductCategory')->all();
-    $productCategories = array();
-    foreach ($records as $productCategory) {
-      $productCategories[$productCategory->id] = $productCategory->name;
-    }
-    $this->data['productCategories'] = $productCategories;
-  }
-
-  public function employmentType() {
+    public function employmentType() {
     $employmentTypes = Service::loadModel('EmploymentType')->all();
     $_employmentTypes = array();
     foreach ($employmentTypes as $employmentType) {
       $_employmentTypes[$employmentType->id] = $employmentType->name;
     }
     $this->data['employmentTypes'] = $_employmentTypes;
+  }
+
+  public function itemCategory() {
+    $records = Service::loadModel('ItemCategory')->all();
+    $itemCategories = array();
+    foreach ($records as $itemCategory) {
+      $itemCategories[$itemCategory->id] = $itemCategory->name;
+    }
+    $this->data['itemCategories'] = $itemCategories;
+  }
+
+  public function realEstateType() {
+    $records = Service::loadModel('RealEstateType')->all();
+    $realEstateTypes = array();
+    foreach ($records as $realEstateType) {
+      $realEstateTypes[$realEstateType->id] = $realEstateType->name;
+    }
+    $this->data['realEstateTypes'] = $realEstateTypes;
+  }
+
+  public function announcementType() {
+    $records = Service::loadModel('AnnouncementType')->all();
+    $realEstateTypes = array();
+    foreach ($records as $announcementType) {
+      $announcementTypes[$announcementType->id] = $announcementType->name;
+    }
+    $this->data['announcementTypes'] = $announcementTypes;
   }
 
   public function set($index,$value) {

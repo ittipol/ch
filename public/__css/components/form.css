@@ -105,14 +105,19 @@ form input[type="checkbox"]+label {
 }
 
 form .form-item-group {
-	height: 350px;
-	border-top: 3px solid #388E3C;
-	/*border-bottom: 1px solid #388E3C;*/
+	min-height: 100px;
+	max-height: 350px;
+	border-top: 3px solid #3F51B5;
 	padding: 20px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 
+/*form .btn-group{
+	border-top: 3px solid #3F51B5;
+	padding: 20px;
+}
+*/
 form .error {
 	background-color: #FFCDD2;
 	border-color: #D50000;

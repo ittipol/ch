@@ -16,7 +16,6 @@
 
 label.box {
 	height: auto;
-	/*background-color: #C8E6C9;*/
 	background-color: #dedede;
 }
 
@@ -32,6 +31,38 @@ label.box input[type="radio"] + .inner {
 
 label.box input[type="radio"]:checked + .inner {
 	color: #ffffff;
-	background-color: #4CAF50;
-	box-shadow: 0 0 10px 2px rgba(28,156,1,.85);
+	background-color: #1976D2;
+	/*box-shadow: 0 0 10px 2px #1976D2;*/
+}
+
+.btn-group label.btn {
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.btn-group label:first-child {
+	border-radius: 6px 0 0 6px;
+}
+
+.btn-group label:last-child {
+	border-radius: 0 6px 6px 0;
+}
+
+
+.btn-group label.btn input[type="radio"],
+.btn-group label.btn input[type="checkbox"] {
+	display: none;
+}
+
+.btn-group input[type="radio"] + .inner,
+.btn-group input[type="checkbox"] + .inner {
+	padding: 10px 15px;
+}
+
+.btn-group input[type="radio"]:checked + .inner,
+.btn-group input[type="checkbox"]:checked + .inner {
+	color: #ffffff;
+	background-color: #1976D2;
 }

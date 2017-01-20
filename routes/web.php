@@ -28,36 +28,48 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
+// ENTITY
+// Route::get('{entity_slug}','EntityController@index');
+// Route::get('entity/create','EntityController@create');
 
-Route::get('{entity_slug}','EntityController@index');
-Route::get('entity/create','EntityController@create');
+// Route::group(['middleware' => 'auth'], function () {
+//   Route::get('entity/add','EntityController@add');
+//   Route::post('entity/add','EntityController@submit');
+// });
 
-Route::group(['middleware' => 'auth'], function () {
-  Route::get('entity/add','EntityController@add');
-  Route::post('entity/add','EntityController@submit');
-});
-
-// announcement
+// Announcement
 Route::get('announcement/create','AnnouncementController@create');
 
-//
+// Secondhand
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('product/add','ProductController@add');
-  Route::post('product/add','ProductController@addingSubmit');
+  Route::get('item/post','ItemController@post');
+  Route::post('item/post','ItemController@submitPosting');
 
-  Route::get('product/edit/{product_id}','ProductController@edit');
-  Route::patch('product/edit/{product_id}',[
-    'as' => 'product.edit',
-    'uses' => 'ProductController@editingSubmit'
-  ]);
+  // Route::get('item/edit/{item_id}','ItemController@edit');
+  // Route::patch('item/edit/{item_id}',[
+  //   'as' => 'item.edit',
+  //   'uses' => 'ItemController@editingSubmit'
+  // ]);
 });
-Route::get('product','ProductController@index');
-Route::get('product/{product_slug}','ProductController@detail');
 
-//
+// PRODUCT
+// Route::group(['middleware' => 'auth'], function () {
+//   Route::get('product/add','ProductController@add');
+//   Route::post('product/add','ProductController@addingSubmit');
+
+//   Route::get('product/edit/{product_id}','ProductController@edit');
+//   Route::patch('product/edit/{product_id}',[
+//     'as' => 'product.edit',
+//     'uses' => 'ProductController@editingSubmit'
+//   ]);
+// });
+// Route::get('product','ProductController@index');
+// Route::get('product/{product_slug}','ProductController@detail');
+
+// JOB
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('job/add','JobController@add');
-  Route::post('job/add','JobController@addingSubmit');
+  Route::get('job/add','JobController@post');
+  Route::post('job/add','JobController@submitPosting');
 
   // Route::get('job/edit/{job_id}','JobController@edit');
   // Route::patch('job/edit/{job_id}',[
@@ -66,10 +78,10 @@ Route::group(['middleware' => 'auth'], function () {
   // ]);
 });
 
-//
+// PROPERTY
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('real-estate/add','RealEstateController@add');
-  Route::post('real-estate/add','RealEstateController@addingSubmit');
+  Route::get('real-estate/post','RealEstateController@post');
+  Route::post('real-estate/post','RealEstateController@submitPosting');
 
   // Route::get('real-estate/edit/{realEstateId}','RealEstateController@edit');
   // Route::patch('real-estate/edit/{realEstateId}',[
