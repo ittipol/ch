@@ -115,6 +115,23 @@
     </div>
 
     <div class="form-row">
+      <?php 
+        echo Form::label('tagging', 'ตัวแทนขาย');
+      ?>
+      <div class="btn-group">
+        <label class="btn">
+          <input type="radio" name="agent" value="<?php echo $id; ?>" >  
+          <div class="inner">ต้องการ</div>
+        </label>
+        <label class="btn">
+          <input type="radio" name="agent" value="<?php echo $id; ?>" checked >  
+          <div class="inner">ไม่ต้องการ</div>
+        </label>
+      </div>
+
+    </div>
+
+    <div class="form-row">
 
       <div class="sub-title">รูปภาพ</div>
 

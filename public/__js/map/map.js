@@ -2,7 +2,7 @@ class Map {
   constructor() {}
 
   load(geographic) {
-    this.createHiddenData();
+    // this.createHiddenData();
 
     let lat = 13.297587657705135;
     let lng = 100.94727516174316;
@@ -16,8 +16,9 @@ class Map {
         lat = _geographic.latitude;
         lng = _geographic.longitude;
 
-        $("#lat").val(lat);
-        $("#lng").val(lng);
+        // $("#lat").val(lat);
+        // $("#lng").val(lng);
+        this.createHiddenData(lat,lng);
 
         setMarker = true;
       }
@@ -29,7 +30,9 @@ class Map {
   }
 
   initialize(latlng,setMarker) {
-    // let latlng = new google.maps.LatLng(Map.lat, Map.lng);
+
+    let _this = this;
+
     let options = {
         zoom: 13,
         center: latlng,
@@ -66,8 +69,9 @@ class Map {
         position: {lat: event.latLng.lat(), lng: event.latLng.lng()}
       });
 
-      $("#lat").val(event.latLng.lat());
-      $("#lng").val(event.latLng.lng());
+      // $("#lat").val(event.latLng.lat());
+      // $("#lng").val(event.latLng.lng());
+      _this.createHiddenData(event.latLng.lat(),event.latLng.lng())
 
       geocoder.geocode({
         'latLng': event.latLng
@@ -128,19 +132,29 @@ class Map {
 
   }
 
-  createHiddenData() {
+  createHiddenData(latitude,longitude) {
+
+    this.removeHiddenData();
+
     let lat = document.createElement('input');
     lat.setAttribute('type','hidden');
     lat.setAttribute('name','Address[latitude]');
     lat.setAttribute('id','lat');
+    lat.value = latitude;
 
     let lng = document.createElement('input');
     lng.setAttribute('type','hidden');
     lng.setAttribute('name','Address[longitude]');
     lng.setAttribute('id','lng');
+    lng.value = longitude;
 
     $('form').append(lat);
     $('form').append(lng);
+  }
+
+  removeHiddenData() {
+    $("#lat").remove();
+    $("#lng").remove();
   }
 
 }

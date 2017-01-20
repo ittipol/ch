@@ -19,7 +19,6 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected $ident;
-    protected $formToken;
     protected $model;
     protected $data = array();
     protected $param;

@@ -4,12 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomFormRequest;
 use App\library\service;
+use App\library\message;
+use Redirect;
 
 class ItemController extends Controller
 {
   public function __construct() { 
     parent::__construct();
     $this->model = Service::loadModel('Item');
+  }
+
+  public function detail($itemId) {
+    $item = Service::loadModel('Item')->find($itemId);
+    $announcementType = $item->announcementType;
+
+    $this->form->setModel($item);
+    $this->form->loadAddress();
+    $this->form->loadImage();
+    $this->form->loadTagging();
+    $this->form->loadContact();
+
+    $this->data = array(
+      'announcementType' => $announcementType->getAttributes()
+    );
+
+    return $this->view('pages.item.detail');
+
   }
 
   public function post() {
@@ -26,6 +46,11 @@ class ItemController extends Controller
   }
 
   public function submitPosting(CustomFormRequest $request) {
-    dd($request->all());
+    if($this->model->fill($request->all())->save()) {
+      Message::display('ลงประกาศเรียบร้อยแล้ว','success');
+      return Redirect::to('item/detail/'.$this->model->id);
+    }else{
+      return Redirect::back();
+    }
   }
 }

@@ -47,27 +47,7 @@ class Form {
         break;
 
       case 'Tagging':
-        $taggings = $this->model->getRalatedModelData('Tagging',
-          array(
-            'fields' => array('word_id')
-          )
-        );
-
-        if(empty($taggings)){
-          $this->data['taggings'] = json_encode(array());
-          break;
-        }
-
-        $word = array();
-        foreach ($taggings as $tagging) {
-          $word[] = array(
-            'id' =>  $tagging->word->id,
-            'name' =>  $tagging->word->word
-          );
-        }
-        
-        $this->data['taggings'] = json_encode($word);
-
+        $this->loadTagging();
         break;
 
       // case 'OfficeHour':
@@ -108,22 +88,9 @@ class Form {
 
       //   break;
 
-      // case 'Contact':
-
-      //   $contact = $this->model->getRalatedModelData('Contact',array(
-      //     'first' => true,
-      //     'fields' => array('phone_number','email','website','facebook','instagram','line')
-      //   ));
-
-      //   if(empty($contact)) {
-      //     $this->data['contact'] = array();
-      //     break;
-      //   }
-
-      //   $this->data['contact'] = $contact->getAttributes();
-
-      //   break;
-
+      case 'Contact':
+        $this->loadContact();
+        break;
     }
 
   }
@@ -143,19 +110,11 @@ class Form {
       $geographic['latitude'] = $address->latitude;
       $geographic['longitude'] = $address->longitude;
 
-      // dd(json_encode($geographic));
-
-      // if(!empty($address->latitude) && !empty($address->longitude)) {
-
-      //   $geographic['latitude'] = $address->latitude;
-      //   $geographic['longitude'] = $address->longitude;
-
-      // }
-
       $address = array_merge($address->getAttributes(),array(
+        'district_name' => $address->district->name,
+        'sub_district_name' => $address->subDistrict->name,
         'geographic' => json_encode($geographic)
       ));
-
     }
 
     if($json) {
@@ -192,8 +151,60 @@ class Form {
 
   }
 
-  public function loadFieldData($modelName) {
-    // $model = Service::loadModel($modelName);
+  public function loadTagging($json = false) {
+    $taggings = $this->model->getRalatedModelData('Tagging',
+      array(
+        'fields' => array('word_id'),
+        'first' => false
+      )
+    );
+
+    $word = array();
+    if(!empty($taggings)) {
+
+      foreach ($taggings as $tagging) {
+        $word[] = array(
+          'id' =>  $tagging->word->id,
+          'name' =>  $tagging->word->word
+        );
+      }
+
+    }
+
+    if($json) {
+      $word = json_encode($word);
+    }
+
+    $this->formData['Tagging'] = $word;
+  }
+
+  public function loadContact($json = false) {
+    $contact = $this->model->getRalatedModelData('Contact',array(
+      'first' => true,
+      'fields' => array('phone_number','email','website')
+    ));
+
+    if(!empty($contact)) {
+      $contact = $contact->getAttributes();
+    }else{
+      $contact = array();
+    }
+
+    if($json) {
+      $contact = json_encode($contact);
+    }
+
+    $this->data['contact'] = $contact;
+
+  }
+
+  public function loadFieldData($modelName,$options = array()) {
+    // $records = Service::loadModel($modelName)->all();
+    // $data = array();
+    // foreach ($records as $record) {
+    //   $data[$options['key']] = $record->{$options['field']};
+    // }
+    // $this->data[$options['index']] = $data;
   }
 
   public function district() {
@@ -261,10 +272,6 @@ class Form {
     }
 
     return $this->data;
-  }
-
-  public function clear() {
-    $this->data = null;
   }
 
   public function build() {

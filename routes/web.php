@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
   //   'uses' => 'ItemController@editingSubmit'
   // ]);
 });
+Route::get('item/detail/{item_id}','ItemController@detail');
 
 // PRODUCT
 // Route::group(['middleware' => 'auth'], function () {

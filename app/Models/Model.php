@@ -11,8 +11,6 @@ use Schema;
 
 class Model extends BaseModel
 {
-  // public $formToken;
-  // public $disk;
   public $modelName;
   public $modelAlias;
   protected $storagePath = 'app/public/';
@@ -30,7 +28,6 @@ class Model extends BaseModel
     parent::__construct($attributes);
     
     $this->modelName = class_basename(get_class($this));
-    // $this->modelAlias = $this->disk = Service::generateModelDir($this->modelName);
     $this->modelAlias = Service::generateModelDir($this->modelName);
     $this->directoryPath = $this->storagePath.$this->modelAlias.'/';
 
@@ -103,7 +100,18 @@ class Model extends BaseModel
       }
     }
 
-    $attributes = array_map('trim', $attributes);
+    if(!empty($attributes)) {
+      foreach ($this->fillable as $field) {
+
+        if(empty($attributes[$field])) {
+          continue;
+        }
+
+        $attributes[$field] = trim($attributes[$field]);
+      }
+    }
+    
+    // $attributes = array_map('trim', $attributes);
     
     return $attributes;
   }

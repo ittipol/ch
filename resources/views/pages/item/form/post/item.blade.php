@@ -95,9 +95,7 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('used', 'สภาพสินค้า', array(
-          'class' => 'required'
-        ));
+        echo Form::label('used', 'สภาพสินค้า');
       ?>
       <div class="btn-group">
         <label class="btn">

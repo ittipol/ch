@@ -26,6 +26,8 @@ class StaticFileController extends Controller
       return '';
     }
 
+    // Storage::get($this->id.'/'.$this->id.'.jpeg');
+
     $path = $image->getImagePath();
 
     if(!File::exists($path)){

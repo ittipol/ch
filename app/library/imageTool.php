@@ -2,7 +2,7 @@
 
 namespace App\library;
 
-class Image {
+class ImageTool {
 	private $file;
 	private $image;
 	private $width;

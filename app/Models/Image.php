@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\library\token;
 use App\library\service;
-// use App\library\image AS ImageLib;
+// use App\library\imageTool;
 use File;
 use Session;
 
@@ -14,7 +14,7 @@ class Image extends Model
   protected $fillable = ['model','model_id','filename','description','created_by'];
   // public $noImagePath = 'images/common/no-img.png';
 
-  private $maxFileSizes = 3145728;
+  private $maxFileSizes = 1048576;
   private $acceptedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];
 
   public function __construct() {  
@@ -67,10 +67,27 @@ class Image extends Model
 
         $imageInstance = $this->newInstance();
         if($imageInstance->fill($model->includeModelAndModelId($value))->save()) {
-          $this->moveImage($model,$path,$imageInstance->filename);
+
+          $to = $imageInstance->getImagePath();
+          $this->moveImage($path,$to);
+
+          $ext = pathinfo($imageInstance->filename, PATHINFO_EXTENSION);
+          $filename = pathinfo($imageInstance->filename, PATHINFO_FILENAME);
+
+          // $imageLib = new ImageTool($to);
+          // $imageLib->resize(44,44);
+          // $imageLib->save($imageInstance->getDirPath().$filename.'_44x44.'.$ext);
+
+          // $imageLib = new ImageTool($to);
+          // $imageLib->resize(340,340);
+          // $imageLib->save($imageInstance->getDirPath().$filename.'_340x340.'.$ext);
+
         }
 
       }
+
+      // resize image 44x44
+      // resize image 340x340
 
       // remove temp dir
       $temporaryFile->deleteTemporaryDirectory($directoryName);
@@ -109,15 +126,17 @@ class Image extends Model
 
   }
 
-  public function moveImage($model,$oldPath,$filename) {
-    // to
-    $to = $model->getDirectory().$filename;
+  public function moveImage($oldPath,$to) {
     // move image
     return File::move($oldPath, $to);
   }
 
+  public function getDirPath() {
+    return storage_path($this->storagePath.Service::generateModelDir($this->model)).'/'.$this->model_id.'/';
+  }
+
   public function getImagePath() {
-    return storage_path($this->storagePath.Service::generateModelDir($this->model)).'/'.$this->model_id.'/'.$this->filename;
+    return $this->getDirPath().$this->filename;
   }
 
   public function getImageUrl() {
