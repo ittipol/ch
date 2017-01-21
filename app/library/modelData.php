@@ -98,7 +98,7 @@ class ModelData {
     $address = $this->model->getRalatedModelData('Address',
       array(
         'first' => true,
-        'fields' => array('address','district_id','sub_district_id','description','latitude','longitude')
+        'fields' => array('address','province_id','district_id','sub_district_id','description','latitude','longitude')
       )
     );
 
@@ -110,6 +110,7 @@ class ModelData {
       $geographic['longitude'] = $address->longitude;
 
       $address = array_merge($address->getAttributes(),array(
+        'province_name' => $address->province->name,
         'district_name' => $address->district->name,
         'sub_district_name' => $address->subDistrict->name,
         'geographic' => json_encode($geographic)

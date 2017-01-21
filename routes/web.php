@@ -21,6 +21,9 @@ Route::get('logout',function(){
 Route::get('login','UserController@login');
 Route::post('login','UserController@auth');
 
+// Register
+Route::get('register','UserController@registerForm')->middleware('guest');
+Route::post('register','UserController@registerAdd')->middleware('guest');
 
 Route::get('safe_image/{file}', 'StaticFileController@serveImages');
 Route::group(['middleware' => 'auth'], function () {

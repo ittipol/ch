@@ -76,7 +76,7 @@
               </div>
 
               <div class="item-info-row">
-                <h4 class="title-with-icon location-pin">ต.{{$modelData['Address']['sub_district_name']}} อ.{{$modelData['Address']['district_name']}} จ.ชลบุรี</h4>
+                <h4 class="title-with-icon location-pin">ต.{{$modelData['Address']['sub_district_name']}} อ.{{$modelData['Address']['district_name']}} จ.{{$modelData['Address']['province_name']}}</h4>
               </div>
             </div>
             
@@ -86,16 +86,12 @@
 
     </div>
 
-<!--     <div>
-      <h4 class="location-pin">ต.{{$modelData['Address']['sub_district_name']}} อ.{{$modelData['Address']['district_name']}} จ.ชลบุรี</h4>
-    </div> -->
-
     <div class="line space-top-bottom-20"></div>
 
-    <h4>รายละเอียดสินค้า</h4>
+    <h4>รายละเอียดสินค้า</h4>   
     <div>
-      @if(strlen($modelData['description']) > 0)
-      {!!$modelData['description']!!}
+      @if(strlen($modelData['item_detail']) > 0)
+      {!!$modelData['item_detail']!!}
       @else
       -
       @endif

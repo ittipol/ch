@@ -5,10 +5,14 @@ namespace App\Models;
 class Address extends Model
 {
   protected $table = 'addresses';
-  protected $fillable = ['model','model_id','address','district_id','sub_district_id','description','latitude','longitude'];
+  protected $fillable = ['model','model_id','address','province_id','district_id','sub_district_id','description','latitude','longitude'];
 
   public function __construct() {  
     parent::__construct();
+  }
+
+  public function province() {
+    return $this->hasOne('App\Models\Province','id','province_id');
   }
 
   public function district() {
@@ -26,6 +30,10 @@ class Address extends Model
         'first' => true
       )
     );
+
+    $options['value'] = array_merge($options['value'],array(
+      'province_id' => 9
+    ));
 
     if(($model->state == 'update') && !empty($address)){
       return $address

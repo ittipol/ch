@@ -12,10 +12,10 @@ use App\Models\Word;
 use App\library\date;
 use App\library\Token;
 use App\library\message;
+use App\library\service;
 use Auth;
 use Session;
 use Redirect;
-// use Hash;
 
 class UserController extends Controller
 {
@@ -101,7 +101,7 @@ class UserController extends Controller
   		'year' => $year
   	);
 
-    return $this->view('pages.user.register');
+    return $this->view('pages.register');
 
   }
 

@@ -86,8 +86,17 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('description', 'รายละเอียดสินค้าหรือการประกาศ');
-        echo Form::textarea('description', null, array(
+        echo Form::label('announcement_detail', 'รายละเอียดของประกาศนี้');
+        echo Form::textarea('announcement_detail', null, array(
+          'class' => 'ckeditor'
+        ));
+      ?>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('item_detail', 'รายละเอียดของสินค้า');
+        echo Form::textarea('item_detail', null, array(
           'class' => 'ckeditor'
         ));
       ?>

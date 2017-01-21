@@ -1,8 +1,11 @@
 @extends('layouts.default.default')
 @section('content')
+
+<div class="bg-overlay"></div>
+
 <div class="login-form">
 	<div class="login-form-inner">
-		<h2><a class="logo" href="{{URL::to('/')}}">CHONBURI SQUARE</a></h2>
+		<h3><a class="logo" href="{{URL::to('/')}}">CHONBURI SQUARE</a></h3>
 
 		<?php if(!empty($errors->all())): ?>
 			<?php foreach ($errors->all() as $message) { ?>
@@ -16,30 +19,20 @@
 				echo Form::open(['method' => 'post', 'id' => 'login_form']);
 			?>
 
+			<div class="line"></div>
+
 			<div class="form-row">
-				<?php 
-					echo Form::label('email', 'อีเมล');
-					echo Form::text('email', null, array(
-						'placeholder' => 'อีเมล',
-						'autocomplete' => 'off'
-					));
-				?>
+				<input type="text" name="email" placeholder="อีเมล" autocomplete="off">
 			</div>
 
 			<div class="form-row">
-				<?php 
-					echo Form::label('password', 'รหัสผ่าน');
-					echo Form::password('password', null, array(
-						'placeholder' => 'รหัสผ่าน',
-						'autocomplete' => 'off'
-					));
-				?>
+				<input type="password" name="password" placeholder="รหัสผ่าน">
 			</div>
 
 			<div class="form-row">
 				<?php
 					echo Form::checkbox('remember', 1);
-					echo Form::label('remember', 'จดจำฉันไว้ในระบบ');
+					echo Form::label('remember', 'จดจำไว้ในระบบ');
 				?>
 			</div>
 
@@ -51,10 +44,6 @@
 				?>
 			</div>
 
-			<div>
-				<a href="">ลืมรหัสผ่าน</a>
-			</div>
-
 			<div class="line space-top-bottom-10"></div>
 
 			<a href="#" class="fb-button">
@@ -62,13 +51,56 @@
 				เข้าสู่ระบบด้วย Facebook
 			</a>
 
-			<div class="line space-top-bottom-10"></div>
-
-			<a href="{{URL::to('register')}}" class="button wide-btn success">สมัครสมาชิก</a>
+			<h4 class="text-center">ไม่ใช่สมาชิก <a href="{{URL::to('register')}}">สมัครสมาชิก</a></h4>
 
 			<?php
 				echo Form::close();
 			?>
 		</div>
+	</div>
 </div>
+
+	<script type="text/javascript">
+
+    class LoginPage {
+      constructor() {}
+
+      init() {
+
+        let w = window.innerWidth;
+
+        if(w > 1200) {
+
+        	$('body').addClass('login-bg');
+
+        	// $('.login-form').removeClass('mobile');
+
+        	// let loginFormWidth = $('.login-form').width();
+        	// let loginFormHeight = $('.login-form').height();
+
+        	// $('.login-form').css({
+        	// 	'margin-top':-(loginFormHeight/2),
+        	// 	'margin-left':-(loginFormWidth/2)
+        	// });
+
+        }else{
+
+        	$('.login-form').addClass('mobile');
+
+        	$('.login-form').css({
+        		'height':window.innerHeight,
+        	});
+
+
+        }
+
+      }
+
+    }
+
+    $(document).ready(function(){
+      loginPage = new LoginPage();
+      loginPage.init();
+    });
+  </script>
 @stop

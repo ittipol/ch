@@ -1,4 +1,68 @@
-input[type="text"],
-input[type="password"] {
-	width: 60%;
+body {
+	background-color: #337ab7;
+}
+
+.register-wrapper {
+	width: 800px;
+	margin: 0 auto;
+	padding-top: 25px;
+}
+
+.register-wrapper .header-container h3 {
+	display: block;
+	text-align: center;
+}
+
+.register-wrapper .header-container a {
+	color: #ffffff;
+}
+
+.register-wrapper .header-container p {
+	font-size: 24px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.register-form {
+	width: 400px;
+	margin: 0 auto;
+	background-color: #ffffff;
+}
+
+.register-form .register-form-inner {
+	padding: 20px;
+}
+
+.register-wrapper.mobile {
+	width: 100%;
+}
+
+.register-wrapper.mobile .register-form-inner {
+	padding: 0 20px;
+}
+
+.register-wrapper.mobile .register-form {
+	width: 100%;
+	background-color: transparent;
+}
+
+.register-wrapper.mobile .register-form .form-row {
+	margin: 0;
+}
+
+.register-wrapper.mobile .register-form .button {
+	margin-top: 20px;
+}
+
+.register-wrapper.mobile .register-form a {
+	color: #ffffff;
+}
+
+.register-wrapper.mobile .text-center {
+	color: #82B1FF;
+}
+
+.register-wrapper.mobile .form-row:not(:first-child) input[type="text"], 
+.register-wrapper.mobile input[type="password"] {
+	border-top: 0;
 }
