@@ -73,7 +73,7 @@
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
-                <input type="radio" name="item_category_id" value="<?php echo $id; ?>" >  
+                <input type="radio" name="ItemToCategory[item_category_id]" value="<?php echo $id; ?>" >  
                 <div class="inner"><?php echo $category; ?></div>
               </label>
             </div>
@@ -86,7 +86,7 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('description', 'รายละเอียดการประกาศ');
+        echo Form::label('description', 'รายละเอียดสินค้าหรือการประกาศ');
         echo Form::textarea('description', null, array(
           'class' => 'ckeditor'
         ));
@@ -151,7 +151,9 @@
 
         <div class="form-row">
         <?php 
-          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
+          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
+          'class' => 'required'
+          ));
           echo Form::text('Contact[phone_number]', null, array(
             'placeholder' => 'เบอร์โทรศัพท์',
             'autocomplete' => 'off'
@@ -237,7 +239,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group',6);
+    const images = new Images('_image_group',8);
     const district = new District();
     const map = new Map();
     const tagging = new Tagging();

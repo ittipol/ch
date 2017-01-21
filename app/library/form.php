@@ -194,7 +194,7 @@ class Form {
       $contact = json_encode($contact);
     }
 
-    $this->data['contact'] = $contact;
+    $this->formData['Contact'] = $contact;
 
   }
 

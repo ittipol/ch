@@ -16,8 +16,16 @@ class ItemController extends Controller
 
   public function detail($itemId) {
     $item = Service::loadModel('Item')->find($itemId);
-    $announcementType = $item->announcementType;
 
+    if(empty($item)) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่พบประกาศนี้'
+      );
+      return $this->error();
+    }
+
+    $announcementType = $item->announcementType;
+    
     $this->form->setModel($item);
     $this->form->loadAddress();
     $this->form->loadImage();
@@ -25,7 +33,8 @@ class ItemController extends Controller
     $this->form->loadContact();
 
     $this->data = array(
-      'announcementType' => $announcementType->getAttributes()
+      'announcementType' => $announcementType->getAttributes(),
+      'categoryName' => $item->itemToCategories->category->name
     );
 
     return $this->view('pages.item.detail');
@@ -46,11 +55,13 @@ class ItemController extends Controller
   }
 
   public function submitPosting(CustomFormRequest $request) {
+
     if($this->model->fill($request->all())->save()) {
       Message::display('ลงประกาศเรียบร้อยแล้ว','success');
       return Redirect::to('item/detail/'.$this->model->id);
     }else{
       return Redirect::back();
     }
+
   }
 }

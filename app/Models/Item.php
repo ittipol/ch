@@ -6,19 +6,22 @@ class Item extends Model
 {
   protected $table = 'items';
   protected $fillable = ['name','description','price','announcement_type_id','used','created_by'];
-  protected $modelRelated = array('Image','Address','Tagging','Contact');
+  protected $modelRelated = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
 
   protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
       'price' => 'required|max:255',
-      'item_category_id' => 'required' 
+      'Contact.phone_number' => 'required|max:255',
+      // 'Contact.email' => 'email|unique:contacts,email|max:255',
+      'ItemToCategory.item_category_id' => 'required' 
     ),
     'messages' => array(
       'name.required' => 'ชื่อห้ามว่าง',
       'price.required' => 'จำนวนราคาห้ามว่าง',
-      'item_category_id.required' => 'หมวดหมู่หลักสินค้าห้ามว่าง',
+      'Contact.phone_number.required' => 'เบอร์โทรศัพท์ห้ามว่าง',
+      'ItemToCategory.item_category_id.required' => 'หมวดหมู่หลักสินค้าห้ามว่าง',
     )
   );
 
@@ -28,5 +31,9 @@ class Item extends Model
 
   public function announcementType() {
     return $this->hasOne('App\Models\AnnouncementType','id','announcement_type_id');
+  }
+
+  public function itemToCategories() {
+    return $this->hasOne('App\Models\ItemToCategory','item_id','id');
   }
 }

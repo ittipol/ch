@@ -118,11 +118,6 @@ class Model extends BaseModel
 
   public function fill(array $attributes) {
 
-    // if(!empty($attributes['__token'])) {
-    //   $this->formToken = $attributes['__token'];
-    //   unset($attributes['__token']);
-    // }
-
     // if(!empty($attributes['wiki'])) {
     //   $this->createWiki = true;
     //   unset($attributes['wiki']);
@@ -144,10 +139,6 @@ class Model extends BaseModel
       
       foreach ($this->formModelData as $modelName => $value) {
 
-        // $options = array_merge($options,array(
-        //   'value' => $this->formModelData[$modelName]
-        // ));
-
         $options = array(
           'value' => $value
         );
@@ -163,7 +154,7 @@ class Model extends BaseModel
 
     $model = Service::loadModel($modelName);
 
-    if(!method_exists($model,'__saveRelatedData') || !$model->checkHasFieldModelAndModelId()) {
+    if(!method_exists($model,'__saveRelatedData')) {
       return false;
     }
 
@@ -177,7 +168,7 @@ class Model extends BaseModel
       return false;
     }
 
-    $path = storage_path($this->directoryPath).'/'.$this->id;
+    $path = $this->getDirectory().$this->id;
     if(!is_dir($path)){
       mkdir($path,0777,true);
     }
@@ -190,7 +181,7 @@ class Model extends BaseModel
       return false;
     }
 
-    return storage_path($this->directoryPath).$this->id.'/';
+    return storage_path($this->directoryPath);
   }
 
   public function checkExistById($id) {
