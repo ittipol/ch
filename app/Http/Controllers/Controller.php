@@ -10,6 +10,7 @@ use App\library\token;
 use App\library\service;
 use App\library\entity;
 use App\library\form;
+use App\library\modelData;
 use Session;
 use Route;
 use Request;
@@ -25,11 +26,14 @@ class Controller extends BaseController
     protected $query;
     protected $entity;
     protected $form;
+    protected $modelData;
     protected $error;
 
     public function __construct() { 
 
       $this->form = new Form();
+      $this->modelData = new ModelData();
+
       $this->query = Request::query();
 
       $this->middleware(function ($request, $next) {
@@ -97,6 +101,11 @@ class Controller extends BaseController
       $form = $this->form->build();
       if(!empty($form)){
         $this->data = array_merge($this->data,$form);
+      }
+
+      $modelData = $this->modelData->build();
+      if(!empty($modelData)){
+        $this->data = array_merge($this->data,$modelData);
       }
 
     	return view($view,$this->data);

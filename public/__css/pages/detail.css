@@ -37,6 +37,11 @@
 
 .image-gallery .item-info {
 	padding: 10px;
+	background-color: rgba(255,255,255,.6);
+}
+
+.image-gallery .item-info .item-info-row:not(:first-child) {
+	margin-top: 10px;
 }
 
 .image-gallery .item-info p {
@@ -57,7 +62,8 @@
 	width: 60px;
 	height: 60px;
 	margin: 4px;
-	border: 2px solid #9E9E9E;
+	border: 2px solid #464646;
+	background-color: #464646;
 	background-size: auto 100%;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -76,10 +82,47 @@
 
 .image-gallery .image-gallary-display .image-gallary-display-inner {
 	height: 100%;
+	overflow: hidden;
 }
 
 .image-gallery .image-gallary-display img {
 	height: 100%;
+	position: relative;
+	display: inline-block;
+}
+
+.item-info .title-with-icon {
+	position: relative;
+	padding-left: 40px;
+}
+
+.item-info h4.title-with-icon {
+	font-size: 18px;
+	line-height: 30px;
+}
+
+.item-info .title-with-icon::before {
+	content: "";
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30px;
+}
+
+.item-info .title-with-icon.phone::before {
+	background-image: url(/images/common/phone.png);
+}
+
+.item-info .title-with-icon.email::before {
+	background-image: url(/images/common/email.png);
+}
+
+.item-info .title-with-icon.location-pin::before {
+	background-image: url(/images/common/location-pin.png);
 }
 
 /*==========  Non-Mobile First Method  ==========*/

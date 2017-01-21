@@ -27,15 +27,14 @@ class ItemController extends Controller
     $announcementType = $item->announcementType;
     
     $this->form->setModel($item);
-    $this->form->loadAddress();
-    $this->form->loadImage();
-    $this->form->loadTagging();
-    $this->form->loadContact();
 
-    $this->data = array(
-      'announcementType' => $announcementType->getAttributes(),
-      'categoryName' => $item->itemToCategories->category->name
-    );
+    $this->modelData->setModel($item);
+    $this->modelData->loadAddress();
+    $this->modelData->loadImage();
+    $this->modelData->loadTagging();
+    $this->modelData->loadContact();
+    $this->modelData->set('announcementType',$announcementType->getAttributes());
+    $this->modelData->set('categoryName',$item->itemToCategories->category->name);
 
     return $this->view('pages.item.detail');
 
