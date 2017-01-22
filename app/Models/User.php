@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\library\token;
 use Hash;
 
 class User extends Model
@@ -9,13 +10,9 @@ class User extends Model
     protected $table = 'users';
     protected $fillable = ['email','password'];
     protected $hidden = ['password','remember_token'];
+    protected $modelRelated = array('Person');
+    protected $directory = true;
 
-    public $allowedDir = array(
-      'dirNames' => array('avatar','images')
-    );
-    public $allowedImage = array(
-      'type' => array('avatar','images')
-    );
 
     public function __construct() {  
       parent::__construct();
@@ -23,11 +20,16 @@ class User extends Model
 
     public static function boot()
     {
-    	// parent::boot();
+    	parent::boot();
 
-    	User::saving(function($user){
-        $user->attributes['password'] = Hash::make($user->attributes['password']);
+    	User::saving(function($model){
+        $model->password = Hash::make($model->attributes['password']);
+        $model->api_token = Token::generate();
       });
+
+      // User::saved(function($model){
+
+      // });
 
     }
 
@@ -35,7 +37,6 @@ class User extends Model
 
       $avatarFolder = storage_path($this->profileDirPath).$this->attributes['id'].'/avatar';
       $imageFolder = storage_path($this->profileDirPath).$this->attributes['id'].'/images';
-      // $storyFolder = storage_path($this->profileDirPath).'/'.$this->attributes['id'].'/story';
 
       if(!is_dir($avatarFolder)){
         mkdir($avatarFolder,0777,true);
@@ -44,10 +45,6 @@ class User extends Model
       if(!is_dir($imageFolder)){
         mkdir($imageFolder,0777,true);
       }
-
-      // if(!is_dir($storyFolder)){
-      //   mkdir($storyFolder,0777,true);
-      // }
       
     }
 

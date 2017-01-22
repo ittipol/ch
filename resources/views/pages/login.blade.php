@@ -1,4 +1,4 @@
-@extends('layouts.default.default')
+@extends('layouts.default.main')
 @section('content')
 
 <div class="bg-overlay"></div>
@@ -69,28 +69,39 @@
 
         let w = window.innerWidth;
 
-        if(w > 1200) {
+        if(w > 992) {
 
         	$('body').addClass('login-bg');
 
-        	// $('.login-form').removeClass('mobile');
+          let background = new Image();
+          background.src = '/images/login-bg.jpg';
 
-        	// let loginFormWidth = $('.login-form').width();
-        	// let loginFormHeight = $('.login-form').height();
+          let windowWidth = window.innerWidth;
+          // let windowHeight = window.innerHeight;
 
-        	// $('.login-form').css({
-        	// 	'margin-top':-(loginFormHeight/2),
-        	// 	'margin-left':-(loginFormWidth/2)
-        	// });
+          background.onload = function() {
+            // let bgHeight = background.height;
+            let bgWidth = background.width;
+            // let ratio = background.width / background.height;
+
+            if (bgWidth > windowWidth) {
+              $('body').css('background-size','auto 100%');
+            }else{
+              $('body').css('background-size','100% auto');
+            }
+
+            $('body').css({
+              'background-image':'url('+background.src+')',
+              'background-position': 'center'
+            });
+
+          }
 
         }else{
-
-        	$('.login-form').addClass('mobile');
 
         	$('.login-form').css({
         		'height':window.innerHeight,
         	});
-
 
         }
 

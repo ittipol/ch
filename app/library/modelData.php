@@ -113,6 +113,7 @@ class ModelData {
         'province_name' => $address->province->name,
         'district_name' => $address->district->name,
         'sub_district_name' => $address->subDistrict->name,
+        'full_address' => 'ต.'.$address->subDistrict->name.' อ.'.$address->district->name.' จ.'.$address->province->name,
         'geographic' => json_encode($geographic)
       ));
     }
@@ -181,7 +182,7 @@ class ModelData {
   public function loadContact($json = false) {
     $contact = $this->model->getRalatedModelData('Contact',array(
       'first' => true,
-      'fields' => array('phone_number','email','website')
+      'fields' => array('phone_number','email','line')
     ));
 
     if(!empty($contact)) {

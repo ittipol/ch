@@ -16,12 +16,12 @@ class Form {
   }
 
   public function loadFieldData($modelName,$options = array()) {
-    // $records = Service::loadModel($modelName)->all();
-    // $data = array();
-    // foreach ($records as $record) {
-    //   $data[$options['key']] = $record->{$options['field']};
-    // }
-    // $this->data[$options['index']] = $data;
+    $records = Service::loadModel($modelName)->all();
+    $data = array();
+    foreach ($records as $record) {
+      $data[$record->{$options['key']}] = $record->{$options['field']};
+    }
+    $this->data[$options['index']] = $data;
   }
 
   public function district() {
@@ -71,11 +71,20 @@ class Form {
 
   public function announcementType() {
     $records = Service::loadModel('AnnouncementType')->all();
-    $realEstateTypes = array();
+    $announcementTypes = array();
     foreach ($records as $announcementType) {
       $announcementTypes[$announcementType->id] = $announcementType->name;
     }
     $this->data['announcementTypes'] = $announcementTypes;
+  }
+
+  public function landAreaUnit() {
+    $records = Service::loadModel('LandAreaUnit')->all();
+    $landAreaUnits = array();
+    foreach ($records as $landAreaUnit) {
+      $landAreaUnits[$landAreaUnit->id] = $landAreaUnit->name;
+    }
+    $this->data['landAreaUnits'] = $landAreaUnits;
   }
 
   public function set($index,$value) {

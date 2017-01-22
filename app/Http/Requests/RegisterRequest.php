@@ -20,14 +20,14 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
       return [
-        'name.required' => 'กรุณากรอกชื่อ',
+        'Person.name.required' => 'กรุณากรอกชื่อ',
         'email.required' => 'กรุณากรอกอีเมล',
         'email.email' => 'อีเมลไม่ถูกต้อง',
-        'email.unique' => 'อีเมลถูกใช้งานแล้ว',
+        // 'email.unique' => 'อีเมลถูกใช้งานแล้ว',
         'password.required' => 'กรุณากรอกรหัสผ่าน',
         'password.min' => 'รัสผ่านต้องมีอย่างน้อย 4 อักขระ',
         'password.confirmed' => 'รหัสผ่านไม่ตรงกัน',
-        'password_confirmation.required' => 'กรุณากรอกรหัสผ่านอีกครั้ง',
+        // 'password_confirmation.required' => 'กรุณากรอกรหัสผ่านอีกครั้ง',
         'birth_date.date_format' => 'รูปแบบวันที่ไม่ถูกต้อง'
       ];
     }
@@ -40,12 +40,13 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
       return [
-          'name' => 'required|max:255',
-          'email' => 'required|email|unique:users,email',
+          'Person.name' => 'required|max:255',
+          // 'email' => 'required|email|unique:users,email',
+          'email' => 'required|email',
           'password' => 'required|min:4|max:255|confirmed',
-          'password_confirmation' => 'required',
-          'avatar' => 'mimes:jpeg,jpg,png|max:3072',
-          'birth_date' => 'required|date_format:Y-m-d'
+          // 'password_confirmation' => 'required',
+          // 'avatar' => 'mimes:jpeg,jpg,png|max:1024',
+          'birth_date' => 'date_format:Y-m-d'
       ];
     }
 

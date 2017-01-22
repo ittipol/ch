@@ -8,8 +8,8 @@
   <!-- Title  -->
   <title>Chonburi Square</title>
   <!-- use only in default layout -->
-  <link rel="stylesheet" href="{{ URL::asset('__css/layouts/header.css') }}" />
-  <link rel="stylesheet" href="{{ URL::asset('__css/layouts/footer.css') }}" />
+  <link rel="stylesheet" href="{{ URL::asset('__css/layouts/default/header.css') }}" />
+  <link rel="stylesheet" href="{{ URL::asset('__css/layouts/default/footer.css') }}" />
   <link rel="stylesheet" href="{{ URL::asset('__css/pages/user/register.css') }}" />
   <link rel="stylesheet" href="{{ URL::asset('__css/pages/user/login.css') }}" />
   

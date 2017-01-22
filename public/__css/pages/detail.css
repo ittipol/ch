@@ -73,7 +73,7 @@
 
 .image-gallery .image-gallary-display {
 	width: 100%;
-	height: 360px;
+	height: 400px;
 	text-align: center;
 	background-color: #ffffff;
 	margin: 20px;
@@ -101,6 +101,46 @@
 	line-height: 30px;
 }
 
+.tabs {
+	margin: 20px 0;
+	border-bottom: 1px solid #bababa;
+}
+
+.tabs span {
+	color: #000000;
+	background-color: #ececec;
+	padding: 12px 10px;
+	display: block;
+	position: relative;
+	cursor: pointer;
+}
+
+.tabs .tab:checked + span::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2px;
+	background-color: #2196F3;
+}
+
+.tabs label {
+	margin-bottom: 0;
+}
+
+.tabs label:nth-child(n+2) {
+	margin-left: -4px;
+}
+
+.tabs label > input[type="radio"] {
+	display: none;
+}
+
+.tab-content {
+	display: none;
+}
+
 .item-info .title-with-icon::before {
 	content: "";
 	width: 30px;
@@ -123,6 +163,10 @@
 
 .item-info .title-with-icon.location-pin::before {
 	background-image: url(/images/common/location-pin.png);
+}
+
+.item-info .title-with-icon.line-app::before {
+	background-image: url(/images/common/line.png);
 }
 
 /*==========  Non-Mobile First Method  ==========*/

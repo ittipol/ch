@@ -10,7 +10,7 @@ use App\Models\Person;
 use App\Models\PersonInterest;
 use App\Models\Word;
 use App\library\date;
-use App\library\Token;
+// use App\library\Token;
 use App\library\message;
 use App\library\service;
 use Auth;
@@ -75,31 +75,31 @@ class UserController extends Controller
       return redirect('/');
     }
 
-    $dateModel = new Date;
+   //  $dateModel = new Date;
 
-  	$thaiLatestYear = date('Y') + 543;
+  	// $thaiLatestYear = date('Y') + 543;
   	
-  	$day = array();
-  	$month = array();
-  	$year = array();
+  	// $day = array();
+  	// $month = array();
+  	// $year = array();
 
-  	for ($i=1; $i <= 31; $i++) { 
-  		$day[$i] = $i;
-  	}
+  	// for ($i=1; $i <= 31; $i++) { 
+  	// 	$day[$i] = $i;
+  	// }
 
-  	for ($i=1; $i <= 12; $i++) { 
-  		$month[$i] = $dateModel->getMonthName($i);
-  	}
+  	// for ($i=1; $i <= 12; $i++) { 
+  	// 	$month[$i] = $dateModel->getMonthName($i);
+  	// }
 
-  	for ($i=2500; $i <= $thaiLatestYear; $i++) { 
-  		$year[$i] = $i;
-  	}
+  	// for ($i=2500; $i <= $thaiLatestYear; $i++) { 
+  	// 	$year[$i] = $i;
+  	// }
 
-  	$this->data = array(
-  		'day' => $day,
-  		'month' => $month,
-  		'year' => $year
-  	);
+  	// $this->data = array(
+  	// 	'day' => $day,
+  	// 	'month' => $month,
+  	// 	'year' => $year
+  	// );
 
     return $this->view('pages.register');
 
@@ -109,43 +109,42 @@ class UserController extends Controller
 
     $user = new User;
   	$user->fill($request->all());
-    $user->api_token = Token::generate();
 
     if($user->save()){
 
-      // create folder
-      $user->createUserFolder();
+      // // create folder
+      // $user->createUserFolder();
 
-      // add avatar
-      $user->avatar($request->file('avatar'));
+      // // add avatar
+      // $user->avatar($request->file('avatar'));
 
-      // create profile
-      $profile = new Profile;
-      $profile->fill($request->all());
-      $profile->save();
+      // // create profile
+      // $profile = new Profile;
+      // $profile->fill($request->all());
+      // $profile->save();
 
-      // create person
-      $person = new Person;
-      $person->fill($request->all());
-      $person->user_id = $user->id;
-      $person->profile_id = $profile->id;
-      $person->save();
+      // // create person
+      // $person = new Person;
+      // $person->fill($request->all());
+      // $person->user_id = $user->id;
+      // $person->profile_id = $profile->id;
+      // $person->save();
 
-      $tags = array();
-      if(!empty($request->input('interests'))){
-        $word = new Word;
-        $words = $word->saveSpecial($request->input('interests'));
-      }
+      // $tags = array();
+      // if(!empty($request->input('interests'))){
+      //   $word = new Word;
+      //   $words = $word->saveSpecial($request->input('interests'));
+      // }
 
-      foreach ($words as $wordId => $word) {
-        $personInterest = new PersonInterest;
-        $personInterest->checkAndSave($person->id,$wordId);
-      }
+      // foreach ($words as $wordId => $word) {
+      //   $personInterest = new PersonInterest;
+      //   $personInterest->checkAndSave($person->id,$wordId);
+      // }
+
+      $message = new Message;
+      $message->registerSuccess();
 
     }
-
-    $message = new Message;
-    $message->registerSuccess();
 
     return Redirect::to('login');
   }

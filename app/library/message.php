@@ -50,8 +50,8 @@ class Message
     }
 
   public function registerSuccess() {
-    Session::flash('message.title', 'ขอบคุณสำหรับการสมัครสมาชิก');
-    Session::flash('message.desc', 'บัญชีของคุณพร้อมใช้งานได้แล้ว');
+    Session::flash('message.title', 'สมัครสมาชิกเส็จสิ้น');
+    Session::flash('message.desc', 'บัญชีของคุณพร้อมใช้งานแล้ว');
     Session::flash('message.type', 'success');
   }
 
@@ -59,24 +59,6 @@ class Message
     Session::flash('message.title', 'เกิดข้อผิดพลาด ไม่สามารถ'.$text.'ข้อมูลได้ โปรดลองใหม่อีกครั้ง');
     Session::flash('message.type', 'error');
   }
-
-  // public function companyRequireAtLeastOne() {
-  //   Session::flash('message.title', 'ไม่พบสถานประกอบการหรือร้านค้าของคุณ');
-  //   Session::flash('message.desc', 'กรุณาเพิ่มสถานประกอบการหรือร้านค้าของคุณอย่างน้อย 1 สถานประกอบการ');
-  //   Session::flash('message.type', 'error');
-  // } 
-
-  // public function companyNotFound() {
-  //   Session::flash('message.title', 'ไม่พบสถานประกอบการนี้ในระบบหรือคุณไม่ได้อยู่ในสถานประกอบการนี้');
-  //   Session::flash('message.desc', 'กรุณาตรวจสอบอีกครั้ง');
-  //   Session::flash('message.type', 'error');
-  // }
-
-  // public function DepartmentNotFound() {
-  //   Session::flash('message.title', 'ไม่พบแผนกนี้ระบบหรือคุณไม่ได้อยู่ในแผนกี้');
-  //   Session::flash('message.desc', 'กรุณาตรวจสอบอีกครั้ง');
-  //   Session::flash('message.type', 'error');
-  // }
 
   public function error($text = '') {
     Session::flash('message.title', 'เกิดข้อผิดพลาด '.$text);

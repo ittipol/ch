@@ -22,7 +22,7 @@ class RealEstateController extends Controller
       'defaultAnnouncementType' => 2
     );
 
-    return $this->view('pages.real-estate.form.post.real-estate');
+    return $this->view('pages.real-estate.form.real-estate_post');
   }
 
   public function submitPosting(CustomFormRequest $request) {

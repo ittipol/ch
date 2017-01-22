@@ -111,8 +111,6 @@ class Model extends BaseModel
       }
     }
     
-    // $attributes = array_map('trim', $attributes);
-    
     return $attributes;
   }
 

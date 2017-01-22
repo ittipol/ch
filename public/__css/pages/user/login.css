@@ -1,7 +1,5 @@
-body.login-bg {
-	background-image: url('/images/login-bg.jpg');
-	background-size: 100%;
-	background-position: center;
+body {
+	background-color: #ececec;
 }
 
 .bg-overlay {
@@ -12,6 +10,11 @@ body.login-bg {
 	height: 100%;
 	background-color: rgba(60,60,60,.3);
 	z-index: 5;
+}
+
+.button {
+	padding: 10px 30px;
+	background-color: #1565C0;
 }
 
 form {
@@ -41,19 +44,6 @@ input[type="password"] {
 	background-color: rgba(255,255,255,.7);
 }
 
-.login-form.mobile {
-	position: relative;
-	top: 0;
-	left: 0;
-	margin-top: 0;
-	margin-left: 0;
-	width: auto;
-}
-
-.login-form.mobile .login-form-inner {
-	background-color: #ffffff;
-}
-
 .login-form .logo {
 	color: #1565C0;
 	text-align: center;
@@ -68,11 +58,6 @@ input[type="password"] {
 
 .login-form-header-inner {
 	padding: 20px;
-}
-
-.button {
-	padding: 10px 30px;
-	background-color: #1565C0;
 }
 
 .fb-button {
@@ -92,4 +77,20 @@ input[type="password"] {
 	text-align: center;
 	position: relative;
 	display: block;
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+	.login-form {
+		position: relative;
+		top: 0;
+		left: 0;
+		margin-top: 0;
+		margin-left: 0;
+		width: auto;
+	}
+
+	.login-form .login-form-inner {
+		background-color: #ffffff;
+	}
 }

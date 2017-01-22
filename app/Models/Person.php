@@ -5,14 +5,19 @@ namespace App\Models;
 class Person extends Model
 {
   protected $table = 'people';
-  protected $fillable = ['user_id','profile_id'];
+  protected $fillable = ['user_id','name','gender','birth_date'];
 
   public function __construct() {  
     parent::__construct();
   }
 
-  public function profile() {
-    return $this->hasOne('App\Models\Profile','id');
+  public function __saveRelatedData($model,$options = array()) {
+
+    $options['value'] = array_merge($options['value'],array(
+      'user_id' => $model->id
+    ));
+
+    return $this->fill($options['value'])->save();
   }
 
 }

@@ -1,7 +1,7 @@
 .box {
-	background-color: #dedede;
 	height: 400px;
 	margin-bottom: 20px;
+	background-color: #dedede;
 }
 
 .box .inner {
@@ -17,6 +17,7 @@
 label.box {
 	height: auto;
 	background-color: #dedede;
+	position: relative;
 }
 
 label.box input[type="radio"] {
@@ -25,14 +26,40 @@ label.box input[type="radio"] {
 
 label.box input[type="radio"] + .inner {
 	color: #000000;
-	padding: 20px;
+	padding: 15px;
+	border: 5px solid #dedede;
 	cursor: pointer;
 }
 
 label.box input[type="radio"]:checked + .inner {
 	color: #ffffff;
-	background-color: #1976D2;
-	/*box-shadow: 0 0 10px 2px #1976D2;*/
+	background-color: #43A047;
+	border: 5px solid #2E7D32;
+}
+
+label.box input[type="radio"]:checked + .inner::before {
+	content: "";
+	position: absolute;
+	top: 5px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  background-image: url(/images/common/tick.png);
+  background-size: 20px;
+	background-repeat: no-repeat;
+	z-index: 9;
+}
+
+label.box input[type="radio"]:checked + .inner::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0 45px 45px 0;
+	border-color: transparent #2E7D32 transparent transparent;
 }
 
 .btn-group label.btn {

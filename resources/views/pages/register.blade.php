@@ -1,4 +1,4 @@
-@extends('layouts.default.default')
+@extends('layouts.default.main')
 @section('content')
 	<div class="register-wrapper">
 		<div class="header-container">
@@ -7,20 +7,37 @@
 		</div>
 
 		<div class="register-form">
+
+			<?php if(!empty($errors->all())): ?>
+				<div class="form-error-messages">
+					<div class="form-error-messages-inner">
+						<h3>เกิดข้อผิดพลาด!!!</h3>
+							<ul>
+							<?php foreach ($errors->all() as $message) { ?>
+								<li class="error-messages"><?php echo $message; ?></li>
+							<?php	} ?>
+						</ul>
+					</div>
+				</div>
+			<?php endif; ?>
+
+			<?php
+				echo Form::open(['url' => 'register', 'method' => 'post', 'enctype' => 'multipart/form-data']);
+			?>
 			
 			<div class="register-form-inner">
 			
 				<div class="form-row">
-					<input type="text" name="email" placeholder="ชื่อ" autocomplete="off">
+					<input type="text" name="Person[name]" placeholder="ชื่อ" autocomplete="off">
 				</div>
 				<div class="form-row">
 					<input type="text" name="email" placeholder="อีเมล" autocomplete="off">
 				</div>
 				<div class="form-row">
-					<input type="password" name="email" placeholder="รหัสผ่าน (อย่างน้อย 4 อักขระ)" autocomplete="off">
+					<input type="password" name="password" placeholder="รหัสผ่าน (อย่างน้อย 4 อักขระ)" autocomplete="off">
 				</div>
 				<div class="form-row">
-					<input type="password" name="email" placeholder="ป้อนรหัสผ่านอีกครั้ง" autocomplete="off">
+					<input type="password" name="password_confirmation" placeholder="ป้อนรหัสผ่านอีกครั้ง" autocomplete="off">
 				</div>
 
 				<?php
@@ -29,9 +46,14 @@
 					));
 				?>
 
-				<h4 class="text-center">เป็นสมาชิกแล้ว <a href="{{URL::to('register')}}">ลงชื่อเข้าใช้</a></h4>
+				<h4 class="text-center">เป็นสมาชิกแล้ว <a href="{{URL::to('login')}}">ลงชื่อเข้าใช้</a></h4>
 
 			</div>
+
+			<?php
+				echo Form::close();
+			?>
+
 		</div>
 	</div>
 
@@ -40,27 +62,16 @@
 	    class RegisterPage {
 	      constructor() {}
 
-	      init() {
-
-	        let w = window.innerWidth;
-
-	        if(w <= 1200) {
-
-	        	$('.register-wrapper').addClass('mobile');
-
-	        	// $('.login-form').css({
-	        	// 	'height':window.innerHeight,
-	        	// });
-
-	        }
-
-	      }
+	      init() {}
 
 	    }
 
 	    $(document).ready(function(){
-	      registerPage = new RegisterPage();
-	      registerPage.init();
+	      // registerPage = new RegisterPage();
+	      // registerPage.init();
+
+	      $('body').css('background-color','#337ab7');
+
 	    });
 	  </script>
 @stop

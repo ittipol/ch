@@ -1,8 +1,6 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-
 <div class="container">
 
   <div class="container-header">
@@ -84,14 +82,14 @@
       </div>
     </div>
 
-    <div class="form-row">
+<!--     <div class="form-row">
       <?php 
         echo Form::label('announcement_detail', 'รายละเอียดของประกาศนี้');
         echo Form::textarea('announcement_detail', null, array(
           'class' => 'ckeditor'
         ));
       ?>
-    </div>
+    </div> -->
 
     <div class="form-row">
       <?php 
@@ -156,30 +154,46 @@
         ข้อมูลการติดต่อ
       </div>
 
-      <div class="form-section-inner">
+      <div class="form-row">
+      <?php 
+        echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
+        'class' => 'required'
+        ));
+        echo Form::text('Contact[phone_number]', null, array(
+          'placeholder' => 'เบอร์โทรศัพท์',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      </div>
 
-        <div class="form-row">
-        <?php 
-          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
-          'class' => 'required'
-          ));
-          echo Form::text('Contact[phone_number]', null, array(
-            'placeholder' => 'เบอร์โทรศัพท์',
-            'autocomplete' => 'off'
-          ));
-        ?>
-        </div>
+      <div class="form-row">
+      <?php
+        echo Form::label('Contact[email]', 'อีเมล');
+        echo Form::text('Contact[email]', null, array(
+          'placeholder' => 'อีเมล',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      </div>
 
-        <div class="form-row">
-        <?php
-          echo Form::label('Contact[email]', 'อีเมล');
-          echo Form::text('Contact[email]', null, array(
-            'placeholder' => 'อีเมล',
-            'autocomplete' => 'off'
-          ));
-        ?>
-        </div>
+      <div class="form-row">
+      <?php
+        echo Form::label('Contact[email]', 'Line');
+        echo Form::text('Contact[email]', null, array(
+          'placeholder' => 'อีเมล',
+          'autocomplete' => 'off'
+        ));
+      ?>
+      </div>
 
+      <div class="form-row">
+      <?php
+        echo Form::label('Contact[email]', 'Line');
+        echo Form::text('Contact[email]', null, array(
+          'placeholder' => 'อีเมล',
+          'autocomplete' => 'off'
+        ));
+      ?>
       </div>
 
     </div>
@@ -223,12 +237,6 @@
         ?>
       </div>
 
-      <div class="form-row">
-        <?php echo Form::label('', 'ระบุตำแหน่บนแผนที่'); ?>
-        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-        <div id="map"></div>
-      </div>
-
     </div>
 
   </div>
@@ -250,13 +258,11 @@
   $(document).ready(function(){
     const images = new Images('_image_group',8);
     const district = new District();
-    const map = new Map();
     const tagging = new Tagging();
     const form = new Form();
 
     images.load();
     district.load();
-    map.load();
     tagging.load();
     form.load();
 

@@ -50,7 +50,7 @@ class ItemController extends Controller
       'defaultAnnouncementType' => 2
     );
 
-    return $this->view('pages.item.form.post.item');
+    return $this->view('pages.item.form.item_post');
   }
 
   public function submitPosting(CustomFormRequest $request) {

@@ -58,7 +58,6 @@
             <div class="item-info">
 
               <div class="item-info-row">
-                <!-- <p>เบอร์โทรศัพท์</p> -->
                 @if(!empty($modelData['Contact']['phone_number']))
                 <h4 class="title-with-icon phone">{{$modelData['Contact']['phone_number']}}</h4>
                 @else
@@ -67,7 +66,6 @@
               </div>
 
               <div class="item-info-row">
-                <!-- <p>อีเมล</p> -->
                 @if(!empty($modelData['Contact']['email']))
                 <h4 class="title-with-icon email">{{$modelData['Contact']['email']}}</h4>
                 @else
@@ -78,6 +76,15 @@
               <div class="item-info-row">
                 <h4 class="title-with-icon location-pin">ต.{{$modelData['Address']['sub_district_name']}} อ.{{$modelData['Address']['district_name']}} จ.{{$modelData['Address']['province_name']}}</h4>
               </div>
+
+              <div class="item-info-row">
+                @if(!empty($modelData['Contact']['line']))
+                <h4 class="title-with-icon line-app">{{$modelData['Contact']['line']}}</h4>
+                @else
+                <h4 class="title-with-icon line-app">-</h4>
+                @endif
+              </div>
+
             </div>
             
           </div>
@@ -99,25 +106,23 @@
 
     <div class="line space-top-bottom-20"></div>
 
-    <h4>ตำแหน่งบนแผนที่</h4>
-    <p>
-
-    </p>
-
-    <h4>สินค้าที่คล้ายคลึงกัน</h4>
+    <h4>สินค้าที่คล้ายกัน</h4>
+    <p>ไม่พบสินค้าที่คล้ายกัน</p>
 
   </div>
 
   <script type="text/javascript">
 
     class ImageGallery {
-      constructor() {
+      constructor() {}
 
+      load() {
+        this.init();
+        this.bind();
       }
 
       init() {
         this.alignCenter();
-        this.bind();
       }
 
       bind() {
@@ -125,7 +130,22 @@
         let _this = this;
 
         $('.preview-image').on('click',function(){
+
           _this.setImage($(this).data('url'));
+          _this.alignCenter();
+
+          // let image = new Image();
+          // image.src = $(this).data('url');
+
+          // image.onload = function() {
+          //   $('#image_display').css('display','none');
+          //   _this.setImage(image.src);
+          //   _this.alignCenter();
+          //   $('#image_display').css('display','inline-block');
+          // }
+
+          // <div id="item_detail" class="tab-content"></div>
+
         });
 
         $(window).resize(function() {
@@ -136,7 +156,6 @@
 
       setImage(url) {
         $('#image_display').attr('src',url);
-        this.alignCenter();
       }
 
       alignCenter() {
@@ -153,9 +172,56 @@
 
     }
 
+    class Tabs {
+      constructor(tab = '') {
+        this.currentTab = tab;
+      }
+
+      load() {
+        this.init();
+        this.bind();
+      }
+
+      init() {
+        this.showTab(this.currentTab);
+      }
+
+      bind() {
+
+        let _this = this;
+
+        $('.tab').on('click',function(){
+          if($(this).is(':checked')) {
+            _this.showTab($(this).data('tab'));
+          }
+        });
+
+      }
+
+      showTab(tab) {
+        $('.tab-content').css('display','none');
+        $('#'+tab).css('display','block');
+      }
+
+      // <div class="tabs clearfix">
+      //   <label>
+      //     <input class="tab" type="radio" name="tabs"  data-tab="item_detail" checked >
+      //     <span href="#">รายละเอียดสินค้า</span>
+      //   </label>
+      //   <label>
+      //     <input class="tab" type="radio" name="tabs" data-tab="announcement_detail" >
+      //     <span href="#">รายละเอียดเพิ่มเติม</span>
+      //   </label>
+      // </div>
+
+    }
+
     $(document).ready(function(){
       imageGallery = new ImageGallery();
-      imageGallery.init();
+      imageGallery.load();
+
+      let tabs = new Tabs('item_detail');
+      tabs.load();
     });
   </script>
 @stop
