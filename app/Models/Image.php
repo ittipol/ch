@@ -151,7 +151,6 @@ class Image extends Model
   public function base64Encode() {
 
     $dirPath = 'image/'.strtolower($this->model).'/';
-    // $path = $this->noImagePath;
 
     $path = '';
     if(File::exists($this->getImagePath())){
@@ -181,6 +180,20 @@ class Image extends Model
 
   public function getAcceptedFileTypes() {
     return $this->acceptedFileTypes;
+  }
+
+  public function buildModelData() {
+
+    if(empty($this)) {
+      return null;
+    }
+    
+    return array(
+      'filename' => $this->filename,
+      'description' => $this->description,
+      '_url' => $this->getImageUrl()
+    );
+
   }
 
 }

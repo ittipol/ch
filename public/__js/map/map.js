@@ -2,7 +2,6 @@ class Map {
   constructor() {}
 
   load(geographic) {
-    // this.createHiddenData();
 
     let lat = 13.297587657705135;
     let lng = 100.94727516174316;
@@ -16,8 +15,6 @@ class Map {
         lat = _geographic.latitude;
         lng = _geographic.longitude;
 
-        // $("#lat").val(lat);
-        // $("#lng").val(lng);
         this.createHiddenData(lat,lng);
 
         setMarker = true;
@@ -52,6 +49,7 @@ class Map {
     let input = document.getElementById('pac-input');
     let searchBox = new google.maps.places.SearchBox(input);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    
 
     // Bias the SearchBox results towards current map's viewport.
     map.addListener('bounds_changed', function() {
@@ -69,8 +67,6 @@ class Map {
         position: {lat: event.latLng.lat(), lng: event.latLng.lng()}
       });
 
-      // $("#lat").val(event.latLng.lat());
-      // $("#lng").val(event.latLng.lng());
       _this.createHiddenData(event.latLng.lat(),event.latLng.lng())
 
       geocoder.geocode({
@@ -78,7 +74,8 @@ class Map {
       }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[0]) {
-            $("#address").text(results[0].formatted_address);
+            // display address
+            // $("#address").text(results[0].formatted_address);
           }
         }
       });
@@ -102,8 +99,9 @@ class Map {
           return;
         }
 
-        $("#lat").val(place.geometry.location.lat());
-        $("#lng").val(place.geometry.location.lng());
+        // $("#lat").val(place.geometry.location.lat());
+        // $("#lng").val(place.geometry.location.lng());
+        _this.createHiddenData(place.geometry.location.lat(),place.geometry.location.lng());
 
         geocoder.geocode({
           'latLng': place.geometry.location
@@ -129,6 +127,14 @@ class Map {
       });
       map.fitBounds(bounds);
     });
+
+  }
+
+  markable() {
+
+  }
+
+  searchable() {
 
   }
 

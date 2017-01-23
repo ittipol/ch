@@ -2,6 +2,10 @@
 	background-color: #bababa;
 }
 
+.detail .price {
+	color: #2962FF;
+}
+
 .detail-title {
 	border-bottom: 1px solid #bababa;
 	margin-bottom: 20px;

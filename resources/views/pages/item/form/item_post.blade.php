@@ -5,7 +5,7 @@
 
   <div class="container-header">
     <div class="row">
-      <div class="col-lg-6 col-sm-12">
+      <div class="col-lg-12">
         <div class="title">
           ลงประกาศ ซื้อ ขาย สินค้า
         </div>
@@ -93,8 +93,8 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('item_detail', 'รายละเอียดของสินค้า');
-        echo Form::textarea('item_detail', null, array(
+        echo Form::label('description', 'รายละเอียดของสินค้า');
+        echo Form::textarea('description', null, array(
           'class' => 'ckeditor'
         ));
       ?>

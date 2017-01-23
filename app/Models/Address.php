@@ -45,4 +45,41 @@ class Address extends Model
     
   }
 
+  public function buildModelData() {
+
+    if(empty($this)) {
+      return null;
+    }
+    
+    $geographic = array();
+    if(!empty($this->latitude) && !empty($this->latitude)) {
+      $geographic['latitude'] = $this->latitude;
+      $geographic['longitude'] = $this->longitude;
+    }
+
+    $fullAddress = '';
+    if(!empty($this->subDistrict->name)) {
+      $fullAddress .= ' ต.'.$this->subDistrict->name;
+    }
+
+    if(!empty($this->district->name)) {
+      $fullAddress .= ' อ.'.$this->district->name;
+    }
+
+    if(!empty($this->province->name)) {
+      $fullAddress .= ' จ.'.$this->province->name;
+    }
+
+    return array(
+      'address' => $this->address,
+      'description' => $this->description,
+      '_province_name' => $this->province->name,
+      '_district_name' => $this->district->name,
+      '_sub_district_name' => $this->subDistrict->name,
+      '_full_address' => trim($fullAddress),
+      '_geographic' => json_encode($geographic)
+    );
+    
+  }
+
 }

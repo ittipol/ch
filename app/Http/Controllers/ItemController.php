@@ -15,7 +15,7 @@ class ItemController extends Controller
   }
 
   public function detail($itemId) {
-    $item = Service::loadModel('Item')->find($itemId);
+    $item = $this->model->find($itemId);
 
     if(empty($item)) {
       $this->error = array(
@@ -24,17 +24,15 @@ class ItemController extends Controller
       return $this->error();
     }
 
-    $announcementType = $item->announcementType;
-    
-    $this->form->setModel($item);
-
     $this->modelData->setModel($item);
     $this->modelData->loadAddress();
     $this->modelData->loadImage();
     $this->modelData->loadTagging();
     $this->modelData->loadContact();
-    $this->modelData->set('announcementType',$announcementType->getAttributes());
+    $this->modelData->set('announcementType',$item->announcementType->getAttributes());
     $this->modelData->set('categoryName',$item->itemToCategories->category->name);
+
+    // $this->form->setModel($item);
 
     return $this->view('pages.item.detail');
 
@@ -43,6 +41,14 @@ class ItemController extends Controller
   public function post() {
     $this->form->setModel($this->model);
     $this->form->district();
+    $this->form->loadFieldData('District',array(
+      'conditions' => array(
+        ['province_id','=',9]
+      ),
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'districts'
+    ));
     $this->form->itemCategory();
     $this->form->announcementType();
 

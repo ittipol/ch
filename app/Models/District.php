@@ -5,9 +5,6 @@ namespace App\Models;
 class District extends Model
 {
   protected $table = 'districts';
-  protected $fillable = ['name','name_en','description'];
-
-  public function __construct() {  
-    parent::__construct();
-  }
+  protected $fillable = ['province_id','name','name_en','zip_code'];
+  public $timestamps  = false;
 }

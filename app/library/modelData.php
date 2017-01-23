@@ -15,10 +15,14 @@ class ModelData {
 	  $this->model = $model;
 	}
 
-	  public function loadData() {
+	  public function loadData($options = array()) {
 
     if(empty($this->model)) {
       return false;
+    }
+
+    if(empty($options['json'])) {
+      $options['json'] = array();
     }
 
     $modeldNames = $this->model->getModelRelated();
@@ -29,24 +33,26 @@ class ModelData {
         $modelName = $key;
       }
 
-      $this->_getRelatedData($modelName);
+      $json = in_array($modelName, $options['json']);
+
+      $this->getRelatedModelData($modelName,$json);
 
     }
   }
 
-  private function _getRelatedData($modelName,$options = array()) {
+  private function getRelatedModelData($modelName,$json = false) {
 
     switch ($modelName) {
       case 'Address':
-        $this->loadAddress();
+        $data = $this->loadAddress();
         break;
 
       case 'Image':
-        $this->loadImage(true);
+        $data = $this->loadImage();
         break;
 
       case 'Tagging':
-        $this->loadTagging();
+        $data = $this->loadTagging();
         break;
 
       // case 'OfficeHour':
@@ -88,13 +94,20 @@ class ModelData {
       //   break;
 
       case 'Contact':
-        $this->loadContact();
+        $data = $this->loadContact();
         break;
     }
 
+    if($json) {
+      $data = json_encode($data);
+    }
+
+    $this->data[$modelName] = $data; 
+
   }
 
-  public function loadAddress($json = false) {
+  private function loadAddress() {
+
     $address = $this->model->getRalatedModelData('Address',
       array(
         'first' => true,
@@ -102,57 +115,35 @@ class ModelData {
       )
     );
 
-    if(empty($address)) {
-      $address = array();
-    }else{
-
-      $geographic['latitude'] = $address->latitude;
-      $geographic['longitude'] = $address->longitude;
-
-      $address = array_merge($address->getAttributes(),array(
-        'province_name' => $address->province->name,
-        'district_name' => $address->district->name,
-        'sub_district_name' => $address->subDistrict->name,
-        'full_address' => 'ต.'.$address->subDistrict->name.' อ.'.$address->district->name.' จ.'.$address->province->name,
-        'geographic' => json_encode($geographic)
-      ));
+    if(empty($address)){
+      return array();
     }
 
-    if($json) {
-      $address = json_encode($address);
-    }
-
-    $this->data['Address'] = $address;
+    return $address->buildModelData();
 
   }
 
-  public function loadImage($json = false) {
+  private function loadImage() {
 
     $images = $this->model->getRalatedModelData('Image',array(
       'fields' => array('model','model_id','filename','description'),
       'first' => false
     ));
 
+    if(empty($images)){
+      return array();
+    }
+
     $_images = array();
-    if(!empty($images)){
-      foreach ($images as $image) {
-        $_images[] = array(
-          'filename' => $image->filename,
-          'description' => $image->description,
-          'url' => $image->getImageUrl()
-        );
-      }
+    foreach ($images as $image) {
+      $_images[] = $image->buildModelData();
     }
 
-    if($json) {
-      $_images = json_encode($_images);
-    }
-
-    $this->data['Image'] = $_images;
+    return $_images;
 
   }
 
-  public function loadTagging($json = false) {
+  private function loadTagging() {
     $taggings = $this->model->getRalatedModelData('Tagging',
       array(
         'fields' => array('word_id'),
@@ -160,42 +151,30 @@ class ModelData {
       )
     );
 
-    $word = array();
-    if(!empty($taggings)) {
-
-      foreach ($taggings as $tagging) {
-        $word[] = array(
-          'id' =>  $tagging->word->id,
-          'name' =>  $tagging->word->word
-        );
-      }
-
+    if(empty($taggings)) {
+      return array();
     }
 
-    if($json) {
-      $word = json_encode($word);
+    $words = array();
+    foreach ($taggings as $tagging) {
+      $words[] = $tagging->buildModelData();
     }
 
-    $this->data['Tagging'] = $word;
+    return $words;
+
   }
 
-  public function loadContact($json = false) {
+  private function loadContact() {
     $contact = $this->model->getRalatedModelData('Contact',array(
       'first' => true,
       'fields' => array('phone_number','email','line')
     ));
 
-    if(!empty($contact)) {
-      $contact = $contact->getAttributes();
-    }else{
-      $contact = array();
+    if(empty($contact)) {
+      return array();
     }
 
-    if($json) {
-      $contact = json_encode($contact);
-    }
-
-    $this->data['Contact'] = $contact;
+    return $contact->getAttributes();
 
   }
 
@@ -209,9 +188,15 @@ class ModelData {
       return false;
     }
 
+    if(method_exists($this->model,'buildModelData')) {
+      $_data = $this->model->buildModelData();
+    }else{
+      $_data = $this->model->getAttributes();
+    }
+
     $data = array(
       'modelData' => array_merge(
-        $this->model->getAttributes(),
+        $_data,
         $this->data
       )
     );

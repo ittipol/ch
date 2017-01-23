@@ -5,7 +5,7 @@
 <li>
   <a href="{{URL::to('user/account')}}"><img class="avatar" src="/avatar" /></a>
 </li>
-<li><a href="{{URL::to('user/account')}}">{{Session::get('Person.Profile.name')}}</a><li>
+<li><a href="{{URL::to('user/account')}}">{{Session::get('Person.name')}}</a><li>
 <li><a href="{{URL::to('logout')}}">ออกจากระบบ</a><li>
 @endif -->
 <div id="main_navigation" class="main-navigation">
@@ -35,7 +35,7 @@
             <img src="/avatar" />
           </a>
           <div class="account-description pull-left">
-            <div>{{Session::get('Person.Profile.name')}}</div>
+            <div>{{Session::get('Person.name')}}</div>
             <div><a class="avatar pull-left" href="{{URL::to('user/account')}}">จัดการบัญชี</a></div>
           </div>
           <div class="additional-option">

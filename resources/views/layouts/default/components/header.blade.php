@@ -15,7 +15,7 @@
                 <li>
                   <a href="{{URL::to('user/account')}}"><img class="avatar" src="/avatar" /></a>
                 </li>
-                <li><a href="{{URL::to('user/account')}}">{{Session::get('Person.Profile.name')}}</a><li>
+                <li><a href="{{URL::to('user/account')}}">{{Session::get('Person.name')}}</a><li>
                 <li><a href="{{URL::to('logout')}}">ออกจากระบบ</a><li>
                 @endif
                 <li><a href="#">ข้อเสนอแนะ</a></li> 

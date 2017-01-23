@@ -1,15 +1,17 @@
 @extends('layouts.blackbox.main')
 @section('content')
+
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+
   <div class="detail container">
 
     <div class="detail-title">
       <h4 class="sub-title">ประกาศ{{$modelData['announcementType']['name']}}</h4>
       <h2 class="title">{{$modelData['name']}}</h2>
       <div class="title-box-group">
-        <a class="title-box">@if($modelData['used'] == 1) สินค้าใหม่ @else สินค้ามือสอง @endif</a>
-        <a class="title-box">{{$modelData['categoryName']}}</a>
+        <a class="title-box">{{$modelData['realEstateType']['name']}}</a>
         @foreach ($modelData['Tagging'] as $tagging)
-          <a class="title-box">{{$tagging['name']}}</a>
+          <a class="title-box">{{$tagging['_word']}}</a>
         @endforeach
       </div>
     </div>
@@ -23,7 +25,7 @@
             <div class="image-gallary-display">
               <div class="image-gallary-display-inner">
                 @if(!empty($modelData['Image'][0]))
-                <img id="image_display" src="{{$modelData['Image'][0]['url']}}">
+                <img id="image_display" src="{{$modelData['Image'][0]['_url']}}">
                 @else
                 <img id="image_display" src="/images/common/no-img.png">
                 @endif
@@ -37,7 +39,7 @@
             @if(!empty($modelData['Image']))
             <div class="image-gallery-preview clearfix">
               @foreach ($modelData['Image'] as $image)
-                <div class="preview-image" style="background-image:url('{{$image['url']}}')" data-url="{{$image['url']}}"></div>
+                <div class="preview-image" style="background-image:url({{$image['_url']}})" data-url="{{$image['_url']}}"></div>
               @endforeach
             </div>
 
@@ -48,7 +50,7 @@
 
               <div class="item-info-row">
                 <p>ราคา{{$modelData['announcementType']['name']}}</p>
-                <h4>{{$modelData['price']}} บาท</h4>
+                <h4 class="price">{{$modelData['_price']}}</h4>
               </div>
 
             </div>
@@ -74,7 +76,7 @@
               </div>
 
               <div class="item-info-row">
-                <h4 class="title-with-icon location-pin">ต.{{$modelData['Address']['sub_district_name']}} อ.{{$modelData['Address']['district_name']}} จ.{{$modelData['Address']['province_name']}}</h4>
+                <h4 class="title-with-icon location-pin">{{$modelData['Address']['_full_address']}}</h4>
               </div>
 
               <div class="item-info-row">
@@ -106,6 +108,11 @@
 
     <div class="line space-top-bottom-20"></div>
 
+    <h4>ตำแหน่งบนแผนที่</h4>
+    <!-- <input id="pac-input" class="controls" type="text" placeholder="Search Box"> -->
+    <div id="map"></div>
+
+    <div class="line space-top-bottom-20"></div>
     <h4>สินค้าที่คล้ายกัน</h4>
     <p>ไม่พบสินค้าที่คล้ายกัน</p>
 
@@ -222,6 +229,9 @@
 
       let tabs = new Tabs('item_detail');
       tabs.load();
+
+      const map = new Map();
+      map.load('<?php echo $modelData["Address"]["_geographic"]; ?>');
     });
   </script>
 @stop

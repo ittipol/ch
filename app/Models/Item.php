@@ -5,7 +5,7 @@ namespace App\Models;
 class Item extends Model
 {
   protected $table = 'items';
-  protected $fillable = ['name','announcement_detail','item_detail','price','announcement_type_id','used','created_by'];
+  protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','created_by'];
   protected $modelRelated = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
 

@@ -16,7 +16,14 @@ class Form {
   }
 
   public function loadFieldData($modelName,$options = array()) {
-    $records = Service::loadModel($modelName)->all();
+    $model = Service::loadModel($modelName);
+
+    if(!empty($options['conditions'])){
+      $records = $model->where($options['conditions'])->get();
+    }else{
+      $records = $model->all();
+    }
+    
     $data = array();
     foreach ($records as $record) {
       $data[$record->{$options['key']}] = $record->{$options['field']};
@@ -78,13 +85,22 @@ class Form {
     $this->data['announcementTypes'] = $announcementTypes;
   }
 
-  public function landAreaUnit() {
-    $records = Service::loadModel('LandAreaUnit')->all();
-    $landAreaUnits = array();
-    foreach ($records as $landAreaUnit) {
-      $landAreaUnits[$landAreaUnit->id] = $landAreaUnit->name;
+  // public function landAreaUnit() {
+  //   $records = Service::loadModel('LandAreaUnit')->all();
+  //   $landAreaUnits = array();
+  //   foreach ($records as $landAreaUnit) {
+  //     $landAreaUnits[$landAreaUnit->id] = $landAreaUnit->name;
+  //   }
+  //   $this->data['landAreaUnits'] = $landAreaUnits;
+  // }
+
+  public function realEstateFeatures($options = array()) {
+    $records = Service::loadModel('RealEstateFeature')->all();
+    $realEstateFeatures = array();
+    foreach ($records as $realEstateFeature) {
+      $realEstateFeatures[$realEstateFeature->id] = $realEstateFeature->name;
     }
-    $this->data['landAreaUnits'] = $landAreaUnits;
+    $this->data['realEstateFeatures'] = $realEstateFeatures;
   }
 
   public function set($index,$value) {

@@ -12,15 +12,25 @@ use Schema;
 class Model extends BaseModel
 {
   public $modelName;
+
   public $modelAlias;
+
   protected $storagePath = 'app/public/';
+
   protected $state = 'create';
-  protected $formModelData;
-  protected $relatedModel;
-  protected $sortingFields;
+
+  protected $formModelData = array();
+
+  protected $relatedModel = array();
+
+  protected $sortingFields = array();
+
   protected $behavior;
+
   protected $validation;
+
   protected $directory = false;
+
   protected $directoryPath;
   
   public function __construct(array $attributes = []) { 
@@ -103,7 +113,7 @@ class Model extends BaseModel
     if(!empty($attributes)) {
       foreach ($this->fillable as $field) {
 
-        if(empty($attributes[$field])) {
+        if(empty($attributes[$field]) || is_array($attributes[$field])) {
           continue;
         }
 
@@ -310,6 +320,10 @@ class Model extends BaseModel
     }
     
     return $this->validation;
+  }
+
+  public function getFillable() {
+    return $this->fillable;
   }
 
 }

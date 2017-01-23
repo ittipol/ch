@@ -23,7 +23,7 @@ Route::post('login','UserController@auth');
 
 // Register
 Route::get('register','UserController@registerForm')->middleware('guest');
-Route::post('register','UserController@registerAdd')->middleware('guest');
+Route::post('register','UserController@register')->middleware('guest');
 
 Route::get('safe_image/{file}', 'StaticFileController@serveImages');
 Route::group(['middleware' => 'auth'], function () {
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');
 
-// Secondhand
+// Person -> Item
 Route::group(['middleware' => 'auth'], function () {
   Route::get('item/post','ItemController@post');
   Route::post('item/post','ItemController@submitPosting');
@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
   //   'uses' => 'RealEstateController@editingSubmit'
   // ]);
 });
+Route::get('real-estate/detail/{real_estate_id}','RealEstateController@detail');
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {

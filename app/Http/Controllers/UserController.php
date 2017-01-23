@@ -55,7 +55,7 @@ class UserController extends Controller
       // Store data
       $person = Person::find(Auth::user()->id);
       Session::put('Person.id',$person->id);
-      Session::put('Person.Profile.name',$person->profile->name);
+      Session::put('Person.name',$person->name);
 
       $message = new Message;
       $message->loginSuccess();
@@ -105,7 +105,7 @@ class UserController extends Controller
 
   }
 
-  public function registerAdd(RegisterRequest $request) {   
+  public function register(RegisterRequest $request) {   
 
     $user = new User;
   	$user->fill($request->all());
