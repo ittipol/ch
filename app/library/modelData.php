@@ -42,6 +42,7 @@ class ModelData {
 
   private function getRelatedModelData($modelName,$json = false) {
 
+    $data = array();
     switch ($modelName) {
       case 'Address':
         $data = $this->loadAddress();
@@ -188,15 +189,15 @@ class ModelData {
       return false;
     }
 
-    if(method_exists($this->model,'buildModelData')) {
-      $_data = $this->model->buildModelData();
-    }else{
-      $_data = $this->model->getAttributes();
-    }
+    // if(method_exists($this->model,'buildModelData')) {
+    //   $_data = $this->model->buildModelData();
+    // }else{
+    //   $_data = $this->model->getAttributes();
+    // }
 
     $data = array(
       'modelData' => array_merge(
-        $_data,
+        $this->model->buildModelData(),
         $this->data
       )
     );

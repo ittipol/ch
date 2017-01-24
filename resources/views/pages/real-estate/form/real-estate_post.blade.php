@@ -94,9 +94,7 @@
 
           <div class="form-row">
             <?php 
-              echo Form::label('name', 'พื้นที่ใช้สอย', array(
-                'class' => 'required'
-              ));
+              echo Form::label('name', 'พื้นที่ใช้สอย');
             ?>
             <span class="input-addon">
               <input class="home-area" type="text" name="home_area[sqm]" placeholder="พื้นที่ใช้สอย" autocomplete="off">
@@ -106,31 +104,21 @@
 
           <div class="form-row">
             <?php 
-              echo Form::label('name', 'ขนาดที่ดิน', array(
-                'class' => 'required'
-              ));
+              echo Form::label('name', 'พื้นที่ที่ดิน');
             ?>
 
-            <!-- <p>
-              1 ไร่  = 4 งาน
-              <br/>
-              1 งาน = 100 ตารางวา 
-              <br/>
-              1 ตารางวา = 4 ตารางเมตร
-            </p> -->
-
             <span class="input-addon">
-              <input id="rai" class="land-area" type="text" name="land_area['rai']" placeholder="ไร่" autocomplete="off">
+              <input id="rai" class="land-area" type="text" name="land_area[rai]" placeholder="ไร่" autocomplete="off">
               <span>ไร่</span>
             </span>
 
             <span class="input-addon">
-              <input id="ngan" class="land-area" type="text" name="land_area['ngan']" placeholder="งาน" autocomplete="off">
+              <input id="ngan" class="land-area" type="text" name="land_area[ngan]" placeholder="งาน" autocomplete="off">
               <span>งาน</span>
             </span>
 
             <span class="input-addon">
-              <input id="wa" class="land-area" type="text" name="land_area['wa']" placeholder="ตารางวา" autocomplete="off">
+              <input id="wa" class="land-area" type="text" name="land_area[wa]" placeholder="ตารางวา" autocomplete="off">
               <span>ตารางวา</span>
             </span>
 
@@ -146,40 +134,40 @@
 
           <div class="form-row">
             <?php 
-              echo Form::label('name', 'รายละเอียดภายในบ้าน');
+              echo Form::label('name', 'คุณสมบัติ');
             ?>
 
             <div class="input-addon-group">
               <span class="input-addon">
                 <span>ห้องนอน</span>
-                <input type="text" name="indoor['bedroom']" placeholder="ห้องนอน" autocomplete="off" value="0">
+                <input type="text" name="indoor[bedroom]" placeholder="ห้องนอน" autocomplete="off" value="0">
               </span>
 
               <span class="input-addon">
                 <span>ห้องน้ำ</span>
-                <input type="text" name="indoor['bathroom']" placeholder="ห้องน้ำ" autocomplete="off" value="0">
+                <input type="text" name="indoor[bathroom]" placeholder="ห้องน้ำ" autocomplete="off" value="0">
               </span>
 
               <span class="input-addon">
                 <span>ห้องนั่งเล่น</span>
-                <input type="text" name="indoor['living_room']" placeholder="ห้องนั่งเล่น" autocomplete="off" value="0">
+                <input type="text" name="indoor[living_room]" placeholder="ห้องนั่งเล่น" autocomplete="off" value="0">
               </span>
             </div>
 
             <div class="input-addon-group">
               <span class="input-addon">
                 <span>ห้องทำงาน</span>
-                <input type="text" name="indoor['home_office']" placeholder="ห้องทำงาน" autocomplete="off" value="0">
+                <input type="text" name="indoor[home_office]" placeholder="ห้องทำงาน" autocomplete="off" value="0">
               </span>
 
               <span class="input-addon">
                 <span>จำนวนชั้น</span>
-                <input type="text" name="indoor['floors']" placeholder="จำนวนชั้น" autocomplete="off" value="0">
+                <input type="text" name="indoor[floors]" placeholder="จำนวนชั้น" autocomplete="off" value="0">
               </span>
 
               <span class="input-addon">
                 <span>ที่จอดรถ</span>
-                <input type="text" name="indoor['carpark']" placeholder="ที่จอดรถ" autocomplete="off" value="0">
+                <input type="text" name="indoor[carpark]" placeholder="ที่จอดรถ" autocomplete="off" value="0">
               </span>
             </div>
 
@@ -188,9 +176,7 @@
           <div class="form-row">
 
             <?php 
-              echo Form::label('name', 'เฟอร์นิเจอร์', array(
-                'class' => 'required'
-              ));
+              echo Form::label('name', 'เฟอร์นิเจอร์');
             ?>
 
             <div class="btn-group">
@@ -341,6 +327,16 @@
         <?php
           echo Form::label('Contact[email]', 'อีเมล');
           echo Form::text('Contact[email]', null, array(
+            'placeholder' => 'อีเมล',
+            'autocomplete' => 'off'
+          ));
+        ?>
+      </div>
+
+      <div class="form-row">
+        <?php
+          echo Form::label('Contact[line]', 'Line');
+          echo Form::text('Contact[line]', null, array(
             'placeholder' => 'อีเมล',
             'autocomplete' => 'off'
           ));
@@ -542,7 +538,7 @@
   // }
 
   $(document).ready(function(){
-    const images = new Images('_image_group',8);
+    const images = new Images('_image_group',8,'description');
     const district = new District();
     const map = new Map();
     const tagging = new Tagging();

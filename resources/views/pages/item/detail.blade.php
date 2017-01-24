@@ -3,42 +3,38 @@
   <div class="detail container">
 
     <div class="detail-title">
-      <h4 class="sub-title">ประกาศ{{$modelData['announcementType']['name']}}</h4>
+      <h4 class="sub-title">ประกาศ{{$modelData['_announcementTypeName']}}</h4>
       <h2 class="title">{{$modelData['name']}}</h2>
-      <div class="title-box-group">
-        <a class="title-box">@if($modelData['used'] == 1) สินค้าใหม่ @else สินค้ามือสอง @endif</a>
-        <a class="title-box">{{$modelData['categoryName']}}</a>
+      <div class="tag-group">
+        <a class="tag-box">{{$modelData['_used']}}</a>
+        <a class="tag-box">{{$modelData['_categoryName']}}</a>
         @foreach ($modelData['Tagging'] as $tagging)
-          <a class="title-box">{{$tagging['name']}}</a>
+          <a class="tag-box">{{$tagging['name']}}</a>
         @endforeach
       </div>
     </div>
+
+    <h4 class="title-with-icon location-pin">{{$modelData['Address']['_full_address']}}</h4>
 
     <div class="image-gallery">
 
       <div class="row">
 
-          <div class="col-lg-7 col-md-7 col-sm-12">
+          <div class="col-lg-7 col-sm-12">
 
             <div class="image-gallary-display">
               <div class="image-gallary-display-inner">
-                @if(!empty($modelData['Image'][0]))
-                <img id="image_display" src="{{$modelData['Image'][0]['url']}}">
-                @else
-                <img id="image_display" src="/images/common/no-img.png">
-                @endif
+                <img id="image_display">
               </div>
             </div>
 
           </div>
 
-          <div class="col-lg-5 col-md-5 col-sm-12">
+          <div class="col-lg-5 col-sm-12">
 
             @if(!empty($modelData['Image']))
-            <div class="image-gallery-preview clearfix">
-              @foreach ($modelData['Image'] as $image)
-                <div class="preview-image" style="background-image:url('{{$image['url']}}')" data-url="{{$image['url']}}"></div>
-              @endforeach
+            <div class="image-gallery-list clearfix">
+              <div id="image_gallery_list" class="image-gallery-list clearfix"></div>
             </div>
 
             <div class="line"></div>
@@ -47,8 +43,8 @@
             <div class="item-info">
 
               <div class="item-info-row">
-                <p>ราคา{{$modelData['announcementType']['name']}}</p>
-                <h4>{{$modelData['price']}} บาท</h4>
+                <p>ราคา{{$modelData['_announcementTypeName']}}</p>
+                <h4>{{$modelData['_price']}}</h4>
               </div>
 
             </div>
@@ -71,10 +67,6 @@
                 @else
                 <h4 class="title-with-icon email">-</h4>
                 @endif
-              </div>
-
-              <div class="item-info-row">
-                <h4 class="title-with-icon location-pin">ต.{{$modelData['Address']['sub_district_name']}} อ.{{$modelData['Address']['district_name']}} จ.{{$modelData['Address']['province_name']}}</h4>
               </div>
 
               <div class="item-info-row">
@@ -112,65 +104,6 @@
   </div>
 
   <script type="text/javascript">
-
-    class ImageGallery {
-      constructor() {}
-
-      load() {
-        this.init();
-        this.bind();
-      }
-
-      init() {
-        this.alignCenter();
-      }
-
-      bind() {
-
-        let _this = this;
-
-        $('.preview-image').on('click',function(){
-
-          _this.setImage($(this).data('url'));
-          _this.alignCenter();
-
-          // let image = new Image();
-          // image.src = $(this).data('url');
-
-          // image.onload = function() {
-          //   $('#image_display').css('display','none');
-          //   _this.setImage(image.src);
-          //   _this.alignCenter();
-          //   $('#image_display').css('display','inline-block');
-          // }
-
-          // <div id="item_detail" class="tab-content"></div>
-
-        });
-
-        $(window).resize(function() {
-          _this.alignCenter();
-        });
-
-      }
-
-      setImage(url) {
-        $('#image_display').attr('src',url);
-      }
-
-      alignCenter() {
-
-        let imgWidth = $('#image_display').width();
-        let frameWidth = $('.image-gallary-display-inner').width();
-
-        if(imgWidth > frameWidth) {
-          $('#image_display').css('left',(frameWidth - imgWidth) / 2);
-        }else{
-          $('#image_display').css('left',0);
-        }
-      }
-
-    }
 
     class Tabs {
       constructor(tab = '') {

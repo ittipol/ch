@@ -1,5 +1,10 @@
 class Map {
-  constructor() {}
+  constructor(searchable=true,markable=true,createLngLat=true) {
+    this.searchable = searchable;
+    this.markable = markable;
+    this.createLngLat = createLngLat;
+    this.icon = '/images/map/location-pin.png';
+  }
 
   load(geographic) {
 
@@ -41,20 +46,24 @@ class Map {
     if(setMarker) {
       marker = new google.maps.Marker({
               position: latlng,
+              icon: this.icon,
               map: map
             });
     }
 
-    // Create the search box and link it to the UI element.
-    let input = document.getElementById('pac-input');
-    let searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-    
+    if(this.markable){
+      this.mapMarker(map,marker);
+    }
 
-    // Bias the SearchBox results towards current map's viewport.
-    map.addListener('bounds_changed', function() {
-      searchBox.setBounds(map.getBounds());
-    });
+    if(this.searchable){
+      this.searchBox(map,marker);
+    }
+
+  }
+
+  mapMarker(map,marker) {
+
+    let _this = this;
 
     let geocoder = new google.maps.Geocoder();
 
@@ -64,6 +73,7 @@ class Map {
 
       marker = new google.maps.Marker({
         map: map,
+        icon: _this.icon,
         position: {lat: event.latLng.lat(), lng: event.latLng.lng()}
       });
 
@@ -74,13 +84,29 @@ class Map {
       }, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           if (results[0]) {
-            // display address
             // $("#address").text(results[0].formatted_address);
           }
         }
       });
 
     });
+
+  }
+
+  searchBox(map,marker) {
+
+    let _this = this;
+
+    // Create the search box and link it to the UI element.
+    let input = document.getElementById('pac-input');
+    let searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function() {
+      searchBox.setBounds(map.getBounds());
+    });
+
 
     searchBox.addListener('places_changed', function() {
       let places = searchBox.getPlaces();
@@ -115,6 +141,7 @@ class Map {
 
         marker = new google.maps.Marker({
           map: map,
+          icon: _this.icon,
           position: place.geometry.location
         });
 
@@ -125,37 +152,36 @@ class Map {
           bounds.extend(place.geometry.location);
         }
       });
+
       map.fitBounds(bounds);
+
     });
-
-  }
-
-  markable() {
-
-  }
-
-  searchable() {
 
   }
 
   createHiddenData(latitude,longitude) {
 
-    this.removeHiddenData();
+    if(this.createLngLat) {
 
-    let lat = document.createElement('input');
-    lat.setAttribute('type','hidden');
-    lat.setAttribute('name','Address[latitude]');
-    lat.setAttribute('id','lat');
-    lat.value = latitude;
+      this.removeHiddenData();
 
-    let lng = document.createElement('input');
-    lng.setAttribute('type','hidden');
-    lng.setAttribute('name','Address[longitude]');
-    lng.setAttribute('id','lng');
-    lng.value = longitude;
+      let lat = document.createElement('input');
+      lat.setAttribute('type','hidden');
+      lat.setAttribute('name','Address[latitude]');
+      lat.setAttribute('id','lat');
+      lat.value = latitude;
 
-    $('form').append(lat);
-    $('form').append(lng);
+      let lng = document.createElement('input');
+      lng.setAttribute('type','hidden');
+      lng.setAttribute('name','Address[longitude]');
+      lng.setAttribute('id','lng');
+      lng.value = longitude;
+
+      $('form').append(lat);
+      $('form').append(lng);
+
+    }
+    
   }
 
   removeHiddenData() {

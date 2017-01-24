@@ -6,7 +6,7 @@ class Item extends Model
 {
   protected $table = 'items';
   protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','created_by'];
-  protected $modelRelated = array('Image','Address','Tagging','Contact','ItemToCategory');
+  protected $modelRelated = array(/*'Image',*/'Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
 
   protected $validation = array(
@@ -29,6 +29,16 @@ class Item extends Model
     parent::__construct();
   }
 
+  public static function boot() {
+
+    parent::boot();
+
+    Item::saving(function($model){
+      $model->price = str_replace(',', '', $model->price);
+    });
+
+  }
+
   public function announcementType() {
     return $this->hasOne('App\Models\AnnouncementType','id','announcement_type_id');
   }
@@ -36,4 +46,20 @@ class Item extends Model
   public function itemToCategories() {
     return $this->hasOne('App\Models\ItemToCategory','item_id','id');
   }
+
+  public function buildModelData() {
+
+    return array(
+      'id' => $this->id,
+      'announcement_type_id' => $this->announcement_type_id,
+      'name' => $this->name,
+      'description' => $this->description,
+      '_price' => '฿'.number_format($this->price, 2, '.', ','),
+      '_used' => $this->used ? 'สินค้าใหม่' : 'สินค้ามือสอง',
+      '_announcementTypeName' => $this->announcementType->name,
+      '_categoryName' => $this->itemToCategories->category->name
+    );
+
+  }
+
 }

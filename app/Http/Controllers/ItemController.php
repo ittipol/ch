@@ -25,15 +25,8 @@ class ItemController extends Controller
     }
 
     $this->modelData->setModel($item);
-    $this->modelData->loadAddress();
-    $this->modelData->loadImage();
-    $this->modelData->loadTagging();
-    $this->modelData->loadContact();
-    $this->modelData->set('announcementType',$item->announcementType->getAttributes());
-    $this->modelData->set('categoryName',$item->itemToCategories->category->name);
-
-    // $this->form->setModel($item);
-
+    $this->modelData->loadData();
+    
     return $this->view('pages.item.detail');
 
   }

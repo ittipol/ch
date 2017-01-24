@@ -25,7 +25,8 @@
     '__js/components/notification-bottom.js',
     '__js/components/additional-option.js',
     '__js/components/custom-scroll.js',
-    '__js/components/filter.js'
+    '__js/components/filter.js',
+    '__js/components/image-gallery.js'
   );
 
   if($combine){

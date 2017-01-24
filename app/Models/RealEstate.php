@@ -5,7 +5,7 @@ namespace App\Models;
 class RealEstate extends Model
 {
   protected $table = 'real_estates';
-  protected $fillable = ['announcement_type_id','real_estate_type_id','name','description','price','home_area','land_area','furniture','facility','feature','need_broker',];
+  protected $fillable = ['announcement_type_id','real_estate_type_id','name','description','price','home_area','land_area','indoor','furniture','facility','feature','need_broker',];
   protected $modelRelated = array('Image','Address','Tagging','Contact');
   protected $directory = true;
 
@@ -34,10 +34,12 @@ class RealEstate extends Model
     parent::boot();
 
     RealEstate::saving(function($model){
-      $model->featured = json_encode($model->featured);
+      $model->price = str_replace(',', '', $model->price);
+      $model->feature = json_encode($model->feature);
       $model->facility = json_encode($model->facility);
       $model->home_area = json_encode($model->home_area);
       $model->land_area = json_encode($model->land_area);
+      $model->indoor = json_encode($model->indoor);
     });
 
   }
@@ -73,8 +75,8 @@ class RealEstate extends Model
     $homeArea = json_decode($this->home_area,true);
 
     $_homeArea = '';
-    if(!empty($landArea['sqm'])) {
-      $_homeArea = $homeArea['sqm'].'ตารางเมตร';
+    if(!empty($homeArea['sqm'])) {
+      $_homeArea = $homeArea['sqm'].' ตารางเมตร';
     }
 
     $landArea = json_decode($this->land_area,true);
@@ -96,21 +98,62 @@ class RealEstate extends Model
       $_landArea .= $landArea['wa'].' ตารางวา ';
     }
 
+    $furniture = '-';
+    if(!empty($this->furniture)) { 
+
+      switch ($this->furniture) {
+        case 'e':
+          $furniture = 'ไม่มี';
+          break;
+        
+        case 's':
+          $furniture = 'มีบางส่วน';
+          break;
+
+        case 'f':
+          $furniture = 'ตกแต่งครบ';
+          break;
+      }
+
+    }
+
+    $indoor = json_decode($this->indoor,true);
+
+    $rooms = array(
+      'bedroom' => 'ห้องนอน',
+      'bathroom' => 'ห้องน้ำ',
+      'living_room' => 'ห้องนั่งเล่น',
+      'home_office' => 'ห้องทำงาน',
+      'floors' => 'จำนวนชั้น',
+      'carpark' => 'ที่จอดรถ'
+    );
+
+    $_indoor = array();
+    foreach ($indoor as $room => $value) {
+      $_indoor[] = array(
+        'room' => $room,
+        'name' => $rooms[$room],
+        'value' => $value
+      );
+    }
+
     return array(
       'id' => $this->id,
       'announcement_type_id' => $this->announcement_type_id,
       'real_estate_type_id' => $this->real_estate_type_id,
       'name' => $this->name,
       'description' => $this->description,
-      'furniture' => $this->furniture,
       'need_broker' => $this->need_broker,
-      '_price' => '฿'.number_format($this->price, 2, '.', ','),
+      '_furniture' => $furniture,
+      '_need_broker' => $this->need_broker ? 'ต้องการตัวแทนขาย' : 'ไม่ต้องการตัวแทนขาย',
+      '_price' => '฿'.number_format($this->price, 0, '.', ','),
       '_homeArea' => $_homeArea,
       '_landArea' => trim($_landArea),
+      '_indoors' => $_indoor,
       '_facilities' => $facilities,
       '_features' => $features,
-      '_announcementType' => $this->announcementType->getAttributes(),
-      '_realEstateType' => $this->realEstateType->getAttributes()
+      '_announcementTypeName' => $this->announcementType->name,
+      '_realEstateTypeName' => $this->realEstateType->name
     );
   }
 

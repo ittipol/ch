@@ -326,4 +326,8 @@ class Model extends BaseModel
     return $this->fillable;
   }
 
+  public function buildModelData() {
+    return $this->getAttributes();
+  }
+
 }

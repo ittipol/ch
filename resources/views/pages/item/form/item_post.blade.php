@@ -178,18 +178,8 @@
 
       <div class="form-row">
       <?php
-        echo Form::label('Contact[email]', 'Line');
-        echo Form::text('Contact[email]', null, array(
-          'placeholder' => 'อีเมล',
-          'autocomplete' => 'off'
-        ));
-      ?>
-      </div>
-
-      <div class="form-row">
-      <?php
-        echo Form::label('Contact[email]', 'Line');
-        echo Form::text('Contact[email]', null, array(
+        echo Form::label('Contact[line]', 'Line');
+        echo Form::text('Contact[line]', null, array(
           'placeholder' => 'อีเมล',
           'autocomplete' => 'off'
         ));

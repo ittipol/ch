@@ -24,36 +24,9 @@ class RealEstateController extends Controller
     }
 
     $this->modelData->setModel($realEstate);
-    $this->modelData->loadData();
-
-    $this->modelData->set('homeArea',json_decode($realEstate->home_area,true));
-    $this->modelData->set('landArea',json_decode($realEstate->land_area,true));
-
-    $facility = Service::loadmodel('RealEstateFeature')->whereIn('id',json_decode($realEstate->facility,true))->get();
-
-    $facilities = array();
-    foreach ($facility as $value) {
-      $facilities[] = array(
-        'id' =>  $value->id,
-        'name' =>  $value->name
-      );
-    }
-
-    $this->modelData->set('facilities',$facilities);
-
-    $feature = Service::loadmodel('RealEstateFeature')->whereIn('id',json_decode($realEstate->feature,true))->get();
-
-    $features = array();
-    foreach ($feature as $value) {
-      $features[] = array(
-        'id' =>  $value->id,
-        'name' =>  $value->name
-      );
-    }
-
-    $this->modelData->set('features',$features);
-    $this->modelData->set('announcementType',$realEstate->announcementType->getAttributes());
-    $this->modelData->set('realEstateType',$realEstate->realEstateType->getAttributes());
+    $this->modelData->loadData(array(
+      'json' => array('Image')
+    ));
 
     return $this->view('pages.real-estate.detail');
 
