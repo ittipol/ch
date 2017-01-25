@@ -3,155 +3,33 @@
 }
 
 .card {
-  height: 380px;
-  background-color: #ffffff;
-  padding: 0;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-  position: relative;
+
 }
 
-.card .image-tile {
+.card .image{
 	width: 100%;
-	height: 215px;
-	position: relative;
-	background-color: #90949c;
-	background-position: center;
-  background-size: auto 120%;
-  background-repeat: no-repeat;
-	overflow: hidden;
+	height: 250px;
+	background-color: #ececec;
 }
 
-.card .image-tile .filter{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(60,60,60,.5);
+.card .product-title {
+	text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 12px;
+  color: #333;
+  padding-right: 5px;
+  padding-top: 1px;
+  cursor: pointer;
+  font-style: normal;
 }
 
-.card .image-tile .title {
-	position: absolute;
-  bottom: 0;
-  left: 0;
-	width: 100%;
-	font-size: 22px;
-	color: #ffffff;
-  padding: 10px 20px;
-}
-
-.card .inner {
-	padding: 20px;
-}
-
-.card .description {
-	height: 40px;
-}
-
-.card .button-group {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 50px;
-	padding: 0 20px;
-}
-
-.card .button-group > a {
-	color: #0D47A1;
+.card .price {
+	text-decoration: none;
 	font-size: 18px;
-	margin-right: 10px;
-	background-color: transparent;
-	line-height: 50px;
-	float: left;
-}
-
-.card .button-group > a > img {
-	width: 20px;
-}
-
-.card .button-group > .additional-option {
-	float: right;
-	margin: 8px 0;
-}
-
-.card.medium {
-	height: 265px;
-}
-
-.card.medium .image-tile .title {
-	font-size: 20px;
-}
-
-.card.small {
-	height: 132px;
-}
-
-.card.small .image-tile {
-	height: 80px;
-}
-
-.card.small .image-tile .title {
-	font-size: 20px;
-}
-
-/*==========  Mobile First Method  ==========*/
-
-/* Custom, iPhone Retina */ 
-@media only screen and (min-width : 320px) {
-    
-}
-
-/* Extra Small Devices, Phones */ 
-@media only screen and (min-width : 480px) {
-
-}
-
-/* Small Devices, Tablets */
-@media only screen and (min-width : 768px) {
-
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-
-}
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
-
-}
-
-/*==========  Non-Mobile First Method  ==========*/
-
-/* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) {
-	
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-	.card .image-tile {
-		background-size: 100% auto;
-	}
-}
-
-/* Small Devices, Tablets */
-@media only screen and (max-width : 768px) {
-	.card .image-tile {
-		background-size: auto 100%;
-	}
-}
-
-/* Extra Small Devices, Phones */ 
-@media only screen and (max-width : 480px) {
-	.card .image-tile {
-		background-size: 120% auto;
-	}
-}
-
-/* Custom, iPhone Retina */ 
-@media only screen and (max-width : 320px) {
-    
+	line-height: 20px;
+	color: #333;
+	font-weight: bold;
+	clear: left;
+	font-style: normal;
 }

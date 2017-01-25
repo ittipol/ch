@@ -17,11 +17,15 @@ class ItemController extends Controller
   public function listView() {
 
     $this->paginator->setModel($this->model);
-     $this->paginator->build();
+    $data = $this->paginator->build();
 
-    // $a = Service::loadModel('Item')->paginate(15);
-    // dd($a);
-    dd('fsdf');
+    $this->data = array(
+      'lists' => $data
+    );
+
+    return $this->view('pages.item.list');
+
+
   }
 
   public function detail($itemId) {

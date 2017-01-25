@@ -1,0 +1,41 @@
+@extends('layouts.blackbox.main')
+@section('content')
+
+  <div class="container">
+
+    <div class="row">
+
+      @foreach($lists as $list)
+
+      <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+        <div class="card">
+          <div class="image">
+            <a href="">
+              <!-- <div class="image" style="background-image: url({{$list['_imageUrl']}});"> -->
+              <img src="http://www.ikea.com/PIAimages/0138832_PE298646_S3.JPG">
+            </a>
+          </div>
+          <div class="product-detail">
+            <a href="">
+              <div class="product-title">{{$list['name']}}</div>
+            </a>
+          </div>
+          <div class="price">
+            {{$list['_price']}}
+          </div>
+        </div>
+      </div>
+
+      @endforeach
+
+    </div>
+
+    <div class="row">
+      <div class="pagination">
+
+      </div>
+    </div>
+
+  </div>
+
+@stop

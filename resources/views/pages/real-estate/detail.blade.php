@@ -39,7 +39,9 @@
              <div class="close-image-description-icon"></div>
             </div>
 
-            <div class="display-image-description-icon"></div>
+            <div class="display-image-description-icon">
+              ข้อมูลเพิ่มเติม
+            </div>
 
           </div>
         </div>

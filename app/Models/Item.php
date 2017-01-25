@@ -54,7 +54,7 @@ class Item extends Model
       'announcement_type_id' => $this->announcement_type_id,
       'name' => $this->name,
       'description' => $this->description,
-      '_price' => '฿'.number_format($this->price, 0, '.', ','),
+      '_price' => 'THB '.number_format($this->price, 0, '.', ','),
       '_used' => $this->used ? 'สินค้าใหม่' : 'สินค้ามือสอง',
       '_announcementTypeName' => $this->announcementType->name,
       '_categoryName' => $this->itemToCategories->category->name

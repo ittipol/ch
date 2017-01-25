@@ -12,7 +12,7 @@ class Product extends Model
   protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
-      'price' => 'required|regex:/^\d*(\.\d{1,2})?$/',
+      'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/',
     ),
     'messages' => array(
       'name.required' => 'ชื่อห้ามว่าง',

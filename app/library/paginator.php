@@ -28,15 +28,41 @@ class Paginator {
   }
 
   public function build() {
+
+    $page = 1;
+
     $this->total = $this->model->all()->count();
 
     $this->lastPage = (int)ceil($this->total / $this->perPage);
 
     $offset = ($page - 1)  * $this->perPage;
 
-    dd($totalPage);
+    $start = $offset + 1;
+    $end = min(($offset + $this->perPage), $this->total);
+
+    $records = $this->model->take($this->perPage)->skip($offset)->get();
+
+    foreach ($records as $record) {
+
+      $image = $record->getRalatedModelData('Image',array(
+        'first' => true
+      ))->buildModelData();
+
+      $this->data[] = array(
+        'id' => $record->id,
+        'name' => $record->name,
+        'description' => $record->description,
+        '_price' => 'THB '.number_format($record->price, 0, '.', ','),
+        '_url' => '',
+        '_imageUrl' => $image['_url']    
+      );
+
+    }
+
+    return $this->data;
 
   }
+
 }
 
 ?>

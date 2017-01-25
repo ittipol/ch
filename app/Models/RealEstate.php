@@ -12,7 +12,7 @@ class RealEstate extends Model
   // protected $validation = array(
   //   'rules' => array(
   //     'name' => 'required|max:255',
-  //     'price' => 'required|max:255',
+  //     'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/',
   //     'Contact.phone_number' => 'required|max:255',
   //     // 'Contact.email' => 'email|unique:contacts,email|max:255',
   //     'ItemToCategory.item_category_id' => 'required' 
@@ -156,7 +156,7 @@ class RealEstate extends Model
       'need_broker' => $this->need_broker,
       '_furniture' => $furniture,
       '_need_broker' => $this->need_broker ? 'ต้องการตัวแทนขาย' : 'ไม่ต้องการตัวแทนขาย',
-      '_price' => '฿'.number_format($this->price, 0, '.', ','),
+      '_price' => 'THB '.number_format($this->price, 0, '.', ','),
       '_homeArea' => $_homeArea,
       '_landArea' => trim($_landArea),
       '_indoors' => $_indoor,
