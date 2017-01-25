@@ -54,34 +54,44 @@ class RealEstate extends Model
 
   public function buildModelData() {
 
-    $facility = RealEstateFeature::whereIn('id',json_decode($this->facility,true))->get();
+    $facility = json_decode($this->facility,true);
+
     $facilities = array();
-    foreach ($facility as $value) {
-      $facilities[] = array(
-        'id' =>  $value->id,
-        'name' =>  $value->name
-      );
+    if(!empty($facility)) {
+      $facility = RealEstateFeature::whereIn('id',$facility)->get();
+      $facilities = array();
+      foreach ($facility as $value) {
+        $facilities[] = array(
+          'id' =>  $value->id,
+          'name' =>  $value->name
+        );
+      }
     }
 
-    $feature = RealEstateFeature::whereIn('id',json_decode($this->feature,true))->get();
+    $feature = json_decode($this->feature,true);
+
     $features = array();
-    foreach ($feature as $value) {
-      $features[] = array(
-        'id' =>  $value->id,
-        'name' =>  $value->name
-      );
+    if(!empty($feature)) {
+      $feature = RealEstateFeature::whereIn('id',$feature)->get();
+      $features = array();
+      foreach ($feature as $value) {
+        $features[] = array(
+          'id' =>  $value->id,
+          'name' =>  $value->name
+        );
+      }
     }
 
     $homeArea = json_decode($this->home_area,true);
 
-    $_homeArea = '';
+    $_homeArea = '-';
     if(!empty($homeArea['sqm'])) {
       $_homeArea = $homeArea['sqm'].' ตารางเมตร';
     }
 
     $landArea = json_decode($this->land_area,true);
 
-    $_landArea = '';
+    $_landArea = '-';
     if(!empty($landArea['sqm'])) {
       $_landArea .= $landArea['sqm'].' ตารางเมตร / ';
     }

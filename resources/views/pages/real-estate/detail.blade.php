@@ -166,13 +166,19 @@
     <div class="row">
       <dt class="col-sm-3">จุดเด่น</dt>
       <dd class="col-sm-9">
-      @foreach($modelData['_features'] as $feature)
+      @if(!empty($modelData['_features']))
+        @foreach($modelData['_features'] as $feature)
 
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="title-with-icon space tick-green">{{$feature['name']}}</div>
-      </div>
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="title-with-icon space tick-green">{{$feature['name']}}</div>
+        </div>
 
-      @endforeach
+        @endforeach
+      @else
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="">-</div>
+        </div>
+      @endif
       </dd>
     </div>
 
@@ -181,13 +187,19 @@
     <div class="row">
       <dt class="col-sm-3">สิ่งอำนวยความสะดวก</dt>
       <dd class="col-sm-9">
-      @foreach($modelData['_facilities'] as $facility)
+      @if(!empty($modelData['_facilities']))
+        @foreach($modelData['_facilities'] as $facility)
 
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="title-with-icon space tick-green">{{$facility['name']}}</div>
-      </div>
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="title-with-icon space tick-green">{{$facility['name']}}</div>
+        </div>
 
-      @endforeach
+        @endforeach
+      @else
+        <div class="col-lg-4 col-md-4 col-sm-6">
+          <div class="">-</div>
+        </div>
+      @endif
       </dd>
     </div>
 

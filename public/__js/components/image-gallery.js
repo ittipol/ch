@@ -6,8 +6,8 @@ class ImageGallery {
   }
 
   load(images = null) {
-    
-    if ((typeof images != 'undefined') && (images != '[]')) {
+
+    if ((images != '[]') && (typeof images[0] != 'undefined')) {
 
       this.setImage(images[0]['_url']);
       this.setImageDescription(images[0]['description']);
@@ -15,18 +15,18 @@ class ImageGallery {
 
       this.images = images;
 
+      this.init();
+      this.bind();
+
     }else{
       $('#image_display').attr('src',this.noImg);
     }
-
-    this.init();
-    this.bind();
 
   }
 
   init() {
     this.alignCenter();
-    this.imageDesription();
+    this.enableImageDesription();
   }
 
   bind() {
@@ -54,11 +54,13 @@ class ImageGallery {
     });
 
     $('.display-image-description-icon').on('click',function(){
+      $(this).css('display','none');
       $('.image-description').css('top','0');
     });
 
     $('.close-image-description-icon').on('click',function(){
-      $('.image-description').stop().css('top','100%');
+      $('.image-description').css('top','100%');
+      $('.display-image-description-icon').css('display','block');
     });
 
     $(window).resize(function() {
@@ -75,7 +77,6 @@ class ImageGallery {
       let div = document.createElement('div');
 
       $(div).addClass('preview-image');
-      // $(div).data('url',images[i]['_url']);
       $(div).data('id',i);
       $(div).css('background-image','url('+images[i]['_url']+')');
 
@@ -109,9 +110,9 @@ class ImageGallery {
     }
   }
 
-  imageDesription() {
+  enableImageDesription() {
 
-    // $('.image-gallary-display-inner')
+    $('.display-image-description-icon').css('display','block');
 
     $('.image-description').css({
       'display':'block',

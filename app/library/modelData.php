@@ -189,12 +189,6 @@ class ModelData {
       return false;
     }
 
-    // if(method_exists($this->model,'buildModelData')) {
-    //   $_data = $this->model->buildModelData();
-    // }else{
-    //   $_data = $this->model->getAttributes();
-    // }
-
     $data = array(
       'modelData' => array_merge(
         $this->model->buildModelData(),

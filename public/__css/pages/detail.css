@@ -100,7 +100,9 @@
 }
 
 .image-gallery .image-gallary-display img {
-	display: block;
+	height: 100%;
+	position: relative;
+	display: inline-block;
 }
 
 .image-gallery .image-description {
@@ -113,7 +115,8 @@
 	background-color: rgba(0,0,0,.6);
 	overflow: hidden;
 	z-index: 9;
-	transition: all 480ms ease-out;
+	display: none;
+	transition: all 450ms ease-out;
 }
 
 .image-gallery .image-description .image-description-inner {
@@ -127,19 +130,13 @@
 	width: 50px;
 	height: 50px;
 	border-radius: 50px;
-	background-image: url(/images/common/xx1.png);
+	background-image: url(/images/common/close.png);
 	background-repeat: no-repeat;
 	background-size: 60px;
 	background-position: center;
 	background-color: #ececec;
 	z-index: 5;
 	cursor: pointer;
-}
-
-.image-gallery .image-gallary-display img {
-	height: 100%;
-	position: relative;
-	display: inline-block;
 }
 
 .image-gallery .image-gallary-display .display-image-description-icon {
@@ -155,6 +152,7 @@
 	background-position: center;
 	background-color: #ececec;
 	z-index: 5;
+	display: none;
 	cursor: pointer;
 }
 
