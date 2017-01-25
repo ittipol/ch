@@ -15,7 +15,7 @@ class ModelData {
 	  $this->model = $model;
 	}
 
-	  public function loadData($options = array()) {
+	public function loadData($options = array()) {
 
     if(empty($this->model)) {
       return false;
@@ -112,7 +112,8 @@ class ModelData {
     $address = $this->model->getRalatedModelData('Address',
       array(
         'first' => true,
-        'fields' => array('address','province_id','district_id','sub_district_id','description','latitude','longitude')
+        'fields' => array('address','province_id','district_id','sub_district_id','description','latitude','longitude'),
+        'order' => array('id','DESC')
       )
     );
 

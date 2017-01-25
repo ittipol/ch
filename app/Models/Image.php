@@ -69,8 +69,8 @@ class Image extends Model
           $to = $imageInstance->getImagePath();
           $this->moveImage($path,$to);
 
-          $ext = pathinfo($imageInstance->filename, PATHINFO_EXTENSION);
-          $filename = pathinfo($imageInstance->filename, PATHINFO_FILENAME);
+          // $ext = pathinfo($imageInstance->filename, PATHINFO_EXTENSION);
+          // $filename = pathinfo($imageInstance->filename, PATHINFO_FILENAME);
 
           // $imageLib = new ImageTool($to);
           // $imageLib->resize(44,44);

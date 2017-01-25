@@ -33,7 +33,7 @@ class Images {
 
 	init(){
 		let token = new Token();
-		this.code = token.generateToken();
+		this.code = token.generateToken(14);
 	}
 
 	bind(){

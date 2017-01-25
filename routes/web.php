@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');
 
-// Person -> Item
+// Person Post Item
 Route::group(['middleware' => 'auth'], function () {
   Route::get('item/post','ItemController@post');
   Route::post('item/post','ItemController@submitPosting');
@@ -54,6 +54,12 @@ Route::group(['middleware' => 'auth'], function () {
   //   'uses' => 'ItemController@editingSubmit'
   // ]);
 });
+
+Route::get('items', function () {
+    return App\Models\Item::paginate();
+});
+
+Route::get('item/list','ItemController@listView');
 Route::get('item/detail/{item_id}','ItemController@detail');
 
 // PRODUCT
@@ -82,7 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
   // ]);
 });
 
-// PROPERTY
+// Real Estate
 Route::group(['middleware' => 'auth'], function () {
   Route::get('real-estate/post','RealEstateController@post');
   Route::post('real-estate/post','RealEstateController@submitPosting');

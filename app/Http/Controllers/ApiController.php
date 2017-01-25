@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\Image;
-// use App\Models\TempFile;
 use App\library\service;
 use App\library\file;
 use App\library\image;
@@ -78,59 +76,5 @@ class ApiController extends Controller
 
     return response()->json($result);
   }
-
-  // public function deleteImage() {
-
-  //   if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-  //     exit('Error');  //trygetRealPath detect AJAX request, simply exist if no Ajax
-  //   }
-
-  //   if(empty(Input::get('formToken')) || empty(Session::get(Input::get('formToken')))) {
-  //     $result = array(
-  //       'success' => false,
-  //       'message' => array(
-  //         'type' => 'error',
-  //         'title' => 'เกิดข้อผิดพลาด กรุณารีเฟรช แล้วลองอีกครั้ง'
-  //       )
-  //     );
-
-  //     return response()->json($result);
-  //   }
-
-  //   $success = false;
-
-  //   // check image already exist in image table
-  //   $imageModel = Service::loadModel('Image');
-  //   $total = $imageModel->where('name','=',Input::get('filename'))->count();
-
-  //   $tempFile = Service::loadModel('TempFile');
-
-  //   if($total){
-  //     $tempFile->name = Input::get('filename');
-  //     $tempFile->type = Input::get('type');
-  //     $tempFile->status = 'delete';
-  //     $tempFile->token = Input::get('formToken');
-  //     $tempFile->created_by = Session::get('Person.id');
-  //     $tempFile->setFormToken(Input::get('formToken'));
-      
-  //     if($tempFile->save()){
-  //       $success = true;
-  //     }
-  //   }else{
-  //     $success = $tempFile->deletetempFile(Input::get('formToken'),Input::get('filename'));
-
-  //     if($success){
-  //       $tempFile->deleteRecord(Input::get('filename'),Input::get('formToken'),Input::get('type'),'add',Session::get('Person.id'));
-  //     }
-
-  //   }
-
-  //   $result = array(
-  //     'success' => $success
-  //   );
-
-  //   return response()->json($result);
-
-  // }
 
 }

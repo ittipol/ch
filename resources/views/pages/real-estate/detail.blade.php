@@ -52,9 +52,9 @@
       <div class="row">
         <div class="col-sm-12">
           <div id="image_gallery_list" class="image-gallery-list clearfix"></div>
-          <div class="line space-top-bottom-20"></div>
         </div>
       </div>
+      <div class="line space-top-bottom-20"></div>
       @endif
 
     </div>

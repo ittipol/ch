@@ -11,6 +11,7 @@ use App\library\service;
 use App\library\entity;
 use App\library\form;
 use App\library\modelData;
+use App\library\paginator;
 use Session;
 use Route;
 use Request;
@@ -27,12 +28,14 @@ class Controller extends BaseController
     protected $entity;
     protected $form;
     protected $modelData;
+    protected $paginator;
     protected $error;
 
     public function __construct() { 
 
       $this->form = new Form();
       $this->modelData = new ModelData();
+      $this->paginator = new Paginator();
 
       $this->query = Request::query();
 

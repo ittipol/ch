@@ -14,6 +14,16 @@ class ItemController extends Controller
     $this->model = Service::loadModel('Item');
   }
 
+  public function listView() {
+
+    $this->paginator->setModel($this->model);
+     $this->paginator->build();
+
+    // $a = Service::loadModel('Item')->paginate(15);
+    // dd($a);
+    dd('fsdf');
+  }
+
   public function detail($itemId) {
     $item = $this->model->find($itemId);
 
@@ -25,7 +35,9 @@ class ItemController extends Controller
     }
 
     $this->modelData->setModel($item);
-    $this->modelData->loadData();
+    $this->modelData->loadData(array(
+      'json' => array('Image')
+    ));
     
     return $this->view('pages.item.detail');
 

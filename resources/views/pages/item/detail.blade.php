@@ -9,7 +9,7 @@
         <a class="tag-box">{{$modelData['_used']}}</a>
         <a class="tag-box">{{$modelData['_categoryName']}}</a>
         @foreach ($modelData['Tagging'] as $tagging)
-          <a class="tag-box">{{$tagging['name']}}</a>
+          <a class="tag-box">{{$tagging['_word']}}</a>
         @endforeach
       </div>
     </div>
@@ -20,36 +20,37 @@
 
       <div class="row">
 
-          <div class="col-lg-7 col-sm-12">
+          <div class="col-lg-8 col-sm-12">
 
             <div class="image-gallary-display">
               <div class="image-gallary-display-inner">
-                <img id="image_display">
+                <div class="image-gallary-panel">
+                  <img id="image_display">
+                </div>
               </div>
             </div>
 
           </div>
 
-          <div class="col-lg-5 col-sm-12">
+          <div class="col-lg-4 col-sm-12">
 
             @if(!empty($modelData['Image']))
             <div class="image-gallery-list clearfix">
               <div id="image_gallery_list" class="image-gallery-list clearfix"></div>
             </div>
-
-            <div class="line"></div>
+            <div class="line space-top-bottom-20"></div>
             @endif
 
             <div class="item-info">
 
               <div class="item-info-row">
                 <p>ราคา{{$modelData['_announcementTypeName']}}</p>
-                <h4>{{$modelData['_price']}}</h4>
+                <h4 class="price">{{$modelData['_price']}}</h4>
               </div>
 
             </div>
               
-            <div class="line"></div>
+            <div class="line space-top-bottom-20"></div>
 
             <div class="item-info">
 
@@ -151,7 +152,7 @@
 
     $(document).ready(function(){
       imageGallery = new ImageGallery();
-      imageGallery.load();
+      imageGallery.load(<?php echo $modelData['Image']; ?>);
 
       let tabs = new Tabs('item_detail');
       tabs.load();

@@ -227,6 +227,13 @@ class Model extends BaseModel
       $model = $model->select($options['fields']);
     }
 
+    if(!empty($options['order'])){
+      
+      // if(is_array(current($options['order']))) {}
+
+      $model->orderBy(current($options['order']),next($options['order']));
+    }
+
     if(isset($options['first'])) {
       if($options['first']) {
         return $model->first();
