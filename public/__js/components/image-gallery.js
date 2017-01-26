@@ -102,7 +102,6 @@ class ImageGallery {
 
         let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
 
-
         $('#image_display').css({
           'width': '100%',
           'height': imgH,
@@ -111,13 +110,23 @@ class ImageGallery {
 
       }else{
 
-        let imgW = Math.ceil(imgWidth * (frameheight / imgHeight));
+        if((imgWidth/frameWidth) > 2) {
+          let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
 
-        $('#image_display').css({
-          'width': imgW,
-          'height': '100%',
-          'margin-top': 0
-        });
+          $('#image_display').css({
+            'width': '100%',
+            'height': imgH,
+            'margin-top': (frameheight - imgH) / 2
+          });
+        }else{
+          let imgW = Math.ceil(imgWidth * (frameheight / imgHeight));
+
+          $('#image_display').css({
+            'width': imgW,
+            'height': '100%',
+            'margin-top': 0
+          });
+        }
 
       }
 
