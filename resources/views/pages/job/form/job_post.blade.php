@@ -173,9 +173,7 @@
       </div>
 
       <div class="form-row">
-        <?php echo Form::label('', 'รูปภาพสถานที่ทำงาน'); ?>
-        <p class="error-message">* รองรับไฟล์ jpg jpeg png</p>
-        <p class="error-message">* รองรับรูปภาพขนาดไม่เกิน 3MB</p>
+        <?php echo Form::label('', 'รูปภาพที่เกี่ยวกับงานนี้'); ?>
         <div id="_image_group"></div>
       </div>
 
@@ -242,7 +240,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    const images = new Images('_image_group',6,'default');
+    const images = new Images('_image_group',8,'default');
     const tagging = new Tagging();
     const form = new Form();
 

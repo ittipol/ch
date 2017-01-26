@@ -55,10 +55,6 @@ Route::group(['middleware' => 'auth'], function () {
   // ]);
 });
 
-Route::get('items', function () {
-    return App\Models\Item::paginate();
-});
-
 Route::get('item/list','ItemController@listView');
 Route::get('item/detail/{item_id}','ItemController@detail');
 
@@ -78,8 +74,8 @@ Route::get('item/detail/{item_id}','ItemController@detail');
 
 // JOB
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('job/add','JobController@post');
-  Route::post('job/add','JobController@submitPosting');
+  Route::get('job/post','JobController@post');
+  Route::post('job/post','JobController@submitPosting');
 
   // Route::get('job/edit/{job_id}','JobController@edit');
   // Route::patch('job/edit/{job_id}',[

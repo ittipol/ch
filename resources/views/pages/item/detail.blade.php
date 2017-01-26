@@ -89,7 +89,7 @@
 
     <div class="line space-top-bottom-20"></div>
 
-    <h4>รายละเอียดสินค้า</h4>   
+    <!-- <h4>รายละเอียดสินค้า</h4> -->
     <div>
       @if(strlen($modelData['description']) > 0)
       {!!$modelData['description']!!}

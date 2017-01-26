@@ -127,8 +127,18 @@ class ModelData {
 
   private function loadImage() {
 
+    $imageStyle = Service::loadModel('ImageStyle');
+
     $images = $this->model->getRalatedModelData('Image',array(
-      'fields' => array('model','model_id','filename','description'),
+      'conditions' => array(
+        'in' => array(
+          array('image_style_id',array(
+            $imageStyle->getIdByalias('original'),
+            $imageStyle->getIdByalias('xs')
+          ))
+        )
+      ),
+      'fields' => array('id','original_image_id','model','model_id','filename','description','image_style_id'),
       'first' => false
     ));
 
@@ -138,10 +148,30 @@ class ModelData {
 
     $_images = array();
     foreach ($images as $image) {
-      $_images[] = $image->buildModelData();
+
+      $id = $image->original_image_id;
+      if(empty($id)) {
+        $id = $image->id;
+      }
+
+      if(!empty($image->original_image_id)) {
+        $_image = $image->buildModelData();
+        $_images[$id] = array_merge($_images[$id],array(
+          '_'.$image->imageStyle->alias.'_url' => $_image['_url']
+        ));
+
+      }else{
+        $_images[$id] = $image->buildModelData();
+      }
+
     }
 
-    return $_images;
+    $images = array();
+    foreach ($_images as $image) {
+      $images[] = $image;
+    }
+
+    return $images;
 
   }
 

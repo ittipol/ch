@@ -11,12 +11,16 @@ use Session;
 class Image extends Model
 {
   protected $table = 'images';
-  protected $fillable = ['model','model_id','filename','description','created_by'];
+  protected $fillable = ['original_image_id','model','model_id','filename','description','image_style_id','created_by'];
   private $maxFileSizes = 1048576;
   private $acceptedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];
 
   public function __construct() {  
     parent::__construct();
+  }
+
+  public function imageStyle() {
+    return $this->hasOne('App\Models\ImageStyle','id','image_style_id');
   }
 
   public function __saveRelatedData($model,$options = array()) {
@@ -26,6 +30,7 @@ class Image extends Model
   private function saveImages($model,$images,$options = array()) {
 
     $temporaryFile = new TemporaryFile;
+    $imageStyle = new ImageStyle;
 
     foreach ($images as $token => $imageGroup) {
 
@@ -55,6 +60,7 @@ class Image extends Model
 
         $value = array(
           'filename' => $image['filename'],
+          'image_style_id' => $imageStyle->getIdByalias('original')
         );
 
         if(!empty($image['description'])) {
@@ -66,23 +72,8 @@ class Image extends Model
         $imageInstance = $this->newInstance();
         if($imageInstance->fill($model->includeModelAndModelId($value))->save()) {
 
-          $to = $imageInstance->getImagePath();
-          $this->moveImage($path,$to);
-
-          $ext = pathinfo($imageInstance->filename, PATHINFO_EXTENSION);
-          $filename = pathinfo($imageInstance->filename, PATHINFO_FILENAME);
-
-          // $imageLib = new ImageTool($to);
-          // $imageLib->resize(44,44);
-          // $imageLib->save($imageInstance->getDirPath().$filename.'_44x44.'.$ext);
-
-          // $imageLib = new ImageTool($to);
-          // $imageLib->resize(340,340);
-          // $imageLib->save($imageInstance->getDirPath().$filename.'_340x340.'.$ext);
-
-          $imageLib = new ImageTool($to);
-          $imageLib->resize(250,250);
-          $imageLib->save($imageInstance->getDirPath().$filename.'_250x250.'.$ext);
+          $this->moveImage($path,$imageInstance->getImagePath());
+          $imageInstance->cache($model);
 
         }
 
@@ -94,6 +85,64 @@ class Image extends Model
       $temporaryFile->deleteTemporaryRecords($model->modelName,$token);
 
     }
+
+  }
+
+  public function cache($model) {
+
+    $imageStyle = new ImageStyle;
+
+    $imagePath = $this->getImagePath();
+
+    $ext = pathinfo($this->filename, PATHINFO_EXTENSION);
+    $filename = pathinfo($this->filename, PATHINFO_FILENAME);
+
+    $imageInfo = getimagesize($imagePath);
+
+    $h = 50;
+    $w = 50;
+    // $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
+    $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
+
+    // $path = $this->getDirPath().'xs/';
+    // if(!is_dir($path)){
+    //   mkdir($path,0777,true);
+    // }
+
+    $imageLib = new ImageTool($imagePath);
+    $imageLib->resize($w,$h);
+    $imageLib->save($this->getDirPath().$_filename);
+
+    $value = array(
+      'original_image_id' => $this->id,
+      'filename' => $_filename,
+      'image_style_id' => $imageStyle->getIdByalias('xs')
+    );
+
+    $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+
+    // =====================================================================
+
+    $h = 250;
+    $w = 250;
+    $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
+
+    // $path = $this->getDirPath().'list/';
+    // if(!is_dir($path)){
+    //   mkdir($path,0777,true);
+    // }
+
+    $imageLib = new ImageTool($imagePath);
+    $imageLib->resize($w,$h);
+    $imageLib->save($this->getDirPath().$_filename);
+
+    $value = array(
+      'original_image_id' => $this->id,
+      'filename' => $_filename,
+      'image_style_id' => $imageStyle->getIdByalias('list')
+    );
+
+    $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
 
   }
 
@@ -134,16 +183,24 @@ class Image extends Model
     return storage_path($this->storagePath.Service::generateModelDir($this->model)).'/'.$this->model_id.'/';
   }
 
-  public function getImagePath() {
-    return $this->getDirPath().$this->filename;
+  public function getImagePath($filename = '') {
+
+    if(empty($filename)) {
+      $filename = $this->filename;
+    }
+
+    return $this->getDirPath().$filename;
   }
 
-  public function getImageUrl() {
-    // $path = $this->noImagePath;
+  public function getImageUrl($filename = '') {
+
+    if(empty($filename)) {
+      $filename = $this->filename;
+    }
 
     $path = '';
     if(File::exists($this->getImagePath())){
-      $path = '/safe_image/'.$this->filename;
+      $path = '/safe_image/'.$filename;
     }
 
     return $path;
@@ -188,7 +245,7 @@ class Image extends Model
     if(empty($this)) {
       return null;
     }
-    
+
     return array(
       'filename' => $this->filename,
       'description' => $this->description,

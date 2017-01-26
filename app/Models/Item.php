@@ -10,6 +10,7 @@ class Item extends Model
   protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','created_by'];
   protected $modelRelated = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
+  protected $imageCache = array('xs','md');
 
   protected $validation = array(
     'rules' => array(
@@ -25,9 +26,7 @@ class Item extends Model
       'Contact.phone_number.required' => 'เบอร์โทรศัพท์ห้ามว่าง',
       'ItemToCategory.item_category_id.required' => 'หมวดหมู่หลักสินค้าห้ามว่าง',
     )
-  );
-
-  protected $imageCache = array('xs','md');
+  ); 
 
   public function __construct() {  
     parent::__construct();

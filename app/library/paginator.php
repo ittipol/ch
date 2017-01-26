@@ -4,6 +4,7 @@ namespace App\library;
 
 class Paginator {
   public $total;
+  public $page = 1;
   public $lastPage;
   public $perPage = 15;
   public $url;
@@ -23,30 +24,34 @@ class Paginator {
     $this->perPage = $perPage;
   }
 
-  public function setPage($perPage) {
-    $this->perPage = $perPage;
+  public function setPage($page) {
+    $this->page = $page;
   }
 
   public function build() {
 
     $currency = new Currency;
-
-    $page = 1;
+    $imageStyle = Service::loadModel('ImageStyle');
 
     $this->total = $this->model->all()->count();
-
     $this->lastPage = (int)ceil($this->total / $this->perPage);
 
-    $offset = ($page - 1)  * $this->perPage;
+    $offset = ($this->page - 1)  * $this->perPage;
 
     $start = $offset + 1;
     $end = min(($offset + $this->perPage), $this->total);
 
-    $records = $this->model->take($this->perPage)->skip($offset)->get();
+    $records = $this->model
+    ->take($this->perPage)
+    ->skip($offset)
+    ->get();
 
     foreach ($records as $record) {
 
       $image = $record->getRalatedModelData('Image',array(
+        'conditions' => array(
+          array('image_style_id','=',$imageStyle->getIdByalias('list'))
+        ),
         'first' => true
       ));
 

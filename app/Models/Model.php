@@ -23,7 +23,7 @@ class Model extends BaseModel
 
   protected $relatedModel = array();
 
-  protected $sortingFields = array();
+  protected $sortingFields;
 
   protected $behavior;
 
@@ -32,6 +32,8 @@ class Model extends BaseModel
   protected $directory = false;
 
   protected $directoryPath;
+
+  protected $imageCache;
   
   public function __construct(array $attributes = []) { 
 
@@ -80,11 +82,6 @@ class Model extends BaseModel
         }
 
       }
-
-      // if($this->behavior['Wiki']){
-      //   $wiki = new Wiki;
-      //   $wiki->__saveRelatedData($this);
-      // }
 
       $model->saveRelatedData();
    
@@ -176,14 +173,14 @@ class Model extends BaseModel
       return false;
     }
 
-    $path = $this->getDirectory().$this->id;
+    $path = $this->getDirectoryPath().$this->id;
     if(!is_dir($path)){
       mkdir($path,0777,true);
     }
 
   }
 
-  public function getDirectory() {
+  public function getDirectoryPath() {
 
     if(empty($this->directoryPath)) {
       return false;
@@ -216,7 +213,25 @@ class Model extends BaseModel
     $model = $this;
 
     if(!empty($options['conditions'])){
-      $model = $model->where($options['conditions']);
+
+      if(!empty($options['conditions']['in'])) {
+
+        foreach ($options['conditions']['in'] as $condition) {
+          $model = $model->whereIn($condition[0],$condition[1]);
+        }
+
+        // foreach ($options['conditions']['or'] as $condition) {
+        //   $model = $model->orWhere($condition[0],$condition[1],$condition[2]);
+        // }
+
+        unset($options['conditions']['in']);
+
+      }
+
+      if(!empty($options['conditions'])){
+        $model = $model->where($options['conditions']);
+      }
+
     }
 
     if(empty($model->count())) {
@@ -228,9 +243,6 @@ class Model extends BaseModel
     }
 
     if(!empty($options['order'])){
-      
-      // if(is_array(current($options['order']))) {}
-
       $model->orderBy(current($options['order']),next($options['order']));
     }
 
@@ -308,13 +320,18 @@ class Model extends BaseModel
   }
 
   public function getModelRelated() {
+
+    if(empty($this->modelRelated)) {
+      return null;
+    }
+
     return $this->modelRelated;
   }
 
   public function getBehavior($modelName) {
 
     if(empty($this->behavior[$modelName])) {
-      return false;
+      return null;
     }
 
     return $this->behavior[$modelName];
@@ -323,7 +340,7 @@ class Model extends BaseModel
   public function getValidation() {
 
     if(empty($this->validation)) {
-      return false;
+      return null;
     }
     
     return $this->validation;
@@ -335,6 +352,15 @@ class Model extends BaseModel
 
   public function buildModelData() {
     return $this->getAttributes();
+  }
+
+  public function getImageCache() {
+
+    if(empty($this->imageCache)) {
+      return null;
+    }
+    
+    return $this->imageCache;
   }
 
 }

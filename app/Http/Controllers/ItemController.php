@@ -46,8 +46,9 @@ class ItemController extends Controller
   }
 
   public function post() {
+    
     $this->form->setModel($this->model);
-    $this->form->district();
+ 
     $this->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
