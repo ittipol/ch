@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\library\currency;
+
 class RealEstate extends Model
 {
   protected $table = 'real_estates';
@@ -147,6 +149,8 @@ class RealEstate extends Model
       );
     }
 
+    $currency = new Currency;
+    
     return array(
       'id' => $this->id,
       'announcement_type_id' => $this->announcement_type_id,
@@ -156,7 +160,7 @@ class RealEstate extends Model
       'need_broker' => $this->need_broker,
       '_furniture' => $furniture,
       '_need_broker' => $this->need_broker ? 'ต้องการตัวแทนขาย' : 'ไม่ต้องการตัวแทนขาย',
-      '_price' => 'THB '.number_format($this->price, 0, '.', ','),
+      '_price' => $currency->format($this->price),
       '_homeArea' => $_homeArea,
       '_landArea' => trim($_landArea),
       '_indoors' => $_indoor,

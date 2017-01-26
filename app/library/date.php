@@ -12,60 +12,75 @@ class Date
 
   public function getMonthName($month) {   
 
-    $monthName = null;
+    $monthName = array(
+      'มกราคม',
+      'กุมภาพันธ์',
+      'มีนาคม',
+      'เมษายน',
+      'พฤษภาคม',
+      'มิถุนายน',
+      'กรกฎาคม',
+      'สิงหาคม',
+      'กันยายน',
+      'ตุลาคม',
+      'พฤศจิกายน',
+      'ธันวาคม',
+    );
 
-    switch ($month) {
-      case 1:
-        $monthName = 'มกราคม';
-        break;
-      
-      case 2:
-        $monthName = 'กุมภาพันธ์';
-        break;
-      
-      case 3:
-        $monthName = 'มีนาคม';
-        break;
-      
-      case 4:
-        $monthName = 'เมษายน';
-        break;
-      
-      case 5:
-        $monthName = 'พฤษภาคม';
-        break;
-      
-      case 6:
-        $monthName = 'มิถุนายน';
-        break;
-      
-      case 7:
-        $monthName = 'กรกฎาคม';
-        break;
-      
-      case 8:
-        $monthName = 'สิงหาคม';
-        break;
-      
-      case 9:
-        $monthName = 'กันยายน';
-        break;
-      
-      case 10:
-        $monthName = 'ตุลาคม';
-        break;
-      
-      case 11:
-        $monthName = 'พฤศจิกายน';
-        break;
-      
-      case 12:
-        $monthName = 'ธันวาคม';
-        break;
+    return !empty($monthName[$month-1]) ? $monthName[$month-1] : null;
 
-    }
+    // switch ($month) {
+    //   case 1:
+    //     $monthName = 'มกราคม';
+    //     break;
+      
+    //   case 2:
+    //     $monthName = 'กุมภาพันธ์';
+    //     break;
+      
+    //   case 3:
+    //     $monthName = 'มีนาคม';
+    //     break;
+      
+    //   case 4:
+    //     $monthName = 'เมษายน';
+    //     break;
+      
+    //   case 5:
+    //     $monthName = 'พฤษภาคม';
+    //     break;
+      
+    //   case 6:
+    //     $monthName = 'มิถุนายน';
+    //     break;
+      
+    //   case 7:
+    //     $monthName = 'กรกฎาคม';
+    //     break;
+      
+    //   case 8:
+    //     $monthName = 'สิงหาคม';
+    //     break;
+      
+    //   case 9:
+    //     $monthName = 'กันยายน';
+    //     break;
+      
+    //   case 10:
+    //     $monthName = 'ตุลาคม';
+    //     break;
+      
+    //   case 11:
+    //     $monthName = 'พฤศจิกายน';
+    //     break;
+      
+    //   case 12:
+    //     $monthName = 'ธันวาคม';
+    //     break;
 
-    return $monthName;
+    // }
+
+    // return $monthName;
 
   } 
 }

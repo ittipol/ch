@@ -33,12 +33,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 // ENTITY
 // Route::get('{entity_slug}','EntityController@index');
-// Route::get('entity/create','EntityController@create');
+Route::get('entity/create','EntityController@create');
 
-// Route::group(['middleware' => 'auth'], function () {
-//   Route::get('entity/add','EntityController@add');
-//   Route::post('entity/add','EntityController@submit');
-// });
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('entity/add','EntityController@add');
+  Route::post('entity/add','EntityController@submit');
+});
 
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');

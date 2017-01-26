@@ -12,16 +12,16 @@
           <div class="image">
             <a href="">
               <!-- <div class="image" style="background-image: url({{$list['_imageUrl']}});"> -->
-              <img src="http://www.ikea.com/PIAimages/0138832_PE298646_S3.JPG">
+              <img src="{{$list['_imageUrl']}}">
             </a>
           </div>
           <div class="product-detail">
             <a href="">
               <div class="product-title">{{$list['name']}}</div>
             </a>
-          </div>
-          <div class="price">
-            {{$list['_price']}}
+            <div class="price">
+              {{$list['_price']}}
+            </div>
           </div>
         </div>
       </div>

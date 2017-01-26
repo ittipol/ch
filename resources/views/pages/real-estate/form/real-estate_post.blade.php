@@ -421,7 +421,9 @@
 
       $('.home-area').on('keydown',function(e){
 
-        if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8)) {
+        console.log(e.keyCode);
+
+        if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8) && (e.keyCode != 110) && (e.keyCode != 190)) {
           e.preventDefault();
           return false;
         }
@@ -430,7 +432,7 @@
 
       $('.land-area').on('keydown',function(e){
 
-        if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8)) {
+        if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8) && (e.keyCode != 110) && (e.keyCode != 190)) {
           e.preventDefault();
           return false;
         }
@@ -462,80 +464,6 @@
     }
 
   }
-
-  // class HomeArea {
-
-  //   constructor() {}
-
-  //   load() {
-  //     this.bind();
-  //   }
-
-  //   bind() {
-
-  //     let _this = this;
-
-  //     $('.home-area').on('keydown',function(e){
-
-  //       if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8)) {
-  //         e.preventDefault();
-  //         return false;
-  //       }
-
-  //     });
-
-  //   }
-
-  // }
-
-  // class LandArea {
-
-  //   constructor() {
-  //     this.handle;
-  //   }
-
-  //   load() {
-  //     this.bind();
-  //   }
-
-  //   bind() {
-
-  //     let _this = this;
-
-  //     $('.land-area').on('keydown',function(e){
-
-  //       if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8)) {
-  //         e.preventDefault();
-  //         return false;
-  //       }
-        
-  //       let obj = this;
-
-  //       clearTimeout(_this.handle);
-  //       _this.handle = setTimeout(function(){
-  //         _this.calSqm($(obj).attr('id'));
-  //       },500);
-  //     });
-
-  //   }
-
-  //   calSqm(unit) {
-
-  //     if(unit == 'sqm') {
-  //       $('#rai').val('');
-  //       $('#ngan').val('');
-  //       $('#wa').val('');
-  //     }else{
-  //       let rai = $('#rai').val() * 1600;
-  //       let ngan = $('#ngan').val() * 400;
-  //       let wa = $('#wa').val() * 4;
-
-  //       $('#sqm').val(rai+ngan+wa);
-  //     }
-
-  //   }
-
-  // }
 
   $(document).ready(function(){
     const images = new Images('_image_group',8,'description');

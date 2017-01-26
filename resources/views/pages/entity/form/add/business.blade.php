@@ -133,10 +133,9 @@
       </div>
 
       <div class="form-row">
-        <?php echo Form::label('', 'ระบุตำแหน่งบริษัท องค์กร หรือ ธุรกิจชุมชนบนแผนที่'); ?>
+        <?php echo Form::label('', 'ตำแหน่งบนแผนที่'); ?>
         <input id="pac-input" class="controls" type="text" placeholder="Search Box">
         <div id="map"></div>
-        <p class="notice info">คลิกบนแผนที่เพื่อระบุตำแหน่ง</p>
       </div>
 
     </div>

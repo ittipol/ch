@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\library\currency;
+
 class Item extends Model
 {
   protected $table = 'items';
@@ -24,6 +26,8 @@ class Item extends Model
       'ItemToCategory.item_category_id.required' => 'หมวดหมู่หลักสินค้าห้ามว่าง',
     )
   );
+
+  protected $imageCache = array('xs','md');
 
   public function __construct() {  
     parent::__construct();
@@ -49,12 +53,14 @@ class Item extends Model
 
   public function buildModelData() {
 
+    $currency = new Currency;
+
     return array(
       'id' => $this->id,
       'announcement_type_id' => $this->announcement_type_id,
       'name' => $this->name,
       'description' => $this->description,
-      '_price' => 'THB '.number_format($this->price, 0, '.', ','),
+      '_price' => $currency->format($this->price),
       '_used' => $this->used ? 'สินค้าใหม่' : 'สินค้ามือสอง',
       '_announcementTypeName' => $this->announcementType->name,
       '_categoryName' => $this->itemToCategories->category->name

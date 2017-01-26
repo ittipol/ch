@@ -24,8 +24,6 @@ class ItemController extends Controller
     );
 
     return $this->view('pages.item.list');
-
-
   }
 
   public function detail($itemId) {

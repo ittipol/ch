@@ -29,6 +29,8 @@ class Paginator {
 
   public function build() {
 
+    $currency = new Currency;
+
     $page = 1;
 
     $this->total = $this->model->all()->count();
@@ -46,15 +48,21 @@ class Paginator {
 
       $image = $record->getRalatedModelData('Image',array(
         'first' => true
-      ))->buildModelData();
+      ));
+
+      $imageUrl = '/images/common/no-img.png';
+      if(!empty($image)) {
+        $image = $image->buildModelData();
+        $imageUrl = $image['_url'];
+      }
 
       $this->data[] = array(
         'id' => $record->id,
         'name' => $record->name,
         'description' => $record->description,
-        '_price' => 'THB '.number_format($record->price, 0, '.', ','),
+        '_price' => $currency->format($record->price),
         '_url' => '',
-        '_imageUrl' => $image['_url']    
+        '_imageUrl' => $imageUrl,    
       );
 
     }

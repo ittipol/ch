@@ -84,16 +84,7 @@ class Form {
     }
     $this->data['announcementTypes'] = $announcementTypes;
   }
-
-  // public function landAreaUnit() {
-  //   $records = Service::loadModel('LandAreaUnit')->all();
-  //   $landAreaUnits = array();
-  //   foreach ($records as $landAreaUnit) {
-  //     $landAreaUnits[$landAreaUnit->id] = $landAreaUnit->name;
-  //   }
-  //   $this->data['landAreaUnits'] = $landAreaUnits;
-  // }
-
+  
   public function realEstateFeatures($options = array()) {
     $records = Service::loadModel('RealEstateFeature')->all();
     $realEstateFeatures = array();

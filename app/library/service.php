@@ -2,12 +2,8 @@
 
 namespace App\library;
 
-// use App\library\token;
-use Session;
-
 class Service
 {
-
   public static function loadModel($modelName) {
     $class = 'App\Models\\'.$modelName;
 
@@ -37,11 +33,6 @@ class Service
     return $ipaddress;
   }
 
-  // public static function generateFileName($file) {
-  //   $name = time().'_'.Token::generateNumber(15).'_'.$file->getSize();
-  //   return $name.'.'.$file->getClientOriginalExtension(); 
-  // }
-
   public static function generateModelDir($modelName) {
 
     $alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -68,40 +59,5 @@ class Service
     return implode('_', $parts);
 
   }
-
-  // public static function generateModelNameByModelAlias($modelAlias) {
-
-  //   $modelAlias = str_replace('-', ' ', $modelAlias);
-  //   $parts = explode(' ', $modelAlias);
-
-  //   $modelName = '';
-  //   foreach ($parts as $part) {
-  //     $modelName .= ucfirst($part); 
-  //   }
-
-  //   return $modelName;
-
-  // }
-
-  // public static function parseRelatedModelOptions($options = array()) {
-
-  //   if(empty($options)) {
-  //     return false;
-  //   }
-
-  //   $_options = array();
-  //   foreach ($options as $key => $option) {
-  //     $parts = explode('|', $option);
-
-  //     switch ($parts[0]) {
-  //       case 'Session':
-  //         $_options[$key] = Session::get($parts[1]);
-  //         break;
-  //     }
-  //   }
-
-  //   return $_options;
-
-  // }
 
 }

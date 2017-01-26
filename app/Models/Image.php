@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\library\token;
 use App\library\service;
-// use App\library\imageTool;
+use App\library\imageTool;
 use File;
 use Session;
 
@@ -69,8 +69,8 @@ class Image extends Model
           $to = $imageInstance->getImagePath();
           $this->moveImage($path,$to);
 
-          // $ext = pathinfo($imageInstance->filename, PATHINFO_EXTENSION);
-          // $filename = pathinfo($imageInstance->filename, PATHINFO_FILENAME);
+          $ext = pathinfo($imageInstance->filename, PATHINFO_EXTENSION);
+          $filename = pathinfo($imageInstance->filename, PATHINFO_FILENAME);
 
           // $imageLib = new ImageTool($to);
           // $imageLib->resize(44,44);
@@ -80,12 +80,13 @@ class Image extends Model
           // $imageLib->resize(340,340);
           // $imageLib->save($imageInstance->getDirPath().$filename.'_340x340.'.$ext);
 
+          $imageLib = new ImageTool($to);
+          $imageLib->resize(250,250);
+          $imageLib->save($imageInstance->getDirPath().$filename.'_250x250.'.$ext);
+
         }
 
       }
-
-      // resize image 44x44
-      // resize image 340x340
 
       // remove temp dir
       $temporaryFile->deleteTemporaryDirectory($directoryName);
