@@ -39,7 +39,7 @@
 			<div>
 				<?php
 					echo Form::submit('เข้าสู่ระบบ', array(
-						'class' => 'button wide-btn'
+						'class' => 'button wide-button'
 					));
 				?>
 			</div>

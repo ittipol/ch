@@ -16,11 +16,18 @@ class ItemController extends Controller
 
   public function listView() {
 
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
     $this->paginator->setModel($this->model);
-    $data = $this->paginator->build();
+    $this->paginator->setPage($page);
+    $this->paginator->setPerPage(1);
+    $this->paginator->setUrl(url('item/list/'));
 
     $this->data = array(
-      'lists' => $data
+      'detailUrl' => url('item/detail/')
     );
 
     return $this->view('pages.item.list');

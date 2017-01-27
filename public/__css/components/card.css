@@ -3,7 +3,9 @@
 }
 
 .card {
-	/*border: 1px solid red;*/
+/*	border-bottom: 4px solid #222222;
+	padding-bottom: 15px;*/
+	margin-bottom: 20px;
 }
 
 .card .image {
@@ -40,4 +42,9 @@
 	font-weight: bold;
 	clear: left;
 	font-style: normal;
+}
+
+.card .button {
+	margin: 15px 0 0;
+	background-color: #EF6C00;
 }

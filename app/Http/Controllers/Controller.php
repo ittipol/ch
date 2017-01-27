@@ -111,6 +111,11 @@ class Controller extends BaseController
         $this->data = array_merge($this->data,$modelData);
       }
 
+      $pagination = $this->paginator->build();
+      if(!empty($pagination)){
+        $this->data = array_merge($this->data,$pagination);
+      }
+
     	return view($view,$this->data);
     }
 

@@ -147,7 +147,7 @@ class Image extends Model
   }
 
   private function deleteImages($model,$images) {
-
+// orWhere->('original_image_id','=');
     $images = $this
     ->whereIn('filename', $images)
     ->where([

@@ -59,14 +59,11 @@
 }
 
 .image-gallery .image-gallery-list .preview-image {
-	/*width: 60px;*/
+	width: 60px;
 	height: 60px;
 	margin: 4px;
 	border: 2px solid #464646;
-	background-color: #464646;
-/*	background-size: auto 100%;
-	background-position: center;
-	background-repeat: no-repeat;*/
+	background-color: #ffffff;
 	text-align: center;
 	cursor: pointer;
 	float: left;

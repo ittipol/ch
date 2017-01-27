@@ -337,7 +337,7 @@
         <?php
           echo Form::label('Contact[line]', 'Line');
           echo Form::text('Contact[line]', null, array(
-            'placeholder' => 'อีเมล',
+            'placeholder' => 'Line',
             'autocomplete' => 'off'
           ));
         ?>

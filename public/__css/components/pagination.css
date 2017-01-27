@@ -1,0 +1,31 @@
+.pagination .pagination-inner {
+	float: right;
+}
+
+.pagination .paging:first-child {
+	border-radius: 20px 0 0 20px;
+}
+
+.pagination .paging:last-child {
+	border-radius: 0 20px 20px 0;
+}
+
+.pagination .paging {
+	color: #000;
+	background-color: #ececec;
+	float: left;
+	text-decoration: none;
+	text-align: center;
+	width: 40px;
+	line-height: 40px;
+}
+
+.pagination a.paging:hover,
+.pagination a.paging.selected{
+	color: #fff;
+	background-color: rgb(249,91,73);
+}
+
+/*.active {
+	color: rgb(212,79,56);
+}*/

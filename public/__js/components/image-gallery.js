@@ -110,7 +110,7 @@ class ImageGallery {
 
       }else{
 
-        if((imgWidth/frameWidth) > 2) {
+        if(Math.floor(imgHeight/imgWidth) == 0) {
           let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
 
           $('#image_display').css({

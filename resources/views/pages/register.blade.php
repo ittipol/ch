@@ -42,7 +42,7 @@
 
 				<?php
 					echo Form::submit('สมัครสมาชิก', array(
-						'class' => 'button wide-btn'
+						'class' => 'button wide-button'
 					));
 				?>
 
