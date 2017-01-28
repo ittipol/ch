@@ -7,11 +7,10 @@ class Paginator {
   private $total;
   private $page = 1;
   private $lastPage;
-  private $perPage = 15;
+  private $perPage = 24;
   private $url;
-  private $nextPageUrl;
-  private $prevPageUrl;
   private $data = array();
+  public $error = false;
 
   public function __construct($model = null) {
     $this->model = $model;
@@ -30,17 +29,7 @@ class Paginator {
   }
 
   public function setUrl($url) {
-
-    // if(substr($url, -1) != '/') {
-    //   $url .= '/';
-    // }
-
     $this->url = $url;
-
-  }
-
-  public function setDataUrl($url) {
-
   }
 
   public function build() {
@@ -54,6 +43,12 @@ class Paginator {
 
     $this->total = $this->model->all()->count();
     $this->lastPage = (int)ceil($this->total / $this->perPage);
+
+    if(($this->page < 1) || ($this->page > $this->lastPage)) {
+      $this->error = true;
+      return false;
+    }
+
     $offset = ($this->page - 1)  * $this->perPage;
 
     // $start = $offset + 1;
@@ -82,7 +77,7 @@ class Paginator {
       $this->data[] = array(
         'id' => $record->id,
         'name' => $record->name,
-        '_name_short' => String::subString($record->name,70),
+        '_name_short' => String::subString($record->name,80),
         'description' => $record->description,
         '_price' => $currency->format($record->price),
         '_imageUrl' => $imageUrl,
@@ -94,90 +89,114 @@ class Paginator {
     $paging = array();
     $pagingUrl = $this->url.'?page={n}';
 
-    // if($this->page > 3) {
-    //   $paging[] = array(
-    //     'pageNumber' => 1,
-    //     'url' => str_replace('{n}', 1, $pagingUrl)
-    //   );
+    $skip = true;
+    if(($this->page - 4) < 1){
 
-    //   $paging[] = array(
-    //     'pageNumber' => '...',
-    //     'url' => null
-    //   );
-    // }
+      for ($i=1; $i < 6; $i++) { 
 
-
-    // if($this->page < ($this->lastPage - 3)) {
-    //   $paging[] = array(
-    //     'pageNumber' => '...',
-    //     'url' => null
-    //   );
-
-    //   $paging[] = array(
-    //     'pageNumber' => $this->lastPage,
-    //     'url' => str_replace('{n}', $this->lastPage, $pagingUrl)
-    //   );
-    // }
-
-    if(($this->page >= 1) && ($this->page <= $this->lastPage)) {
-  dd('xzz');
-      if(($this->page - 5) < 1){
-
-        for ($i=1; $i < 6; $i++) { 
-          var_dump($i);
-
-          if($this->page == $i) {
-            // selected
-          }
-
+        if($i > $this->lastPage) {
+          $skip = false;
+          break;
         }
+        
+        $paging[] = array(
+          'pageNumber' => $i,
+          'url' => str_replace('{n}', $i, $pagingUrl)
+        );
 
-      }elseif(($this->page + 5) > $this->lastPage) {
-
-        for ($i=4; $i >= 0; $i--) { 
-          var_dump($this->lastPage-$i);
-        }
-
-      }else{
-  dd('xxx');
       }
+
+      if($skip) {
+
+        if(($this->lastPage - 5) > 2) {
+          $paging[] = array(
+            'pageNumber' => '...',
+            'url' => null
+          );
+        }
+        
+        $paging[] = array(
+          'pageNumber' => $this->lastPage,
+          'url' => str_replace('{n}', $this->lastPage, $pagingUrl)
+        );
+
+      }
+
+      
+    }elseif(($this->page + 4) > $this->lastPage) {
+
+      $paging[] = array(
+        'pageNumber' => 1,
+        'url' => str_replace('{n}', 1, $pagingUrl)
+      );
+
+      if(($this->lastPage-5) > 2) {
+        $paging[] = array(
+          'pageNumber' => '...',
+          'url' => null
+        );
+      }
+
+      for ($i=4; $i >= 0; $i--) { 
+
+        $paging[] = array(
+          'pageNumber' => $this->lastPage-$i,
+          'url' => str_replace('{n}', $this->lastPage-$i, $pagingUrl)
+        );
+
+      }
+
+    }else{
+
+      $paging[] = array(
+        'pageNumber' => 1,
+        'url' => str_replace('{n}', 1, $pagingUrl)
+      );
+
+      $paging[] = array(
+        'pageNumber' => '...',
+        'url' => null
+      );
+
+      $start = $this->page - 2;
+
+      for($i=1; $i < 4; $i++) {
+        $paging[] = array(
+          'pageNumber' => $start+$i,
+          'url' => str_replace('{n}', $start+$i, $pagingUrl)
+        );
+      }
+
+      $paging[] = array(
+        'pageNumber' => '...',
+        'url' => null
+      );
+
+      $paging[] = array(
+        'pageNumber' => $this->lastPage,
+        'url' => str_replace('{n}', $this->lastPage, $pagingUrl)
+      );
 
     }
 
-    
+    $prev['url'] = str_replace('{n}', $this->page-1, $pagingUrl);
+    if(($this->page - 1) < 1) {
+      $prev['url'] = null;
+    }
 
-    dd($paging);
-
-    // foreach ($paging as $key => $value) {
-    //   if($value['pageNumber'] == $this->page) {
-    //     $paging[$key] = array_merge($paging[$key],array(
-    //       'selected' => true
-    //     ));
-    //   }
-    // }
-
-    // $paging['prev'] = array(
-    //   'pageNumber' => 'ก่อนหน้า',
-    //   'url' => str_replace('{n}', $this->page-1, $pagingUrl)
-    // )
-
-    // $paging['prev']['url'] = str_replace('{n}', $this->page-1, $pagingUrl);
-    // if(($this->page - 1) < 1) {
-    //   $paging['prev']['url'] = null;
-    // }
-
-    // $paging['next']['url'] = str_replace('{n}', $this->page+1, $pagingUrl);
-    // if(($this->page + 1) > $this->lastPage) {
-    //   $paging['next']['url'] = null;
-    // }
+    $next['url'] = str_replace('{n}', $this->page+1, $pagingUrl);
+    if(($this->page + 1) > $this->lastPage) {
+      $next['url'] = null;
+    }
 
     return array(
       'pagination' => array(
         'page' => $this->page,
         'lastPage' => $this->lastPage,
         'total' => $this->total,
-        // 'url' => $this->url.'?page={n}',
         'paging' => $paging,
+        'next' => $next,
+        'prev' => $prev,
         'data' => $this->data
       )
     );

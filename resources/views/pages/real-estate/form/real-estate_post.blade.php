@@ -57,7 +57,6 @@
           'autocomplete' => 'off'
         ));
       ?>
-      <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
     </div>
 
     <div class="form-row">
@@ -252,46 +251,46 @@
             ?>
           </div>
 
-          <div class="form-row">
-            <?php 
-              echo Form::label('tagging', 'แท็กที่เกี่ยวของกับอสังหาริมทรัพย์นี้');
-            ?>
-            <div id="_tags" class="tag"></div>
-            <p class="notice info">แท็กมีผลต่อการค้นหา</p>
-          </div>
-
-          <div class="form-row">
-            <?php 
-              echo Form::label('price', 'ราคาอสังหาริมทรัพย์', array(
-                'class' => 'required'
-              ));
-              echo Form::text('price', null, array(
-                'placeholder' => 'ราคาอสังหาริมทรัพย์',
-                'autocomplete' => 'off'
-              ));
-            ?>
-          </div>
-
-          <div class="form-row">
-            <?php 
-              echo Form::label('broker', 'ตัวแทนขาย');
-            ?>
-            <div class="btn-group">
-              <label class="btn">
-                <input type="radio" name="need_broker" value="1" >  
-                <div class="inner">ต้องการ</div>
-              </label>
-              <label class="btn">
-                <input type="radio" name="need_broker" value="0" checked >  
-                <div class="inner">ไม่ต้องการ</div>
-              </label>
-            </div>
-          </div>
-
         </div>
 
       </div>
 
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('tagging', 'แท็กที่เกี่ยวของกับอสังหาริมทรัพย์นี้');
+      ?>
+      <div id="_tags" class="tag"></div>
+      <p class="notice info">แท็กมีผลต่อการค้นหา</p>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('price', 'ราคาอสังหาริมทรัพย์', array(
+          'class' => 'required'
+        ));
+        echo Form::text('price', null, array(
+          'placeholder' => 'ราคาอสังหาริมทรัพย์',
+          'autocomplete' => 'off'
+        ));
+      ?>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('broker', 'ตัวแทนขาย');
+      ?>
+      <div class="btn-group">
+        <label class="btn">
+          <input type="radio" name="need_broker" value="1" >  
+          <div class="inner">ต้องการ</div>
+        </label>
+        <label class="btn">
+          <input type="radio" name="need_broker" value="0" checked >  
+          <div class="inner">ไม่ต้องการ</div>
+        </label>
+      </div>
     </div>
 
     <div class="form-row">

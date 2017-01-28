@@ -15,7 +15,6 @@ class ItemController extends Controller
   }
 
   public function listView() {
-
     $page = 1;
     if(!empty($this->query)) {
       $page = $this->query['page'];
@@ -23,11 +22,10 @@ class ItemController extends Controller
 
     $this->paginator->setModel($this->model);
     $this->paginator->setPage($page);
-    $this->paginator->setPerPage(1);
     $this->paginator->setUrl(url('item/list/'));
 
     $this->data = array(
-      'detailUrl' => url('item/detail/')
+      'detailUrl' => Service::url('item/detail')
     );
 
     return $this->view('pages.item.list');

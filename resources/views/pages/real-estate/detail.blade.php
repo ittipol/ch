@@ -40,7 +40,7 @@
             </div>
 
             <div class="display-image-description-icon">
-              ข้อมูลเพิ่มเติม
+              คำอธิบายรูปนี้
             </div>
 
           </div>

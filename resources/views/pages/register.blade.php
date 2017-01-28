@@ -8,18 +8,7 @@
 
 		<div class="register-form">
 
-			<?php if(!empty($errors->all())): ?>
-				<div class="form-error-messages">
-					<div class="form-error-messages-inner">
-						<h3>เกิดข้อผิดพลาด!!!</h3>
-							<ul>
-							<?php foreach ($errors->all() as $message) { ?>
-								<li class="error-messages"><?php echo $message; ?></li>
-							<?php	} ?>
-						</ul>
-					</div>
-				</div>
-			<?php endif; ?>
+			@include('components.form_error') 
 
 			<?php
 				echo Form::open(['url' => 'register', 'method' => 'post', 'enctype' => 'multipart/form-data']);

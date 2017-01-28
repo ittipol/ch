@@ -30,19 +30,6 @@ class Slug extends Model
 
     $save = true;
 
-    // do {
-    //   $slug = $this->generateSlug($model,$behavior['field']); 
-
-    //   if(empty($slug)){
-    //     $save = false;
-    //   }
-
-    // } while ($this->checkDataExistBySlug($model,$slug));
-
-    // if(!$save) {
-    //   return false;
-    // }
-
     $slug = $this->generateSlug($model,$behavior['field']);
 
     if(empty($slug)){

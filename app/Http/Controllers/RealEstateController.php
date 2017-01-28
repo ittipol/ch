@@ -12,6 +12,23 @@ class RealEstateController extends Controller
     $this->model = Service::loadModel('RealEstate');
   }
 
+  public function listView() {
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $this->paginator->setModel($this->model);
+    $this->paginator->setPage($page);
+    $this->paginator->setUrl(url('item/list/'));
+
+    $this->data = array(
+      'detailUrl' => Service::url('real-estate/detail')
+    );
+
+    return $this->view('pages.real-estate.list');
+  }
+
   public function detail($realEstateId) {
 
     $realEstate = $this->model->find($realEstateId);
@@ -71,12 +88,7 @@ class RealEstateController extends Controller
   }
 
   public function submitPosting(CustomFormRequest $request) {
-    // dd($request->all());
-
     if($this->model->fill($request->all())->save()) {
-
-      dd('done');
-
       Message::display('ลงประกาศเรียบร้อยแล้ว','success');
       return Redirect::to('real-estate/detail/'.$this->model->id);
     }else{

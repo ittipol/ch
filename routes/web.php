@@ -30,15 +30,25 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('avatar', 'StaticFileController@avatar');
 });
 
+// community / shop
+// Route::get('{shop_slug}','ShopController@index');
+// Route::get('community/shop_feature','ShopController@feature');
+
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('community/shop_create','ShopController@create');
+  Route::post('community/shop_create','ShopController@submitCreating');
+});
+
 
 // ENTITY
 // Route::get('{entity_slug}','EntityController@index');
-Route::get('entity/create','EntityController@create');
+// Route::get('entity/create','EntityController@create');
+// Route::get('entity/feature','EntityController@feature');
 
-Route::group(['middleware' => 'auth'], function () {
-  Route::get('entity/add','EntityController@add');
-  Route::post('entity/add','EntityController@submit');
-});
+// Route::group(['middleware' => 'auth'], function () {
+//   Route::get('entity/add','EntityController@add');
+//   Route::post('entity/add','EntityController@submit');
+// });
 
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');
@@ -95,6 +105,8 @@ Route::group(['middleware' => 'auth'], function () {
   //   'uses' => 'RealEstateController@editingSubmit'
   // ]);
 });
+
+Route::get('real-estate/list','RealEstateController@listView');
 Route::get('real-estate/detail/{real_estate_id}','RealEstateController@detail');
 
 

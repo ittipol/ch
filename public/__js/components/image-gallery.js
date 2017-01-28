@@ -98,8 +98,7 @@ class ImageGallery {
 
     if((imgHeight > frameheight) || (imgWidth > frameWidth)) {
 
-      if(frameWidth < 480) {
-
+      if(Math.abs(imgHeight - imgWidth) > 350) {
         let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
 
         $('#image_display').css({
@@ -107,52 +106,16 @@ class ImageGallery {
           'height': imgH,
           'margin-top': (frameheight - imgH) / 2
         });
-
       }else{
+        let imgW = Math.ceil(imgWidth * (frameheight / imgHeight));
 
-        if(Math.floor(imgHeight/imgWidth) == 0) {
-          let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
-
-          $('#image_display').css({
-            'width': '100%',
-            'height': imgH,
-            'margin-top': (frameheight - imgH) / 2
-          });
-        }else{
-          let imgW = Math.ceil(imgWidth * (frameheight / imgHeight));
-
-          $('#image_display').css({
-            'width': imgW,
-            'height': '100%',
-            'margin-top': 0
-          });
-        }
-
+        $('#image_display').css({
+          'width': imgW,
+          'height': '100%',
+          'margin-top': 0
+        });
       }
-
-    }
-    // else if(imgWidth > frameWidth) {
-
-    //   let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
-
-    //   $('#image_display').css({
-    //     'width': '100%',
-    //     'height': imgH,
-    //     'margin-top': (frameheight - imgH) / 2
-    //   });
-
-    // }else if(imgHeight > frameheight) {
-
-    //   let imgW = Math.ceil(imgWidth * (frameheight / imgHeight));
- 
-    //   $('#image_display').css({
-    //     'width': imgW,
-    //     'height': '100%',
-    //     'margin-top': 0
-    //   });
-
-    // }
-    else{
+    }else{
 
       $('#image_display').css({
         'width': 'auto',

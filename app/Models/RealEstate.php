@@ -11,21 +11,21 @@ class RealEstate extends Model
   protected $modelRelated = array('Image','Address','Tagging','Contact');
   protected $directory = true;
 
-  // protected $validation = array(
-  //   'rules' => array(
-  //     'name' => 'required|max:255',
-  //     'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/',
-  //     'Contact.phone_number' => 'required|max:255',
-  //     // 'Contact.email' => 'email|unique:contacts,email|max:255',
-  //     'ItemToCategory.item_category_id' => 'required' 
-  //   ),
-  //   'messages' => array(
-  //     'name.required' => 'ชื่อห้ามว่าง',
-  //     'price.required' => 'จำนวนราคาห้ามว่าง',
-  //     'Contact.phone_number.required' => 'เบอร์โทรศัพท์ห้ามว่าง',
-  //     'ItemToCategory.item_category_id.required' => 'หมวดหมู่หลักสินค้าห้ามว่าง',
-  //   )
-  // );
+  protected $validation = array(
+    'rules' => array(
+      'name' => 'required|max:255',
+      'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/|max:255',
+      'Contact.phone_number' => 'required|max:255',
+      'real_estate_type_id' => 'required' 
+    ),
+    'messages' => array(
+      'name.required' => 'ชื่ที่ต้องการประกาศห้ามว่าง',
+      'price.required' => 'จำนวนราคาห้ามว่าง',
+      'price.regex' => 'รูปแบบจำนวนราคาไม่ถูกต้อง',
+      'Contact.phone_number.required' => 'เบอร์โทรศัพท์ห้ามว่าง',
+      'real_estate_type_id' => 'ประเภทอสังหาริมทรัพย์ห้ามว่าง',
+    )
+  );
 
   public function __construct() {  
     parent::__construct();

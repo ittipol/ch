@@ -55,7 +55,6 @@
           'autocomplete' => 'off'
         ));
       ?>
-      <p class="notice info">ชื่อจะมีผลโดยตรงต่อการค้นหา</p>
     </div>
 
     <div class="form-row">

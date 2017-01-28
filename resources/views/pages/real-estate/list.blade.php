@@ -3,8 +3,6 @@
 
   <div class="container list">
 
-    @if(!empty($pagination))
-
     <div class="row">
 
       @foreach($pagination['data'] as $data)
@@ -64,12 +62,6 @@
         </div>
       </div>
     </div>
-
-    @else
-
-    <h3>ไม่พบข้อมูล</h3>
-
-    @endif
 
   </div>
 

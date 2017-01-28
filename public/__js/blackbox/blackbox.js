@@ -24,7 +24,7 @@ class Blackbox {
       let h = window.innerHeight;
 
       $('.main-navigation').css({
-        width: this.mainNavWidth,
+        // width: this.mainNavWidth,
         height: h
       });
 
@@ -81,7 +81,7 @@ class Blackbox {
     let h = window.innerHeight;
 
     $('.main-navigation').css({
-      width: this.mainNavWidth,
+      // width: this.mainNavWidth,
       height: h
     });
 
