@@ -53,11 +53,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary">สินค้า</button>
-            <button type="button" class="btn btn-secondary">โฆษณา</button>
-            <button type="button" class="btn btn-secondary">ประกาศงาน</button>
-            <button type="button" class="btn btn-secondary">กิจกรรม</button>
-            <button type="button" class="btn btn-secondary">เพิ่ม...</button>
+            <button type="button" class="btn btn-secondary">แก้ไขร้านค้า</button>
           </div>
         </div>
       </div>

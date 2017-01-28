@@ -1,11 +1,11 @@
 .main-navigation {
 	position: fixed;
 	top: 0;
-/*	bottom: 0;*/
 	left: 0;
 	z-index: 1000;
 	width: 280px;
-	background-color: #1A237E;
+	/*background-color: #1A237E;*/
+  background-color: #00695C;
   transition: left .2s ease-out;
 }
 
@@ -88,7 +88,8 @@
 .navigation-primary-menu ul > li a:hover,
 .navigation-primary-menu ul > li a.active { 
 	color: #ffffff;
-  background-color: #303F9F;
+  /*background-color: #00796B;*/
+  background-color: #00695C;
 }
 
 .navigation-primary-menu ul > li a.active::before {
