@@ -38,28 +38,27 @@ class Controller extends BaseController
       $this->paginator = new Paginator();
 
       $this->query = Request::query();
+      $this->param = Route::current()->parameters();
 
       $this->middleware(function ($request, $next) {
 
-        $this->param = Route::current()->parameters();
+        // if(!empty($this->param['slug'])) {
 
-        if(!empty($this->param['entity_slug'])) {
+        //   $slug = service::loadModel('Slug')->getData(array(
+        //     'conditions' => array(
+        //       array('name','like',$this->param['slug'])
+        //     ),
+        //     'first' => true,
+        //     'fields' => array('name','model','model_id')
+        //   ));
 
-          $slug = service::loadModel('Slug')->getData(array(
-            'conditions' => array(
-              array('name','like',$this->param['entity_slug'])
-            ),
-            'first' => true,
-            'fields' => array('name','model','model_id')
-          ));
+        //   if(empty($slug)) {
+        //     return response()->view('messages.message');
+        //   }
 
-          if(empty($slug)) {
-            return response()->view('messages.message');
-          }
-
-          $entity = new Entity($slug);
-          $this->entity = $entity->buildData();
-        }
+          // $entity = new Entity($slug);
+          // $this->entity = $entity->buildData();
+        // }
 
       //   if(!empty($this->param['modelAlias'])) {
 

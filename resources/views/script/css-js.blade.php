@@ -76,7 +76,7 @@
     '__css/components/box.css',
     '__css/components/pagination.css',
     '__css/components/error.css',
-    '__css/pages/entity.css',
+    '__css/pages/shop-core.css',
     '__css/pages/detail.css',
     '__css/layouts/blackbox/wrapper.css',
     '__css/layouts/blackbox/components/action-bar.css',

@@ -14,6 +14,32 @@ class ShopController extends Controller
     $this->model = Service::loadModel('Shop');
   }
 
+  public function index() {
+
+    $slug = service::loadModel('Slug')->getData(array(
+      'conditions' => array(
+        array('name','like',$this->param['slug'])
+      ),
+      'first' => true,
+      'fields' => array('name','model','model_id')
+    ));
+
+    $shop = $this->model->find($slug->model_id);
+
+    $this->modelData->setModel($shop);
+    $this->modelData->loadData();
+
+    $this->data = array(
+      'shopUrl' => Service::url('shop/'.$this->param['slug']),
+    );
+
+    return $this->view('pages.shop.main');
+  }
+
+  public function setting() {
+
+  }
+
   public function create() {
     $this->form->setModel($this->model);
     $this->form->loadFieldData('District',array(
@@ -29,7 +55,7 @@ class ShopController extends Controller
   }
 
   public function submitCreating(CustomFormRequest $request) {
-    // dd($request->all());
+
     if($this->model->fill($request->all())->save()) {
 
       $slugName = $this->model->getRalatedModelData('Slug',array(
@@ -37,19 +63,17 @@ class ShopController extends Controller
       ))->name;
 
       Message::display('ลงประกาศเรียบร้อยแล้ว','success');
-      return Redirect::to('item/detail/'.$this->model->id);
+      return Redirect::to('shop/'.$slugName);
     }else{
 
       switch ($this->model->errorType) {
         case 1;
-          $EntityTypeName = Service::loadModel('EntityType')->find($this->model->entity_type_id)->name;
-          
-          $_message = 'คุณได้เพิ่ม'.$EntityTypeName.'ชื่อว่า '.$this->model->name.' ไปแล้ว โปรดใช้ชื่ออื่น';
+          $_message = 'คุณได้เพิ่มร้านค้าชื่อว่า '.$this->model->name.' ไปแล้ว โปรดใช้ชื่ออื่น';
           return Redirect::back()->withErrors([$_message]);
           break;
 
         case 2;
-          $_message = 'มี'.$EntityTypeName.'ไปแล้ว';
+          $_message = 'มีร้านค้าชื่อ '.$this->model->name.' นี้แล้ว';
           return Redirect::back()->withErrors([$_message]);
           break;
       }

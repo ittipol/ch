@@ -1,4 +1,4 @@
-.entity-header {
+.shop-header {
 	width: 100%;
 	margin: 0;
   padding: 0;
@@ -8,18 +8,18 @@
 	background-color: #90949c;
 }
 
-.entity-header .line {
+.shop-header .line {
 	background-color: #ffffff;
 }
 
-.entity-default-cover {
+.shop-default-cover {
 	background-image: url('/images/common/image.svg');
 	background-position: center;
 	background-repeat: repeat;
 	background-size: 200px;
 }
 
-.entity-cover {
+.shop-cover {
 	position: absolute;
   width: 100%;
   height: 100%;
@@ -28,7 +28,7 @@
   background-size: 100% auto;
 }
 
-.entity-header-overlay {
+.shop-header-overlay {
 	width: 100%;
 	/*background-color: rgba(50,50,50,.8);*/
 	background-color: rgba(20,27,32,.85);
@@ -37,7 +37,7 @@
 	transition: all .5s ease;
 }
 
-.entity-logo {
+.shop-logo {
 	width: 200px;
 	height: 200px;
   margin: 45px 0 45px 45px;
@@ -50,7 +50,7 @@
   float: left;
 }
 
-.entity-logo > .logo {
+.shop-logo > .logo {
 	width: 100%;
 	height: 100%;
 	background-position: center;
@@ -58,38 +58,23 @@
 	background-size: auto 100%;
 }
 
-.entity-description {
+.shop-description {
 	width: 60%;
 	padding: 30px 20px 20px;
 	color: #ffffff;
 	float: left;
 }
 
-.entity-description > p {
+.shop-description > p {
 	font-size: 16px;
 }
 
-.entity-header-secondary-info {
+.shop-header-secondary-info {
 	color: #ffffff;
 	padding: 20px;
 }
 
-.entity-left-panel {
-	margin-right: 280px;
-}
-
-.entity-right-side-panel {
-	position: absolute;
-  right: 15px;
-  width: 250px;
-  background-color: #ffffff;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 9998;
-  transition: right .2s ease-out
-}
-
-.working-time-status {
+/*.working-time-status {
 	font-size: 16px;
 	color: #ffffff;
 	padding: 10px;
@@ -115,43 +100,93 @@
 .working-time-status.status-close::before {
 	background-color: red;
 	box-shadow: 0 0 10px 2px rgba(255,0,0,.85);
-}
+}*/
 
-.entity-main-bar {
+.shop-main-bar {
 	width: 100%;
 	background-color: #CFD8DC;
 	border-bottom: 2px solid #78909C;
 }
 
-.entity-main-bar .btn-group {
+.shop-main-bar .btn-group {
 	padding: 10px;
 }
 
-.entity-main-bar .btn-group > .btn {
+.shop-main-bar .btn-group > .btn {
 	background-color: #ffffff;
 	border: 1px solid #BDBDBD;
 	padding: 6px 20px;
 }
 
-.entity-main-bar .btn-group > .btn:hover {
+.shop-main-bar .btn-group > .btn:hover {
 	background-color: #dfdfdf;
 }
 
-.entity-left-panel {
+/*.shop-right-side-panel {
+	position: absolute;
+  right: 15px;
+  width: 250px;
+  background-color: #ffffff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 9998;
+  transition: right .2s ease-out
+}
+
+.shop-left-panel {
 	margin-right: 280px;
 	border-right: 1px solid #CFD8DC;
 }
-
-    /*color: #000 !important;
-    text-decoration: none !important;
-    background-color: #ffffff;
-    border: 1px solid #BDBDBD;
-    padding: 5px 25px;
-    border: 0;
-    display: inline-block;
-    margin: 10px 0;
-    border-radius: 6px;
 */
+
+.shop-content {
+	margin-top: 20px;
+}
+
+.shop-content .shop-notice {
+	color: #fff;
+	border: 1px solid #EF9A9A;
+}
+
+.shop-content .shop-notice .shop-notice-header {
+	padding: 10px 20px;
+	background-color: #E53935;
+}
+
+.shop-content .shop-notice .shop-notice-content {
+	background-color: #E57373;
+}
+
+.shop-content .shop-notice .shop-notice-content .shop-notice-row {
+	padding: 10px 20px;
+	border-top: 1px solid #EF9A9A;
+}
+
+.shop-content .shop-notice .shop-notice-content .shop-notice-row a {
+	color: #C62828;
+}
+
+.shop-content .menu-box {
+	margin-right: 10px;
+}
+
+.shop-content .menu-box-group .menu-box {
+	float: left;
+}
+
+.shop-content .menu-box .menu-box-image {
+	
+}
+
+.shop-content .menu-box .menu-box-image img {
+	height: 150px;
+	padding: 40px;
+	background-color: #FFB74D;
+}
+.shop-content .menu-box .menu-box-info .menu-box-title {
+	color: #000;
+}
+
 /*==========  Mobile First Method  ==========*/
 
 /* Custom, iPhone Retina */ 
@@ -184,7 +219,7 @@
 /* Large Devices, Wide Screens */
 @media only screen and (max-width : 1200px) {
 
-	.entity-header-overlay {
+	.shop-header-overlay {
 		margin-top: 0;
 	}
 
@@ -193,15 +228,15 @@
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
 
-	.entity-logo {
+	.shop-logo {
 		margin-bottom: 0;
 	}
 
-	.entity-cover {
+	.shop-cover {
 		background-size: 100%;
 	}
 
-	.entity-description {
+	.shop-description {
 		width: 90%;
 		padding: 0 0 20px 45px;
 	}
@@ -210,14 +245,14 @@
 
 /* Small Devices, Tablets */
 @media only screen and (max-width : 768px) {
-	.entity-cover {
+	.shop-cover {
 		background-size: auto 100%;
 	}
 }
 
 /* Extra Small Devices, Phones */ 
 @media only screen and (max-width : 480px) {
-	.entity-description h2 {
+	.shop-description h2 {
 		font-size: 22px;
 	}
 }

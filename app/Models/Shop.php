@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\library\string;
+use Session;
+
 class Shop extends Model
 {
   protected $table = 'shops';
-  protected $fillable = ['business_entity_id','name','brand_story','created_by'];
-  protected $modelRelated = array('Image','Address','Contact');
+  protected $fillable = ['name','description','brand_story','created_by'];
+  protected $modelRelated = array('Image','Address','Contact','OfficeHour');
   public $errorType;
 
   protected $behavior = array(
@@ -58,17 +61,66 @@ class Shop extends Model
         $model->errorType = 2;
         return false;
       }
-            dd('aaaa');
+
     });
 
     Shop::saved(function($model){
 
       if($model->state == 'create') {
-        // save person to shop
+
+        $role = new Role();
+
+        $personToShop = new PersonToShop;
+        $personToShop->saveSpecial(array(
+          'shop_id' => $model->id,
+          'person_id' => Session::get('Person.id'),
+          'role_id' => $role->getIdByalias('admin')
+        ));
+
       }
 
-
     });
+  
+  }
+
+  public function getPermission($id = null) {
+
+    if(empty($id)) {
+      $id = $this->id;
+    }
+
+    $personToShop = new PersonToShop;
+    $person = $personToShop->getData(array(
+      'conditions' => array(
+        ['person_id','=',session()->get('Person.id')],
+        ['shop_id','=',$id],
+      ),
+      'fields' => array('role_id')
+    ));
+
+    $permission = array();
+    if(!empty($person)) {
+      $role = $person->role;
+      $permission = array(
+        'add' => $role->adding_permission,
+        'edit' => $role->editing_permission,
+        'delete' => $role->deleting_permission,
+      );
+    }
+
+    return $permission;
+  }
+
+  public function buildModelData() {
+
+    return array(
+      'name' => $this->name,
+      'description' => $this->description,
+      '_short_description' => strip_tags(String::subString($this->description,500)),
+      '_permission' => $this->getPermission(),
+      '_logo' => '',
+      '_cover' => '',
+    );
   }
 
 }

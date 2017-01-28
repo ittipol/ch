@@ -39,6 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('community/shop_create','ShopController@submitCreating');
 });
 
+Route::get('shop/{slug}','ShopController@index');
+Route::get('shop/{slug}/setting','ShopController@setting');
 
 // ENTITY
 // Route::get('{entity_slug}','EntityController@index');
