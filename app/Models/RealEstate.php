@@ -198,7 +198,7 @@ class RealEstate extends Model
       'description' => $this->description,
       '_price' => $currency->format($this->price),
       '_imageUrl' => $imageUrl,
-      '_need_broker' => $this->need_broker ? 'ต้องการตัวแทนขาย' : 'ไม่ต้องการตัวแทนขาย',
+      '_realEstateTypeName' => $this->realEstateType->name
     );
   }
 

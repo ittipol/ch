@@ -4,6 +4,16 @@
 
 .card {
 	margin-bottom: 20px;
+	position: relative;
+}
+
+.card .overlay-top-info {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 10px 0;
+	width: 100%;
+	background-color: rgba(236,236,236,.7);
 }
 
 .card .image {

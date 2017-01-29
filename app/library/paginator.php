@@ -2,6 +2,8 @@
 
 namespace App\library;
 
+use Session;
+
 class Paginator {
 
   private $total;
@@ -41,10 +43,10 @@ class Paginator {
     $this->total = $this->model->count();
     $this->lastPage = (int)ceil($this->total / $this->perPage);
 
-    if(($this->page < 1) || ($this->page > $this->lastPage)) {
-      $this->error = true;
-      return false;
-    }
+    // if(($this->page < 1) || ($this->page > $this->lastPage)) {
+    //   $this->error = true;
+    //   return false;
+    // }
 
     return array(
       'pagination' => array(
@@ -68,6 +70,7 @@ class Paginator {
     // $end = min(($offset + $this->perPage), $this->total);
 
     $records = $this->model
+    ->where('created_by','=',Session::get('Person.id'))
     ->take($this->perPage)
     ->skip($offset)
     ->get();

@@ -83,40 +83,48 @@
 
         <h3>จัดการ</h3>
 
-    
+        <div class="shop-nav-group clearfix">
 
-          <div class="menu-box-group clearfix">
-
-            <div class="menu-box">
-              <div class="menu-box-image">
-                  <img src="/images/common/_tag.png">
-              </div>
-              <div class="menu-box-info">
-                <h4 class="menu-box-title">สินค้า</h4>
-              </div>
+          <div class="shop-nav">
+            <div class="shop-nav-image">
+              <a href="{{$shopUrl}}job">
+                <img src="/images/common/tag.png">
+              </a>
             </div>
-
-            <div class="menu-box">
-              <div class="menu-box-image">
-                  <img src="/images/common/job.png">
-              </div>
-              <div class="menu-box-info">
-                <h4 class="menu-box-title">งาน</h4>
-              </div>
+            <div class="shop-nav-info">
+              <a href="{{$shopUrl}}product">
+                <h4 class="shop-nav-title">สินค้า</h4>
+              </a>
             </div>
-
-            <div class="menu-box">
-              <div class="menu-box-image">
-                  <a href=""><img src="/images/common/megaphone.png"></a>
-              </div>
-              <div class="menu-box-info">
-                <a href=""><h4 class="menu-box-title">โฆษณา</h4></a>
-              </div>
-            </div>
-
           </div>
 
+          <div class="shop-nav">
+            <div class="shop-nav-image">
+                <a href="{{$shopUrl}}job">
+                  <img src="/images/common/job.png">
+                </a>
+            </div>
+            <div class="shop-nav-info">
+              <a href="{{$shopUrl}}job">
+                <h4 class="shop-nav-title">งาน</h4>
+              </a>
+            </div>
+          </div>
 
+          <div class="shop-nav">
+            <div class="shop-nav-image">
+                <a href="{{$shopUrl}}advertisement">
+                  <img src="/images/common/megaphone.png">
+                </a>
+            </div>
+            <div class="shop-nav-info">
+              <a href="{{$shopUrl}}advertisement">
+                <h4 class="shop-nav-title">โฆษณา</h4>
+              </a>
+            </div>
+          </div>
+
+        </div>
 
       </div>
 

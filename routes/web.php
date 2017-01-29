@@ -38,8 +38,15 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('community/shop_create','ShopController@submitCreating');
 
   Route::get('shop/{slug}/product','ShopController@product');
+
   Route::get('shop/{slug}/job','ShopController@job');
+  Route::get('shop/{slug}/job_add','JobController@add');
+  Route::post('shop/{slug}/job_add','JobController@submitAdding');
+
   Route::get('shop/{slug}/advertisement','ShopController@advertisement');
+
+  Route::get('shop/{slug}/branch_add','BranchController@add');
+  Route::post('shop/{slug}/branch_add','BranchController@submitAdding');
 
   Route::get('shop/{slug}/setting','ShopController@setting');
 });

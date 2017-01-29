@@ -83,6 +83,21 @@ class Shop extends Model
   
   }
 
+  public function checkPersonToShop($id = null) {
+
+    if(empty($id)) {
+      $id = $this->id;
+    }
+
+    $personToShop = new PersonToShop;
+
+    return $personToShop->where(array(
+      ['person_id','=',session()->get('Person.id')],
+      ['shop_id','=',$id]
+    ))->exists();
+
+  }
+
   public function getPermission($id = null) {
 
     if(empty(session()->get('Person.id'))) {

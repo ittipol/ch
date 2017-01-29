@@ -51,7 +51,7 @@
           'class' => 'required'
         ));
         echo Form::text('name', null, array(
-          'placeholder' => 'ชื่อสินค้าที่ต้องการขาย',
+          'placeholder' => 'ชื่อสินค้าที่ต้องการประกาศ',
           'autocomplete' => 'off'
         ));
       ?>
@@ -80,15 +80,6 @@
         </div>
       </div>
     </div>
-
-<!--     <div class="form-row">
-      <?php 
-        echo Form::label('announcement_detail', 'รายละเอียดของประกาศนี้');
-        echo Form::textarea('announcement_detail', null, array(
-          'class' => 'ckeditor'
-        ));
-      ?>
-    </div> -->
 
     <div class="form-row">
       <?php 

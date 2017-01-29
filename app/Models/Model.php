@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use App\library\token;
 use App\library\service;
+use App\library\currency;
+use App\library\string;
 use Auth;
 use Session;
 use Schema;
@@ -354,13 +356,41 @@ class Model extends BaseModel
     return $this->getAttributes();
   }
 
-  public function getImageCache() {
+  public function paginationData() {
+    $imageStyle = new ImageStyle;
+    $currency = new Currency;
+    $string = new String;
 
-    if(empty($this->imageCache)) {
-      return null;
+    $image = $this->getRalatedModelData('Image',array(
+      'conditions' => array(
+        array('image_style_id','=',$imageStyle->getIdByalias('list'))
+      ),
+      'first' => true
+    ));
+
+    $imageUrl = '/images/common/no-img.png';
+    if(!empty($image)) {
+      $image = $image->buildModelData();
+      $imageUrl = $image['_url'];
     }
-    
-    return $this->imageCache;
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      '_name_short' => String::subString($this->name,80),
+      'description' => $this->description,
+      '_price' => $currency->format($this->price),
+      '_imageUrl' => $imageUrl
+    );
   }
+
+  // public function getImageCache() {
+
+  //   if(empty($this->imageCache)) {
+  //     return null;
+  //   }
+    
+  //   return $this->imageCache;
+  // }
 
 }

@@ -39,16 +39,28 @@ a {
 	background-color: #1565C0;
 }
 
-.line.space-top-bottom-10 {
+.space-top-bottom-10 {
 	margin: 10px 0;
 }
 
-.line.space-top-bottom-20 {
+.space-top-bottom-20 {
 	margin: 20px 0;
 }
 
-.line.space-top-bottom-30 {
+.space-top-bottom-30 {
 	margin: 30px 0;
+}
+
+.space-bottom-10 {
+	margin-bottom: 10px;
+}
+
+.space-bottom-20 {
+	margin-bottom: 20px;
+}
+
+.space-bottom-30 {
+	margin-bottom: 30px;
 }
 
 .container-header {

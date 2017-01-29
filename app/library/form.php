@@ -94,6 +94,15 @@ class Form {
     $this->data['realEstateFeatures'] = $realEstateFeatures;
   }
 
+  public function branch($options = array()) {
+    $records = Service::loadModel('ShopToBranch')->where('shop_id','=',$options['shopId'])->get();
+    $branchs = array();
+    foreach ($records as $branch) {
+      $branchs[$branch->shop->id] = $branch->shop->name;
+    }
+    $this->data['branchs'] = $branchs;
+  }
+
   public function set($index,$value) {
     $this->data[$index] = $value;
   }

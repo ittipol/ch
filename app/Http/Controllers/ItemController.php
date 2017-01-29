@@ -15,6 +15,7 @@ class ItemController extends Controller
   }
 
   public function listView() {
+    
     $page = 1;
     if(!empty($this->query)) {
       $page = $this->query['page'];

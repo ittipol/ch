@@ -29,10 +29,10 @@ class Shop
       return false;
     }
 
-    $person = Service::loadModel('PersonToEntity')->getData(array(
+    $person = Service::loadModel('PersonToShop')->getData(array(
       'conditions' => array(
         ['person_id','=',session()->get('Person.id')],
-        ['entity_id','=',$this->model->id],
+        ['shop_id','=',$this->id],
       ),
       'fields' => array('role_id')
     ));

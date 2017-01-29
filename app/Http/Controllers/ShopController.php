@@ -9,14 +9,15 @@ use Redirect;
 
 class ShopController extends Controller
 {
+
   public function __construct() { 
     parent::__construct();
-    $this->model = Service::loadModel('Shop');
-  }
 
-  public function index() {
+    // $this->middleware(function ($request, $next) {
+    //   return $next($request);
+    // });
 
-    $slug = service::loadModel('Slug')->getData(array(
+    $this->slug = service::loadModel('Slug')->getData(array(
       'conditions' => array(
         array('name','like',$this->param['slug'])
       ),
@@ -24,9 +25,12 @@ class ShopController extends Controller
       'fields' => array('name','model','model_id')
     ));
 
-    $shop = $this->model->find($slug->model_id);
+    $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
+  }
 
-    $this->modelData->setModel($shop);
+  public function index() {
+
+    $this->modelData->setModel($this->model);
     $this->modelData->loadData();
 
     $this->data = array(
@@ -41,10 +45,42 @@ class ShopController extends Controller
   }
 
   public function product() {
+    
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
 
+    return $this->view('pages.shop.product');
   }
 
   public function job() {
+
+    if(!$this->model->checkPersonToShop()){
+      $this->error = array(
+        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
+      );
+      return $this->error();
+    }
+
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $this->paginator->setModel(Service::loadModel('Job'));
+    $this->paginator->setPage($page);
+    $this->paginator->setUrl(url('shop/'.$this->param['slug'].'/job'));
+
+    $this->data = array(
+      'detailUrl' => '',
+      'shopUrl' => Service::url('shop/'.$this->param['slug']),
+    );
+
+    return $this->view('pages.shop.job');
+  }
+
+  public function advertisement() {
 
   }
 
@@ -65,13 +101,8 @@ class ShopController extends Controller
   public function submitCreating(CustomFormRequest $request) {
 
     if($this->model->fill($request->all())->save()) {
-
-      $slugName = $this->model->getRalatedModelData('Slug',array(
-        'fields' => 'name'
-      ))->name;
-
-      Message::display('ลงประกาศเรียบร้อยแล้ว','success');
-      return Redirect::to('shop/'.$slugName);
+      Message::display('บริษัทหรือร้านค้าของคุณถูกเพิ่มลงในชุมชนแล้ว','success');
+      return Redirect::to('shop/'.$this->slug->name);
     }else{
 
       switch ($this->model->errorType) {

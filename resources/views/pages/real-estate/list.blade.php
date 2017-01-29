@@ -3,67 +3,41 @@
 
   <div class="container list">
 
-    @if(!empty($pagination))
+    @if(!empty($pagination['data']))
 
-    <div class="row">
+      <div class="row">
 
-      @foreach($pagination['data'] as $data)
+        @foreach($pagination['data'] as $data)
 
-      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-        <div class="card">
-          <div class="image">
-            <a href="{{$detailUrl}}{{$data['id']}}">
-              <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
-            </a>
-          </div>
-          <div class="product-detail">
-            <a href="{{$detailUrl}}{{$data['id']}}">
-              <div class="product-title">{{$data['_name_short']}}</div>
-            </a>
-            <div class="price">
-              {{$data['_price']}}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+          <div class="card">
+
+            <div class="overlay-top-info text-center">{{$data['_realEstateTypeName']}}</div>
+
+            <div class="image">
+              <a href="{{$detailUrl}}{{$data['id']}}">
+                <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
+              </a>
+            </div>
+            <div class="product-detail">
+              <a href="{{$detailUrl}}{{$data['id']}}">
+                <div class="product-title">{{$data['_name_short']}}</div>
+              </a>
+              <div class="price">
+                {{$data['_price']}}
+              </div>
+            </div>
+            <div>
+              <a href="{{$detailUrl}}{{$data['id']}}"><div class="button wide-button">แสดงสินค้านี้</div></a>
             </div>
           </div>
-          <div>
-            <a href="{{$detailUrl}}{{$data['id']}}"><div class="button wide-button">แสดงสินค้านี้</div></a>
-          </div>
         </div>
+
+        @endforeach
+
       </div>
 
-      @endforeach
-
-    </div>
-
-    <div class="row">
-      <div class="col-xs-12 pagination clearfix">
-        <div class="pagination-inner clearfix">
-
-          @if(!empty($pagination['prev']['url'])) 
-            <a href="{{$pagination['prev']['url']}}" class="paging icon icon-prev"></a>
-          @endif
-
-          @foreach($pagination['paging'] as $paging)
-
-            @if(!empty($paging['url']))
-              <a href="{{$paging['url']}}" class="paging @if($paging['pageNumber'] == $pagination['page']) selected @endif">
-                {{$paging['pageNumber']}}
-              </a>
-            @else
-              <span class="paging">
-                {{$paging['pageNumber']}}
-              </span>
-            @endif
-
-            
-          @endforeach
-
-          @if(!empty($pagination['next']['url'])) 
-            <a href="{{$pagination['next']['url']}}" class="paging icon icon-next"></a>
-          @endif
-        
-        </div>
-      </div>
-    </div>
+      @include('components.pagination') 
 
     @else
 

@@ -122,23 +122,6 @@
 	background-color: #dfdfdf;
 }
 
-/*.shop-right-side-panel {
-	position: absolute;
-  right: 15px;
-  width: 250px;
-  background-color: #ffffff;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 9998;
-  transition: right .2s ease-out
-}
-
-.shop-left-panel {
-	margin-right: 280px;
-	border-right: 1px solid #CFD8DC;
-}
-*/
-
 .shop-content {
 	margin-top: 20px;
 }
@@ -149,7 +132,7 @@
 }
 
 .shop-content .shop-notice .shop-notice-header {
-	padding: 10px 20px;
+	padding: 20px 20px 10px;
 	background-color: #E53935;
 }
 
@@ -166,25 +149,50 @@
 	color: #D50000;
 }
 
-.shop-content .menu-box {
+.shop-nav {
 	margin-right: 10px;
 }
 
-.shop-content .menu-box-group .menu-box {
+.shop-nav-group .shop-nav {
 	float: left;
 }
 
-.shop-content .menu-box .menu-box-image {
-	
-}
-
-.shop-content .menu-box .menu-box-image img {
+.shop-nav .shop-nav-image img {
 	height: 150px;
 	padding: 40px;
 	background-color: #FFB74D;
 }
-.shop-content .menu-box .menu-box-info .menu-box-title {
+
+.shop-nav .shop-nav-info .shop-nav-title {
 	color: #000;
+}
+
+.shop-nav.small {
+	width: 100px;
+}
+
+.shop-nav.small .shop-nav-info .shop-nav-title {
+	font-size: 14px;
+	line-height: 18px;
+	height: 36px;
+	margin-bottom: 0;
+}
+
+.shop-nav.small .shop-nav-image img {
+	height: 100px;
+	padding: 25px;
+}
+
+.shop-notice img {
+	width: 200px;
+}
+
+.shop-notice h3 {
+	margin: 0 0 10px;
+}
+
+.shop-notice p {
+	font-size: 16px;
 }
 
 /*==========  Mobile First Method  ==========*/

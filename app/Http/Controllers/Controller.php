@@ -20,8 +20,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected $ident;
     protected $model;
+    protected $slug;
     protected $data = array();
     protected $param;
     protected $query;
@@ -39,41 +39,6 @@ class Controller extends BaseController
 
       $this->query = Request::query();
       $this->param = Route::current()->parameters();
-
-      $this->middleware(function ($request, $next) {
-
-        // if(!empty($this->param['slug'])) {
-
-        //   $slug = service::loadModel('Slug')->getData(array(
-        //     'conditions' => array(
-        //       array('name','like',$this->param['slug'])
-        //     ),
-        //     'first' => true,
-        //     'fields' => array('name','model','model_id')
-        //   ));
-
-        //   if(empty($slug)) {
-        //     return response()->view('messages.message');
-        //   }
-
-          // $entity = new Entity($slug);
-          // $this->entity = $entity->buildData();
-        // }
-
-      //   if(!empty($this->param['modelAlias'])) {
-
-      //     $model = service::loadModel(service::generateModelNameByModelAlias($this->param['modelAlias']));
-
-      //     if(empty($model)) {
-      //       // Go to display error page
-      //       return response()->view('messages.message');
-      //     }
-
-      //     $this->model = $model;
-      //   }
-
-        return $next($request);
-      });
 
     }
 
