@@ -40,6 +40,14 @@ class ShopController extends Controller
 
   }
 
+  public function product() {
+
+  }
+
+  public function job() {
+
+  }
+
   public function create() {
     $this->form->setModel($this->model);
     $this->form->loadFieldData('District',array(

@@ -9,7 +9,7 @@ class Paginator {
   private $lastPage;
   private $perPage = 24;
   private $url;
-  private $data = array();
+  // private $data = array();
   public $error = false;
 
   public function __construct($model = null) {
@@ -38,16 +38,29 @@ class Paginator {
       return false;
     }
 
-    $currency = new Currency;
-    $imageStyle = Service::loadModel('ImageStyle');
-
-    $this->total = $this->model->all()->count();
+    $this->total = $this->model->count();
     $this->lastPage = (int)ceil($this->total / $this->perPage);
 
     if(($this->page < 1) || ($this->page > $this->lastPage)) {
       $this->error = true;
       return false;
     }
+
+    return array(
+      'pagination' => array(
+        'page' => $this->page,
+        'lastPage' => $this->lastPage,
+        'total' => $this->total,
+        'paging' => $this->paging(),
+        'next' => $this->next(),
+        'prev' => $this->prev(),
+        'data' => $this->getModelData()
+      )
+    );
+
+  }
+
+  public function getModelData() {
 
     $offset = ($this->page - 1)  * $this->perPage;
 
@@ -59,32 +72,40 @@ class Paginator {
     ->skip($offset)
     ->get();
 
+    $data = array();
     foreach ($records as $record) {
-
-      $image = $record->getRalatedModelData('Image',array(
-        'conditions' => array(
-          array('image_style_id','=',$imageStyle->getIdByalias('list'))
-        ),
-        'first' => true
-      ));
-
-      $imageUrl = '/images/common/no-img.png';
-      if(!empty($image)) {
-        $image = $image->buildModelData();
-        $imageUrl = $image['_url'];
-      }
-
-      $this->data[] = array(
-        'id' => $record->id,
-        'name' => $record->name,
-        '_name_short' => String::subString($record->name,80),
-        'description' => $record->description,
-        '_price' => $currency->format($record->price),
-        '_imageUrl' => $imageUrl,
-        // '_totalImage' => 0,
-      );
-
+      $data[] = $record->paginationData();
     }
+
+    return $data;
+
+  }
+
+  public function next() {
+
+    $pagingUrl = $this->url.'?page={n}';
+    
+    $next['url'] = str_replace('{n}', $this->page+1, $pagingUrl);
+    if(($this->page + 1) > $this->lastPage) {
+      $next['url'] = null;
+    }
+
+    return $next;
+  }
+
+  public function prev() {
+
+    $pagingUrl = $this->url.'?page={n}';
+
+    $prev['url'] = str_replace('{n}', $this->page-1, $pagingUrl);
+    if(($this->page - 1) < 1) {
+      $prev['url'] = null;
+    }
+
+    return $prev;
+  }
+
+  public function paging() {
 
     $paging = array();
     $pagingUrl = $this->url.'?page={n}';
@@ -179,27 +200,7 @@ class Paginator {
 
     }
 
-    $prev['url'] = str_replace('{n}', $this->page-1, $pagingUrl);
-    if(($this->page - 1) < 1) {
-      $prev['url'] = null;
-    }
-
-    $next['url'] = str_replace('{n}', $this->page+1, $pagingUrl);
-    if(($this->page + 1) > $this->lastPage) {
-      $next['url'] = null;
-    }
-
-    return array(
-      'pagination' => array(
-        'page' => $this->page,
-        'lastPage' => $this->lastPage,
-        'total' => $this->total,
-        'paging' => $paging,
-        'next' => $next,
-        'prev' => $prev,
-        'data' => $this->data
-      )
-    );
+    return $paging;
 
   }
 

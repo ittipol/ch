@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\library\currency;
+use App\library\string;
 
 class RealEstate extends Model
 {
@@ -150,7 +151,7 @@ class RealEstate extends Model
     }
 
     $currency = new Currency;
-    
+
     return array(
       'id' => $this->id,
       'announcement_type_id' => $this->announcement_type_id,
@@ -168,6 +169,36 @@ class RealEstate extends Model
       '_features' => $features,
       '_announcementTypeName' => $this->announcementType->name,
       '_realEstateTypeName' => $this->realEstateType->name
+    );
+  }
+
+  public function paginationData() {
+
+    $imageStyle = new ImageStyle;
+    $currency = new Currency;
+    $string = new String;
+
+    $image = $this->getRalatedModelData('Image',array(
+      'conditions' => array(
+        array('image_style_id','=',$imageStyle->getIdByalias('list'))
+      ),
+      'first' => true
+    ));
+
+    $imageUrl = '/images/common/no-img.png';
+    if(!empty($image)) {
+      $image = $image->buildModelData();
+      $imageUrl = $image['_url'];
+    }
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      '_name_short' => String::subString($this->name,80),
+      'description' => $this->description,
+      '_price' => $currency->format($this->price),
+      '_imageUrl' => $imageUrl,
+      '_need_broker' => $this->need_broker ? 'ต้องการตัวแทนขาย' : 'ไม่ต้องการตัวแทนขาย',
     );
   }
 
