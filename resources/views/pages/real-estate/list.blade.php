@@ -3,6 +3,8 @@
 
   <div class="container list">
 
+    @if(!empty($pagination))
+
     <div class="row">
 
       @foreach($pagination['data'] as $data)
@@ -11,7 +13,7 @@
         <div class="card">
           <div class="image">
             <a href="{{$detailUrl}}{{$data['id']}}">
-              <img src="{{$data['_imageUrl']}}">
+              <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
             </a>
           </div>
           <div class="product-detail">
@@ -62,6 +64,12 @@
         </div>
       </div>
     </div>
+
+    @else
+
+    <h3>ไม่พบอสังหาริมทรัพย์</h3>
+
+    @endif
 
   </div>
 

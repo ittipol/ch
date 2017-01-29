@@ -125,6 +125,13 @@ class Image extends Model
 
     $h = 250;
     $w = 250;
+    
+    if (($imageInfo[0] > $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
+      $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
+    } else if (($imageInfo[0] < $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
+      $h = (int)ceil($imageInfo[1]*($w/$imageInfo[0]));
+    }
+
     $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
 
     // $path = $this->getDirPath().'list/';

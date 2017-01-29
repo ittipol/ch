@@ -31,26 +31,21 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 // community / shop
-// Route::get('{shop_slug}','ShopController@index');
 // Route::get('community/shop_feature','ShopController@feature');
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('community/shop_create','ShopController@create');
   Route::post('community/shop_create','ShopController@submitCreating');
+
+  Route::get('shop/{slug}/product','ShopController@product');
+  Route::get('shop/{slug}/job','ShopController@job');
+  Route::get('shop/{slug}/advertisement','ShopController@advertisement');
+
+  Route::get('shop/{slug}/setting','ShopController@setting');
 });
 
 Route::get('shop/{slug}','ShopController@index');
-Route::get('shop/{slug}/setting','ShopController@setting');
 
-// ENTITY
-// Route::get('{entity_slug}','EntityController@index');
-// Route::get('entity/create','EntityController@create');
-// Route::get('entity/feature','EntityController@feature');
-
-// Route::group(['middleware' => 'auth'], function () {
-//   Route::get('entity/add','EntityController@add');
-//   Route::post('entity/add','EntityController@submit');
-// });
 
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');

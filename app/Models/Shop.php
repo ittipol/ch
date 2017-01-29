@@ -85,6 +85,10 @@ class Shop extends Model
 
   public function getPermission($id = null) {
 
+    if(empty(session()->get('Person.id'))) {
+      return false;
+    }
+
     if(empty($id)) {
       $id = $this->id;
     }

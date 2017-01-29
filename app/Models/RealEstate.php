@@ -19,7 +19,7 @@ class RealEstate extends Model
       'real_estate_type_id' => 'required' 
     ),
     'messages' => array(
-      'name.required' => 'ชื่ที่ต้องการประกาศห้ามว่าง',
+      'name.required' => 'ชื่อที่ต้องการประกาศห้ามว่าง',
       'price.required' => 'จำนวนราคาห้ามว่าง',
       'price.regex' => 'รูปแบบจำนวนราคาไม่ถูกต้อง',
       'Contact.phone_number.required' => 'เบอร์โทรศัพท์ห้ามว่าง',
@@ -95,7 +95,7 @@ class RealEstate extends Model
 
     $_landArea = '-';
     if(!empty($landArea['sqm'])) {
-      $_landArea .= $landArea['sqm'].' ตารางเมตร / ';
+      $_landArea = $landArea['sqm'].' ตารางเมตร / ';
     }
 
     if(!empty($landArea['rai'])) {

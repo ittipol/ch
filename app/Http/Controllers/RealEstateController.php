@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomFormRequest;
 use App\library\service;
+use App\library\message;
+use Redirect;
 
 class RealEstateController extends Controller
 {
