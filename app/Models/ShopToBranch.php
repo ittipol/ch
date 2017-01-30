@@ -12,6 +12,10 @@ class ShopToBranch extends Model
     return $this->hasOne('App\Models\Shop','id','shop_id');
   }
 
+  public function branch() {
+    return $this->hasOne('App\Models\Branch','id','branch_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
     return $this->fill(array(
       'shop_id' => $options['value']['shop_id'],

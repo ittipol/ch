@@ -58,12 +58,16 @@ class Model extends BaseModel
 
         $model->state = 'create';
 
-        if(Schema::hasColumn($model->getTable(), 'ip_address')) {
+        if((Schema::hasColumn($model->getTable(), 'ip_address')) && (empty($model->ip_address))) {
           $model->ip_address = Service::ipAddress();
         }
 
-        if(Schema::hasColumn($model->getTable(), 'created_by')) {
+        if((Schema::hasColumn($model->getTable(), 'created_by')) && (empty($model->created_by))) {
           $model->created_by = Session::get('Person.id');
+        }
+
+        if((Schema::hasColumn($model->getTable(), 'person_id')) && (empty($model->person_id))) {
+          $model->person_id = Session::get('Person.id');
         }
 
       }else{
@@ -192,6 +196,9 @@ class Model extends BaseModel
   }
 
   public function checkExistById($id) {
+
+    // check field id first
+
     return $this->find($id)->exists();
   }
 
