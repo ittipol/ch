@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="title">
-          เพิ่มสาขาในร้านค้าของคุณ
+          เพิ่มสาขา
         </div>
       </div>
     </div>

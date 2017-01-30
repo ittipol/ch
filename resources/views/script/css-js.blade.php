@@ -82,6 +82,7 @@
     '__css/layouts/blackbox/components/action-bar.css',
     '__css/layouts/blackbox/components/main-nav.css',
     '__css/layouts/blackbox/components/main-panel.css',
+    '__css/layouts/blackbox/components/footer.css',
     '__css/layouts/blackbox/responsive.css'
   );
 

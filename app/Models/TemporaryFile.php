@@ -64,6 +64,14 @@ class TemporaryFile extends Model
     return File::deleteDirectory(storage_path($this->temporaryPath).$directoryName);
   }
 
+  public function checkExistSpecifiedTemporaryRecord($modelName,$token) {
+    return $this->where([
+      ['model','=',$modelName],
+      ['token','=',$token],
+      ['created_by','=',Session::get('Person.id')]
+    ])->exists();
+  }
+
   public function deleteSpecifiedTemporaryRecord($modelName,$token,$filename) {
     return $this->where([
       ['model','=',$modelName],

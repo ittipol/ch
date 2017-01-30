@@ -153,30 +153,31 @@ class Images {
 	  	if(response.success){
 
 	  		parent.addClass('added');
-	  		// parent.find('img').fadeIn(450);
 	  		parent.find('div.preview-image').fadeIn(450);
 	  		parent.find('a').css('display','block');
 	  		parent.parent().find('.progress-bar').css('display','none');
 
 	  		let key = parent.attr('id').split('_');
 
-	  		let hidden = document.createElement('input');
-			  hidden.setAttribute('type','hidden');
-			  hidden.setAttribute('name','Image['+key[0]+']['+key[1]+'][filename]');
-			  hidden.setAttribute('value',response.filename);
-			  parent.append(hidden);
+	  		_this.createImage(parent,key[0],key[1],response.filename);
 
-			  if(_this.style == 'description'){
-			  	document.getElementById(key[0]+'_textarea_'+key[1]).setAttribute('name','Image['+key[0]+']['+key[1]+'][description]');
-			  }
+	  		// let hidden = document.createElement('input');
+			  // hidden.setAttribute('type','hidden');
+			  // hidden.setAttribute('name','Image['+key[0]+']['+key[1]+'][filename]');
+			  // hidden.setAttribute('value',response.filename);
+			  // parent.append(hidden);
 
-	  		if(_this.imagesPlaced.indexOf(parent.attr('id')) < 0){
-	  			_this.imagesPlaced.push(parent.attr('id'));
+			  // if(_this.style == 'description'){
+			  // 	document.getElementById(key[0]+'_textarea_'+key[1]).setAttribute('name','Image['+key[0]+']['+key[1]+'][description]');
+			  // }
 
-	  			if(_this.index < _this.limit){
-	  				_this.index = _this.createUploader(_this.index);
-	  			}
-	  		}
+	  		// if(_this.imagesPlaced.indexOf(parent.attr('id')) < 0){
+	  		// 	_this.imagesPlaced.push(parent.attr('id'));
+
+	  		// 	if(_this.index < _this.limit){
+	  		// 		_this.index = _this.createUploader(_this.index);
+	  		// 	}
+	  		// }
 
 	  	}else{
 
@@ -198,6 +199,33 @@ class Images {
 	  });
 
 	}
+
+	createImage(parent,code,index,filename,description='') {
+
+		let hidden = document.createElement('input');
+	  hidden.setAttribute('type','hidden');
+	  hidden.setAttribute('name','Image['+code+']['+index+'][filename]');
+	  hidden.setAttribute('value',filename);
+	  parent.append(hidden);
+
+	  if(this.style == 'description'){
+	  	document.getElementById(code+'_textarea_'+index).setAttribute('name','Image['+code+']['+index+'][description]');
+	  }
+
+	  // if((typeof description == 'string') && (description.length > 0)) {
+	  // 	document.getElementById(code+'_textarea_'+index).value = description;
+	  // }
+
+		if(this.imagesPlaced.indexOf(parent.attr('id')) < 0){
+			this.imagesPlaced.push(parent.attr('id'));
+
+			if(this.index < this.limit){
+				this.index = this.createUploader(this.index);
+			}
+		}
+
+	}
+
 
 	removePreview(input){
 
@@ -243,8 +271,6 @@ class Images {
 		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label">';
 		html += '<input id="'+this.code+'_image_'+this.runningNumber+'" class="'+this.code+'-image" type="file">';
-		// html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+this.defaultImage+'">';
-		// html +=	'<img class="preview-image" src="'+this.defaultImage+'">';
 		html +=	'<div class="preview-image" style="background-image:url('+this.defaultImage+')"></div>';
 		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn">×</a>'
 		html += '<p class="error-message"></p>';
@@ -267,7 +293,6 @@ class Images {
 		let html = '';
 		html += '<div class="image-panel '+this.style+' clearfix">';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label added">';
-		// html +=	'<img id="'+this.code+'_preview_'+this.runningNumber+'" class="preview-image" src="'+image.url+'">';
 		html +=	'<div class="preview-image" style="background-image:url('+image.url+')"></div>';
 		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn" data-id="'+image.filename+'" style="display:block;">×</a>'
 		html += '<p class="error-message"></p>';

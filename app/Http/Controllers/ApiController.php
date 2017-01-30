@@ -54,24 +54,45 @@ class ApiController extends Controller
       
       $tempFile = Service::loadModel('TemporaryFile');
 
-      $value = array(
-        'model' => Input::get('model'),
-        'token' => Input::get('imageToken'),
-        'filename' => $file->getFileName(),
-        'file_type' => $file->getFileType()
-      );
+      // $value = array(
+      //   'model' => Input::get('model'),
+      //   'token' => Input::get('imageToken'),
+      //   'filename' => $file->getFileName(),
+      //   'file_type' => $file->getFileType()
+      // );
 
-      if($tempFile->fill($value)->save()){
-        $tempFile->moveTemporaryFile($file->getRealPath(),$tempFile->filename,array(
-          'directoryName' => $tempFile->model.'_'.$tempFile->token
-        ));
+      // if($tempFile->fill($value)->save()){
+      //   $tempFile->moveTemporaryFile($file->getRealPath(),$tempFile->filename,array(
+      //     'directoryName' => $tempFile->model.'_'.$tempFile->token
+      //   ));
 
+      //   $result = array(
+      //     'success' => true,
+      //     'filename' => $tempFile->filename
+      //   );
+
+      // }
+
+      if(!$tempFile->checkExistSpecifiedTemporaryRecord(Input::get('model'),Input::get('imageToken'))) {
+        $tempFile->fill(array(
+          'model' => Input::get('model'),
+          'token' => Input::get('imageToken')
+        ))->save();
+      }
+
+      $filename = $file->getFileName();
+
+      $moved = $tempFile->moveTemporaryFile($file->getRealPath(),$filename,array(
+        'directoryName' => Input::get('model').'_'.Input::get('imageToken')
+      ));
+
+      if($moved) {
         $result = array(
           'success' => true,
-          'filename' => $tempFile->filename
+          'filename' => $filename
         );
-
       }
+
     }
 
     return response()->json($result);

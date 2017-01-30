@@ -2,8 +2,6 @@
 
 namespace App\library;
 
-// use Route;
-
 class Token
 {
   public static function generate($length = 60){

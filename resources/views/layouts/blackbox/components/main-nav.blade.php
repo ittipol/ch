@@ -62,6 +62,9 @@
           <li class="item">
             <a href="{{URL::to('/')}}">Wiki ชลบุรี</a>
           </li>
+          <li class="item">
+            <a href="{{URL::to('/')}}">เพิ่มประวัติการทำงาน</a>
+          </li>
 
           @if (Auth::check())
 

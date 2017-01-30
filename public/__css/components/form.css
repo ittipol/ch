@@ -106,7 +106,7 @@ form input[type="checkbox"]+label {
 
 form .form-item-group {
 	min-height: 100px;
-	max-height: 400px;
+	max-height: 550px;
 	border-top: 3px solid #1976D2;
 	padding: 20px;
 	overflow-y: auto;

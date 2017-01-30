@@ -149,36 +149,41 @@
 	color: #D50000;
 }
 
-.shop-nav {
+.tile-nav {
+	width: 150px;
 	margin-right: 10px;
 }
 
-.shop-nav-group .shop-nav {
+.tile-nav-group .tile-nav {
 	float: left;
 }
 
-.shop-nav .shop-nav-image img {
+.tile-nav .tile-nav-image img {
 	height: 150px;
 	padding: 40px;
 	background-color: #FFB74D;
 }
 
-.shop-nav .shop-nav-info .shop-nav-title {
+.tile-nav .tile-nav-info .tile-nav-title {
 	color: #000;
+	font-size: 16px;
+	line-height: 20px;
+	height: 40px;
+	margin-bottom: 0;
 }
 
-.shop-nav.small {
+.tile-nav.small {
 	width: 100px;
 }
 
-.shop-nav.small .shop-nav-info .shop-nav-title {
+.tile-nav.small .tile-nav-info .tile-nav-title {
 	font-size: 14px;
 	line-height: 18px;
 	height: 36px;
 	margin-bottom: 0;
 }
 
-.shop-nav.small .shop-nav-image img {
+.tile-nav.small .tile-nav-image img {
 	height: 100px;
 	padding: 25px;
 }

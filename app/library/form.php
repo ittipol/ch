@@ -2,6 +2,8 @@
 
 namespace App\library;
 
+use Input;
+
 class Form {
   
   private $model;
@@ -97,8 +99,8 @@ class Form {
   public function branch($options = array()) {
     $records = Service::loadModel('ShopToBranch')->where('shop_id','=',$options['shopId'])->get();
     $branchs = array();
-    foreach ($records as $branch) {
-      $branchs[$branch->shop->id] = $branch->shop->name;
+    foreach ($records as $shopToBranch) {
+      $branchs[$shopToBranch->branch->id] = $shopToBranch->branch->name;
     }
     $this->data['branchs'] = $branchs;
   }
@@ -116,6 +118,30 @@ class Form {
     return $this->data;
   }
 
+    public function oldData() {
+      $oldData =  Input::old();
+
+      if(!empty($oldData['Tagging'])) {
+        $oldData['Tagging'] = json_encode($oldData['Tagging']);
+      }
+
+      if(!empty($oldData['Image'])) {
+
+        foreach ($oldData['Image'] as $token => $value) {
+          $temporaryFile = Service::loadModel('TemporaryFile');
+          $temporaryFile->deleteTemporaryDirectory($model->modelName.'_'.$token);
+          // $temporaryFile->deleteTemporaryRecords($oldData['model'],$token);
+        }
+
+      }
+
+      // if(empty($oldData['recruitment_custom']) && !empty($oldData['recruitment_detail'])) {
+      //   unset($oldData['recruitment_detail']);
+      // }
+
+      return $oldData;
+    }
+
   public function build() {
 
     if(empty($this->model)) {
@@ -127,7 +153,8 @@ class Form {
         'id' => $this->model->id,
         'modelName' => $this->model->modelName
       ),
-      'fieldData' => $this->data
+      'fieldData' => $this->data,
+      'oldData' => $this->oldData()
     );
 
     return $data;

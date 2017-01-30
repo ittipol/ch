@@ -77,7 +77,7 @@ class ShopController extends Controller
       'shopUrl' => Service::url('shop/'.$this->param['slug']),
     );
 
-    return $this->view('pages.shop.job');
+    return $this->view('pages.job.main');
   }
 
   public function advertisement() {

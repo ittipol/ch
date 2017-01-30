@@ -30,9 +30,16 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('avatar', 'StaticFileController@avatar');
 });
 
+Route::get('working_experience','WorkingExperienceController@index');
+Route::group(['middleware' => 'auth'], function () {
+  Route::post('working_experience','WorkingExperienceController@start');
+});
+
+
 // community / shop
 // Route::get('community/shop_feature','ShopController@feature');
 
+Route::get('shop/{slug}','ShopController@index');
 Route::group(['middleware' => 'auth'], function () {
   Route::get('community/shop_create','ShopController@create');
   Route::post('community/shop_create','ShopController@submitCreating');
@@ -48,11 +55,9 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('shop/{slug}/branch_add','BranchController@add');
   Route::post('shop/{slug}/branch_add','BranchController@submitAdding');
 
+  Route::get('shop/{slug}/management','ShopController@product');
   Route::get('shop/{slug}/setting','ShopController@setting');
 });
-
-Route::get('shop/{slug}','ShopController@index');
-
 
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');
@@ -116,6 +121,7 @@ Route::get('real-estate/detail/{real_estate_id}','RealEstateController@detail');
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {
   Route::get('get_sub_district/{districtId}', 'ApiController@GetSubDistrict');
+  Route::get('token', 'ApiController@token');
 });
 
 Route::group(['middleware' => 'auth'], function () {

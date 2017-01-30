@@ -259,14 +259,6 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('tagging', 'แท็กที่เกี่ยวของกับอสังหาริมทรัพย์นี้');
-      ?>
-      <div id="_tags" class="tag"></div>
-      <p class="notice info">แท็กมีผลต่อการค้นหา</p>
-    </div>
-
-    <div class="form-row">
-      <?php 
         echo Form::label('price', 'ราคาอสังหาริมทรัพย์', array(
           'class' => 'required'
         ));
@@ -275,6 +267,13 @@
           'autocomplete' => 'off'
         ));
       ?>
+    </div>
+
+    <div class="form-row">
+      <?php 
+        echo Form::label('tagging', 'แท็กที่เกี่ยวของกับอสังหาริมทรัพย์นี้');
+      ?>
+      <div id="_tags" class="tag"></div>
     </div>
 
     <div class="form-row">
@@ -476,6 +475,9 @@
     district.load();
     map.load();
     tagging.load();
+    @if(!empty($oldData['Tagging']))
+      tagging.setTags('{!!$oldData['Tagging']!!}');
+    @endif
     form.load();
     realEstate.load();
 

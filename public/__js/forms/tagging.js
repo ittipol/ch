@@ -13,7 +13,6 @@ class Tagging {
 	load(tagJson){
 
 		this.init();
-		this.bind();
 		this.crateTagList();
 		this.crateInputTagField();
 
@@ -32,7 +31,14 @@ class Tagging {
 		this.code = token.generateToken();
 	}
 
-	bind(){}
+	setTags(tagJson) {
+		if ((tagJson.length > 0) && (typeof tagJson != 'undefined')){
+			let _tags = JSON.parse(tagJson);
+			for (let i = 0; i < _tags.length; i++) {
+				this.createTagChip(_tags[i]);
+			}
+		}
+	}
 
 	createHiddenField(index,id,tagName) {
 		let input = document.createElement('input');

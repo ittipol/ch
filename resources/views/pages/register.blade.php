@@ -17,7 +17,7 @@
 			<div class="register-form-inner">
 			
 				<div class="form-row">
-					<input type="text" name="Person[name]" placeholder="ชื่อ" autocomplete="off">
+					<input type="text" name="Person[name]" placeholder="ชื่อ นามสกุล" autocomplete="off">
 				</div>
 				<div class="form-row">
 					<input type="text" name="email" placeholder="อีเมล" autocomplete="off">
@@ -59,7 +59,7 @@
 	      // registerPage = new RegisterPage();
 	      // registerPage.init();
 
-	      $('body').css('background-color','#337ab7');
+	      $('body').css('background-color','rgb(29,66,133)');
 
 	    });
 	  </script>

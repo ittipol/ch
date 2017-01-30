@@ -79,7 +79,7 @@ class Controller extends BaseController
       if(!empty($pagination)){
         $this->data = array_merge($this->data,$pagination);
       }
-
+// dd($this->data);
     	return view($view,$this->data);
     }
 
