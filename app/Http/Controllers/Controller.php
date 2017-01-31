@@ -40,6 +40,16 @@ class Controller extends BaseController
       $this->query = Request::query();
       $this->param = Route::current()->parameters();
 
+      if(!empty($this->param['slug'])){
+        $this->slug = service::loadModel('Slug')->getData(array(
+          'conditions' => array(
+            array('name','like',$this->param['slug'])
+          ),
+          'first' => true,
+          'fields' => array('name','model','model_id')
+        ));
+      }
+
     }
 
     protected function error() {
@@ -79,7 +89,7 @@ class Controller extends BaseController
       if(!empty($pagination)){
         $this->data = array_merge($this->data,$pagination);
       }
-// dd($this->data);
+dd($this->data);
     	return view($view,$this->data);
     }
 

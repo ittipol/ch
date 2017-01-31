@@ -96,13 +96,28 @@ class Form {
     $this->data['realEstateFeatures'] = $realEstateFeatures;
   }
 
-  public function branch($options = array()) {
-    $records = Service::loadModel('ShopToBranch')->where('shop_id','=',$options['shopId'])->get();
-    $branchs = array();
-    foreach ($records as $shopToBranch) {
-      $branchs[$shopToBranch->branch->id] = $shopToBranch->branch->name;
+  public function shopTo($options = array()) {
+
+    $records = Service::loadModel('shopTo')->getData(array(
+      'conditions' => array(
+        ['shop_id','=',$options['shopId']],
+        ['model','=',$options['model']]
+      ),
+      'fields' => array('model_id')
+    ));
+
+    $index = lcfirst($options['model']);
+
+    $data = array();
+    foreach ($records as $record) {
+      $data[$record->{$index}->id] = $record->{$index}->name;
     }
-    $this->data['branchs'] = $branchs;
+
+    if(!empty($options['index'])) {
+      $index = $options['index'];
+    }
+
+    $this->data[$index] = $data;
   }
 
   public function set($index,$value) {
@@ -131,6 +146,7 @@ class Form {
           $temporaryFile = Service::loadModel('TemporaryFile');
           $temporaryFile->deleteTemporaryDirectory($model->modelName.'_'.$token);
           // $temporaryFile->deleteTemporaryRecords($oldData['model'],$token);
+          unset($oldData['Image']);
         }
 
       }

@@ -15,7 +15,8 @@ class RealEstate extends Model
   protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
-      'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/|max:255',
+      // 'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/|max:255',
+      'price' => 'required|regex:/^[0-9,]*(\.[0-9]{1,2})?$/|max:255',
       'Contact.phone_number' => 'required|max:255',
       'real_estate_type_id' => 'required' 
     ),
@@ -32,20 +33,20 @@ class RealEstate extends Model
     parent::__construct();
   }
 
-  public static function boot() {
+  // public static function boot() {
 
-    parent::boot();
+  //   parent::boot();
 
-    RealEstate::saving(function($model){
-      $model->price = str_replace(',', '', $model->price);
-      $model->feature = json_encode($model->feature);
-      $model->facility = json_encode($model->facility);
-      $model->home_area = json_encode($model->home_area);
-      $model->land_area = json_encode($model->land_area);
-      $model->indoor = json_encode($model->indoor);
-    });
+  //   RealEstate::saving(function($model){
+  //     $model->price = str_replace(',', '', $model->price);
+  //     $model->feature = json_encode($model->feature);
+  //     $model->facility = json_encode($model->facility);
+  //     $model->home_area = json_encode($model->home_area);
+  //     $model->land_area = json_encode($model->land_area);
+  //     $model->indoor = json_encode($model->indoor);
+  //   });
 
-  }
+  // }
 
   public function announcementType() {
     return $this->hasOne('App\Models\AnnouncementType','id','announcement_type_id');
@@ -53,6 +54,21 @@ class RealEstate extends Model
 
   public function realEstateType() {
     return $this->hasOne('App\Models\RealEstateType','id','real_estate_type_id');
+  }
+
+  public function fill(array $attributes) {
+
+    if(!empty($attributes)) {
+      $attributes['price'] = str_replace(',', '', $attributes['price']);
+      $attributes['feature'] = json_encode($attributes['feature']);
+      $attributes['facility'] = json_encode($attributes['facility']);
+      $attributes['home_area'] = json_encode($attributes['home_area']);
+      $attributes['land_area'] = json_encode($attributes['land_area']);
+      $attributes['indoor'] = json_encode($attributes['indoor']);
+    }
+
+    return parent::fill($attributes);
+
   }
 
   public function buildModelData() {

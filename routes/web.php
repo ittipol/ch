@@ -40,42 +40,22 @@ Route::group(['middleware' => 'auth'], function () {
 // Route::get('community/shop_feature','ShopController@feature');
 
 Route::get('shop/{slug}','ShopController@index');
+
 Route::group(['middleware' => 'auth'], function () {
   Route::get('community/shop_create','ShopController@create');
   Route::post('community/shop_create','ShopController@submitCreating');
 
   Route::get('shop/{slug}/product','ShopController@product');
 
-  Route::get('shop/{slug}/job','ShopController@job');
-  Route::get('shop/{slug}/job_add','JobController@add');
-  Route::post('shop/{slug}/job_add','JobController@submitAdding');
-
   Route::get('shop/{slug}/advertisement','ShopController@advertisement');
 
   Route::get('shop/{slug}/branch_add','BranchController@add');
   Route::post('shop/{slug}/branch_add','BranchController@submitAdding');
 
-  Route::get('shop/{slug}/management','ShopController@product');
+  Route::get('shop/{slug}/manage','ShopController@product');
   Route::get('shop/{slug}/setting','ShopController@setting');
 });
 
-// Announcement
-Route::get('announcement/create','AnnouncementController@create');
-
-// Person Post Item
-Route::group(['middleware' => 'auth'], function () {
-  Route::get('item/post','ItemController@post');
-  Route::post('item/post','ItemController@submitPosting');
-
-  // Route::get('item/edit/{item_id}','ItemController@edit');
-  // Route::patch('item/edit/{item_id}',[
-  //   'as' => 'item.edit',
-  //   'uses' => 'ItemController@editingSubmit'
-  // ]);
-});
-
-Route::get('item/list','ItemController@listView');
-Route::get('item/detail/{item_id}','ItemController@detail');
 
 // PRODUCT
 // Route::group(['middleware' => 'auth'], function () {
@@ -93,13 +73,32 @@ Route::get('item/detail/{item_id}','ItemController@detail');
 
 // JOB
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('job/post','JobController@post');
-  Route::post('job/post','JobController@submitPosting');
 
-  // Route::get('job/edit/{job_id}','JobController@edit');
-  // Route::patch('job/edit/{job_id}',[
-  //   'as' => 'job.edit',
-  //   'uses' => 'JobController@editingSubmit'
+  Route::get('shop/{slug}/job','ShopController@job');
+  Route::get('shop/{slug}/job_add','JobController@add');
+
+  Route::get('shop/{slug}/job_edit/{job_id}','JobController@edit');
+  Route::patch('shop/{slug}/job_edit/{job_id}',[
+    'as' => 'job.edit',
+    'uses' => 'JobController@editingSubmit'
+  ]);
+});
+
+// Announcement
+Route::get('announcement/create','AnnouncementController@create');
+
+// Person Post Item
+Route::get('item/list','ItemController@listView');
+Route::get('item/detail/{item_id}','ItemController@detail');
+
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('item/post','ItemController@post');
+  Route::post('item/post','ItemController@submitPosting');
+
+  // Route::get('item/edit/{item_id}','ItemController@edit');
+  // Route::patch('item/edit/{item_id}',[
+  //   'as' => 'item.edit',
+  //   'uses' => 'ItemController@editingSubmit'
   // ]);
 });
 

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\library\string;
+
 class Job extends Model
 {
   public $table = 'jobs';
-  protected $fillable = ['employment_type_id','name','description','salary','recruitment','recruitment_detail'];
-  protected $modelRelated = array('Image','Tagging');
+  protected $fillable = ['employment_type_id','name','description','salary','recruitment','recruitment_custom_detail'];
+  protected $modelRelated = array('Image','Tagging','JobToBranch','ShopTo');
   protected $directory = true;
 
   // protected $behavior = array(
@@ -38,43 +40,113 @@ class Job extends Model
     parent::__construct();
   }
 
-  public static function boot() {
+  public function employmentType() {
+    return $this->hasOne('App\Models\EmploymentType','id','employment_type_id');
+  }
 
-    parent::boot();
+  public function fill(array $attributes) {
+    
+    if(!empty($attributes)) {
 
-    Job::saving(function($model){
-
-      // preg_match_all('/\d+/', $model->salary, $matches);
-      // Print the entire match result
-      // dd($matches);
-
-      $model->recruitment = array(
+      $attributes['recruitment'] = json_encode(array(
         's' => '1',
-        'c' => $model->recruitment_custom ? 1 : 0
-      );
+        'c' => !empty($attributes['recruitment_custom']) ? '1' : '0'
+      ));
+      unset($attributes['recruitment_custom']);
 
-      dd($model);
+    }
 
-    });
+    return parent::fill($attributes);
+  }
 
-    Job::saved(function($job){
+  public function paginationData() {
 
-      // if($job->state == 'create') {
-      //   $companyHasJob = new CompanyHasJob;
-      //   $companyHasJob->setFormToken($job->formToken);
-      //   $companyHasJob->saveSpecial($job->temporaryData['company_id'],$job->id);
-      // }
+    $imageStyle = new ImageStyle;
+    $string = new String;
 
-      // if(!empty($job->companyHasJob->id) && !empty($job->temporaryData['department_id'])) {
-      //   $departmentHasJob = new DepartmentHasJob;
-      //   $departmentHasJob->setFormToken($job->formToken);
-      //   $departmentHasJob->saveSpecial($job->companyHasJob->id,$job->temporaryData['department_id'],$job->id);
-      // }
+    $image = $this->getRalatedModelData('Image',array(
+      'conditions' => array(
+        array('image_style_id','=',$imageStyle->getIdByalias('list'))
+      ),
+      'first' => true
+    ));
 
-      // $lookup = new Lookup;
-      // $lookup->setFormToken($job->formToken)->__saveRelatedData($job);
+    $imageUrl = '/images/common/no-img.png';
+    if(!empty($image)) {
+      $image = $image->buildModelData();
+      $imageUrl = $image['_url'];
+    }
 
-    });
+    $this->salary = trim($this->salary);
+    $this->salary = str_replace(',', '', $this->salary);
+
+    preg_match_all('/[0-9]+/', $this->salary, $matches);
+
+    $numbers = array();
+    foreach ($matches[0] as $key => $match) {
+      $this->salary = str_replace($match, number_format($match, 0, '.', ','), $this->salary);
+    }
+
+    $_salary = substr($this->salary, -3);
+    $addBaht = true;
+    for ($i=0; $i < 3; $i++) { 
+      
+      if((ord($_salary[$i]) < 48) || (ord($_salary[$i]) > 57)) {
+        $addBaht = false;
+        break;
+      }
+
+    }
+
+    if($addBaht) {
+      $this->salary .= ' บาท';
+    }
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      '_name_short' => String::subString($this->name,80),
+      '_salary' => $this->salary,
+      '_imageUrl' => $imageUrl
+    );
+
+  }
+
+  public function buildModelData() {
+
+    $this->salary = trim($this->salary);
+    $this->salary = str_replace(',', '', $this->salary);
+
+    preg_match_all('/[0-9]+/', $this->salary, $matches);
+
+    $numbers = array();
+    foreach ($matches[0] as $key => $match) {
+      $this->salary = str_replace($match, number_format($match, 0, '.', ','), $this->salary);
+    }
+
+    $_salary = substr($this->salary, -3);
+    $addBaht = true;
+    for ($i=0; $i < 3; $i++) { 
+      
+      if((ord($_salary[$i]) < 48) || (ord($_salary[$i]) > 57)) {
+        $addBaht = false;
+        break;
+      }
+
+    }
+
+    if($addBaht) {
+      $this->salary .= ' บาท';
+    }
+
+dd($this->getAttributes());
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      '_price' => $this->salary,
+      '_employmentTypeName' => $this->employmentType->name,
+    );
+
   }
 
 }

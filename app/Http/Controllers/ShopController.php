@@ -17,14 +17,6 @@ class ShopController extends Controller
     //   return $next($request);
     // });
 
-    $this->slug = service::loadModel('Slug')->getData(array(
-      'conditions' => array(
-        array('name','like',$this->param['slug'])
-      ),
-      'first' => true,
-      'fields' => array('name','model','model_id')
-    ));
-
     $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
   }
 
@@ -70,10 +62,10 @@ class ShopController extends Controller
 
     $this->paginator->setModel(Service::loadModel('Job'));
     $this->paginator->setPage($page);
-    $this->paginator->setUrl(url('shop/'.$this->param['slug'].'/job'));
+    $this->paginator->setPagingUrl('shop/'.$this->param['slug'].'/job');
+    $this->paginator->setUrl('shop/'.$this->param['slug'].'/job_edit/{id}','editUrl');
 
     $this->data = array(
-      'detailUrl' => '',
       'shopUrl' => Service::url('shop/'.$this->param['slug']),
     );
 

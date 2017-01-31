@@ -27,13 +27,13 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('item_category_id', 'สาขาที่เปิดรับสมัคร (สามารถเว้นว่างได้)');
+        echo Form::label('item_category_id', 'กำหนดสาขาที่เปิดรับสมัคร (สามารถเว้นว่างได้)');
       ?>
-      @if(!empty($fieldData['branchs']))
+      @if(!empty($fieldData['branch']))
       <div class="form-item-group">
         <div class="row">
           <?php 
-            foreach ($fieldData['branchs'] as $id => $branch):
+            foreach ($fieldData['branch'] as $id => $branch):
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
@@ -158,8 +158,8 @@
       </label>
 
       <?php 
-        echo Form::label('recruitment_detail', 'รายละเอียดการสมัครงานนี้');
-        echo Form::textarea('recruitment_detail', null, array(
+        echo Form::label('recruitment_custom_detail', 'รายละเอียดการสมัครงานนี้');
+        echo Form::textarea('recruitment_custom_detail', null, array(
           'class' => 'ckeditor'
         ));
       ?>
@@ -183,28 +183,28 @@
 
   class Job {
 
-    constructor() {}
+    constructor() {
+      this.txtRecruitmentDetail = $('textarea[name="recruitment_custom_detail"]');
+    }
 
     load() {
       this.bind();
       
       if($('#recruitment_custom').is(':checked')) {
-        $('textarea[name="recruitment_detail"]').prop('disabled',false);
+        $('textarea[name="recruitment_custom_detail"]').prop('disabled',false);
       }else{
-        $('textarea[name="recruitment_detail"]').prop('disabled',true);
+        $('textarea[name="recruitment_custom_detail"]').prop('disabled',true);
       }
 
     }
 
     bind() {
-
-      // let _this = this;
-
       $('#recruitment_custom').on('click',function(){
         if($(this).is(':checked')) {
-          CKEDITOR.instances['recruitment_detail'].setReadOnly(false);
+          CKEDITOR.instances['recruitment_custom_detail'].setReadOnly(false);
         }else{
-          CKEDITOR.instances['recruitment_detail'].setReadOnly(true);
+          CKEDITOR.instances['recruitment_custom_detail'].setReadOnly(true);
+          CKEDITOR.instances['recruitment_custom_detail'].setData('');
         }
       });
     }

@@ -23,11 +23,8 @@ class ItemController extends Controller
 
     $this->paginator->setModel($this->model);
     $this->paginator->setPage($page);
-    $this->paginator->setUrl(url('item/list/'));
-
-    $this->data = array(
-      'detailUrl' => Service::url('item/detail')
-    );
+    $this->paginator->setPagingUrl('item/list');
+    $this->paginator->setUrl('item/detail/{id}','detailUrl');
 
     return $this->view('pages.item.list');
   }

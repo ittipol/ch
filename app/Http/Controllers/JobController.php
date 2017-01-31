@@ -11,17 +11,6 @@ class JobController extends Controller
 {
   public function __construct() { 
     parent::__construct();
-
-    if(!empty($this->param['slug'])){
-      $this->slug = service::loadModel('Slug')->getData(array(
-        'conditions' => array(
-          array('name','like',$this->param['slug'])
-        ),
-        'first' => true,
-        'fields' => array('name','model','model_id')
-      ));
-    }
-
     $this->model = Service::loadModel('Job');
   }
 
@@ -36,8 +25,9 @@ class JobController extends Controller
 
     $this->form->setModel($this->model);
     $this->form->employmentType();
-    $this->form->branch(array(
-      'shopId' => $this->slug->model_id
+    $this->form->shopTo(array(
+      'shopId' => $this->slug->model_id,
+      'model' => 'Branch'
     ));
 
     return $this->view('pages.job.form.job_post');
@@ -51,7 +41,7 @@ class JobController extends Controller
       );
       return $this->error();
     }
-// dd($request->all());
+
     if($this->model->fill($request->all())->save()) {
       Message::display('ลงประกาศงานแล้ว','success');
       return Redirect::to('shop/'.$this->slug->name.'/job');
@@ -59,6 +49,37 @@ class JobController extends Controller
       return Redirect::back();
     }
 
+  }
+
+  public function edit() {
+
+    if(!Service::loadModel('Shop')->checkPersonToShop($this->slug->model_id)){
+      $this->error = array(
+        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
+      );
+      return $this->error();
+    }
+
+    $model = $this->model->find($this->param['job_id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ไม่พบประกาศขายนี้'
+      );
+      return $this->error();
+    }
+
+    $this->modelData->setModel($model);
+    $this->modelData->loadData();
+    
+    $this->form->setModel($model);
+    $this->form->employmentType();
+    $this->form->shopTo(array(
+      'shopId' => $this->slug->model_id,
+      'model' => 'Branch'
+    ));
+
+    return $this->view('pages.job.form.job_post');
   }
 
   // public function addCat() {

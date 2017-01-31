@@ -22,11 +22,8 @@ class RealEstateController extends Controller
 
     $this->paginator->setModel($this->model);
     $this->paginator->setPage($page);
-    $this->paginator->setUrl(url('item/list/'));
-
-    $this->data = array(
-      'detailUrl' => Service::url('real-estate/detail')
-    );
+    $this->paginator->setPagingUrl('real-estate/list');
+    $this->paginator->setUrl('real-estate/detail','detailUrl');
 
     return $this->view('pages.real-estate.list');
   }

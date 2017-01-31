@@ -12,17 +12,6 @@ class BranchController extends Controller
 
   public function __construct() { 
     parent::__construct();
-
-    if(!empty($this->param['slug'])){
-      $this->slug = service::loadModel('Slug')->getData(array(
-        'conditions' => array(
-          array('name','like',$this->param['slug'])
-        ),
-        'first' => true,
-        'fields' => array('name','model','model_id')
-      ));
-    }
-
     $this->model = Service::loadModel('Branch');
   }
 
@@ -57,7 +46,7 @@ class BranchController extends Controller
       return $this->error();
     }
 
-    $request->request->add(['ShopToBranch' => array('shop_id' => $this->slug->model_id)]);
+    $request->request->add(['ShopTo' => array('shop_id' => $this->slug->model_id)]);
 
     if($this->model->fill($request->all())->save()) {
       Message::display('สาขา '.$this->model->name.' ถูกเพิ่มแล้ว','success');

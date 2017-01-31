@@ -13,6 +13,63 @@
       </div>
     </div>
 
+
+    <div class="tile-nav-group space-top-bottom-20 clearfix">
+
+      <div class="tile-nav small">
+        <div class="tile-nav-image">
+          <a href="{{$shopUrl}}job_add">
+            <img src="/images/common/job.png">
+          </a>
+        </div>
+        <div class="tile-nav-info">
+          <a href="{{$shopUrl}}job_add">
+            <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สนใจงานของคุณ</h4>
+          </a>
+        </div>
+      </div>
+
+      <div class="tile-nav small">
+        <div class="tile-nav-image">
+          <a href="{{$shopUrl}}job_add">
+            <img src="/images/common/job.png">
+          </a>
+        </div>
+        <div class="tile-nav-info">
+          <a href="{{$shopUrl}}job_add">
+            <h4 class="tile-nav-title">ลงประกาศงาน</h4>
+          </a>
+        </div>
+      </div>
+
+      <div class="tile-nav small">
+        <div class="tile-nav-image">
+            <a href="{{$shopUrl}}branch_add">
+              <img src="/images/common/plus.png">
+            </a>
+        </div>
+        <div class="tile-nav-info">
+          <a href="{{$shopUrl}}branch_add">
+            <h4 class="tile-nav-title">เพิ่มสาขา</h4>
+          </a>
+        </div>
+      </div>
+
+      <div class="tile-nav small">
+        <div class="tile-nav-image">
+            <a href="{{$shopUrl}}department_add">
+              <img src="/images/common/plus.png">
+            </a>
+        </div>
+        <div class="tile-nav-info">
+          <a href="{{$shopUrl}}department_add">
+            <h4 class="tile-nav-title">เพิ่มแผนก</h4>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
     <div class="line"></div>
 
     @if(!empty($pagination['data']))
@@ -26,17 +83,17 @@
           <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div class="card">
               <div class="image">
-                <a href="{{$detailUrl}}{{$data['id']}}">
+                <a href="{{$data['editUrl']}}">
                   <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
                 </a>
               </div>
               <div class="product-detail">
-                <a href="{{$detailUrl}}{{$data['id']}}">
+                <a href="{{$data['editUrl']}}">
                   <div class="product-title">{{$data['_name_short']}}</div>
                 </a>
               </div>
               <div>
-                <a href="{{$detailUrl}}{{$data['id']}}"><div class="button wide-button">แก้ไข</div></a>
+                <a href="{{$data['editUrl']}}"><div class="button wide-button">แก้ไข</div></a>
               </div>
             </div>
           </div>

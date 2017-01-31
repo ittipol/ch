@@ -10,8 +10,8 @@ class Paginator {
   private $page = 1;
   private $lastPage;
   private $perPage = 24;
-  private $url;
-  // private $data = array();
+  private $pagingUrl;
+  private $urls = array();
   public $error = false;
 
   public function __construct($model = null) {
@@ -30,8 +30,40 @@ class Paginator {
     $this->page = (int)$page;
   }
 
-  public function setUrl($url) {
-    $this->url = $url;
+  public function setPagingUrl($url) {
+    $this->pagingUrl = url($url);
+  }
+
+  public function setUrl($url,$index) {
+
+    preg_match_all('/{[\w0-9]+}/', $url, $matches);
+
+    $this->urls[$index] = array(
+      'url' => url($url),
+      'pattern' => $matches[0]
+    );
+  }
+
+  public function parseUrl($record) {
+    $urls = array();
+
+    foreach ($this->urls as $index => $url) {
+
+      foreach ($url['pattern'] as $pattern) {
+    
+        $field = substr($pattern, 1,-1);
+
+        if(!empty($record[$field])) {
+          $url['url'] = str_replace($pattern, $record[$field], $url['url']);
+        }
+
+      }
+
+      $urls[$index] = $url['url'];
+
+    }
+
+    return $urls;
   }
 
   public function build() {
@@ -77,7 +109,7 @@ class Paginator {
 
     $data = array();
     foreach ($records as $record) {
-      $data[] = $record->paginationData();
+      $data[] = array_merge($record->paginationData(),$this->parseUrl($record->getAttributes()));
     }
 
     return $data;
@@ -86,7 +118,7 @@ class Paginator {
 
   public function next() {
 
-    $pagingUrl = $this->url.'?page={n}';
+    $pagingUrl = $this->pagingUrl.'?page={n}';
     
     $next['url'] = str_replace('{n}', $this->page+1, $pagingUrl);
     if(($this->page + 1) > $this->lastPage) {
@@ -98,7 +130,7 @@ class Paginator {
 
   public function prev() {
 
-    $pagingUrl = $this->url.'?page={n}';
+    $pagingUrl = $this->pagingUrl.'?page={n}';
 
     $prev['url'] = str_replace('{n}', $this->page-1, $pagingUrl);
     if(($this->page - 1) < 1) {
@@ -111,7 +143,7 @@ class Paginator {
   public function paging() {
 
     $paging = array();
-    $pagingUrl = $this->url.'?page={n}';
+    $pagingUrl = $this->pagingUrl.'?page={n}';
 
     $skip = true;
     if(($this->page - 4) < 1){

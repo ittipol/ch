@@ -95,7 +95,39 @@ class Model extends BaseModel
 
   }
 
-  protected function filling(array $attributes) {
+  // protected function filling(array $attributes) {
+
+  //   if(!empty($attributes) && !empty($this->modelRelated)){
+  //     foreach ($this->modelRelated as $key => $modelName) {
+
+  //       if(is_array($modelName)){
+  //         $modelName = $key;
+  //       }
+
+  //       if(empty($attributes[$modelName])) {
+  //         continue;
+  //       }
+
+  //       $this->formModelData[$modelName] = $attributes[$modelName];
+  //       unset($attributes[$modelName]);
+  //     }
+  //   }
+
+  //   if(!empty($attributes)) {
+  //     foreach ($this->fillable as $field) {
+
+  //       if(empty($attributes[$field]) || is_array($attributes[$field])) {
+  //         continue;
+  //       }
+
+  //       $attributes[$field] = trim($attributes[$field]);
+  //     }
+  //   }
+    
+  //   return $attributes;
+  // }
+
+  public function fill(array $attributes) {
 
     if(!empty($attributes) && !empty($this->modelRelated)){
       foreach ($this->modelRelated as $key => $modelName) {
@@ -124,20 +156,7 @@ class Model extends BaseModel
       }
     }
     
-    return $attributes;
-  }
-
-  public function fill(array $attributes) {
-
-    // if(!empty($attributes['wiki'])) {
-    //   $this->createWiki = true;
-    //   unset($attributes['wiki']);
-    // }
-
-    $attributes = $this->filling($attributes);
-
     return parent::fill($attributes);
-
   }
 
   public function saveRelatedData() {
@@ -196,9 +215,6 @@ class Model extends BaseModel
   }
 
   public function checkExistById($id) {
-
-    // check field id first
-
     return $this->find($id)->exists();
   }
 
@@ -219,6 +235,7 @@ class Model extends BaseModel
   }
 
   public function getData($options = array()) {
+
     $model = $this;
 
     if(!empty($options['conditions'])){
@@ -385,7 +402,7 @@ class Model extends BaseModel
       'id' => $this->id,
       'name' => $this->name,
       '_name_short' => String::subString($this->name,80),
-      'description' => $this->description,
+      // 'description' => $this->description,
       '_price' => $currency->format($this->price),
       '_imageUrl' => $imageUrl
     );

@@ -14,7 +14,8 @@ class Item extends Model
   protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
-      'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/|max:255',
+      // 'price' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/|max:255',
+      'price' => 'required|regex:/^[0-9,]*(\.[0-9]{1,2})?$/|max:255',
       'Contact.phone_number' => 'required|max:255',
       // 'Contact.email' => 'email|unique:contacts,email|max:255',
       'ItemToCategory.item_category_id' => 'required' 
@@ -32,22 +33,22 @@ class Item extends Model
     parent::__construct();
   }
 
-  public static function boot() {
-
-    parent::boot();
-
-    Item::saving(function($model){
-      $model->price = str_replace(',', '', $model->price);
-    });
-
-  }
-
   public function announcementType() {
     return $this->hasOne('App\Models\AnnouncementType','id','announcement_type_id');
   }
 
   public function itemToCategories() {
     return $this->hasOne('App\Models\ItemToCategory','item_id','id');
+  }
+
+  public function fill(array $attributes) {
+
+    if(!empty($attributes)) {
+      $attributes['price'] = str_replace(',', '', $attributes['price']);
+    }
+
+    return parent::fill($attributes);
+
   }
 
   public function buildModelData() {

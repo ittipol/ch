@@ -25,6 +25,7 @@ class Tagging extends Model
     ));
 
     $currentId = array();
+    $deletingId = array();
     if(!empty($currentTaggings)){
       foreach ($currentTaggings as $tagging) {
       
@@ -33,9 +34,14 @@ class Tagging extends Model
           continue;
         }
 
-        $this->find($tagging->id)->delete();
+        $deletingId[] = $tagging->id;
+        // $this->find($tagging->id)->delete();
 
       }
+    }
+
+    if(!empty($deletingId)) {
+      $this->whereIn('id',$deletingId)->delete();
     }
 
     foreach ($wordIds as $wordId) {

@@ -49,23 +49,23 @@ dd($request->all());
 
   public function edit($productId) {
 
-    $product = $this->model->find($productId);
-    $this->form->setModel($product);
+    $model = $this->model->find($productId);
 
-    if(empty($product)) {
+    if(empty($model)) {
       $this->error = array(
         'message' => 'ไม่พบประกาศขายนี้'
       );
       return $this->error();
     }
 
-    if($product->created_by != Session::get('Person.id')) {
-      $this->error = array(
-        'message' => 'คุณไม่สามารถแก้ไขประกาศขายนี้ได้'
-      );
-      return $this->error();
-    }
+    // if($model->created_by != Session::get('Person.id')) {
+    //   $this->error = array(
+    //     'message' => 'คุณไม่สามารถแก้ไขประกาศขายนี้ได้'
+    //   );
+    //   return $this->error();
+    // }
 
+    $this->form->setModel($model);
     $this->form->loadFormData();
     $this->form->district();
     

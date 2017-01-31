@@ -15,12 +15,12 @@
             <div class="overlay-top-info text-center">{{$data['_realEstateTypeName']}}</div>
 
             <div class="image">
-              <a href="{{$detailUrl}}{{$data['id']}}">
+              <a href="{{$data['detailUrl']}}">
                 <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
               </a>
             </div>
             <div class="product-detail">
-              <a href="{{$detailUrl}}{{$data['id']}}">
+              <a href="{{$data['detailUrl']}}">
                 <div class="product-title">{{$data['_name_short']}}</div>
               </a>
               <div class="price">
@@ -28,7 +28,7 @@
               </div>
             </div>
             <div>
-              <a href="{{$detailUrl}}{{$data['id']}}"><div class="button wide-button">แสดงสินค้านี้</div></a>
+              <a href="{{$data['detailUrl']}}"><div class="button wide-button">แสดงสินค้านี้</div></a>
             </div>
           </div>
         </div>
