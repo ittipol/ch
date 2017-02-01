@@ -39,9 +39,7 @@ class Image extends Model
       if(!empty($imageGroup['remove'])) {
         $removeFiles = $imageGroup['remove'];
         unset($imageGroup['remove']);
-
         $this->deleteImages($model,$removeFiles);
-
       }
 
       foreach ($imageGroup as $image) {
@@ -153,16 +151,20 @@ class Image extends Model
 
   }
 
-  private function deleteImages($model,$images) {
+  private function deleteImages($model,$imageIds) {
 
-    $images = $this
-    ->whereIn('filename', $images)
-    ->where([
+    $images = $this->newInstance();
+
+    foreach ($imageIds as $imageId) {
+      $images = $images->orWhere('id','=',$imageId)->orWhere('original_image_id','=',$imageId);
+    }
+
+    $images = $images->where([
       ['model','=',$model->modelName],
       ['model_id','=',$model->id],
       ['created_by','=',Session::get('Person.id')]
     ]);
-    
+
     $_images = $images->get();
 
     foreach ($_images as $image) {
@@ -187,7 +189,7 @@ class Image extends Model
   }
 
   public function getDirPath() {
-    return storage_path($this->storagePath.Service::generateModelDir($this->model)).'/'.$this->model_id.'/';
+    return storage_path($this->storagePath.Service::generateUnderscoreName($this->model)).'/'.$this->model_id.'/';
   }
 
   public function getImagePath($filename = '') {
@@ -249,13 +251,20 @@ class Image extends Model
 
   public function buildModelData() {
 
-    if(empty($this)) {
-      return null;
-    }
-
     return array(
       'filename' => $this->filename,
-      'description' => $this->description,
+      'description' => $this->description ? $this->description : '-',
+      '_url' => $this->getImageUrl()
+    );
+
+  }
+
+  public function buildFormData() {
+
+    return array(
+      'id' => $this->id,
+      // 'filename' => $this->filename,
+      'description' => $this->description ? $this->description : '',
       '_url' => $this->getImageUrl()
     );
 

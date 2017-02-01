@@ -55,13 +55,18 @@ class Tagging extends Model
   }
 
   public function buildModelData() {
-
-    if(empty($this)) {
-      return null;
-    }
     
     return array(
       '_word_id' => $this->word->id,
+      '_word' => $this->word->word
+    );
+
+  }
+
+  public function buildFormData() {
+    
+    return array(
+      // '_word_id' => $this->word->id,
       '_word' => $this->word->word
     );
 

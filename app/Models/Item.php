@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\library\currency;
+use App\library\string;
 
 class Item extends Model
 {
@@ -37,8 +38,12 @@ class Item extends Model
     return $this->hasOne('App\Models\AnnouncementType','id','announcement_type_id');
   }
 
-  public function itemToCategories() {
+  public function itemToCategory() {
     return $this->hasOne('App\Models\ItemToCategory','item_id','id');
+  }
+
+  public function itemToCategories() {
+    return $this->hasMany('App\Models\ItemToCategory','item_id','id');
   }
 
   public function fill(array $attributes) {
@@ -55,17 +60,51 @@ class Item extends Model
 
     $currency = new Currency;
 
+    $categoryName = '';
+    if(!empty($this->itemToCategory)) {
+      $categoryName = $this->itemToCategories->category->name;
+    }
+
     return array(
       'id' => $this->id,
       'announcement_type_id' => $this->announcement_type_id,
       'name' => $this->name,
-      'description' => $this->description,
+      'description' => !empty($this->description) ? $this->description : '-',
       '_price' => $currency->format($this->price),
       '_used' => $this->used ? 'สินค้าใหม่' : 'สินค้ามือสอง',
       '_announcementTypeName' => $this->announcementType->name,
-      '_categoryName' => $this->itemToCategories->category->name
+      '_categoryName' => $categoryName
     );
 
+  }
+
+  public function paginationData() {
+    
+    $imageStyle = new ImageStyle;
+    $currency = new Currency;
+    $string = new String;
+
+    $image = $this->getRalatedModelData('Image',array(
+      'conditions' => array(
+        array('image_style_id','=',$imageStyle->getIdByalias('list'))
+      ),
+      'first' => true
+    ));
+
+    $imageUrl = '/images/common/no-img.png';
+    if(!empty($image)) {
+      $image = $image->buildModelData();
+      $imageUrl = $image['_url'];
+    }
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      '_name_short' => $string->subString($this->name,45),
+      // 'description' => $this->description,
+      '_price' => $currency->format($this->price),
+      '_imageUrl' => $imageUrl
+    );
   }
 
 }

@@ -20,7 +20,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $formModel['modelName']);
+    echo Form::hidden('model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -29,21 +29,17 @@
       <?php 
         echo Form::label('item_category_id', 'กำหนดสาขาที่เปิดรับสมัคร (สามารถเว้นว่างได้)');
       ?>
-      @if(!empty($fieldData['branch']))
+      @if(!empty($_fieldData['branch']))
       <div class="form-item-group">
         <div class="row">
           <?php 
-            foreach ($fieldData['branch'] as $id => $branch):
+            foreach ($_fieldData['branch'] as $id => $branch):
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
-                <input type="checkbox" 
-                name="JobToBranch[branch_id][]" 
-                value="<?php echo $id; ?>" 
-                @if(!empty($oldData['JobToBranch']['branch_id']) && in_array($id,$oldData['JobToBranch']['branch_id']))
-                  checked
-                @endif
-                >  
+                <?php
+                  echo Form::checkbox('JobToBranch[branch_id][]', $id);
+                ?>
                 <div class="inner"><?php echo $branch; ?></div>
               </label>
             </div>
@@ -86,7 +82,7 @@
       
       <?php 
         echo Form::label('employment_type_id', 'รูปแบบงาน');
-        echo Form::select('employment_type_id', $fieldData['employmentTypes'] , null);
+        echo Form::select('employment_type_id', $_fieldData['employmentTypes'] , null);
       ?>
 
     </div>
@@ -102,7 +98,7 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('description', 'หน้าที่และความรับผิดชอบ');
+        echo Form::label('description', 'รายละเอียดงาน');
         echo Form::textarea('description', null, array(
           'class' => 'ckeditor'
         ));
@@ -148,12 +144,16 @@
     <div class="form-row">
 
       <label class="box">
-        <input type="checkbox" checked disabled >  
+        <input type="checkbox" checked disabled >
         <div class="inner">รับสมัครผ่านชุมชน CHONBURI SQUARE</div>
       </label>
       <br>
       <label class="box">
-        <input id="recruitment_custom" type="checkbox" name="recruitment_custom" value="1" @if(Input::old('recruitment_custom')) checked @endif >  
+        <?php
+          echo Form::checkbox('recruitment_custom', 1, null, array(
+            'id' => 'recruitment_custom'
+          ));
+        ?>
         <div class="inner">เพิ่มวิธีการสมัครงานนี้</div>
       </label>
 
@@ -213,15 +213,15 @@
 
   $(document).ready(function(){
 
-    const images = new Images('_image_group',5,'default');
+    const images = new Images('_image_group',5,'description');
     const tagging = new Tagging();
     const job = new Job();
     const form = new Form();
 
     images.load();
     tagging.load();
-    @if(!empty($oldData['Tagging']))
-      tagging.setTags('{!!$oldData['Tagging']!!}');
+    @if(!empty($_oldInput['Tagging']))
+      tagging.setTags('{!!$_oldInput['Tagging']!!}');
     @endif
     job.load();
     form.load();

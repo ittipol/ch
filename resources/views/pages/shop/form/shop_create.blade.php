@@ -60,7 +60,7 @@
     ?>
 
     <?php
-      echo Form::hidden('model', $formModel['modelName']);
+      echo Form::hidden('model', $_formModel['modelName']);
     ?>
 
     <div class="form-section">

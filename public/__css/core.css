@@ -39,6 +39,22 @@ a {
 	background-color: #1565C0;
 }
 
+.text-strike {
+	text-align: center;
+}
+
+.text-strike span {
+	color: rgb(47,97,186);
+	background-color: #fff;
+	padding: 0 12px;
+	font-size: 22px;
+}
+
+.text-strike .line {
+	margin-top: -13px;
+	background-color: rgb(47,97,186);
+}
+
 .space-top-bottom-10 {
 	margin: 10px 0;
 }

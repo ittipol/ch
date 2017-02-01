@@ -8,13 +8,159 @@ class Form {
   
   private $model;
   private $data = array();
+  private $formData = array();
 
   public function __construct($model = null) {
     $this->model = $model;
   }
 
-  public function setModel($model = null) {
-    $this->model = $model;
+  // public function setModel($model = null) {
+  //   $this->model = $model;
+  // }
+
+  public function loadData($options = array()) {
+
+    if(empty($this->model)) {
+      return false;
+    }
+
+    if(empty($options['json'])) {
+      $options['json'] = array();
+    }
+
+    if(empty($options['models'])) {
+      $options['models'] = array();
+    }
+
+    $modeldNames = $this->model->getModelRelated();
+
+    foreach ($modeldNames as $key => $modelName) {
+
+      if($this->model->modelName == $modelName) {
+        continue;
+      }
+
+      if(!empty($options['models']) && !in_array($modelName, $options['models'])) {
+        continue;
+      }
+
+      $json = in_array($modelName, $options['json']);
+
+      $this->_getRelatedModelData($modelName,$json);
+
+    }
+
+  }
+
+  private function _getRelatedModelData($modelName,$json = false) {
+
+    $data = array();
+    switch ($modelName) {
+      case 'Address':
+        $data = $this->loadAddress();
+        break;
+
+      case 'Image':
+        $data = $this->loadImage();
+        break;
+
+      case 'Tagging':
+        $data = $this->loadTagging();
+        break;
+
+      case 'Contact':
+        $data = $this->loadContact();
+        break;
+    }
+
+    if($json) {
+      $data = json_encode($data);
+    }
+
+    $this->formData[$modelName] = $data; 
+
+  }
+
+  public function loadAddress() {
+
+    $address = $this->model->getRalatedModelData('Address',
+      array(
+        'first' => true,
+        'fields' => array('address','province_id','district_id','sub_district_id','description','latitude','longitude'),
+        'order' => array('id','DESC')
+      )
+    );
+
+    if(empty($address)){
+      return array();
+    }
+
+    return $address->buildFormData();
+
+  }
+
+  private function loadImage() {
+
+    $imageStyle = Service::loadModel('ImageStyle');
+
+    $images = $this->model->getRalatedModelData('Image',array(
+      'conditions' => array(
+        'in' => array(
+          array('image_style_id',array(
+            $imageStyle->getIdByalias('original'),
+          ))
+        )
+      ),
+      'fields' => array('id','model','model_id','filename','description'),
+      'first' => false
+    ));
+
+    if(empty($images)){
+      return array();
+    }
+
+    $_images = array();
+    foreach ($images as $image) {
+      $_images[] = $image->buildFormData();
+    }
+
+    return $_images;
+
+  }
+
+  private function loadTagging() {
+    $taggings = $this->model->getRalatedModelData('Tagging',
+      array(
+        'fields' => array('word_id'),
+        'first' => false
+      )
+    );
+
+    if(empty($taggings)) {
+      return array();
+    }
+
+    $words = array();
+    foreach ($taggings as $tagging) {
+      $words[] = $tagging->buildFormData();
+    }
+
+    return $words;
+
+  }
+
+  private function loadContact() {
+    $contact = $this->model->getRalatedModelData('Contact',array(
+      'first' => true,
+      'fields' => array('phone_number','email','line')
+    ));
+
+    if(empty($contact)) {
+      return array();
+    }
+
+    return $contact->getAttributes();
+
   }
 
   public function loadFieldData($modelName,$options = array()) {
@@ -31,69 +177,6 @@ class Form {
       $data[$record->{$options['key']}] = $record->{$options['field']};
     }
     $this->data[$options['index']] = $data;
-  }
-
-  public function district() {
-    $records = Service::loadModel('District')->all();
-    $districts = array();
-    foreach ($records as $district) {
-      $districts[$district->id] = $district->name;
-    }
-    $this->data['districts'] = $districts;
-  }
-
-  public function businessEntity() {
-    $records = Service::loadModel('BusinessEntity')->all();
-    $businessEntities = array();
-    foreach ($records as $businessEntity) {
-      $businessEntities[$businessEntity->id] = $businessEntity->name;
-    }
-    $this->data['businessEntities'] = $businessEntities;
-  }
-
-    public function employmentType() {
-    $employmentTypes = Service::loadModel('EmploymentType')->all();
-    $_employmentTypes = array();
-    foreach ($employmentTypes as $employmentType) {
-      $_employmentTypes[$employmentType->id] = $employmentType->name;
-    }
-    $this->data['employmentTypes'] = $_employmentTypes;
-  }
-
-  public function itemCategory() {
-    $records = Service::loadModel('ItemCategory')->all();
-    $itemCategories = array();
-    foreach ($records as $itemCategory) {
-      $itemCategories[$itemCategory->id] = $itemCategory->name;
-    }
-    $this->data['itemCategories'] = $itemCategories;
-  }
-
-  public function realEstateType() {
-    $records = Service::loadModel('RealEstateType')->all();
-    $realEstateTypes = array();
-    foreach ($records as $realEstateType) {
-      $realEstateTypes[$realEstateType->id] = $realEstateType->name;
-    }
-    $this->data['realEstateTypes'] = $realEstateTypes;
-  }
-
-  public function announcementType() {
-    $records = Service::loadModel('AnnouncementType')->all();
-    $announcementTypes = array();
-    foreach ($records as $announcementType) {
-      $announcementTypes[$announcementType->id] = $announcementType->name;
-    }
-    $this->data['announcementTypes'] = $announcementTypes;
-  }
-  
-  public function realEstateFeatures($options = array()) {
-    $records = Service::loadModel('RealEstateFeature')->all();
-    $realEstateFeatures = array();
-    foreach ($records as $realEstateFeature) {
-      $realEstateFeatures[$realEstateFeature->id] = $realEstateFeature->name;
-    }
-    $this->data['realEstateFeatures'] = $realEstateFeatures;
   }
 
   public function shopTo($options = array()) {
@@ -124,56 +207,67 @@ class Form {
     $this->data[$index] = $value;
   }
 
-  public function get($index = '') {
+  // public function get($index = '') {
 
-    if(!empty($index) && !empty($this->data[$index])){
-      return $this->data[$index];
-    }
+  //   if(!empty($index) && !empty($this->data[$index])){
+  //     return $this->data[$index];
+  //   }
 
+  //   return $this->data;
+  // }
+
+  public function getFormModel() {
+    return array(
+      'id' => $this->model->id,
+      'modelName' => $this->model->modelName
+    );
+  }
+
+  public function getFieldData() {
     return $this->data;
   }
 
-    public function oldData() {
-      $oldData =  Input::old();
+  public function getFormData() {
+    return array_merge(
+      $this->model->buildFormData(),
+      $this->formData
+    );
+  }
 
-      if(!empty($oldData['Tagging'])) {
-        $oldData['Tagging'] = json_encode($oldData['Tagging']);
-      }
+  public function getOldInput() {
 
-      if(!empty($oldData['Image'])) {
+    $oldInput =  array();
 
-        foreach ($oldData['Image'] as $token => $value) {
-          $temporaryFile = Service::loadModel('TemporaryFile');
-          $temporaryFile->deleteTemporaryDirectory($model->modelName.'_'.$token);
-          // $temporaryFile->deleteTemporaryRecords($oldData['model'],$token);
-          unset($oldData['Image']);
-        }
-
-      }
-
-      // if(empty($oldData['recruitment_custom']) && !empty($oldData['recruitment_detail'])) {
-      //   unset($oldData['recruitment_detail']);
-      // }
-
-      return $oldData;
+    if(!empty(Input::old('Tagging'))) {
+      $oldInput['Tagging'] = json_encode(Input::old('Tagging'));
     }
+
+    if(!empty(Input::old('Image'))) {
+
+      foreach (Input::old('Image') as $token => $value) {
+        $temporaryFile = Service::loadModel('TemporaryFile');
+        $temporaryFile->deleteTemporaryDirectory(Input::old('model').'_'.$token);
+        // $temporaryFile->deleteTemporaryRecords($oldInput['model'],$token);
+      }
+
+    }
+
+    return $oldInput;
+  }
 
   public function build() {
 
-    if(empty($this->model)) {
-      return false;
-    }
+    // if(empty($this->model)) {
+    //   return false;
+    // }
 
-    $data = array(
-      'formModel' => array(
-        'id' => $this->model->id,
-        'modelName' => $this->model->modelName
-      ),
-      'fieldData' => $this->data,
-      'oldData' => $this->oldData()
+    return array(
+      '_formModel' => $this->getFormModel(),
+      '_fieldData' => $this->getFieldData(),
+      '_formData' => $this->getFormData(),
+      '_oldInput' => $this->getOldInput()
     );
 
-    return $data;
   }
 
 }

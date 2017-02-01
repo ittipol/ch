@@ -60,11 +60,27 @@ class RealEstate extends Model
 
     if(!empty($attributes)) {
       $attributes['price'] = str_replace(',', '', $attributes['price']);
-      $attributes['feature'] = json_encode($attributes['feature']);
-      $attributes['facility'] = json_encode($attributes['facility']);
-      $attributes['home_area'] = json_encode($attributes['home_area']);
-      $attributes['land_area'] = json_encode($attributes['land_area']);
-      $attributes['indoor'] = json_encode($attributes['indoor']);
+
+      if(!empty($attributes['feature'])) {
+        $attributes['feature'] = json_encode($attributes['feature']);
+      }
+
+      if(!empty($attributes['facility'])) {
+        $attributes['facility'] = json_encode($attributes['facility']);
+      }
+
+      if(!empty($attributes['home_area'])) {
+        $attributes['home_area'] = json_encode($attributes['home_area']);
+      }
+
+      if(!empty($attributes['land_area'])) {
+        $attributes['land_area'] = json_encode($attributes['land_area']);
+      }
+
+      if(!empty($attributes['indoor'])) {
+        $attributes['indoor'] = json_encode($attributes['indoor']);
+      }
+      
     }
 
     return parent::fill($attributes);
@@ -110,21 +126,28 @@ class RealEstate extends Model
 
     $landArea = json_decode($this->land_area,true);
 
-    $_landArea = '-';
+    $_landAreaSqm = '';
     if(!empty($landArea['sqm'])) {
-      $_landArea = $landArea['sqm'].' ตารางเมตร / ';
+      $_landAreaSqm = $landArea['sqm'].' ตารางเมตร';
     }
 
+    $_landArea = '';
     if(!empty($landArea['rai'])) {
       $_landArea .= $landArea['rai'].' ไร่ ';
     }
-
     if(!empty($landArea['ngan'])) {
       $_landArea .= $landArea['ngan'].' งาน ';
     }
-
     if(!empty($landArea['wa'])) {
       $_landArea .= $landArea['wa'].' ตารางวา ';
+    }
+
+    if(!empty($_landAreaSqm) && !empty($_landArea)) {
+      $_landArea = trim($_landAreaSqm.'/'.$_landArea);
+    }elseif(!empty($_landAreaSqm)) {
+      $_landArea = trim($_landAreaSqm);
+    }else{
+      $_landArea = '-';
     }
 
     $furniture = '-';
@@ -173,13 +196,13 @@ class RealEstate extends Model
       'announcement_type_id' => $this->announcement_type_id,
       'real_estate_type_id' => $this->real_estate_type_id,
       'name' => $this->name,
-      'description' => $this->description,
+      'description' => !empty($this->description) ? $this->description : '-',
       'need_broker' => $this->need_broker,
       '_furniture' => $furniture,
       '_need_broker' => $this->need_broker ? 'ต้องการตัวแทนขาย' : 'ไม่ต้องการตัวแทนขาย',
       '_price' => $currency->format($this->price),
       '_homeArea' => $_homeArea,
-      '_landArea' => trim($_landArea),
+      '_landArea' => $_landArea,
       '_indoors' => $_indoor,
       '_facilities' => $facilities,
       '_features' => $features,
@@ -210,12 +233,30 @@ class RealEstate extends Model
     return array(
       'id' => $this->id,
       'name' => $this->name,
-      '_name_short' => String::subString($this->name,80),
-      'description' => $this->description,
+      '_name_short' => $string->subString($this->name,45),
+      // 'description' => $this->description,
       '_price' => $currency->format($this->price),
       '_imageUrl' => $imageUrl,
       '_realEstateTypeName' => $this->realEstateType->name
     );
   }
+
+  public function buildFormData() {
+    return array(
+      'id' => $this->id,
+      'announcement_type_id' => $this->announcement_type_id,
+      'real_estate_type_id' => $this->real_estate_type_id,
+      'name' => $this->name,
+      'description' => $this->description,
+      'price' => $this->price,
+      'home_area' => json_decode($this->home_area,true),
+      'land_area' => json_decode($this->land_area,true),
+      'indoor' => json_decode($this->indoor,true),
+      'furniture' => $this->furniture,
+      'facility' => json_decode($this->facility,true),
+      'feature' => json_decode($this->feature,true),
+      'need_broker' => $this->need_broker,
+    );
+  } 
 
 }

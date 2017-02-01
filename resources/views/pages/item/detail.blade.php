@@ -4,18 +4,18 @@
   <div class="detail container">
 
     <div class="detail-title">
-      <h4 class="sub-title">ประกาศ{{$modelData['_announcementTypeName']}}</h4>
-      <h2 class="title">{{$modelData['name']}}</h2>
+      <h4 class="sub-title">ประกาศ{{$_modelData['_announcementTypeName']}}</h4>
+      <h2 class="title">{{$_modelData['name']}}</h2>
       <div class="tag-group">
-        <a class="tag-box">{{$modelData['_used']}}</a>
-        <a class="tag-box">{{$modelData['_categoryName']}}</a>
-        @foreach ($modelData['Tagging'] as $tagging)
+        <a class="tag-box">{{$_modelData['_used']}}</a>
+        <a class="tag-box">{{$_modelData['_categoryName']}}</a>
+        @foreach ($_modelData['Tagging'] as $tagging)
           <a class="tag-box">{{$tagging['_word']}}</a>
         @endforeach
       </div>
     </div>
 
-    <h4 class="title-with-icon location-pin">{{$modelData['Address']['_full_address']}}</h4>
+    <h4 class="title-with-icon location-pin">{{$_modelData['Address']['_full_address']}}</h4>
 
     <div class="image-gallery">
 
@@ -35,7 +35,7 @@
 
         <div class="col-lg-4 col-sm-12">
 
-          @if(!empty($modelData['Image']))
+          @if(!empty($_modelData['Image']))
           <div class="image-gallery-list clearfix">
             <div id="image_gallery_list" class="image-gallery-list clearfix"></div>
           </div>
@@ -45,8 +45,8 @@
           <div class="item-info">
 
             <div class="item-info-row">
-              <p>ราคา{{$modelData['_announcementTypeName']}}</p>
-              <h4 class="price">{{$modelData['_price']}}</h4>
+              <p>ราคา{{$_modelData['_announcementTypeName']}}</p>
+              <h4 class="price">{{$_modelData['_price']}}</h4>
             </div>
 
           </div>
@@ -56,24 +56,24 @@
           <div class="item-info">
 
             <div class="item-info-row">
-              @if(!empty($modelData['Contact']['phone_number']))
-              <h4 class="title-with-icon phone">{{$modelData['Contact']['phone_number']}}</h4>
+              @if(!empty($_modelData['Contact']['phone_number']))
+              <h4 class="title-with-icon phone">{{$_modelData['Contact']['phone_number']}}</h4>
               @else
               <h4 class="title-with-icon phone">-</h4>
               @endif
             </div>
 
             <div class="item-info-row">
-              @if(!empty($modelData['Contact']['email']))
-              <h4 class="title-with-icon email">{{$modelData['Contact']['email']}}</h4>
+              @if(!empty($_modelData['Contact']['email']))
+              <h4 class="title-with-icon email">{{$_modelData['Contact']['email']}}</h4>
               @else
               <h4 class="title-with-icon email">-</h4>
               @endif
             </div>
 
             <div class="item-info-row">
-              @if(!empty($modelData['Contact']['line']))
-              <h4 class="title-with-icon line-app">{{$modelData['Contact']['line']}}</h4>
+              @if(!empty($_modelData['Contact']['line']))
+              <h4 class="title-with-icon line-app">{{$_modelData['Contact']['line']}}</h4>
               @else
               <h4 class="title-with-icon line-app">-</h4>
               @endif
@@ -89,13 +89,9 @@
 
     <div class="line space-top-bottom-20"></div>
 
-    <h4><b>รายละเอียด {{$modelData['name']}}</b></h4>
+    <h4><b>รายละเอียด {{$_modelData['name']}}</b></h4>
     <div>
-      @if(strlen($modelData['description']) > 0)
-      {!!$modelData['description']!!}
-      @else
-      -
-      @endif
+      {!!$_modelData['description']!!}
     </div>
 
     <div class="line space-top-bottom-20"></div>
@@ -106,57 +102,9 @@
   </div>
 
   <script type="text/javascript">
-
-    class Tabs {
-      constructor(tab = '') {
-        this.currentTab = tab;
-      }
-
-      load() {
-        this.init();
-        this.bind();
-      }
-
-      init() {
-        this.showTab(this.currentTab);
-      }
-
-      bind() {
-
-        let _this = this;
-
-        $('.tab').on('click',function(){
-          if($(this).is(':checked')) {
-            _this.showTab($(this).data('tab'));
-          }
-        });
-
-      }
-
-      showTab(tab) {
-        $('.tab-content').css('display','none');
-        $('#'+tab).css('display','block');
-      }
-
-      // <div class="tabs clearfix">
-      //   <label>
-      //     <input class="tab" type="radio" name="tabs"  data-tab="item_detail" checked >
-      //     <span href="#">รายละเอียดสินค้า</span>
-      //   </label>
-      //   <label>
-      //     <input class="tab" type="radio" name="tabs" data-tab="announcement_detail" >
-      //     <span href="#">รายละเอียดเพิ่มเติม</span>
-      //   </label>
-      // </div>
-
-    }
-
     $(document).ready(function(){
       imageGallery = new ImageGallery();
-      imageGallery.load(<?php echo $modelData['Image']; ?>);
-
-      let tabs = new Tabs('item_detail');
-      tabs.load();
+      imageGallery.load(<?php echo $_modelData['Image']; ?>);
     });
   </script>
 @stop

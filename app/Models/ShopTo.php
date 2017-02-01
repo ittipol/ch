@@ -20,6 +20,10 @@ class ShopTo extends Model
     return $this->hasOne('App\Models\Advertisement','id','model_id');
   }
 
+  public function shop() {
+    return $this->hasOne('App\Models\Shop','id','shop_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
     return $this->fill(array(
       'shop_id' => $options['value']['shop_id'],

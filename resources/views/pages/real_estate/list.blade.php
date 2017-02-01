@@ -3,11 +3,11 @@
 
   <div class="container list">
 
-    @if(!empty($pagination['data']))
+    @if(!empty($_pagination['data']))
 
       <div class="row">
 
-        @foreach($pagination['data'] as $data)
+        @foreach($_pagination['data'] as $data)
 
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
           <div class="card">

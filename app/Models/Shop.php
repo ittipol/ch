@@ -132,10 +132,12 @@ class Shop extends Model
 
   public function buildModelData() {
 
+    $string = new String;
+
     return array(
       'name' => $this->name,
       'description' => $this->description,
-      '_short_description' => strip_tags(String::subString($this->description,500)),
+      '_short_description' => $string->subString($this->description,500,true),
       '_permission' => $this->getPermission(),
       '_logo' => '',
       '_cover' => '',

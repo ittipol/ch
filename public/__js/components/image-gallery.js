@@ -98,7 +98,7 @@ class ImageGallery {
 
     if((imgHeight > frameheight) || (imgWidth > frameWidth)) {
 
-      if(Math.abs(imgHeight - imgWidth) > 350) {
+      if(Math.abs(imgHeight - imgWidth) > 250) {
         let imgH = Math.ceil(imgHeight * (frameWidth / imgWidth));
 
         $('#image_display').css({

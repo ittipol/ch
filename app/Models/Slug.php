@@ -20,6 +20,10 @@ class Slug extends Model
     parent::__construct();
   }
 
+  public function shop() {
+    return $this->hasOne('App\Models\Shop','id','model_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
 
     $behavior = $model->getBehavior('Slug');

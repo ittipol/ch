@@ -20,7 +20,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $formModel['modelName']);
+    echo Form::hidden('model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -33,7 +33,7 @@
       ?>
       <div class="btn-group">
         <?php 
-          foreach ($fieldData['announcementTypes'] as $id => $type):
+          foreach ($_fieldData['announcementTypes'] as $id => $type):
         ?>
           <label class="btn">
             <input type="radio" name="announcement_type_id" value="<?php echo $id; ?>" <?php if($defaultAnnouncementType == $id) echo 'checked'; ?> >  
@@ -66,11 +66,13 @@
       <div class="form-item-group">
         <div class="row">
           <?php 
-            foreach ($fieldData['itemCategories'] as $id => $category):
+            foreach ($_fieldData['itemCategories'] as $id => $category):
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
-                <input type="radio" name="ItemToCategory[item_category_id]" value="<?php echo $id; ?>" >  
+                <?php
+                  echo Form::radio('ItemToCategory[item_category_id]', $id);
+                ?> 
                 <div class="inner"><?php echo $category; ?></div>
               </label>
             </div>
@@ -96,11 +98,15 @@
       ?>
       <div class="btn-group">
         <label class="btn">
-          <input type="radio" name="used" value="0" >  
+          <?php
+            echo Form::radio('fused', 0);
+          ?>
           <div class="inner">สินค้าใหม่</div>
         </label>
         <label class="btn">
-          <input type="radio" name="used" value="1" checked >  
+          <?php
+            echo Form::radio('fused', 1, true);
+          ?>
           <div class="inner">สินค้ามือสอง</div>
         </label>
       </div>
@@ -199,7 +205,7 @@
           echo Form::label('Address[district_id]', 'อำเภอ', array(
             'class' => 'required'
           ));
-          echo Form::select('Address[district_id]', $fieldData['districts'] ,null, array(
+          echo Form::select('Address[district_id]', $_fieldData['districts'] ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -243,8 +249,8 @@
     images.load();
     district.load();
     tagging.load();
-    @if(!empty($oldData['Tagging']))
-      tagging.setTags('{!!$oldData['Tagging']!!}');
+    @if(!empty($_oldData['Tagging']))
+      tagging.setTags('{!!$_oldData['Tagging']!!}');
     @endif
     form.load();
 

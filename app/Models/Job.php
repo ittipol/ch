@@ -7,7 +7,7 @@ use App\library\string;
 class Job extends Model
 {
   public $table = 'jobs';
-  protected $fillable = ['employment_type_id','name','description','salary','recruitment','recruitment_custom_detail'];
+  protected $fillable = ['employment_type_id','name','description','qualification','benefit','salary','recruitment','recruitment_custom_detail'];
   protected $modelRelated = array('Image','Tagging','JobToBranch','ShopTo');
   protected $directory = true;
 
@@ -105,7 +105,7 @@ class Job extends Model
     return array(
       'id' => $this->id,
       'name' => $this->name,
-      '_name_short' => String::subString($this->name,80),
+      '_name_short' => $string->subString($this->name,45),
       '_salary' => $this->salary,
       '_imageUrl' => $imageUrl
     );
@@ -139,11 +139,17 @@ class Job extends Model
       $this->salary .= ' บาท';
     }
 
-dd($this->getAttributes());
+    $recruitment = json_decode($this->recruitment,true);
+
     return array(
       'id' => $this->id,
       'name' => $this->name,
-      '_price' => $this->salary,
+      '_salary' => $this->salary,
+      'description' => !empty($this->description) ? $this->description : '-',
+      'qualification' => !empty($this->qualification) ? $this->qualification : '-',
+      'benefit' => !empty($this->benefit) ? $this->benefit : '-',
+      '_recruitment_custom' => $recruitment['c'],
+      'recruitment_custom_detail' => !empty($this->recruitment_custom_detail) ? $this->recruitment_custom_detail : '-',
       '_employmentTypeName' => $this->employmentType->name,
     );
 

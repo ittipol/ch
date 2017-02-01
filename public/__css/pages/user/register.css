@@ -10,19 +10,19 @@
 }
 
 .register-wrapper .header-container a {
-	color: #ffffff;
+	color: #fff;
 }
 
 .register-wrapper .header-container p {
 	font-size: 24px;
 	text-align: center;
-	color: #ffffff;
+	color: #fff;
 }
 
 .register-form {
 	width: 400px;
 	margin: 0 auto;
-	background-color: #ffffff;
+	background-color: #fff;
 }
 
 .register-form .register-form-inner {
@@ -55,7 +55,7 @@
 }
 
 .register-wrapper.mobile .register-form a {
-	color: #ffffff;
+	color: #fff;
 }
 
 .register-wrapper.mobile .text-center {
@@ -96,7 +96,7 @@
 	}
 
 	.register-wrapper .register-form a {
-		color: #ffffff;
+		color: #fff;
 	}
 
 	.register-wrapper .text-center {

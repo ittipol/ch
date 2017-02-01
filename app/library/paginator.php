@@ -18,9 +18,9 @@ class Paginator {
     $this->model = $model;
   }
 
-  public function setModel($model = null) {
-    $this->model = $model;
-  }
+  // public function setModel($model = null) {
+  //   $this->model = $model;
+  // }
 
   public function setPerPage($perPage) {
     $this->perPage = (int)$perPage;
@@ -64,34 +64,6 @@ class Paginator {
     }
 
     return $urls;
-  }
-
-  public function build() {
-
-    if(empty($this->model)) {
-      return false;
-    }
-
-    $this->total = $this->model->count();
-    $this->lastPage = (int)ceil($this->total / $this->perPage);
-
-    // if(($this->page < 1) || ($this->page > $this->lastPage)) {
-    //   $this->error = true;
-    //   return false;
-    // }
-
-    return array(
-      'pagination' => array(
-        'page' => $this->page,
-        'lastPage' => $this->lastPage,
-        'total' => $this->total,
-        'paging' => $this->paging(),
-        'next' => $this->next(),
-        'prev' => $this->prev(),
-        'data' => $this->getModelData()
-      )
-    );
-
   }
 
   public function getModelData() {
@@ -236,6 +208,34 @@ class Paginator {
     }
 
     return $paging;
+
+  }
+
+  public function build() {
+
+    if(empty($this->model)) {
+      return false;
+    }
+
+    $this->total = $this->model->count();
+    $this->lastPage = (int)ceil($this->total / $this->perPage);
+
+    // if(($this->page < 1) || ($this->page > $this->lastPage)) {
+    //   $this->error = true;
+    //   return false;
+    // }
+
+    return array(
+      '_pagination' => array(
+        'page' => $this->page,
+        'lastPage' => $this->lastPage,
+        'total' => $this->total,
+        'paging' => $this->paging(),
+        'next' => $this->next(),
+        'prev' => $this->prev(),
+        'data' => $this->getModelData()
+      )
+    );
 
   }
 

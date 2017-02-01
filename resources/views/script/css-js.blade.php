@@ -19,14 +19,16 @@
     '__js/map/map.js',
     '__js/forms/form.js',
     '__js/forms/images.js',
-    '__js/forms/office_hour.js',
+    '__js/forms/office-hour.js',
     '__js/forms/district.js',
     '__js/forms/tagging.js',
+    '__js/forms/real-estate.js',
     '__js/components/notification-bottom.js',
     '__js/components/additional-option.js',
     '__js/components/custom-scroll.js',
     '__js/components/filter.js',
-    '__js/components/image-gallery.js'
+    '__js/components/image-gallery.js',
+    '__js/components/tabs.js'
   );
 
   if($combine){

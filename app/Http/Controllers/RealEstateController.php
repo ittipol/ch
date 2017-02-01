@@ -15,43 +15,45 @@ class RealEstateController extends Controller
   }
 
   public function listView() {
+
     $page = 1;
     if(!empty($this->query)) {
       $page = $this->query['page'];
     }
 
-    $this->paginator->setModel($this->model);
-    $this->paginator->setPage($page);
-    $this->paginator->setPagingUrl('real-estate/list');
-    $this->paginator->setUrl('real-estate/detail','detailUrl');
+    $this->model->paginator->setPage($page);
+    $this->model->paginator->setPagingUrl('real_estate/list');
+    $this->model->paginator->setUrl('real-estate/detail/{id}','detailUrl');
 
-    return $this->view('pages.real-estate.list');
+    $this->setData($this->model->paginator->build());
+
+    return $this->view('pages.real_estate.list');
   }
 
   public function detail($realEstateId) {
 
-    $realEstate = $this->model->find($realEstateId);
+    $model = $this->model->find($this->param['real_estate_id']);
 
-    if(empty($realEstate)) {
+    if(empty($model)) {
       $this->error = array(
         'message' => 'ขออภัย ไม่พบประกาศนี้'
       );
       return $this->error();
     }
 
-    $this->modelData->setModel($realEstate);
-    $this->modelData->loadData(array(
+    $model->modelData->loadData(array(
       'json' => array('Image')
     ));
 
-    return $this->view('pages.real-estate.detail');
+    $this->setData($model->modelData->build());
+
+    return $this->view('pages.real_estate.detail');
 
   }
 
   public function post() { 
 
-    $this->form->setModel($this->model);
-    $this->form->loadFieldData('District',array(
+    $this->model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -59,9 +61,20 @@ class RealEstateController extends Controller
       'field' => 'name',
       'index' => 'districts'
     ));
-    $this->form->realEstateType();
-    $this->form->announcementType();
-    $this->form->loadFieldData('RealEstateFeature',array(
+
+    $this->model->form->loadFieldData('RealEstateType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'realEstateTypes'
+    ));
+
+    $this->model->form->loadFieldData('AnnouncementType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'announcementTypes'
+    ));
+
+    $this->model->form->loadFieldData('RealEstateFeature',array(
       'conditions' => array(
         ['real_estate_feature_type_id','=',1]
       ),
@@ -70,7 +83,7 @@ class RealEstateController extends Controller
       'index' => 'feature'
     ));
 
-    $this->form->loadFieldData('RealEstateFeature',array(
+    $this->model->form->loadFieldData('RealEstateFeature',array(
       'conditions' => array(
         ['real_estate_feature_type_id','=',2]
       ),
@@ -79,11 +92,10 @@ class RealEstateController extends Controller
       'index' => 'facility'
     ));
 
-    $this->data = array(
-      'defaultAnnouncementType' => 2
-    );
+    $this->setData($this->model->form->build());
+    $this->setData(array('defaultAnnouncementType' => 2));
 
-    return $this->view('pages.real-estate.form.real-estate_post');
+    return $this->view('pages.real_estate.form.real_estate_post');
   }
 
   public function submitPosting(CustomFormRequest $request) {
@@ -94,4 +106,76 @@ class RealEstateController extends Controller
       return Redirect::back();
     }
   }
+
+  public function edit() {
+
+    $model = $this->model->find($this->param['real_estate_id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ไม่พบประกาศขายนี้'
+      );
+      return $this->error();
+    }
+
+    $model->form->loadData(array(
+      'json' => array('Image','Tagging')
+    ));
+    $model->form->loadFieldData('District',array(
+      'conditions' => array(
+        ['province_id','=',9]
+      ),
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'districts'
+    ));
+
+    $model->form->loadFieldData('RealEstateType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'realEstateTypes'
+    ));
+
+    $model->form->loadFieldData('AnnouncementType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'announcementTypes'
+    ));
+
+    $model->form->loadFieldData('RealEstateFeature',array(
+      'conditions' => array(
+        ['real_estate_feature_type_id','=',1]
+      ),
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'feature'
+    ));
+
+    $model->form->loadFieldData('RealEstateFeature',array(
+      'conditions' => array(
+        ['real_estate_feature_type_id','=',2]
+      ),
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'facility'
+    ));
+
+    $this->setData($model->form->build());
+
+    return $this->view('pages.real_estate.form.real_estate_edit');
+
+  }
+
+  public function editingSubmit(CustomFormRequest $request) {
+
+    $model = $this->model->find($this->param['real_estate_id']);
+
+    if($model->fill($request->all())->save()) {
+      Message::display('ข้อมูลถูกแก้ไขแล้ว','success');
+      return Redirect::to('real-estate/detail/'.$model->id);
+    }else{
+      return Redirect::back();
+    }
+  }
+
 }

@@ -3,47 +3,47 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
-use App\library\token;
 use App\library\service;
 use App\library\currency;
 use App\library\string;
-use Auth;
+use App\library\form;
+use App\library\modelData;
+use App\library\paginator;
+// use Auth;
 use Session;
 use Schema;
 
 class Model extends BaseModel
 {
   public $modelName;
-
   public $modelAlias;
-
   protected $storagePath = 'app/public/';
-
   protected $state = 'create';
-
   protected $formModelData = array();
-
   protected $relatedModel = array();
-
   protected $sortingFields;
-
   protected $behavior;
-
   protected $validation;
-
   protected $directory = false;
-
   protected $directoryPath;
 
-  protected $imageCache;
+  public $form;
+  public $modelData;
+  public $paginator;
+
+  // protected $imageCache;
   
   public function __construct(array $attributes = []) { 
 
     parent::__construct($attributes);
     
     $this->modelName = class_basename(get_class($this));
-    $this->modelAlias = Service::generateModelDir($this->modelName);
+    $this->modelAlias = Service::generateUnderscoreName($this->modelName);
     $this->directoryPath = $this->storagePath.$this->modelAlias.'/';
+
+    $this->form = new Form($this);
+    $this->modelData = new ModelData($this);
+    $this->paginator = new Paginator($this);
 
   }
 
@@ -54,7 +54,7 @@ class Model extends BaseModel
     // before saving
     parent::saving(function($model){
 
-      if(!$model->exists){ // Create new record
+      if(!$model->exists){
 
         $model->state = 'create';
 
@@ -132,9 +132,9 @@ class Model extends BaseModel
     if(!empty($attributes) && !empty($this->modelRelated)){
       foreach ($this->modelRelated as $key => $modelName) {
 
-        if(is_array($modelName)){
-          $modelName = $key;
-        }
+        // if(is_array($modelName)){
+        //   $modelName = $key;
+        // }
 
         if(empty($attributes[$modelName])) {
           continue;
@@ -246,11 +246,22 @@ class Model extends BaseModel
           $model = $model->whereIn($condition[0],$condition[1]);
         }
 
-        // foreach ($options['conditions']['or'] as $condition) {
-        //   $model = $model->orWhere($condition[0],$condition[1],$condition[2]);
-        // }
-
         unset($options['conditions']['in']);
+
+      }
+
+      if(!empty($options['conditions']['or'])) {
+
+        $arrLen = count($options['conditions']['or']);
+        for ($i=0; $i < $arrLen; $i++) {
+          $images->orWhere(
+            $options['conditions']['or'][$i][0],
+            $options['conditions']['or'][$i][1],
+            $options['conditions']['or'][$i][2]
+          );
+        }
+
+        unset($options['conditions']['or']);
 
       }
 
@@ -282,6 +293,29 @@ class Model extends BaseModel
     }
 
     return $model->get();
+
+  }
+
+  public function getRalatedData($modelName,$options = array()) {
+
+    $model = Service::loadModel($modelName);
+    $field = $this->modelAlias.'_id';
+
+    if(!Schema::hasColumn($model->getTable(), $field)) {
+      return false;
+    }
+
+    $conditions = array(
+      [$field,'=',$this->id],
+    );
+
+    if(!empty($options['conditions'])){
+      $options['conditions'] = array_merge($options['conditions'],$conditions);
+    }else{
+      $options['conditions'] = $conditions;
+    }
+
+    return $model->getData($options);
 
   }
 
@@ -381,8 +415,8 @@ class Model extends BaseModel
   }
 
   public function paginationData() {
+    
     $imageStyle = new ImageStyle;
-    $currency = new Currency;
     $string = new String;
 
     $image = $this->getRalatedModelData('Image',array(
@@ -401,11 +435,13 @@ class Model extends BaseModel
     return array(
       'id' => $this->id,
       'name' => $this->name,
-      '_name_short' => String::subString($this->name,80),
-      // 'description' => $this->description,
-      '_price' => $currency->format($this->price),
+      '_name_short' => $string->subString($this->name,45),
       '_imageUrl' => $imageUrl
     );
+  }
+
+  public function buildFormData() {
+    return $this->getAttributes();
   }
 
   // public function getImageCache() {

@@ -17,17 +17,22 @@ class ShopController extends Controller
     //   return $next($request);
     // });
 
-    $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
+    if(!empty($this->slug->model_id)) {
+      $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
+    }else{
+      $this->model = Service::loadModel('Shop');
+    }
+    
   }
 
   public function index() {
 
-    $this->modelData->setModel($this->model);
-    $this->modelData->loadData();
+    $this->model->modelData->loadData();
 
-    $this->data = array(
-      'shopUrl' => Service::url('shop/'.$this->param['slug']),
-    );
+    $this->setData($this->model->modelData->build());
+    $this->setData(array(
+      'shopUrl' => Service::url('shop/'.$this->param['slug'])
+    ));
 
     return $this->view('pages.shop.main');
   }
@@ -60,14 +65,16 @@ class ShopController extends Controller
       $page = $this->query['page'];
     }
 
-    $this->paginator->setModel(Service::loadModel('Job'));
-    $this->paginator->setPage($page);
-    $this->paginator->setPagingUrl('shop/'.$this->param['slug'].'/job');
-    $this->paginator->setUrl('shop/'.$this->param['slug'].'/job_edit/{id}','editUrl');
+    $job = Service::loadModel('Job');
+    $job->paginator->setPage($page);
+    $job->paginator->setPagingUrl('shop/'.$this->param['slug'].'/job');
+    $job->paginator->setUrl('shop/'.$this->param['slug'].'/job_edit/{id}','editUrl');
+    $job->paginator->setUrl('job/detail/{id}','detailUrl');
 
-    $this->data = array(
-      'shopUrl' => Service::url('shop/'.$this->param['slug']),
-    );
+    $this->setData($job->paginator->build());
+    $this->setData(array(
+      'shopUrl' => Service::url('shop/'.$this->param['slug'])
+    ));
 
     return $this->view('pages.job.main');
   }
@@ -77,8 +84,8 @@ class ShopController extends Controller
   }
 
   public function create() {
-    $this->form->setModel($this->model);
-    $this->form->loadFieldData('District',array(
+
+    $this->model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -86,6 +93,8 @@ class ShopController extends Controller
       'field' => 'name',
       'index' => 'districts'
     ));
+
+    $this->setData($this->model->form->build());
 
     return $this->view('pages.shop.form.shop_create');
   }

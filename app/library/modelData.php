@@ -11,9 +11,9 @@ class ModelData {
 	  $this->model = $model;
 	}
 
-	public function setModel($model = null) {
-	  $this->model = $model;
-	}
+	// public function setModel($model = null) {
+	//   $this->model = $model;
+	// }
 
 	public function loadData($options = array()) {
 
@@ -25,22 +25,35 @@ class ModelData {
       $options['json'] = array();
     }
 
+    if(empty($options['models'])) {
+      $options['models'] = array();
+    }
+
     $modeldNames = $this->model->getModelRelated();
 
-    foreach ($modeldNames as $key => $modelName) {
+    if(!empty($modeldNames)){
 
-      if(is_array($modelName)){
-        $modelName = $key;
+      foreach ($modeldNames as $key => $modelName) {
+
+        if($this->model->modelName == $modelName) {
+          continue;
+        }
+
+        if(!empty($options['models']) && !in_array($modelName, $options['models'])) {
+          continue;
+        }
+
+        $json = in_array($modelName, $options['json']);
+
+        $this->_getRelatedModelData($modelName,$json);
+
       }
 
-      $json = in_array($modelName, $options['json']);
-
-      $this->getRelatedModelData($modelName,$json);
-
     }
+
   }
 
-  private function getRelatedModelData($modelName,$json = false) {
+  private function _getRelatedModelData($modelName,$json = false) {
 
     $data = array();
     switch ($modelName) {
@@ -97,6 +110,11 @@ class ModelData {
       case 'Contact':
         $data = $this->loadContact();
         break;
+
+      case 'JobToBranch':
+        $data = $this->loadJobToBranch();
+        break;
+  
     }
 
     if($json) {
@@ -107,7 +125,7 @@ class ModelData {
 
   }
 
-  private function loadAddress() {
+  public function loadAddress() {
 
     $address = $this->model->getRalatedModelData('Address',
       array(
@@ -125,7 +143,7 @@ class ModelData {
 
   }
 
-  private function loadImage() {
+  public function loadImage() {
 
     $imageStyle = Service::loadModel('ImageStyle');
 
@@ -175,7 +193,7 @@ class ModelData {
 
   }
 
-  private function loadTagging() {
+  public function loadTagging() {
     $taggings = $this->model->getRalatedModelData('Tagging',
       array(
         'fields' => array('word_id'),
@@ -196,7 +214,7 @@ class ModelData {
 
   }
 
-  private function loadContact() {
+  public function loadContact() {
     $contact = $this->model->getRalatedModelData('Contact',array(
       'first' => true,
       'fields' => array('phone_number','email','line')
@@ -210,24 +228,67 @@ class ModelData {
 
   }
 
+  public function loadJobToBranch() {
+
+    $jobToBranch = $this->model->getRalatedData('JobToBranch',array(
+      'first' => false,
+      'fields' => array('branch_id')
+    ));
+
+    $branchs = array();
+    foreach ($jobToBranch as $value) {
+
+      $branch = new ModelData($value->branch);
+      $branch->loadData(array(
+        'models' => array(
+          'Address'
+        )
+      ));
+
+      $branchs[] = $branch->build(true);
+    }
+
+    return $branchs;
+
+  }
+
+  public function getShop() {
+    $shopTo = $this->model->getRalatedModelData('ShopTo',array(
+      'first' => true,
+    ));
+
+    $shopTo = new ModelData($shopTo->shop);
+    $shopTo->loadData(array(
+      'models' => array('Address')
+    ));
+    dd($shopTo->build(true));
+  }
+
   public function set($index,$value) {
     $this->data[$index] = $value;
   }
 
-  public function build() {
+  public function getModelData() {
+    return array_merge(
+      $this->model->buildModelData(),
+      $this->data
+    );
+  }
 
-    if(empty($this->model)) {
-      return false;
+  public function build($onlyData = false) {
+
+    // if(empty($this->model)) {
+    //   return false;
+    // }
+
+    if($onlyData) {
+      return $this->getModelData();
     }
 
-    $data = array(
-      'modelData' => array_merge(
-        $this->model->buildModelData(),
-        $this->data
-      )
+    return array(
+      '_modelData' => $this->getModelData()
     );
 
-    return $data;
   }
 
 }

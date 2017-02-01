@@ -18,11 +18,15 @@
   @include('components.form_error') 
 
   <?php 
-    echo Form::open(['id' => 'main_form','method' => 'post', 'enctype' => 'multipart/form-data']);
+    echo Form::model($_formData, [
+      'id' => 'main_form',
+      'method' => 'PATCH',
+      'enctype' => 'multipart/form-data'
+    ]);
   ?>
 
   <?php
-    echo Form::hidden('model', $formModel['modelName']);
+    echo Form::hidden('model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -35,11 +39,13 @@
       ?>
       <div class="btn-group">
         <?php 
-          foreach ($fieldData['announcementTypes'] as $id => $type):
+          foreach ($_fieldData['announcementTypes'] as $id => $type):
         ?>
           <label class="btn">
-            <input type="radio" name="announcement_type_id" value="<?php echo $id; ?>" <?php if($defaultAnnouncementType == $id) echo 'checked'; ?> >  
-            <div class="inner"><?php echo $type; ?></div>
+            <?php
+              echo Form::radio('announcement_type_id', $id);
+            ?>
+            <div class="inner">{{$type}}</div>
           </label>
         <?php
           endforeach;
@@ -68,12 +74,14 @@
       <div class="form-item-group">
         <div class="row">
           <?php 
-            foreach ($fieldData['realEstateTypes'] as $id => $category):
+            foreach ($_fieldData['realEstateTypes'] as $id => $category):
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
-                <input type="radio" name="real_estate_type_id" value="<?php echo $id; ?>" >  
-                <div class="inner"><?php echo $category; ?></div>
+                <?php
+                  echo Form::radio('real_estate_type_id', $id);
+                ?>
+                <div class="inner">{{$category}}</div>
               </label>
             </div>
           <?php
@@ -96,7 +104,13 @@
               echo Form::label('name', 'พื้นที่ใช้สอย');
             ?>
             <span class="input-addon">
-              <input class="home-area" type="text" name="home_area[sqm]" placeholder="พื้นที่ใช้สอย" autocomplete="off">
+              <?php
+                echo Form::text('home_area[sqm]', null, array(
+                  'class' => 'home-area',
+                  'placeholder' => 'พื้นที่ใช้สอย',
+                  'autocomplete' => 'off'
+                ));
+              ?>
               <span>ตารางเมตร</span>
             </span>
           </div>
@@ -107,27 +121,54 @@
             ?>
 
             <span class="input-addon">
-              <input id="rai" class="land-area" type="text" name="land_area[rai]" placeholder="ไร่" autocomplete="off">
+              <?php
+                echo Form::text('land_area[rai]', null, array(
+                  'id' => 'rai',
+                  'class' => 'land-area',
+                  'placeholder' => 'ไร่',
+                  'autocomplete' => 'off'
+                ));
+              ?>
               <span>ไร่</span>
             </span>
 
             <span class="input-addon">
-              <input id="ngan" class="land-area" type="text" name="land_area[ngan]" placeholder="งาน" autocomplete="off">
+              <?php
+                echo Form::text('land_area[ngan]', null, array(
+                  'id' => 'ngan',
+                  'class' => 'land-area',
+                  'placeholder' => 'งาน',
+                  'autocomplete' => 'off'
+                ));
+              ?>
               <span>งาน</span>
             </span>
 
             <span class="input-addon">
-              <input id="wa" class="land-area" type="text" name="land_area[wa]" placeholder="ตารางวา" autocomplete="off">
+              <?php
+                echo Form::text('land_area[wa]', null, array(
+                  'id' => 'wa',
+                  'class' => 'land-area',
+                  'placeholder' => 'ตารางวา',
+                  'autocomplete' => 'off'
+                ));
+              ?>
               <span>ตารางวา</span>
             </span>
 
             <div class="line space-top-bottom-10"></div>
 
             <span class="input-addon">
-              <input id="sqm" class="land-area" type="text" name="land_area[sqm]" placeholder="ตารางเมตร" autocomplete="off">
+              <?php
+                echo Form::text('land_area[sqm]', null, array(
+                  'id' => 'sqm',
+                  'class' => 'land-area',
+                  'placeholder' => 'ตารางเมตร',
+                  'autocomplete' => 'off'
+                ));
+              ?>
               <span>ตารางเมตร</span>
             </span>
-            
 
           </div>
 
@@ -139,34 +180,70 @@
             <div class="input-addon-group">
               <span class="input-addon">
                 <span>ห้องนอน</span>
-                <input type="text" name="indoor[bedroom]" placeholder="ห้องนอน" autocomplete="off" value="0">
+                <?php
+                  echo Form::text('indoor[bedroom]', null, array(
+                    'class' => 'indoor',
+                    'placeholder' => 'ห้องนอน',
+                    'autocomplete' => 'off'
+                  ));
+                ?>
               </span>
 
               <span class="input-addon">
                 <span>ห้องน้ำ</span>
-                <input type="text" name="indoor[bathroom]" placeholder="ห้องน้ำ" autocomplete="off" value="0">
+                <?php
+                  echo Form::text('indoor[bathroom]', null, array(
+                    'class' => 'indoor',
+                    'placeholder' => 'ห้องน้ำ',
+                    'autocomplete' => 'off'
+                  ));
+                ?>
               </span>
 
               <span class="input-addon">
                 <span>ห้องนั่งเล่น</span>
-                <input type="text" name="indoor[living_room]" placeholder="ห้องนั่งเล่น" autocomplete="off" value="0">
+                <?php
+                  echo Form::text('indoor[living_room]', null, array(
+                    'class' => 'indoor',
+                    'placeholder' => 'ห้องนั่งเล่น',
+                    'autocomplete' => 'off'
+                  ));
+                ?>
               </span>
             </div>
 
             <div class="input-addon-group">
               <span class="input-addon">
                 <span>ห้องทำงาน</span>
-                <input type="text" name="indoor[home_office]" placeholder="ห้องทำงาน" autocomplete="off" value="0">
+                <?php
+                  echo Form::text('indoor[home_office]', null, array(
+                    'class' => 'indoor',
+                    'placeholder' => 'ห้องทำงาน',
+                    'autocomplete' => 'off'
+                  ));
+                ?>
               </span>
 
               <span class="input-addon">
                 <span>จำนวนชั้น</span>
-                <input type="text" name="indoor[floors]" placeholder="จำนวนชั้น" autocomplete="off" value="0">
+                <?php
+                  echo Form::text('indoor[floors]', null, array(
+                    'class' => 'indoor',
+                    'placeholder' => 'จำนวนชั้น',
+                    'autocomplete' => 'off'
+                  ));
+                ?>
               </span>
 
               <span class="input-addon">
                 <span>ที่จอดรถ</span>
-                <input type="text" name="indoor[carpark]" placeholder="ที่จอดรถ" autocomplete="off" value="0">
+                <?php
+                  echo Form::text('indoor[carpark]', null, array(
+                    'class' => 'indoor',
+                    'placeholder' => 'ที่จอดรถ',
+                    'autocomplete' => 'off'
+                  ));
+                ?>
               </span>
             </div>
 
@@ -180,15 +257,21 @@
 
             <div class="btn-group">
               <label class="btn">
-                <input type="radio" name="furniture" value="e">  
+                <?php
+                  echo Form::radio('furniture', 'e');
+                ?>
                 <div class="inner">ไม่มี</div>
               </label>
               <label class="btn">
-                <input type="radio" name="furniture" value="s" checked>  
+                <?php
+                  echo Form::radio('furniture', 's');
+                ?>
                 <div class="inner">มีบางส่วน</div>
               </label>
               <label class="btn">
-                <input type="radio" name="furniture" value="f">  
+                <?php
+                  echo Form::radio('furniture', 'f');
+                ?>
                 <div class="inner">ตกแต่งครบ</div>
               </label>
             </div>
@@ -203,11 +286,13 @@
             <div class="form-item-group">
               <div class="row">
                 <?php 
-                  foreach ($fieldData['feature'] as $id => $feature):
+                  foreach ($_fieldData['feature'] as $id => $feature):
                 ?>
                   <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
                     <label class="box">
-                      <input type="checkbox" name="feature[]" value="<?php echo $id; ?>" >  
+                      <?php
+                        echo Form::checkbox('feature[]', $id);
+                      ?>
                       <div class="inner"><?php echo $feature; ?></div>
                     </label>
                   </div>
@@ -226,11 +311,13 @@
             <div class="form-item-group">
               <div class="row">
                 <?php 
-                  foreach ($fieldData['facility'] as $id => $facility):
+                  foreach ($_fieldData['facility'] as $id => $facility):
                 ?>
                   <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
                     <label class="box">
-                      <input type="checkbox" name="facility[]" value="<?php echo $id; ?>" >  
+                      <?php
+                        echo Form::checkbox('facility[]', $id);
+                      ?>
                       <div class="inner"><?php echo $facility; ?></div>
                     </label>
                   </div>
@@ -282,11 +369,15 @@
       ?>
       <div class="btn-group">
         <label class="btn">
-          <input type="radio" name="need_broker" value="1" >  
+          <?php
+            echo Form::radio('need_broker', 1);
+          ?>
           <div class="inner">ต้องการ</div>
         </label>
         <label class="btn">
-          <input type="radio" name="need_broker" value="0" checked >  
+          <?php
+            echo Form::radio('need_broker', 0);
+          ?>
           <div class="inner">ไม่ต้องการ</div>
         </label>
       </div>
@@ -365,7 +456,7 @@
           echo Form::label('Address[district_id]', 'อำเภอ', array(
             'class' => 'required'
           ));
-          echo Form::select('Address[district_id]', $fieldData['districts'] ,null, array(
+          echo Form::select('Address[district_id]', $_fieldData['districts'] ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -406,63 +497,6 @@
 
 <script type="text/javascript">
 
-  class RealEstate {
-    constructor() {}
-
-    load() {
-      this.bind();
-    }
-
-    bind() {
-
-      let _this = this;
-
-      $('.home-area').on('keydown',function(e){
-
-        console.log(e.keyCode);
-
-        if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8) && (e.keyCode != 110) && (e.keyCode != 190)) {
-          e.preventDefault();
-          return false;
-        }
-
-      });
-
-      $('.land-area').on('keydown',function(e){
-
-        if(((e.keyCode < 96) || (e.keyCode > 105)) && ((e.keyCode < 48) || (e.keyCode > 57)) && (e.keyCode != 8) && (e.keyCode != 110) && (e.keyCode != 190)) {
-          e.preventDefault();
-          return false;
-        }
-        
-        let obj = this;
-
-        clearTimeout(_this.handle);
-        _this.handle = setTimeout(function(){
-          _this.calSqm($(obj).attr('id'));
-        },500);
-      });
-
-    }
-
-    calSqm(unit) {
-
-      if(unit == 'sqm') {
-        $('#rai').val('');
-        $('#ngan').val('');
-        $('#wa').val('');
-      }else{
-        let rai = $('#rai').val() * 1600;
-        let ngan = $('#ngan').val() * 400;
-        let wa = $('#wa').val() * 4;
-
-        $('#sqm').val(rai+ngan+wa);
-      }
-
-    }
-
-  }
-
   $(document).ready(function(){
     const images = new Images('_image_group',8,'description');
     const district = new District();
@@ -471,13 +505,10 @@
     const form = new Form();
     const realEstate = new RealEstate();
 
-    images.load();
-    district.load();
-    map.load();
-    tagging.load();
-    @if(!empty($oldData['Tagging']))
-      tagging.setTags('{!!$oldData['Tagging']!!}');
-    @endif
+    images.load('<?php echo $_formData['Image']; ?>');
+    district.load('<?php echo $_formData['Address']['sub_district_id']; ?>');
+    map.load('<?php echo $_formData['Address']['_geographic']; ?>');
+    tagging.load('<?php echo $_formData['Tagging']; ?>');
     form.load();
     realEstate.load();
 

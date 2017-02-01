@@ -24,7 +24,7 @@
         </div>
         <div class="tile-nav-info">
           <a href="{{$shopUrl}}job_add">
-            <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สนใจงานของคุณ</h4>
+            <h4 class="tile-nav-title">ลงประกาศงาน</h4>
           </a>
         </div>
       </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="tile-nav-info">
           <a href="{{$shopUrl}}job_add">
-            <h4 class="tile-nav-title">ลงประกาศงาน</h4>
+            <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สนใจงานของคุณ</h4>
           </a>
         </div>
       </div>
@@ -72,28 +72,39 @@
 
     <div class="line"></div>
 
-    @if(!empty($pagination['data']))
+    @if(!empty($_pagination['data']))
 
       <div class="list">
 
         <div class="row">
 
-          @foreach($pagination['data'] as $data)
+          @foreach($_pagination['data'] as $data)
 
           <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div class="card">
               <div class="image">
-                <a href="{{$data['editUrl']}}">
+                <a href="{{$data['detailUrl']}}">
                   <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
                 </a>
               </div>
               <div class="product-detail">
-                <a href="{{$data['editUrl']}}">
+                <a href="{{$data['detailUrl']}}">
                   <div class="product-title">{{$data['_name_short']}}</div>
                 </a>
+                <div class="price">
+                  {{$data['_salary']}}
+                </div>
               </div>
               <div>
-                <a href="{{$data['editUrl']}}"><div class="button wide-button">แก้ไข</div></a>
+      
+                <a href="{{$data['editUrl']}}">
+                  <div class="button half-button">แก้ไข</div>
+                </a>
+   
+                <a href="{{$data['detailUrl']}}">
+                  <div class="button half-button">แสดง</div>
+                </a>
+        
               </div>
             </div>
           </div>

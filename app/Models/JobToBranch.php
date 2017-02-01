@@ -8,6 +8,14 @@ class JobToBranch extends Model
   protected $fillable = ['job_id','branch_id'];
   public $timestamps  = false;
 
+  public function job() {
+    return $this->hasOne('App\Models\Job','id','job_id');
+  }
+
+  public function branch() {
+    return $this->hasOne('App\Models\Branch','id','branch_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
 
     if(!empty($options['value']['branch_id'])) {

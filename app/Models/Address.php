@@ -46,10 +46,6 @@ class Address extends Model
   }
 
   public function buildModelData() {
-
-    if(empty($this)) {
-      return null;
-    }
     
     $geographic = array();
     if(!empty($this->latitude) && !empty($this->latitude)) {
@@ -78,12 +74,31 @@ class Address extends Model
     }
 
     return array(
-      'address' => $this->address,
-      'description' => $this->description,
+      // 'address' => $this->address,
+      // 'description' => $this->description,
       '_province_name' => $provinceName,
       '_district_name' => $districtName,
       '_sub_district_name' => $subDistrictName,
       '_full_address' => trim($fullAddress),
+      '_geographic' => json_encode($geographic)
+    );
+    
+  }
+
+  public function buildFormData() {
+    
+    $geographic = array();
+    if(!empty($this->latitude) && !empty($this->latitude)) {
+      $geographic['latitude'] = $this->latitude;
+      $geographic['longitude'] = $this->longitude;
+    }
+
+    return array(
+      'address' => $this->address,
+      'province_id' => $this->province_id,
+      'district_id' => $this->district_id,
+      'sub_district_id' => $this->sub_district_id,
+      // 'description' => $this->description,
       '_geographic' => json_encode($geographic)
     );
     

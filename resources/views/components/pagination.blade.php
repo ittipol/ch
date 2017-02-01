@@ -1,16 +1,16 @@
-@if(!empty($pagination))
+@if(!empty($_pagination))
 <div class="row">
   <div class="col-xs-12 pagination clearfix">
     <div class="pagination-inner clearfix">
 
-      @if(!empty($pagination['prev']['url'])) 
-        <a href="{{$pagination['prev']['url']}}" class="paging icon icon-prev"></a>
+      @if(!empty($_pagination['prev']['url'])) 
+        <a href="{{$_pagination['prev']['url']}}" class="paging icon icon-prev"></a>
       @endif
 
-      @foreach($pagination['paging'] as $paging)
+      @foreach($_pagination['paging'] as $paging)
 
         @if(!empty($paging['url']))
-          <a href="{{$paging['url']}}" class="paging @if($paging['pageNumber'] == $pagination['page']) selected @endif">
+          <a href="{{$paging['url']}}" class="paging @if($paging['pageNumber'] == $_pagination['page']) selected @endif">
             {{$paging['pageNumber']}}
           </a>
         @else
@@ -22,8 +22,8 @@
         
       @endforeach
 
-      @if(!empty($pagination['next']['url'])) 
-        <a href="{{$pagination['next']['url']}}" class="paging icon icon-next"></a>
+      @if(!empty($_pagination['next']['url'])) 
+        <a href="{{$_pagination['next']['url']}}" class="paging icon icon-next"></a>
       @endif
     
     </div>

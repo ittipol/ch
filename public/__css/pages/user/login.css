@@ -61,7 +61,7 @@ input[type="password"] {
 }
 
 .fb-button {
-	color: #ffffff !important;
+	color: #fff !important;
 	text-align: center;
 	background-color: rgb(58,91,155);
 	display: block;
@@ -91,6 +91,6 @@ input[type="password"] {
 	}
 
 	.login-form .login-form-inner {
-		background-color: #ffffff;
+		background-color: #fff;
 	}
 }

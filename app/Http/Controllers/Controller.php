@@ -33,9 +33,9 @@ class Controller extends BaseController
 
     public function __construct() { 
 
-      $this->form = new Form();
-      $this->modelData = new ModelData();
-      $this->paginator = new Paginator();
+      // $this->form = new Form();
+      // $this->modelData = new ModelData();
+      // $this->paginator = new Paginator();
 
       $this->query = Request::query();
       $this->param = Route::current()->parameters();
@@ -62,6 +62,12 @@ class Controller extends BaseController
       return view('errors.error',$data);
     }
 
+    protected function setData($data = array()) {
+
+      $this->data = array_merge($this->data,$data);
+
+    }
+
     protected function view($view = null) {
 
       if(empty($view)) {
@@ -70,26 +76,7 @@ class Controller extends BaseController
         );
         return $this->error();
       }
-
-      if(!empty($this->entity)) {
-        $this->data['entity'] = $this->entity;
-      }
-
-      $form = $this->form->build();
-      if(!empty($form)){
-        $this->data = array_merge($this->data,$form);
-      }
-
-      $modelData = $this->modelData->build();
-      if(!empty($modelData)){
-        $this->data = array_merge($this->data,$modelData);
-      }
-
-      $pagination = $this->paginator->build();
-      if(!empty($pagination)){
-        $this->data = array_merge($this->data,$pagination);
-      }
-dd($this->data);
+// dd($this->data);
     	return view($view,$this->data);
     }
 

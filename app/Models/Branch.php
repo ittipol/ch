@@ -13,5 +13,11 @@ class Branch extends Model
     parent::__construct();
   }
 
+  public function buildModelData() {
+    return array(
+      'name' => $this->name,
+    );
+  }
+
 }
 

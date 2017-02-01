@@ -19,7 +19,7 @@ class Tagging {
 		if (typeof tagJson != 'undefined') {
 			let _tags = JSON.parse(tagJson);
 			for (let i = 0; i < _tags.length; i++) {
-				this.createTagChip(_tags[i]['name']);
+				this.createTagChip(_tags[i]['_word']);
 			}
 		}
 

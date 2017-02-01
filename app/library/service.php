@@ -33,28 +33,54 @@ class Service
     return $ipaddress;
   }
 
-  public static function generateModelDir($modelName) {
+  public static function generateUnderscoreName($modelName) {
 
     $alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $len = strlen($modelName);
 
-    $posStart = 0;
+    // $posStart = 0;
+    // $subCount = 0;
 
     $parts = array();
-    for ($i=0; $i < $len; $i++) { 
+    $loop = true;
+    $index = 0;
+    $len = strlen($modelName);
+    $modelName = lcfirst($modelName);
 
-      if(strpos($alpha, $modelName[$i]) && ($i > 0)) {
-        $parts[] = strtolower(substr($modelName, $posStart, $i));
-        $posStart = $i;
+    while($loop) {
+
+      if(strpos($alpha, $modelName[$index])) {
+        $parts[] = substr($modelName, 0, $index);
+        $modelName = lcfirst(substr($modelName, $index));
+        $len = strlen($modelName);
+        $index = 0;
       }
 
-      // if($i == $len-1) {
-      //   $parts[] = strtolower(substr($modelName, $posStart, $i));
-      // }
+      $index++;
+
+      if(($index+1) > $len) {
+        $parts[] = $modelName;
+        $loop = false;
+      }
 
     }
 
-    $parts[] = strtolower(substr($modelName, $posStart, $i));
+    // for ($i=0; $i < $len; $i++) { 
+      
+    //   if(strpos($alpha, $modelName[$i]) && ($i > 0)) {
+    //     $parts[] = strtolower(substr($modelName, $posStart, $subCount));
+    //     $posStart = $i;
+    //     $subCount = 0;
+    //   }
+    //   $subCount++;
+
+    //   // if($i == $len-1) {
+    //   //   $parts[] = strtolower(substr($modelName, $posStart, $i));
+    //   // }
+
+    // }
+
+    // $parts[] = strtolower(substr($modelName, $posStart, $i));
 
     return implode('_', $parts);
 

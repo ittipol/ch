@@ -14,6 +14,37 @@ class JobController extends Controller
     $this->model = Service::loadModel('Job');
   }
 
+  public function detail() {
+
+    $model = $this->model->find($this->param['job_id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่พบประกาศนี้'
+      );
+      return $this->error();
+    }
+
+    $model->modelData->loadData(array(
+      'models' => array('Image','Tagging','JobToBranch'),
+      'json' => array('Image')
+    ));
+
+    $this->setData($model->modelData->build());
+
+    $shop = $model->getRalatedModelData('ShopTo',array(
+      'first' => true,
+    ))->shop;
+
+    
+    $this->setData(array(
+      'shopAddress' => $shop->modelData->loadAddress()
+    ));
+
+    return $this->view('pages.job.detail');
+
+  }
+
   public function add() {
 
     if(!Service::loadModel('Shop')->checkPersonToShop($this->slug->model_id)){
@@ -23,14 +54,19 @@ class JobController extends Controller
       return $this->error();
     }
 
-    $this->form->setModel($this->model);
-    $this->form->employmentType();
-    $this->form->shopTo(array(
+    $this->model->form->loadFieldData('EmploymentType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'employmentTypes'
+    ));
+    $this->model->form->shopTo(array(
       'shopId' => $this->slug->model_id,
       'model' => 'Branch'
     ));
 
-    return $this->view('pages.job.form.job_post');
+    $this->setData($this->model->form->build());
+
+    return $this->view('pages.job.form.job_add');
   }
 
   public function submitAdding(CustomFormRequest $request) {
@@ -41,6 +77,8 @@ class JobController extends Controller
       );
       return $this->error();
     }
+
+    $request->request->add(['ShopTo' => array('shop_id' => $this->slug->model_id)]);
 
     if($this->model->fill($request->all())->save()) {
       Message::display('ลงประกาศงานแล้ว','success');
@@ -68,18 +106,21 @@ class JobController extends Controller
       );
       return $this->error();
     }
-
-    $this->modelData->setModel($model);
-    $this->modelData->loadData();
     
-    $this->form->setModel($model);
-    $this->form->employmentType();
-    $this->form->shopTo(array(
+    $model->form->loadData();
+    $model->form->loadFieldData('EmploymentType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'employmentTypes'
+    ));
+    $model->form->shopTo(array(
       'shopId' => $this->slug->model_id,
       'model' => 'Branch'
     ));
 
-    return $this->view('pages.job.form.job_post');
+    $this->setData($model->form->build());
+
+    return $this->view('pages.job.form.job_edit');
   }
 
   // public function addCat() {

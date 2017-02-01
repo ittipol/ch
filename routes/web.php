@@ -30,6 +30,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('avatar', 'StaticFileController@avatar');
 });
 
+// Announcement
+Route::get('announcement/create','AnnouncementController@create');
+
+// Working exp
 Route::get('working_experience','WorkingExperienceController@index');
 Route::group(['middleware' => 'auth'], function () {
   Route::post('working_experience','WorkingExperienceController@start');
@@ -38,7 +42,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 // community / shop
 // Route::get('community/shop_feature','ShopController@feature');
-
 Route::get('shop/{slug}','ShopController@index');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -72,20 +75,20 @@ Route::group(['middleware' => 'auth'], function () {
 // Route::get('product/{product_slug}','ProductController@detail');
 
 // JOB
+Route::get('job/detail/{job_id}','JobController@detail');
+
 Route::group(['middleware' => 'auth'], function () {
 
   Route::get('shop/{slug}/job','ShopController@job');
+  
   Route::get('shop/{slug}/job_add','JobController@add');
+  Route::post('shop/{slug}/job_add','JobController@submitAdding');
 
   Route::get('shop/{slug}/job_edit/{job_id}','JobController@edit');
   Route::patch('shop/{slug}/job_edit/{job_id}',[
-    'as' => 'job.edit',
     'uses' => 'JobController@editingSubmit'
   ]);
 });
-
-// Announcement
-Route::get('announcement/create','AnnouncementController@create');
 
 // Person Post Item
 Route::get('item/list','ItemController@listView');
@@ -103,20 +106,19 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 // Real Estate
+Route::get('real-estate/list','RealEstateController@listView');
+Route::get('real-estate/detail/{real_estate_id}','RealEstateController@detail');
+
 Route::group(['middleware' => 'auth'], function () {
   Route::get('real-estate/post','RealEstateController@post');
   Route::post('real-estate/post','RealEstateController@submitPosting');
 
-  // Route::get('real-estate/edit/{realEstateId}','RealEstateController@edit');
-  // Route::patch('real-estate/edit/{realEstateId}',[
-  //   'as' => 'real-estate.edit',
-  //   'uses' => 'RealEstateController@editingSubmit'
-  // ]);
+  Route::get('real-estate/edit/{real_estate_id}','RealEstateController@edit');
+  Route::patch('real-estate/edit/{real_estate_id}',[
+    // 'as' => 'real-estate.edit',
+    'uses' => 'RealEstateController@editingSubmit'
+  ]);
 });
-
-Route::get('real-estate/list','RealEstateController@listView');
-Route::get('real-estate/detail/{real_estate_id}','RealEstateController@detail');
-
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'api'], function () {
   Route::get('get_sub_district/{districtId}', 'ApiController@GetSubDistrict');

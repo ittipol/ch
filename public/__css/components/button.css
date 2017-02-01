@@ -2,7 +2,8 @@
 	color: #ffffff;
 	text-decoration: none !important;
 	/*background-color: #3F51B5;*/
-	background-color: #2979FF;
+	/*background-color: #2979FF;*/
+	background-color: rgb(47,97,186);
 	padding: 10px 25px;
 	margin-bottom: 5px;
 	border: 0;
@@ -24,6 +25,12 @@ a.button:hover {
 .button.disabled {
 	background-color: #aaaaaa;
 	cursor: default;
+}
+
+
+.button.half-button {
+	width: 49%;
+	text-align: center;
 }
 
 .button.wide-button {
