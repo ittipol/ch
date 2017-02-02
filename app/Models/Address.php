@@ -80,7 +80,7 @@ class Address extends Model
       '_district_name' => $districtName,
       '_sub_district_name' => $subDistrictName,
       '_full_address' => trim($fullAddress),
-      '_geographic' => json_encode($geographic)
+      '_geographic' => !empty($geographic) ? json_encode($geographic) : ''
     );
     
   }

@@ -23,8 +23,6 @@
 
     <div class="image-gallery">
 
-      <div class="container-fuild">
-
       <div class="row">
 
         <div class="col-sm-12 image-gallary-display">
@@ -48,8 +46,6 @@
 
       </div>
 
-      </div>
-
       @if(!empty($_modelData['Image']))
       <div class="row">
         <div class="col-sm-12">
@@ -63,7 +59,7 @@
 
     <div class="row">
 
-      <div class="col-md-6 col-sm-12">
+      <div class="col-xs-12">
         <div class="item-info">
 
           <div class="item-info-row">
@@ -80,7 +76,7 @@
 
     <div class="row">
 
-      <div class="col-sm-12">
+      <div class="col-xs-12">
 
         <div class="item-info">
 
@@ -225,7 +221,8 @@
       imageGallery.load(<?php echo $_modelData['Image']; ?>);
 
       const map = new Map(false,false,false);
-      map.load('<?php echo $_modelData["Address"]["_geographic"]; ?>');
+      map.initialize();
+      map.setLocation('<?php echo $_modelData['Address']['_geographic']; ?>');
     });
   </script>
 @stop

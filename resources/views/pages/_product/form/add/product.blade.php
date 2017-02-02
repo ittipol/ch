@@ -189,7 +189,7 @@
 
     images.load();
     district.load();
-    map.load();
+    map.initialize();
     tagging.load();
     form.load();
 

@@ -53,7 +53,7 @@ class ShopController extends Controller
 
   public function job() {
 
-    if(!$this->model->checkPersonToShop()){
+    if(!$this->model->checkPersonInShop()){
       $this->error = array(
         'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
       );

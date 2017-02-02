@@ -33,10 +33,6 @@ class Controller extends BaseController
 
     public function __construct() { 
 
-      // $this->form = new Form();
-      // $this->modelData = new ModelData();
-      // $this->paginator = new Paginator();
-
       $this->query = Request::query();
       $this->param = Route::current()->parameters();
 

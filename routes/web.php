@@ -52,9 +52,6 @@ Route::group(['middleware' => 'auth'], function () {
 
   Route::get('shop/{slug}/advertisement','ShopController@advertisement');
 
-  Route::get('shop/{slug}/branch_add','BranchController@add');
-  Route::post('shop/{slug}/branch_add','BranchController@submitAdding');
-
   Route::get('shop/{slug}/manage','ShopController@product');
   Route::get('shop/{slug}/setting','ShopController@setting');
 });
@@ -74,7 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
 // Route::get('product','ProductController@index');
 // Route::get('product/{product_slug}','ProductController@detail');
 
-// JOB
+// Job
 Route::get('job/detail/{job_id}','JobController@detail');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -88,6 +85,14 @@ Route::group(['middleware' => 'auth'], function () {
   Route::patch('shop/{slug}/job_edit/{job_id}',[
     'uses' => 'JobController@editingSubmit'
   ]);
+});
+
+// Branch
+Route::group(['middleware' => 'auth'], function () {
+  Route::get('shop/{slug}/branch_detail/{branch_id}','BranchController@detail');
+
+  Route::get('shop/{slug}/branch_add','BranchController@add');
+  Route::post('shop/{slug}/branch_add','BranchController@submitAdding');
 });
 
 // Person Post Item

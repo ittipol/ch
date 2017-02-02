@@ -71,6 +71,10 @@ class Form {
       case 'Contact':
         $data = $this->loadContact();
         break;
+
+      case 'JobToBranch':
+        $data = $this->loadJobToBranch();
+        break;
     }
 
     if($json) {
@@ -99,7 +103,7 @@ class Form {
 
   }
 
-  private function loadImage() {
+  public function loadImage() {
 
     $imageStyle = Service::loadModel('ImageStyle');
 
@@ -128,7 +132,7 @@ class Form {
 
   }
 
-  private function loadTagging() {
+  public function loadTagging() {
     $taggings = $this->model->getRalatedModelData('Tagging',
       array(
         'fields' => array('word_id'),
@@ -149,7 +153,7 @@ class Form {
 
   }
 
-  private function loadContact() {
+  public function loadContact() {
     $contact = $this->model->getRalatedModelData('Contact',array(
       'first' => true,
       'fields' => array('phone_number','email','line')
@@ -161,6 +165,20 @@ class Form {
 
     return $contact->getAttributes();
 
+  }
+
+  public function loadJobToBranch() {
+    $jobToBranch = $this->model->getRalatedData('JobToBranch',array(
+      'first' => false,
+      'fields' => array('branch_id')
+    ));
+
+    $branches = array();
+    foreach ($jobToBranch as $value) {
+      $branches['branch_id'][] = $value->branch->id;
+    }
+
+    return $branches;
   }
 
   public function loadFieldData($modelName,$options = array()) {

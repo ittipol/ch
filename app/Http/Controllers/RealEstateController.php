@@ -176,6 +176,7 @@ class RealEstateController extends Controller
     }else{
       return Redirect::back();
     }
+    
   }
 
 }

@@ -83,7 +83,7 @@ class Shop extends Model
   
   }
 
-  public function checkPersonToShop($id = null) {
+  public function checkPersonInShop($id = null) {
 
     if(empty($id)) {
       $id = $this->id;

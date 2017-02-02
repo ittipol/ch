@@ -4,7 +4,7 @@ namespace App\Models;
 
 class JobToBranch extends Model
 {
-  public $table = 'job_to_branchs';
+  public $table = 'job_to_branches';
   protected $fillable = ['job_id','branch_id'];
   public $timestamps  = false;
 

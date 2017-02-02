@@ -507,7 +507,8 @@
 
     images.load('<?php echo $_formData['Image']; ?>');
     district.load('<?php echo $_formData['Address']['sub_district_id']; ?>');
-    map.load('<?php echo $_formData['Address']['_geographic']; ?>');
+    map.initialize();
+    map.setLocation('<?php echo $_formData['Address']['_geographic']; ?>');
     tagging.load('<?php echo $_formData['Tagging']; ?>');
     form.load();
     realEstate.load();

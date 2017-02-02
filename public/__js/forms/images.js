@@ -296,7 +296,6 @@ class Images {
 		html +=	'<div class="preview-image" style="background-image:url('+image._url+')"></div>';
 		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn" data-id="'+image.id+'" style="display:block;">×</a>'
 		html += '<p class="error-message"></p>';
-		// html += '<input type="hidden" name="Image['+this.code+']['+index+'][filename]" value="'+image.filename+'">'
 		html += '</label>';
 		if(this.style == 'description'){
 			html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ">'+image.description+'</textarea>';

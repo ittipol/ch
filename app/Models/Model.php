@@ -283,6 +283,10 @@ class Model extends BaseModel
       $model->orderBy(current($options['order']),next($options['order']));
     }
 
+    if(!empty($options['list'])) {
+      return $this->getList($model->get(),$options['list']);
+    }
+
     if(isset($options['first'])) {
       if($options['first']) {
         return $model->first();
@@ -444,13 +448,15 @@ class Model extends BaseModel
     return $this->getAttributes();
   }
 
-  // public function getImageCache() {
-
-  //   if(empty($this->imageCache)) {
-  //     return null;
-  //   }
+  public function getList($records,$field) {
     
-  //   return $this->imageCache;
-  // }
+    $lists = array();
+    foreach ($records as $record) {
+      $lists[] = $record->{$field};
+    }
+
+    return $lists;
+
+  }
 
 }

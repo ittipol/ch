@@ -503,7 +503,7 @@
 
     images.load();
     district.load();
-    map.load();
+    map.initialize();
     tagging.load();
     @if(!empty($_oldData['Tagging']))
       tagging.setTags('{!!$_oldData['Tagging']!!}');

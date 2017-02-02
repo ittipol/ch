@@ -17,8 +17,33 @@
     </div>
 
     @if(!empty($shopAddress))
-    <!-- <h4 class="title-with-icon location-pin">{{$shopAddress['_full_address']}}</h4> -->
+    <h4 class="title-with-icon location-pin">{{$shopAddress['_full_address']}}</h4>
     @endif
+
+    <h4>สาขาที่เปิดรับสมัครงานนี้</h4>   
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="item-info space-bottom-20">
+
+          <div class="tile-info-group">
+            <div class="row">
+              @foreach($_modelData['JobToBranch'] as $branch)
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <a href="">
+                  <div class="tile-info with-icon">
+                    <h4 class="title-with-icon location-pin">
+                      {{$branch['name']}}
+                    </h4>
+                  </div>
+                </a>
+              </div>
+              @endforeach
+            </div>
+          </div>
+
+        </div>
+      </div> 
+    </div>
 
     <div class="image-gallery">
 
@@ -103,26 +128,6 @@
 
     <div class="line space-top-bottom-20"></div>
 
-    <h4>สาขาที่กำลังเปิดรับสมัครงานนี้</h4>   
-    <div class="row">
-      <div class="col-xs-12">
-
-        <div id="map_panel" class="map-panel">
-
-          <div id="map"></div>
-          <div class="side-panel">
-            <div class="nano">
-              <div id="location_items" class="nano-content"></div>
-            </div>
-          </div>
-
-        </div>
-
-      </div> 
-    </div>
-
-    <div class="line space-top-bottom-20"></div>
-
     <h4>สมัครงานนี้</h4>
 
     <div class="text-center space-top-bottom-20">
@@ -150,12 +155,6 @@
     $(document).ready(function(){
       imageGallery = new ImageGallery(true);
       imageGallery.load(<?php echo $_modelData['Image']; ?>);
-
-      tabs = new Tabs('branch_location');
-      tabs.load();
-
-      const map = new Map(false,false,false);
-      map.setLocations({!!$branchLocations!!});
     });
   </script>
 @stop

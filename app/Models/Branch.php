@@ -4,7 +4,7 @@ namespace App\Models;
 
 class Branch extends Model
 {
-  public $table = 'branchs';
+  public $table = 'branches';
   protected $fillable = ['name','description','created_by'];
   protected $modelRelated = array('Image','Address','Contact','ShopTo');
   protected $directory = true;

@@ -62,7 +62,6 @@
 	width: 100%;
 	height: 450px;
 	background-color: #fff;
-	/*margin: 20px 0 0;*/
 	position: relative;
 }
 
@@ -131,7 +130,7 @@
 	color: #fff;
 	display: none;
 	cursor: pointer;
-	z-index: 5;
+	z-index: 9;
 }
 
 .detail .item-info p {
@@ -147,6 +146,36 @@
 .detail .secondary-title {
 	color: rgb(47,97,186);
 }
+
+.detail .tile-info-group {
+	max-height: 200px;
+	overflow-y: auto; 
+	overflow-x: hidden; 
+}
+
+.detail .tile-info-group .tile-info {
+	padding: 10px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.detail .tile-info-group .tile-info.with-icon::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50px;
+	height: 50px;
+	background-color: #BBDEFB;
+	border-radius: 50px;
+}
+
+.detail .tile-info-group .tile-info h4.title-with-icon {
+	font-size: 14px;
+	color: #000;
+	padding-left: 55px;
+}
+
 
 .tabs {
 	margin: 20px 0;
@@ -185,7 +214,7 @@
 }
 
 .tab-content {
-	display: none;
+
 }
 
 .detail .title-with-icon {

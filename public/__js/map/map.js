@@ -1,101 +1,205 @@
 class Map {
   constructor(searchable=true,markable=true,createLngLat=true) {
+    this.map;
+    this.marker;
     this.searchable = searchable;
     this.markable = markable;
     this.createLngLat = createLngLat;
     this.icon = '/images/map/location-pin.png';
+    this.sideBarClosed = false;
   }
 
-  load(geographic) {
+  load() {}
 
-    let lat = 13.297587657705135;
-    let lng = 100.94727516174316;
+  setLocations(locations,sidePanel=true) {
 
-    let setMarker = false;
+    let _this = this;
 
-    if (typeof geographic != 'undefined') {
-      let _geographic = JSON.parse(geographic);
+    let options = {
+        zoom: 10,
+        center: new google.maps.LatLng(13.180610774683,101.0019493103),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    let map = new google.maps.Map(document.getElementById("map"), options);
 
-      if ((typeof _geographic.latitude != 'undefined') && (typeof _geographic.longitude != 'undefined')) {
-        lat = _geographic.latitude;
-        lng = _geographic.longitude;
+    let len = Object.keys(locations).length;
+    let lat = 0;
+    let lng = 0;
+    let markers = [];
+    let infowindows = [];
+    let infoWindowTemp = new google.maps.InfoWindow();
 
-        this.createHiddenData(lat,lng);
+    for (var i = 0; i < len; i++) {
 
-        setMarker = true;
+      if(locations[i]){
+
+        lat += parseFloat(locations[i]['latitude']);
+        lng += parseFloat(locations[i]['longitude']);
+
+        let marker = new google.maps.Marker({
+          map: map,
+          icon: this.icon,
+          position: new google.maps.LatLng(locations[i]['latitude'],locations[i]['longitude']),
+        });
+
+        let infowindow = new google.maps.InfoWindow({
+          content: locations[i]['address']+'<br><a href="'+locations[i]['detailUrl']+'">แสดงรายละเอียดสาขานี้</a>'
+        });
+
+        // infowindow.open(map, marker);
+
+        marker.addListener('click', function() {
+          infoWindowTemp.close();
+          infoWindowTemp = infowindow;
+          infowindow.open(map, marker);
+        });
+
+        marker.set('lat',locations[i]['latitude']);
+        marker.set('lng',locations[i]['longitude']);
+
+        markers[locations[i]['id']] = marker;
+        infowindows[locations[i]['id']] = infowindow;
+
+        this.createSidePanelItem(locations[i]);
+
       }
+
+    };
+
+    map.setCenter(new google.maps.LatLng(lat/i,lng/i));
+
+    if(!sidePanel) {
+      $('.side-panel').remove();
+      return;
+    }
+
+    let handle;
+    map.addListener('dragstart', function() {
+      clearTimeout(handle);
+      $('.side-panel').css('opacity','.5');
+    });
+
+    map.addListener('dragend', function() {
+      handle = setTimeout(function(){
+        $('.side-panel').css('opacity','1');
+      },500);
+    });
+
+    $('.map-locations').on('click',function(){
+
+      let marker = markers[$(this).data('id')];
+      map.setCenter(new google.maps.LatLng(marker['lat'],marker['lng']));
+
+      infoWindowTemp.close();
+      infoWindowTemp = infowindows[$(this).data('id')];
+      infoWindowTemp.open(map, marker);
+
+    });
+
+    $('.side-panel').css('display','block');
+
+    let closeIcon = document.createElement('div');
+    $(closeIcon).addClass('side-panel-close');
+
+    $(closeIcon).on('click',function(){
+      if(_this.sideBarClosed) {
+        $('.side-panel').css('top','0');
+        $(this).removeClass('rotate');
+        _this.sideBarClosed = false;
+      }else{
+        $('.side-panel').css('top','100%');
+        $(this).addClass('rotate');
+        _this.sideBarClosed = true;
+      }
+      
+    });
+
+    $('#map_panel').append(closeIcon);
+
+  }
+
+  setLocation(geographic) {
+
+    let _geographic = JSON.parse(geographic);
+
+    if ((typeof _geographic.latitude != 'undefined') && (typeof _geographic.longitude != 'undefined')) {
+
+        let position = new google.maps.LatLng(_geographic.latitude,_geographic.longitude);
+
+        this.marker = new google.maps.Marker({
+          map: this.map,
+          icon: this.icon,
+          position: position,
+        });
+
+        this.map.setCenter(position);
+
+        this.createHiddenData(_geographic.latitude,_geographic.longitude);
 
     }
 
-    this.initialize(new google.maps.LatLng(lat,lng),setMarker);
-
   }
 
-  initialize(latlng,setMarker) {
+  initialize() {
 
     let _this = this;
 
     let options = {
         zoom: 13,
-        center: latlng,
+        center: new google.maps.LatLng(13.297587657705135,100.94727516174316),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
-    let map = new google.maps.Map(document.getElementById("map"), options);
+    this.map = new google.maps.Map(document.getElementById("map"), options);
 
-    let marker = new google.maps.Marker();
-    if(setMarker) {
-      marker = new google.maps.Marker({
-              position: latlng,
-              icon: this.icon,
-              map: map
-            });
-    }
+    this.marker = new google.maps.Marker();
 
     if(this.markable){
-      this.mapMarker(map,marker);
+      this.mapMarker();
     }
 
     if(this.searchable){
-      this.searchBox(map,marker);
+      this.searchBox();
     }
 
   }
 
-  mapMarker(map,marker) {
+  mapMarker() {
 
     let _this = this;
 
-    let geocoder = new google.maps.Geocoder();
+    google.maps.event.addListener(this.map, 'click', function(event) {
 
-    google.maps.event.addListener(map, 'click', function(event) {
+      _this.marker.setMap(null);
 
-      marker.setMap(null);
-
-      marker = new google.maps.Marker({
-        map: map,
+      _this.marker = new google.maps.Marker({
+        map: _this.map,
         icon: _this.icon,
         position: {lat: event.latLng.lat(), lng: event.latLng.lng()}
       });
 
       _this.createHiddenData(event.latLng.lat(),event.latLng.lng())
 
-      geocoder.geocode({
-        'latLng': event.latLng
-      }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          if (results[0]) {
-            // $("#address").text(results[0].formatted_address);
-          }
-        }
-      });
+      // let geocoder = new google.maps.Geocoder();
+      // geocoder.geocode({
+      //   'latLng': event.latLng
+      // }, function(results, status) {
+      //   if (status == google.maps.GeocoderStatus.OK) {
+      //     if (results[0]) {
+      //       // results[0].formatted_address // Address
+      //     }
+      //   }
+      // });
 
     });
 
   }
 
-  searchBox(map,marker) {
+  searchBox() {
 
     let _this = this;
+
+    let map = this.map;
+    let marker = this.marker;
 
     // Create the search box and link it to the UI element.
     let input = document.getElementById('pac-input');
@@ -125,8 +229,6 @@ class Map {
           return;
         }
 
-        // $("#lat").val(place.geometry.location.lat());
-        // $("#lng").val(place.geometry.location.lng());
         _this.createHiddenData(place.geometry.location.lat(),place.geometry.location.lng());
 
         geocoder.geocode({
@@ -157,6 +259,20 @@ class Map {
 
     });
 
+  }
+
+  createSidePanelItem(item) {
+
+    let html = '';
+    html += '<div class="side-panel-item-row">';
+    html += '<div class="side-panel-item with-icon">';
+    html += '<h4 class="title title-with-icon location-pin map-locations" data-id="'+item['id']+'">';
+    html += item['address'];
+    html += '</h4>';
+    html += '</div>';
+    html += '</div>';
+
+    $('#location_items').append(html);
   }
 
   createHiddenData(latitude,longitude) {

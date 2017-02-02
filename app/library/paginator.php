@@ -12,15 +12,12 @@ class Paginator {
   private $perPage = 24;
   private $pagingUrl;
   private $urls = array();
-  public $error = false;
+  private $url;
 
   public function __construct($model = null) {
     $this->model = $model;
+    $this->url = new Url;
   }
-
-  // public function setModel($model = null) {
-  //   $this->model = $model;
-  // }
 
   public function setPerPage($perPage) {
     $this->perPage = (int)$perPage;
@@ -35,35 +32,19 @@ class Paginator {
   }
 
   public function setUrl($url,$index) {
-
-    preg_match_all('/{[\w0-9]+}/', $url, $matches);
-
-    $this->urls[$index] = array(
-      'url' => url($url),
-      'pattern' => $matches[0]
-    );
+    $this->url->setUrl($url,$index);
   }
 
   public function parseUrl($record) {
-    $urls = array();
+    return $this->url->parseUrl($record);
+  }
 
-    foreach ($this->urls as $index => $url) {
+  public function setConditions($conditions = array()) {
 
-      foreach ($url['pattern'] as $pattern) {
-    
-        $field = substr($pattern, 1,-1);
-
-        if(!empty($record[$field])) {
-          $url['url'] = str_replace($pattern, $record[$field], $url['url']);
-        }
-
-      }
-
-      $urls[$index] = $url['url'];
-
+    foreach ($conditions['in'] as $condition) {
+      $this->model = $this->model->whereIn($condition[0],$condition[1]);
     }
 
-    return $urls;
   }
 
   public function getModelData() {
@@ -221,7 +202,6 @@ class Paginator {
     $this->lastPage = (int)ceil($this->total / $this->perPage);
 
     // if(($this->page < 1) || ($this->page > $this->lastPage)) {
-    //   $this->error = true;
     //   return false;
     // }
 

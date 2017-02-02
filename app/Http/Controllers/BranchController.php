@@ -15,17 +15,29 @@ class BranchController extends Controller
     $this->model = Service::loadModel('Branch');
   }
 
+  public function detail() {
+
+    $model = $this->model->find($this->param['branch_id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่พบประกาศนี้'
+      );
+      return $this->error();
+    }
+
+  }
+
   public function add() {
 
-    if(!Service::loadModel('Shop')->checkPersonToShop($this->slug->model_id)){
+    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
       $this->error = array(
         'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
       );
       return $this->error();
     }
 
-    $this->form->setModel($this->model);
-    $this->form->loadFieldData('District',array(
+    $this->model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -34,12 +46,14 @@ class BranchController extends Controller
       'index' => 'districts'
     ));
 
+    $this->setData($this->model->form->build());
+
     return $this->view('pages.branch.form.branch_add');
   }
 
   public function submitAdding(CustomFormRequest $request) {
 
-    if(!Service::loadModel('Shop')->checkPersonToShop($this->slug->model_id)){
+    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
       $this->error = array(
         'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
       );

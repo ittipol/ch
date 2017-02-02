@@ -111,10 +111,6 @@ class ModelData {
         $data = $this->loadContact();
         break;
 
-      case 'JobToBranch':
-        $data = $this->loadJobToBranch();
-        break;
-  
     }
 
     if($json) {
@@ -228,41 +224,17 @@ class ModelData {
 
   }
 
-  public function loadJobToBranch() {
+  // public function shopTo($options = array()) {
+  //   $shopTo = $this->model->getRalatedModelData('ShopTo',array(
+  //     'first' => true,
+  //   ));
 
-    $jobToBranch = $this->model->getRalatedData('JobToBranch',array(
-      'first' => false,
-      'fields' => array('branch_id')
-    ));
-
-    $branchs = array();
-    foreach ($jobToBranch as $value) {
-
-      $branch = new ModelData($value->branch);
-      $branch->loadData(array(
-        'models' => array(
-          'Address'
-        )
-      ));
-
-      $branchs[] = $branch->build(true);
-    }
-
-    return $branchs;
-
-  }
-
-  public function getShop() {
-    $shopTo = $this->model->getRalatedModelData('ShopTo',array(
-      'first' => true,
-    ));
-
-    $shopTo = new ModelData($shopTo->shop);
-    $shopTo->loadData(array(
-      'models' => array('Address')
-    ));
-    dd($shopTo->build(true));
-  }
+  //   $shopTo = new ModelData($shopTo->shop);
+  //   $shopTo->loadData(array(
+  //     'models' => array('Address')
+  //   ));
+  //   dd($shopTo->build(true));
+  // }
 
   public function set($index,$value) {
     $this->data[$index] = $value;

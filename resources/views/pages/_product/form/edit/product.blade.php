@@ -174,7 +174,8 @@
 
     images.load('<?php echo $formData['Image']; ?>');
     district.load('<?php echo $formData['Address']['sub_district_id']; ?>');
-    map.load('<?php echo $formData['Address']['geographic']; ?>');
+    map.initialize();
+    map.setLocation('<?php echo $_formData['Address']['_geographic']; ?>');
     form.load();
     
   });
