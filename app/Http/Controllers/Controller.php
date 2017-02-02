@@ -72,7 +72,7 @@ class Controller extends BaseController
         );
         return $this->error();
       }
-// dd($this->data);
+
     	return view($view,$this->data);
     }
 

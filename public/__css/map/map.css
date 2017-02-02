@@ -36,22 +36,20 @@
   font-size: 14px;
 }
 
-.side-panel .side-panel-item-row .side-panel-item.with-icon::before {
+.side-panel .side-panel-item-row .side-panel-item .title-with-icon::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
-  background-color: #BBDEFB;
-  border-radius: 40px;
-}
-
-.side-panel .side-panel-item-row .side-panel-item .title-with-icon::before {
-  content: "";
   width: 30px;
   height: 30px;
+  background-color: #BBDEFB;
   background-size: 20px;
+  border-radius: 20px;
+}
+
+.side-panel .side-panel-item-row .side-panel-item .title-with-icon.no-icon::before {
+  background-color: #aeaeae;
 }
 
 .side-panel-close {

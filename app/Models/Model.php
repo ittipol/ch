@@ -280,7 +280,7 @@ class Model extends BaseModel
     }
 
     if(!empty($options['order'])){
-      $model->orderBy(current($options['order']),next($options['order']));
+      $model = $model->orderBy(current($options['order']),next($options['order']));
     }
 
     if(!empty($options['list'])) {
@@ -418,7 +418,7 @@ class Model extends BaseModel
     return $this->getAttributes();
   }
 
-  public function paginationData() {
+  public function buildPaginationData() {
     
     $imageStyle = new ImageStyle;
     $string = new String;

@@ -6,44 +6,13 @@
   <div class="detail container">
 
     <div class="detail-title">
-      <h4 class="sub-title">งาน</h4>
+      <h4 class="sub-title">สาขา</h4>
       <h2 class="title">{{$_modelData['name']}}</h2>
-      <div class="tag-group">
-        <a class="tag-box">{{$_modelData['_employmentTypeName']}}</a>
-        @foreach ($_modelData['Tagging'] as $tagging)
-          <a class="tag-box">{{$tagging['_word']}}</a>
-        @endforeach
-      </div>
     </div>
 
     @if(!empty($shopAddress))
     <h4 class="title-with-icon location-pin">{{$shopAddress['_full_address']}}</h4>
     @endif
-
-    <h4>สาขาที่เปิดรับสมัครงานนี้</h4>   
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="item-info space-bottom-20">
-
-          <div class="tile-info-group">
-            <div class="row">
-              @foreach($_modelData['JobToBranch'] as $branch)
-              <div class="col-md-4 col-sm-6 col-xs-12">
-                <a href="">
-                  <div class="tile-info with-icon">
-                    <h4 class="title-with-icon location-pin">
-                      {{$branch['name']}}
-                    </h4>
-                  </div>
-                </a>
-              </div>
-              @endforeach
-            </div>
-          </div>
-
-        </div>
-      </div> 
-    </div>
 
     <div class="image-gallery">
 
@@ -82,70 +51,100 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6 col-sm-12">
+
+      <div class="col-xs-12">
+
         <div class="item-info">
 
-          <div class="item-info-row">
-            <p>เงินเดือน (บาท)</p>
-            <h4 class="price">{{$_modelData['_salary']}}</h4>
+          <p>ติดต่อ</p>
+
+          <div class="row">
+            <div class="col-md-3">
+              <div class="item-info-row">
+                @if(!empty($_modelData['Contact']['phone_number']))
+                <h4 class="title-with-icon phone">{{$_modelData['Contact']['phone_number']}}</h4>
+                @else
+                <h4 class="title-with-icon phone">-</h4>
+                @endif
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="item-info-row">
+                @if(!empty($_modelData['Contact']['email']))
+                <h4 class="title-with-icon email">{{$_modelData['Contact']['email']}}</h4>
+                @else
+                <h4 class="title-with-icon email">-</h4>
+                @endif
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="item-info-row">
+                @if(!empty($_modelData['Contact']['line']))
+                <h4 class="title-with-icon line-app">{{$_modelData['Contact']['line']}}</h4>
+                @else
+                <h4 class="title-with-icon line-app">-</h4>
+                @endif
+              </div>
+            </div>
           </div>
 
         </div>
+
       </div> 
+
     </div>
 
     <div class="line space-top-bottom-20"></div>
 
-    <div class="row">
-      <div class="col-md-6 col-sm-12">
-        <dl class="row">
-          <dt class="col-sm-3">รูปแบบงาน</dt>
-          <dd class="col-sm-9">{{$_modelData['_employmentTypeName']}}</dd>
-        </dl>
-      </div>
-    </div>
+    <h4>ตำแหน่งบนแผนที่</h4>
+    <div id="map"></div>
 
     <div class="line space-top-bottom-20"></div>
+    <h4>งานที่กำลังเปิดรับสมัครในสาขานี้</h4>
 
-    <h4>คุณสมบัติผู้สมัคร</h4>   
-    <div>
-      {!!$_modelData['qualification']!!}
-    </div>
+    @if(!empty($jobs))
 
-    <div class="line space-top-bottom-20"></div>
+      <div class="list">
 
-    <h4>รายละเอียดงาน</h4>   
-    <div>
-      {!!$_modelData['description']!!}
-    </div>
+        <div class="row">
 
-    <div class="line space-top-bottom-20"></div>
+          @foreach($jobs as $data)
 
-    <h4>สวัสดิการ</h4>   
-    <div>
-      {!!$_modelData['benefit']!!}
-    </div>
-
-    <div class="line space-top-bottom-20"></div>
-
-    <h4>สมัครงานนี้</h4>
-
-    <div class="text-center space-top-bottom-20">
-      <a href="{{URL::to('job/apply_job')}}">
-        <span class="button">สมัครงานนี้ผ่าน CHONBURI SQUARE</span>
-      </a>
-    </div>
-
-    @if(!empty($_modelData['_recruitment_custom']))
-
-    <div class="text-strike">
-      <span>หรือ</span>
-      <div class="line"></div>
-    </div>
+          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+              <div class="image">
+                <a href="{{$data['detailUrl']}}">
+                  <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
+                </a>
+              </div>
+              <div class="product-detail">
+                <a href="{{$data['detailUrl']}}">
+                  <div class="product-title">{{$data['_name_short']}}</div>
+                </a>
+                <div class="price">
+                  {{$data['_salary']}}
+                </div>
+              </div>
+              <div>
     
-    <div>
-      {!!$_modelData['recruitment_custom_detail']!!}
-    </div>
+                <a href="{{$data['detailUrl']}}">
+                  <div class="button wide-button">แสดง</div>
+                </a>
+        
+              </div>
+            </div>
+          </div>
+
+          @endforeach
+
+        </div>
+
+      </div>
+
+    @else
+
+      <div>ไม่พบงานที่กำลังเปิดรับในสาขานี้</div>
+
     @endif
 
 
@@ -155,6 +154,10 @@
     $(document).ready(function(){
       imageGallery = new ImageGallery(true);
       imageGallery.load(<?php echo $_modelData['Image']; ?>);
+
+      const map = new Map(false,false,false);
+      map.initialize();
+      map.setLocation('<?php echo $_modelData['Address']['_geographic']; ?>');
     });
   </script>
 @stop

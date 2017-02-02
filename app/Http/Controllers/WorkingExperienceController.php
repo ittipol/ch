@@ -23,7 +23,7 @@ class WorkingExperienceController extends Controller
       'exist' => $this->model->checkExistByPersonId()
     );
     
-    return $this->view('pages.working-experience.main');
+    return $this->view('pages.working_experience.main');
 
   }
 
@@ -38,4 +38,19 @@ class WorkingExperienceController extends Controller
     return Redirect::to('working_experience');
 
   }
+
+  public function add() {
+
+    $this->model->form->loadFieldData('WorkingExperienceDetailType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'workingExperienceDetailTypes'
+    ));
+
+    $this->setData($this->model->form->build());
+
+    return $this->view('pages.working_experience.form.working_experience_add');
+
+  }
+
 }

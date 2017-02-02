@@ -215,6 +215,26 @@ class Image extends Model
     return $path;
   }
 
+  public function getFirstImage($model,$style) {
+
+    $imageStyle = new ImageStyle;
+
+    $image = $model->getRalatedModelData('Image',array(
+      'conditions' => array(
+        array('image_style_id','=',$imageStyle->getIdByalias($style))
+      ),
+      'first' => true
+    ));
+
+    $_image = array();
+    if(!empty($image)) {
+      $_image = $image->buildModelData();
+    }
+
+    return $_image;
+
+  }
+
   public function base64Encode() {
 
     $dirPath = 'image/'.strtolower($this->model).'/';

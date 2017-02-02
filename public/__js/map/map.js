@@ -28,14 +28,24 @@ class Map {
     let markers = [];
     let infowindows = [];
     let infoWindowTemp = new google.maps.InfoWindow();
+    let markerCounter = 0;
 
     for (var i = 0; i < len; i++) {
 
       if(locations[i]){
 
+        if(!locations[i]['latitude'] || !locations[i]['longitude']) {
+          this.createSidePanelItem(locations[i],false);
+          continue;
+        }
+
+        this.createSidePanelItem(locations[i]);
+
+        markerCounter++;
+
         lat += parseFloat(locations[i]['latitude']);
         lng += parseFloat(locations[i]['longitude']);
-
+        
         let marker = new google.maps.Marker({
           map: map,
           icon: this.icon,
@@ -45,8 +55,6 @@ class Map {
         let infowindow = new google.maps.InfoWindow({
           content: locations[i]['address']+'<br><a href="'+locations[i]['detailUrl']+'">แสดงรายละเอียดสาขานี้</a>'
         });
-
-        // infowindow.open(map, marker);
 
         marker.addListener('click', function() {
           infoWindowTemp.close();
@@ -60,14 +68,14 @@ class Map {
         markers[locations[i]['id']] = marker;
         infowindows[locations[i]['id']] = infowindow;
 
-        this.createSidePanelItem(locations[i]);
-
       }
 
     };
 
-    map.setCenter(new google.maps.LatLng(lat/i,lng/i));
-
+    if(markerCounter > 0) {
+      map.setCenter(new google.maps.LatLng(lat/markerCounter,lng/markerCounter));
+    }
+    
     if(!sidePanel) {
       $('.side-panel').remove();
       return;
@@ -261,12 +269,16 @@ class Map {
 
   }
 
-  createSidePanelItem(item) {
+  createSidePanelItem(item,location = true) {
 
     let html = '';
     html += '<div class="side-panel-item-row">';
     html += '<div class="side-panel-item with-icon">';
-    html += '<h4 class="title title-with-icon location-pin map-locations" data-id="'+item['id']+'">';
+    if(location) {
+      html += '<h4 class="title title-with-icon location-pin map-locations" data-id="'+item['id']+'">';
+    }else{
+      html += '<h4 class="title title-with-icon no-icon" data-id="'+item['id']+'">';
+    }
     html += item['address'];
     html += '</h4>';
     html += '</div>';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomFormRequest;
 use App\library\service;
 use App\library\message;
+use App\library\url;
 use Redirect;
 
 class BranchController extends Controller
@@ -25,6 +26,37 @@ class BranchController extends Controller
       );
       return $this->error();
     }
+
+    $model->modelData->loadData(array(
+      'models' => array('Image','Address','Contact'),
+      'json' => array('Image')
+    ));
+
+    $this->setData($model->modelData->build());
+
+    // Get Branches
+    $jobIds = $model->getRalatedData('JobToBranch',array(
+      'list' => 'job_id',
+      'fields' => array('job_id'),
+    ));
+
+    $jobs = Service::loadModel('Job');
+    $jobs->paginator->setPerPage(12);
+    $jobs->paginator->setUrl('job/detail/{id}','detailUrl');
+    $jobs->paginator->criteria(array(
+      'conditions' => array(
+        'in' => array(
+          array('id',$jobIds)
+        )
+      ),
+      'order' => array('id','DESC')
+    ));
+
+    $this->setData(array(
+      'jobs' => $jobs->paginator->getModelData()
+    ));
+
+    return $this->view('pages.branch.detail');
 
   }
 

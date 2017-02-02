@@ -103,6 +103,7 @@
 
     <div class="line space-top-bottom-20"></div>
 
+    @if($hasBranchLocation)
     <h4>สาขาที่กำลังเปิดรับสมัครงานนี้</h4>   
     <div class="row">
       <div class="col-xs-12">
@@ -123,6 +124,8 @@
 
     <div class="line space-top-bottom-20"></div>
 
+    @endif
+
     <h4>สมัครงานนี้</h4>
 
     <div class="text-center space-top-bottom-20">
@@ -131,7 +134,7 @@
       </a>
     </div>
 
-    @if(!empty($_modelData['_recruitment_custom']))
+    @if(!empty($_modelData['_recruitment_custom']) && !empty($_modelData['recruitment_custom_detail']))
 
     <div class="text-strike">
       <span>หรือ</span>

@@ -33,10 +33,16 @@ Route::group(['middleware' => 'auth'], function () {
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');
 
-// Working exp
+// exp
 Route::get('working_experience','WorkingExperienceController@index');
 Route::group(['middleware' => 'auth'], function () {
   Route::post('working_experience','WorkingExperienceController@start');
+
+  Route::get('working_experience/profile_add','WorkingExperienceController@profileAdd');
+
+  Route::get('working_experience/add','WorkingExperienceController@add');
+
+  // Route::get('experience/working_add','WorkingExperienceController@profileAdd');
 });
 
 

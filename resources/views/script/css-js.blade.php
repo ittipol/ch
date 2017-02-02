@@ -116,6 +116,10 @@
     endif; 
 ?>
 
+<script type="text/javascript">
+  CKEDITOR.config.height = '900px';
+</script>
+
 @if(Session::has('message.title') && Session::has('message.type'))
 <script type="text/javascript">
   $(document).ready(function(){

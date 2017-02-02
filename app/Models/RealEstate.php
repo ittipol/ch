@@ -211,7 +211,7 @@ class RealEstate extends Model
     );
   }
 
-  public function paginationData() {
+  public function buildPaginationData() {
 
     $imageStyle = new ImageStyle;
     $currency = new Currency;

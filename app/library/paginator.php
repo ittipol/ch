@@ -39,10 +39,43 @@ class Paginator {
     return $this->url->parseUrl($record);
   }
 
-  public function setConditions($conditions = array()) {
+  public function criteria($criteria = array()) {
 
-    foreach ($conditions['in'] as $condition) {
-      $this->model = $this->model->whereIn($condition[0],$condition[1]);
+    if(!empty($criteria['conditions'])){
+
+      if(!empty($criteria['conditions']['in'])) {
+
+        foreach ($criteria['conditions']['in'] as $condition) {
+          $this->model = $this->model->whereIn($condition[0],$condition[1]);
+        }
+
+        unset($criteria['conditions']['in']);
+
+      }
+
+      if(!empty($criteria['conditions']['or'])) {
+
+        $arrLen = count($criteria['conditions']['or']);
+        for ($i=0; $i < $arrLen; $i++) {
+          $images->orWhere(
+            $criteria['conditions']['or'][$i][0],
+            $criteria['conditions']['or'][$i][1],
+            $criteria['conditions']['or'][$i][2]
+          );
+        }
+
+        unset($criteria['conditions']['or']);
+
+      }
+
+      if(!empty($criteria['conditions'])){
+        $this->model = $this->model->where($criteria['conditions']);
+      }
+
+    }
+
+    if(!empty($criteria['order'])){
+      $this->model = $this->model->orderBy(current($criteria['order']),next($criteria['order']));
     }
 
   }
@@ -62,7 +95,7 @@ class Paginator {
 
     $data = array();
     foreach ($records as $record) {
-      $data[] = array_merge($record->paginationData(),$this->parseUrl($record->getAttributes()));
+      $data[] = array_merge($record->buildPaginationData(),$this->parseUrl($record->getAttributes()));
     }
 
     return $data;

@@ -59,7 +59,7 @@ class Job extends Model
     return parent::fill($attributes);
   }
 
-  public function paginationData() {
+  public function buildPaginationData() {
 
     $imageStyle = new ImageStyle;
     $string = new String;
@@ -149,7 +149,7 @@ class Job extends Model
       'qualification' => !empty($this->qualification) ? $this->qualification : '-',
       'benefit' => !empty($this->benefit) ? $this->benefit : '-',
       '_recruitment_custom' => $recruitment['c'],
-      'recruitment_custom_detail' => !empty($this->recruitment_custom_detail) ? $this->recruitment_custom_detail : '-',
+      'recruitment_custom_detail' => $this->recruitment_custom_detail,
       '_employmentTypeName' => $this->employmentType->name,
     );
 

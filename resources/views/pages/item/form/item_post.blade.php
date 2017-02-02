@@ -99,13 +99,13 @@
       <div class="btn-group">
         <label class="btn">
           <?php
-            echo Form::radio('fused', 0);
+            echo Form::radio('used', 0);
           ?>
           <div class="inner">สินค้าใหม่</div>
         </label>
         <label class="btn">
           <?php
-            echo Form::radio('fused', 1, true);
+            echo Form::radio('used', 1, true);
           ?>
           <div class="inner">สินค้ามือสอง</div>
         </label>

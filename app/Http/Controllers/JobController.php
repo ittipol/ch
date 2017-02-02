@@ -55,12 +55,15 @@ class JobController extends Controller
     $url->setUrl('shop/'.$slugName.'/branch_detail/{id}','detailUrl');
 
     $branchLocations = array();
-    $_branches = array();
+    $hasBranchLocation = false;
     foreach ($branches as $branch) {
 
       $address = $branch->modelData->loadAddress();
 
-      if(!empty($address['_geographic'])){
+      if(!empty($address)){
+
+        $hasBranchLocation = true;
+
         $graphics = json_decode($address['_geographic'],true);
         $branchLocations[] = array_merge(array(
           'id' => $branch->id,
@@ -69,17 +72,12 @@ class JobController extends Controller
           'longitude' => $graphics['longitude']
         ),$url->parseUrl($branch->getAttributes())); 
       }
-
-      $_branches[] = array_merge(array(
-        'id' => $branch->id,
-        'name' => $branch->name
-      ),$url->parseUrl($branch->getAttributes()));
     }
 
     $this->setData(array(
       'shopAddress' => $shop->modelData->loadAddress(),
-      'branches' => $_branches,
-      'branchLocations' => json_encode($branchLocations)
+      'branchLocations' => json_encode($branchLocations),
+      'hasBranchLocation' => $hasBranchLocation
     ));
 
     return $this->view('pages.job.detail');
