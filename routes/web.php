@@ -33,16 +33,24 @@ Route::group(['middleware' => 'auth'], function () {
 // Announcement
 Route::get('announcement/create','AnnouncementController@create');
 
-// exp
-Route::get('working_experience','WorkingExperienceController@index');
+// Experience
 Route::group(['middleware' => 'auth'], function () {
-  Route::post('working_experience','WorkingExperienceController@start');
+  Route::get('experience','PersonExperienceController@index');
+  Route::post('experience','PersonExperienceController@start');
 
-  Route::get('working_experience/profile_add','WorkingExperienceController@profileAdd');
+  Route::get('experience/profile','PersonExperienceController@profileEdit');
+  Route::patch('experience/profile','PersonExperienceController@profileEditingSubmit');
 
-  Route::get('working_experience/add','WorkingExperienceController@add');
+  // Route::get('experience/working','PersonExperienceController@index');
+  // Route::get('experience/education','PersonExperienceController@index');
+  // Route::get('experience/project','PersonExperienceController@index');
+  // Route::get('experience/article','PersonExperienceController@index');
+  // Route::get('experience/volunteer','PersonExperienceController@index');
+  // Route::get('experience/training','PersonExperienceController@index');
+  // Route::get('experience/skill','PersonExperienceController@index');
+  // Route::get('experience/language','PersonExperienceController@index');
 
-  // Route::get('experience/working_add','WorkingExperienceController@profileAdd');
+
 });
 
 
@@ -52,7 +60,7 @@ Route::get('shop/{slug}','ShopController@index');
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('community/shop_create','ShopController@create');
-  Route::post('community/shop_create','ShopController@submitCreating');
+  Route::post('community/shop_create','ShopController@creatingSubmit');
 
   Route::get('shop/{slug}/product','ShopController@product');
 
@@ -85,7 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('shop/{slug}/job','ShopController@job');
   
   Route::get('shop/{slug}/job_add','JobController@add');
-  Route::post('shop/{slug}/job_add','JobController@submitAdding');
+  Route::post('shop/{slug}/job_add','JobController@addingSubmit');
 
   Route::get('shop/{slug}/job_edit/{job_id}','JobController@edit');
   Route::patch('shop/{slug}/job_edit/{job_id}',[
@@ -98,7 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('shop/{slug}/branch_detail/{branch_id}','BranchController@detail');
 
   Route::get('shop/{slug}/branch_add','BranchController@add');
-  Route::post('shop/{slug}/branch_add','BranchController@submitAdding');
+  Route::post('shop/{slug}/branch_add','BranchController@addingSubmit');
 });
 
 // Person Post Item
@@ -107,7 +115,7 @@ Route::get('item/detail/{item_id}','ItemController@detail');
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('item/post','ItemController@post');
-  Route::post('item/post','ItemController@submitPosting');
+  Route::post('item/post','ItemController@postingSubmit');
 
   // Route::get('item/edit/{item_id}','ItemController@edit');
   // Route::patch('item/edit/{item_id}',[
@@ -122,11 +130,10 @@ Route::get('real-estate/detail/{real_estate_id}','RealEstateController@detail');
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('real-estate/post','RealEstateController@post');
-  Route::post('real-estate/post','RealEstateController@submitPosting');
+  Route::post('real-estate/post','RealEstateController@postingSubmit');
 
   Route::get('real-estate/edit/{real_estate_id}','RealEstateController@edit');
   Route::patch('real-estate/edit/{real_estate_id}',[
-    // 'as' => 'real-estate.edit',
     'uses' => 'RealEstateController@editingSubmit'
   ]);
 });

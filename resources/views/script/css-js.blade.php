@@ -78,6 +78,7 @@
     '__css/components/box.css',
     '__css/components/pagination.css',
     '__css/components/error.css',
+    '__css/components/tile.css',
     '__css/pages/shop-core.css',
     '__css/pages/detail.css',
     '__css/layouts/blackbox/wrapper.css',

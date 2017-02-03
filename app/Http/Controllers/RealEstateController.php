@@ -98,7 +98,7 @@ class RealEstateController extends Controller
     return $this->view('pages.real_estate.form.real_estate_post');
   }
 
-  public function submitPosting(CustomFormRequest $request) {
+  public function postingSubmit(CustomFormRequest $request) {
     if($this->model->fill($request->all())->save()) {
       Message::display('ลงประกาศเรียบร้อยแล้ว','success');
       return Redirect::to('real-estate/detail/'.$this->model->id);

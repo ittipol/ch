@@ -13,6 +13,28 @@ class User extends Model
     protected $modelRelated = array('Person');
     protected $directory = true;
 
+    protected $validation = array(
+      'rules' => array(
+        'Person.name' => 'required|max:255',
+        // 'email' => 'required|email|unique:users,email',
+        'email' => 'required|email',
+        'password' => 'required|min:4|max:255|confirmed',
+        // 'password_confirmation' => 'required',
+        // 'avatar' => 'mimes:jpeg,jpg,png|max:1024',
+        'birth_date' => 'date_format:Y-m-d'
+      ),
+      'messages' => array(
+        'Person.name.required' => 'กรุณากรอกชื่อ',
+        'email.required' => 'กรุณากรอกอีเมล',
+        'email.email' => 'อีเมลไม่ถูกต้อง',
+        // 'email.unique' => 'อีเมลถูกใช้งานแล้ว',
+        'password.required' => 'กรุณากรอกรหัสผ่าน',
+        'password.min' => 'รัสผ่านต้องมีอย่างน้อย 4 อักขระ',
+        'password.confirmed' => 'รหัสผ่านไม่ตรงกัน',
+        // 'password_confirmation.required' => 'กรุณากรอกรหัสผ่านอีกครั้ง',
+        'birth_date.date_format' => 'รูปแบบวันที่ไม่ถูกต้อง'
+      )
+    ); 
 
     public function __construct() {  
       parent::__construct();

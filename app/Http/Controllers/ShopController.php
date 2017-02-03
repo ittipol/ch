@@ -9,6 +9,10 @@ use Redirect;
 
 class ShopController extends Controller
 {
+// เพิ่มสิ่งที่ต้องการสื่อถึงลูกค้า
+
+// วิธีส่งต้องกำหนดได้เอง
+// ไม่เจอครัช ร้านเราใช้ขนส่งเอกชน Kerry Express มารับถึงหน้าบ้านเบย แพงหน่อยแต่บวกค่ารถค่าเวลาต่อแถวก็คุ้มกว่าครับ เอาเวลาไปทำอย่างอื่นได้ตั้งเยอะน้าาาาน้องตะกร้าาา ^_^
 
   public function __construct() { 
     parent::__construct();
@@ -99,7 +103,7 @@ class ShopController extends Controller
     return $this->view('pages.shop.form.shop_create');
   }
 
-  public function submitCreating(CustomFormRequest $request) {
+  public function creatingSubmit(CustomFormRequest $request) {
 
     if($this->model->fill($request->all())->save()) {
       Message::display('บริษัทหรือร้านค้าของคุณถูกเพิ่มลงในชุมชนแล้ว','success');

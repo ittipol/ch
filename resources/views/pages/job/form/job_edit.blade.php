@@ -5,7 +5,7 @@
   
   <div class="container-header">
     <div class="row">
-      <div class="col-lg-6 col-sm-12">
+      <div class="col-md-8 col-xs-12">
         <div class="title">
           ลงประกาศงาน
         </div>
@@ -172,7 +172,7 @@
   </div>
 
   <?php
-    echo Form::submit('ลงประกาศงาน', array(
+    echo Form::submit('บันทึก', array(
       'class' => 'button'
     ));
   ?>

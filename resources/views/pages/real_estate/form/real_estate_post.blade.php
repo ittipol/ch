@@ -420,9 +420,9 @@
 
       <div class="form-row">
         <?php
-          echo Form::label('Contact[line]', 'Line');
+          echo Form::label('Contact[line]', 'Line ID');
           echo Form::text('Contact[line]', null, array(
-            'placeholder' => 'Line',
+            'placeholder' => 'Line ID',
             'autocomplete' => 'off'
           ));
         ?>

@@ -108,7 +108,7 @@ class JobController extends Controller
     return $this->view('pages.job.form.job_add');
   }
 
-  public function submitAdding(CustomFormRequest $request) {
+  public function addingSubmit(CustomFormRequest $request) {
 
     if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
       $this->error = array(

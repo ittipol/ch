@@ -5,7 +5,7 @@
   
   <div class="container-header">
     <div class="row">
-      <div class="col-lg-6 col-sm-12">
+      <div class="col-md-8 col-xs-12">
         <div class="title">
           ลงประกาศงาน
         </div>
@@ -59,7 +59,7 @@
           'class' => 'required'
         ));
         echo Form::text('name', null, array(
-          'placeholder' => 'ชื่อตำแหน่องงาน',
+          'placeholder' => 'ชื่อตำแหน่งงาน',
           'autocomplete' => 'off'
         ));
       ?>

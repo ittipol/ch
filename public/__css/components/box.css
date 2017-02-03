@@ -1,7 +1,7 @@
 .box {
 	position: relative;
 	height: 400px;
-	margin-bottom: 20px;
+	/*margin-bottom: 20px;*/
 }
 
 .box .inner {
@@ -22,6 +22,7 @@ label.box {
 .form-item-group label.box {
 	display: block;
 	background-color: #ececec;
+	margin-bottom: 20px;
 }
 
 label.box input[type="radio"],

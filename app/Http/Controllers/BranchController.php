@@ -83,7 +83,7 @@ class BranchController extends Controller
     return $this->view('pages.branch.form.branch_add');
   }
 
-  public function submitAdding(CustomFormRequest $request) {
+  public function addingSubmit(CustomFormRequest $request) {
 
     if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
       $this->error = array(

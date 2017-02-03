@@ -20,6 +20,8 @@ class JobToBranch extends Model
 
     if(!empty($options['value']['branch_id'])) {
 
+      // check branch is in shop first
+
       if($model->state == 'update') {
         $this->where('job_id','=',$model->id)->delete();
       }

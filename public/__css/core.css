@@ -39,6 +39,10 @@ a {
 	background-color: #1565C0;
 }
 
+.line.grey {
+	background-color: #bababa;
+}
+
 .text-strike {
 	text-align: center;
 }

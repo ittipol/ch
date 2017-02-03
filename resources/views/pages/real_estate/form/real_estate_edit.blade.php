@@ -484,7 +484,7 @@
   </div>
 
   <?php
-    echo Form::submit('ลงประกาศ' , array(
+    echo Form::submit('บันทึก' , array(
       'class' => 'button'
     ));
   ?>
