@@ -10,17 +10,34 @@ use Session;
 
 class ApiController extends Controller
 { 
+
+  public function GetDistrict($provinceId = null) {
+
+    if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+      exit('Error!!!');  //trygetRealPath detect AJAX request, simply exist if no Ajax
+    }
+
+    $records = Service::loadModel('District')->where('province_id', '=', $provinceId)->get(); 
+
+    $districts = array();
+    foreach ($records as $record) {
+      $districts[$record->id] = $record->name;
+    }
+
+    return response()->json($districts);
+  }
+
   public function GetSubDistrict($districtId = null) {
 
     if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
       exit('Error!!!');  //trygetRealPath detect AJAX request, simply exist if no Ajax
     }
 
-    $subDistrictRecords = Service::loadModel('SubDistrict')->where('district_id', '=', $districtId)->get(); 
+    $records = Service::loadModel('SubDistrict')->where('district_id', '=', $districtId)->get(); 
 
     $subDistricts = array();
-    foreach ($subDistrictRecords as $subDistrict) {
-      $subDistricts[$subDistrict['attributes']['id']] = $subDistrict['attributes']['name'];
+    foreach ($records as $record) {
+      $subDistricts[$record->id] = $record->name;
     }
 
     return response()->json($subDistricts);

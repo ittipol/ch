@@ -88,7 +88,7 @@ class Paginator {
     // $end = min(($offset + $this->perPage), $this->total);
 
     $records = $this->model
-    ->where('created_by','=',Session::get('Person.id'))
+    // ->where('created_by','=',Session::get('Person.id'))
     ->take($this->perPage)
     ->skip($offset)
     ->get();

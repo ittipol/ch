@@ -18,7 +18,7 @@ class BranchController extends Controller
 
   public function detail() {
 
-    $model = $this->model->find($this->param['branch_id']);
+    $model = $this->model->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(

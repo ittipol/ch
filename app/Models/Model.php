@@ -26,12 +26,11 @@ class Model extends BaseModel
   protected $validation;
   protected $directory = false;
   protected $directoryPath;
+  protected $imageCache = array();
 
   public $form;
   public $modelData;
   public $paginator;
-
-  // protected $imageCache;
   
   public function __construct(array $attributes = []) { 
 
@@ -94,38 +93,6 @@ class Model extends BaseModel
     });
 
   }
-
-  // protected function filling(array $attributes) {
-
-  //   if(!empty($attributes) && !empty($this->modelRelated)){
-  //     foreach ($this->modelRelated as $key => $modelName) {
-
-  //       if(is_array($modelName)){
-  //         $modelName = $key;
-  //       }
-
-  //       if(empty($attributes[$modelName])) {
-  //         continue;
-  //       }
-
-  //       $this->formModelData[$modelName] = $attributes[$modelName];
-  //       unset($attributes[$modelName]);
-  //     }
-  //   }
-
-  //   if(!empty($attributes)) {
-  //     foreach ($this->fillable as $field) {
-
-  //       if(empty($attributes[$field]) || is_array($attributes[$field])) {
-  //         continue;
-  //       }
-
-  //       $attributes[$field] = trim($attributes[$field]);
-  //     }
-  //   }
-    
-  //   return $attributes;
-  // }
 
   public function fill(array $attributes) {
 
@@ -198,9 +165,16 @@ class Model extends BaseModel
       return false;
     }
 
-    $path = $this->getDirectoryPath().$this->id;
+    $path = $this->getDirectoryPath().$this->id.'/';
     if(!is_dir($path)){
       mkdir($path,0777,true);
+    }
+
+    foreach ($this->imageCache as $name) {
+      $_path = $path.$name;
+      if(!is_dir($_path)){
+        mkdir($_path,0777,true);
+      }
     }
 
   }
@@ -346,6 +320,17 @@ class Model extends BaseModel
 
   }
 
+  public function getList($records,$field) {
+    
+    $lists = array();
+    foreach ($records as $record) {
+      $lists[] = $record->{$field};
+    }
+
+    return $lists;
+
+  }
+
   public function deleteByModelNameAndModelId($model,$modelId) {
 
     if(!$this->checkHasFieldModelAndModelId()) {
@@ -385,9 +370,9 @@ class Model extends BaseModel
 
   public function getModelRelated() {
 
-    if(empty($this->modelRelated)) {
-      return null;
-    }
+    // if(empty($this->modelRelated)) {
+    //   return null;
+    // }
 
     return $this->modelRelated;
   }
@@ -403,15 +388,19 @@ class Model extends BaseModel
 
   public function getValidation() {
 
-    if(empty($this->validation)) {
-      return null;
-    }
+    // if(empty($this->validation)) {
+    //   return null;
+    // }
     
     return $this->validation;
   }
 
   public function getFillable() {
     return $this->fillable;
+  }
+
+  public function getImageCache() {
+      return $this->imageCache;
   }
 
   public function buildModelData() {
@@ -446,17 +435,6 @@ class Model extends BaseModel
 
   public function buildFormData() {
     return $this->getAttributes();
-  }
-
-  public function getList($records,$field) {
-    
-    $lists = array();
-    foreach ($records as $record) {
-      $lists[] = $record->{$field};
-    }
-
-    return $lists;
-
   }
 
 }

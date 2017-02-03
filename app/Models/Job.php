@@ -10,6 +10,7 @@ class Job extends Model
   protected $fillable = ['employment_type_id','name','description','qualification','benefit','salary','recruitment','recruitment_custom_detail'];
   protected $modelRelated = array('Image','Tagging','JobToBranch','ShopTo');
   protected $directory = true;
+  protected $imageCache = array('xs','list');
 
   // protected $behavior = array(
   //   'Lookup' => array(

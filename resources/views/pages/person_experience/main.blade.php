@@ -3,25 +3,81 @@
 
   <div class="container">
 
-    <div class="container-header">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="title">
-            ประสบการณ์และทักษะ
+    @if($exist)
+
+      <div class="container-header">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="title">
+              โปรไฟล์
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="line"></div>
+      <div class="line"></div>
 
-    @if($exist)
+<!--       <div class="clearfix">
+        <div class="tile-nav xs pull-left">
+          <div class="tile-nav-image">
+            <a href="{{URL::to('experience/profile')}}">
+              <img src="/images/common/plus.png">
+            </a>
+          </div>
+        </div>
+        <h4 class="tile-nav-title pull-left">เพิ่ม</h4>
+
+      </div> -->
+
+      <div class="space-top-bottom-20">
+
+        <div class="clearfix">
+          <div class="profile-image pull-left">
+            <img src="">
+          </div>
+
+          <div class="profile-info pull-left">
+            <h3>{{$profile['name']}}</h3>
+  <!-- 
+            <div>
+              <dl>
+                <dt>เพศ</dt>
+                <dd>{{$profile['gender']}}</dd>
+              </dl>
+
+              <dl>
+                <dt>วันเกิด</dt>
+                <dd>{{$profile['birthDate']}}</dd>
+              </dl>
+            </div> -->
+
+          </div>
+
+        </div>
+
+        <div class="space-top-bottom-20">
+          <dl>
+            <dt>เพศ</dt>
+            <dd>{{$profile['gender']}}</dd>
+          </dl>
+
+          <dl>
+            <dt>วันเกิด</dt>
+            <dd>{{$profile['birthDate']}}</dd>
+          </dl>
+        </div>
+
+        <a href="{{URL::to('experience/profile')}}" class="button">แก้ไขโปรไฟล์</a>
+
+      </div>
+
+      <div class="line grey space-top-bottom-20"></div>
 
       <h4>ประวัติการทำงาน</h4>
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/working')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -35,7 +91,7 @@
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/education')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -49,7 +105,7 @@
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/project')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -63,7 +119,7 @@
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/article')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -76,7 +132,7 @@
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/volunteer')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -90,7 +146,7 @@
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/training')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -100,11 +156,11 @@
 
       <div class="line grey space-top-bottom-20"></div>
 
-      <h4>ทักษะ</h4>
+      <h4>ทักษะและความสามารถ</h4>
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/skill')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>
@@ -118,7 +174,7 @@
       <div class="clearfix">
         <div class="tile-nav xs pull-left">
           <div class="tile-nav-image">
-            <a href="job_add">
+            <a href="{{URL::to('experience/language')}}">
               <img src="/images/common/plus.png">
             </a>
           </div>

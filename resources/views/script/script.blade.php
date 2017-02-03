@@ -21,6 +21,7 @@
     '__js/forms/images.js',
     '__js/forms/office-hour.js',
     '__js/forms/district.js',
+    '__js/forms/province.js',
     '__js/forms/tagging.js',
     '__js/forms/real-estate.js',
     '__js/components/notification-bottom.js',
@@ -79,8 +80,9 @@
     '__css/components/pagination.css',
     '__css/components/error.css',
     '__css/components/tile.css',
-    '__css/pages/shop-core.css',
-    '__css/pages/detail.css',
+    '__css/pages/shop.css',
+    '__css/pages/person_experience.css',
+    '__css/layouts/detail.css',
     '__css/layouts/blackbox/wrapper.css',
     '__css/layouts/blackbox/components/action-bar.css',
     '__css/layouts/blackbox/components/main-nav.css',
@@ -118,7 +120,7 @@
 ?>
 
 <script type="text/javascript">
-  CKEDITOR.config.height = '900px';
+  CKEDITOR.config.height = '300px';
 </script>
 
 @if(Session::has('message.title') && Session::has('message.type'))

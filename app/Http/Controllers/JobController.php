@@ -12,12 +12,11 @@ class JobController extends Controller
 {
   public function __construct() { 
     parent::__construct();
-    $this->model = Service::loadModel('Job');
   }
 
   public function detail() {
 
-    $model = $this->model->find($this->param['job_id']);
+    $model = Service::loadModel('Job')->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(
@@ -93,17 +92,19 @@ class JobController extends Controller
       return $this->error();
     }
 
-    $this->model->form->loadFieldData('EmploymentType',array(
+    $model = Service::loadModel('Job');
+
+    $model->form->loadFieldData('EmploymentType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'employmentTypes'
     ));
-    $this->model->form->shopTo(array(
+    $model->form->shopTo(array(
       'shopId' => $this->slug->model_id,
       'model' => 'Branch'
     ));
 
-    $this->setData($this->model->form->build());
+    $this->setData($model->form->build());
 
     return $this->view('pages.job.form.job_add');
   }
@@ -117,9 +118,11 @@ class JobController extends Controller
       return $this->error();
     }
 
+    $model = Service::loadModel('Job');
+
     $request->request->add(['ShopTo' => array('shop_id' => $this->slug->model_id)]);
 
-    if($this->model->fill($request->all())->save()) {
+    if($model->fill($request->all())->save()) {
       Message::display('ลงประกาศงานแล้ว','success');
       return Redirect::to('shop/'.$this->slug->name.'/job');
     }else{
@@ -137,7 +140,7 @@ class JobController extends Controller
       return $this->error();
     }
 
-    $model = $this->model->find($this->param['job_id']);
+    $model = Service::loadModel('Job')->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(
@@ -164,10 +167,10 @@ class JobController extends Controller
 
   public function editingSubmit(CustomFormRequest $request) {
 
-    $model = $this->model->find($this->param['job_id']);
+    $model = Service::loadModel('Job')->find($this->param['id']);
 
     if($model->fill($request->all())->save()) {
-      Message::display('ประกาศงานถูกแก้ไขแล้ว','success');
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
       return Redirect::to('shop/'.$this->slug->name.'/job');
     }else{
       return Redirect::back();

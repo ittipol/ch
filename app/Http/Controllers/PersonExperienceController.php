@@ -14,15 +14,27 @@ class PersonExperienceController extends Controller
 
   public function __construct() { 
     parent::__construct();
-    $this->model = Service::loadModel('PersonExperience');
-
   }
 
   public function index() {
 
-    $this->data = array(
-      'exist' => $this->model->checkExistByPersonId()
-    );
+    $model = Service::loadModel('PersonExperience');
+
+    if($model->checkExistByPersonId()) {
+      // Get Profile
+      $profile = $model->where('person_id','=',Session::get('Person.id'))->first();
+      $profile->modelData->loadData();
+
+      $this->setData(array(
+        'profile' => $profile->modelData->build(true)
+      ));
+    }
+
+    $this->setData(array(
+      'exist' => $model->checkExistByPersonId()
+    ));
+
+
     
     return $this->view('pages.person_experience.main');
 
@@ -30,8 +42,10 @@ class PersonExperienceController extends Controller
 
   public function start() {
 
-    if(!$this->model->checkExistByPersonId()) {
-      $this->model->fill(array(
+    $model = Service::loadModel('PersonExperience');
+
+    if(!$model->checkExistByPersonId()) {
+      $model->fill(array(
         'name' => Session::get('Person.name'),
         'active' => 0
       ))->save();
@@ -43,7 +57,14 @@ class PersonExperienceController extends Controller
 
   public function profileEdit() {
 
-    $model = $this->model->where('person_id','=',Session::get('Person.id'))->first();
+    $model = Service::loadModel('PersonExperience')->where('person_id','=',Session::get('Person.id'))->first();
+
+    $model->form->loadFieldData('Province',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'provinces',
+      'order' => array('top','ASC')
+    ));
 
     $date = new Date;
 
@@ -74,6 +95,22 @@ class PersonExperienceController extends Controller
     $this->setData($model->form->build());
 
     return $this->view('pages.person_experience.form.profile_edit');
+
+  }
+
+  public function profileEditingSubmit(CustomFormRequest $request) {
+
+    $model = Service::loadModel('PersonExperience')->where('person_id','=',Session::get('Person.id'))->first();
+
+    if($model->fill($request->all())->save()) {
+
+      dd('xxx');
+
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
+      return Redirect::to('item/detail/'.$this->model->id);
+    }else{
+      return Redirect::back();
+    }
 
   }
 

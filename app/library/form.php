@@ -13,11 +13,7 @@ class Form {
   public function __construct($model = null) {
     $this->model = $model;
   }
-
-  // public function setModel($model = null) {
-  //   $this->model = $model;
-  // }
-
+  
   public function loadData($options = array()) {
 
     if(empty($this->model)) {
@@ -185,11 +181,15 @@ class Form {
     $model = Service::loadModel($modelName);
 
     if(!empty($options['conditions'])){
-      $records = $model->where($options['conditions'])->get();
-    }else{
-      $records = $model->all();
+      $model = $model->where($options['conditions']);
     }
-    
+
+    if(!empty($options['order'])){
+      $model = $model->orderBy(current($options['order']),next($options['order']));
+    }
+
+    $records = $model->get();
+
     $data = array();
     foreach ($records as $record) {
       $data[$record->{$options['key']}] = $record->{$options['field']};
@@ -274,10 +274,6 @@ class Form {
   }
 
   public function build() {
-
-    // if(empty($this->model)) {
-    //   return false;
-    // }
 
     return array(
       '_formModel' => $this->getFormModel(),

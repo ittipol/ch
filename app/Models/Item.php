@@ -11,6 +11,7 @@ class Item extends Model
   protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','created_by'];
   protected $modelRelated = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
+  protected $imageCache = array('xs','list');
 
   protected $validation = array(
     'rules' => array(
@@ -62,7 +63,7 @@ class Item extends Model
 
     $categoryName = '';
     if(!empty($this->itemToCategory)) {
-      $categoryName = $this->itemToCategories->category->name;
+      $categoryName = $this->itemToCategory->category->name;
     }
 
     return array(

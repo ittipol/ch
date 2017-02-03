@@ -17,15 +17,15 @@ class StaticFileController extends Controller
 
   public function serveImages($file){
     $image = Service::loadModel('Image')
-    ->where('filename','=',$file)
-    ->select(array('model','model_id','filename'))
+    ->where('filename','like',$file)
+    ->select(array('model','model_id','filename','image_style_id'))
     ->first();
 
     if(empty($image)) {
       // return response()->download($this->noImagePath, null, [], null);
       return '';
     }
-
+    
     // Storage::get($this->id.'/'.$this->id.'.jpeg');
 
     $path = $image->getImagePath();

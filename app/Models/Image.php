@@ -94,60 +94,87 @@ class Image extends Model
 
     $ext = pathinfo($this->filename, PATHINFO_EXTENSION);
     $filename = pathinfo($this->filename, PATHINFO_FILENAME);
+    list($originalWidth,$originalHeight) = getimagesize($imagePath);
 
-    $imageInfo = getimagesize($imagePath);
+    $styles = $imageStyle->whereIn('alias',$model->getImageCache())->get();
 
-    $h = 50;
-    $w = 50;
-    // $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
-    $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
+    foreach ($styles as $style) {
 
-    // $path = $this->getDirPath().'xs/';
-    // if(!is_dir($path)){
-    //   mkdir($path,0777,true);
-    // }
+      $width = $style->width;
+      $height = $style->height;
 
-    $imageLib = new ImageTool($imagePath);
-    $imageLib->resize($w,$h);
-    $imageLib->save($this->getDirPath().$_filename);
+      if(!empty($style->fx) && method_exists($imageStyle,$style->fx)) {
+        list($width,$height) = $imageStyle->getImageSizeByRatio($originalWidth,$originalHeight,$width,$height);
+      }
 
-    $value = array(
-      'original_image_id' => $this->id,
-      'filename' => $_filename,
-      'image_style_id' => $imageStyle->getIdByalias('xs')
-    );
+      $_filename = $filename.'_'.$width.'x'.$height.'.'.$ext;
 
-    $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+      $imageLib = new ImageTool($imagePath);
+      $imageLib->resize($width,$height);
+      $imageLib->save($this->getDirPath().$style->path_name.'/'.$_filename);
 
-    // =====================================================================
+      $value = array(
+        'original_image_id' => $this->id,
+        'filename' => $_filename,
+        'image_style_id' => $imageStyle->getIdByalias($style->alias)
+      );
 
-    $h = 250;
-    $w = 250;
-    
-    if (($imageInfo[0] > $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
-      $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
-    } else if (($imageInfo[0] < $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
-      $h = (int)ceil($imageInfo[1]*($w/$imageInfo[0]));
+      $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+
     }
+    
 
-    $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
+    // $h = 50;
+    // $w = 50;
+    // // $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
+    // $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
 
-    // $path = $this->getDirPath().'list/';
-    // if(!is_dir($path)){
-    //   mkdir($path,0777,true);
+    // // $path = $this->getDirPath().'xs/';
+    // // if(!is_dir($path)){
+    // //   mkdir($path,0777,true);
+    // // }
+
+    // $imageLib = new ImageTool($imagePath);
+    // $imageLib->resize($w,$h);
+    // $imageLib->save($this->getDirPath().$_filename);
+
+    // $value = array(
+    //   'original_image_id' => $this->id,
+    //   'filename' => $_filename,
+    //   'image_style_id' => $imageStyle->getIdByalias('xs')
+    // );
+
+    // $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+
+    // // =====================================================================
+
+    // $h = 250;
+    // $w = 250;
+    
+    // if (($imageInfo[0] > $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
+    //   $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
+    // } else if (($imageInfo[0] < $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
+    //   $h = (int)ceil($imageInfo[1]*($w/$imageInfo[0]));
     // }
 
-    $imageLib = new ImageTool($imagePath);
-    $imageLib->resize($w,$h);
-    $imageLib->save($this->getDirPath().$_filename);
+    // $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
 
-    $value = array(
-      'original_image_id' => $this->id,
-      'filename' => $_filename,
-      'image_style_id' => $imageStyle->getIdByalias('list')
-    );
+    // // $path = $this->getDirPath().'list/';
+    // // if(!is_dir($path)){
+    // //   mkdir($path,0777,true);
+    // // }
 
-    $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+    // $imageLib = new ImageTool($imagePath);
+    // $imageLib->resize($w,$h);
+    // $imageLib->save($this->getDirPath().$_filename);
+
+    // $value = array(
+    //   'original_image_id' => $this->id,
+    //   'filename' => $_filename,
+    //   'image_style_id' => $imageStyle->getIdByalias('list')
+    // );
+
+    // $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
 
   }
 
@@ -196,6 +223,10 @@ class Image extends Model
 
     if(empty($filename)) {
       $filename = $this->filename;
+    }
+
+    if(!empty($this->imageStyle->path_name)) {
+      $filename = $this->imageStyle->path_name.'/'.$filename;
     }
 
     return $this->getDirPath().$filename;

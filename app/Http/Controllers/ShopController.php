@@ -21,43 +21,45 @@ class ShopController extends Controller
     //   return $next($request);
     // });
 
-    if(!empty($this->slug->model_id)) {
-      $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
-    }else{
-      $this->model = Service::loadModel('Shop');
-    }
+    // if(!empty($this->slug->model_id)) {
+    //   $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
+    // }else{
+    //   $this->model = Service::loadModel('Shop');
+    // }
     
   }
 
   public function index() {
 
-    $this->model->modelData->loadData();
+    $model = Service::loadModel('Shop')->find($this->slug->model_id);
 
-    $this->setData($this->model->modelData->build());
+    $model->modelData->loadData();
+
+    $this->setData($model->modelData->build());
     $this->setData(array(
-      'shopUrl' => Service::url('shop/'.$this->param['slug'])
+      'shopUrl' => Service::url('shop/'.$this->slug->name)
     ));
 
     return $this->view('pages.shop.main');
   }
 
-  public function setting() {
+  public function setting() {}
 
-  }
-
-  public function product() {
+  // public function product() {
     
-    $page = 1;
-    if(!empty($this->query)) {
-      $page = $this->query['page'];
-    }
+  //   $page = 1;
+  //   if(!empty($this->query)) {
+  //     $page = $this->query['page'];
+  //   }
 
-    return $this->view('pages.shop.product');
-  }
+  //   return $this->view('pages.shop.product');
+  // }
 
   public function job() {
 
-    if(!$this->model->checkPersonInShop()){
+    $model = Service::loadModel('Shop')->find($this->slug->model_id);
+
+    if(!$model->checkPersonInShop()){
       $this->error = array(
         'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
       );
@@ -89,7 +91,9 @@ class ShopController extends Controller
 
   public function create() {
 
-    $this->model->form->loadFieldData('District',array(
+    $model = Service::loadModel('Shop');
+
+    $model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -98,26 +102,28 @@ class ShopController extends Controller
       'index' => 'districts'
     ));
 
-    $this->setData($this->model->form->build());
+    $this->setData($model->form->build());
 
     return $this->view('pages.shop.form.shop_create');
   }
 
   public function creatingSubmit(CustomFormRequest $request) {
 
-    if($this->model->fill($request->all())->save()) {
+    $model = Service::loadModel('Shop');
+
+    if($model->fill($request->all())->save()) {
       Message::display('บริษัทหรือร้านค้าของคุณถูกเพิ่มลงในชุมชนแล้ว','success');
       return Redirect::to('shop/'.$this->slug->name);
     }else{
 
-      switch ($this->model->errorType) {
+      switch ($model->errorType) {
         case 1;
-          $_message = 'คุณได้เพิ่มร้านค้าชื่อว่า '.$this->model->name.' ไปแล้ว โปรดใช้ชื่ออื่น';
+          $_message = 'คุณได้เพิ่มร้านค้าชื่อว่า '.$model->name.' ไปแล้ว โปรดใช้ชื่ออื่น';
           return Redirect::back()->withErrors([$_message]);
           break;
 
         case 2;
-          $_message = 'มีร้านค้าชื่อ '.$this->model->name.' นี้แล้ว';
+          $_message = 'มีร้านค้าชื่อ '.$model->name.' นี้แล้ว';
           return Redirect::back()->withErrors([$_message]);
           break;
       }

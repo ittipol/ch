@@ -20,7 +20,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected $model;
+    // protected $model;
     protected $slug;
     protected $data = array();
     protected $param;

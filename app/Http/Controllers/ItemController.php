@@ -11,28 +11,29 @@ class ItemController extends Controller
 {
   public function __construct() { 
     parent::__construct();
-    $this->model = Service::loadModel('Item');
   }
 
   public function listView() {
+
+    $model = Service::loadModel('Item');
     
     $page = 1;
     if(!empty($this->query)) {
       $page = $this->query['page'];
     }
 
-    $this->model->paginator->setPage($page);
-    $this->model->paginator->setPagingUrl('item/list');
-    $this->model->paginator->setUrl('item/detail/{id}','detailUrl');
+    $model->paginator->setPage($page);
+    $model->paginator->setPagingUrl('item/list');
+    $model->paginator->setUrl('item/detail/{id}','detailUrl');
 
-    $this->setData($this->model->paginator->build());
+    $this->setData($model->paginator->build());
 
     return $this->view('pages.item.list');
   }
 
   public function detail() {
 
-    $model = $this->model->find($this->param['item_id']);
+    $model = Service::loadModel('Item')->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(
@@ -53,7 +54,9 @@ class ItemController extends Controller
 
   public function post() {
 
-    $this->model->form->loadFieldData('District',array(
+    $model = Service::loadModel('Item');
+
+    $model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -62,19 +65,19 @@ class ItemController extends Controller
       'index' => 'districts'
     ));
 
-    $this->model->form->loadFieldData('ItemCategory',array(
+    $model->form->loadFieldData('ItemCategory',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'itemCategories'
     ));
 
-    $this->model->form->loadFieldData('AnnouncementType',array(
+    $model->form->loadFieldData('AnnouncementType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'announcementTypes'
     ));
 
-    $this->setData($this->model->form->build());
+    $this->setData($model->form->build());
     $this->setData(array('defaultAnnouncementType' => 2));
 
     return $this->view('pages.item.form.item_post');
@@ -82,12 +85,77 @@ class ItemController extends Controller
 
   public function postingSubmit(CustomFormRequest $request) {
 
-    if($this->model->fill($request->all())->save()) {
+    $model = Service::loadModel('Item');
+
+    if($model->fill($request->all())->save()) {
       Message::display('ลงประกาศเรียบร้อยแล้ว','success');
-      return Redirect::to('item/detail/'.$this->model->id);
+      return Redirect::to('item/detail/'.$model->id);
     }else{
       return Redirect::back();
     }
 
   }
+
+  public function edit() {
+
+    $model = Service::loadModel('Item')->find($this->param['id']);
+
+    $model->form->loadFieldData('District',array(
+      'conditions' => array(
+        ['province_id','=',9]
+      ),
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'districts'
+    ));
+
+    $model->form->loadFieldData('ItemCategory',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'itemCategories'
+    ));
+
+    $model->form->loadFieldData('AnnouncementType',array(
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'announcementTypes'
+    ));
+
+    $model->form->loadData(array(
+      'json' => array('Image','Tagging')
+    ));
+
+    $this->setData($model->form->build());
+    $this->setData(array(
+      '_formData' => array(
+        'ItemToCategory' => array(
+          'item_category_id' => 1
+        )
+      )
+    ));
+// dd($this->data);
+    return $this->view('pages.item.form.item_edit');
+
+  }
+
+  public function editingSubmit(CustomFormRequest $request) {
+
+    $model = Service::loadModel('Item')->find($this->param['id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ไม่พบประกาศขายนี้'
+      );
+      return $this->error();
+    }
+
+    if($model->fill($request->all())->save()) {
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
+      return Redirect::to('real-estate/detail/'.$model->id);
+    }else{
+      return Redirect::back();
+    }
+    
+  }
+
 }

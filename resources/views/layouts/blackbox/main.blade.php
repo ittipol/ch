@@ -4,7 +4,7 @@
   <!-- Meta data -->
   @include('script.meta') 
   <!-- CSS & JS -->
-  @include('script.css-js')
+  @include('script.script')
   <!-- Title  -->
   <title>Chonburi Square</title>
 </head>

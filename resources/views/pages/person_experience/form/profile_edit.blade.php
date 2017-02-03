@@ -83,8 +83,8 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('name', 'เว็บไซต์ส่วนตัว');
-          echo Form::text('name', null, array(
+          echo Form::label('website', 'เว็บไซต์ส่วนตัว');
+          echo Form::text('website', null, array(
             'placeholder' => 'เว็บไซต์ส่วนตัว',
             'autocomplete' => 'off'
           ));
@@ -93,8 +93,8 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('name', 'บล็อก');
-          echo Form::text('name', null, array(
+          echo Form::label('blog', 'บล็อก');
+          echo Form::text('blog', null, array(
             'placeholder' => 'บล็อก',
             'autocomplete' => 'off'
           ));
@@ -158,6 +158,53 @@
 
     </div>
 
+    <div class="form-section">
+
+      <div class="title">
+        ที่อยู่ปัจจุบัน
+      </div>
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('website', 'ที่อยู่');
+          echo Form::text('website', null, array(
+            'placeholder' => 'ที่อยู่',
+            'autocomplete' => 'off'
+          ));
+        ?>
+      </div>
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('Address[province_id]', 'จังหวัด');
+          echo Form::select('Address[province_id]', $_fieldData['provinces'] ,null, array(
+            'id' => 'province'
+          ));
+        ?>
+      </div>
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('Address[district_id]', 'อำเภอ');
+          echo Form::select('Address[district_id]', array() ,null, array(
+            'id' => 'district'
+          ));
+        ?>
+      </div>
+
+<!--       <div class="form-row">
+        <?php 
+          echo Form::label('Address[sub_district_id]', 'ตำบล', array(
+            'class' => 'required'
+          ));
+          echo Form::select('Address[sub_district_id]', array('0' => '-') , null, array(
+            'id' => 'sub_district'
+          ));
+        ?>
+      </div> -->
+
+    </div>
+
     <?php
       echo Form::submit('บันทึก', array(
         'class' => 'button'
@@ -173,6 +220,13 @@
   <script type="text/javascript">
 
     $(document).ready(function(){
+
+      const province = new Province();
+      province.load();
+
+      // const district = new District();
+      // district.load();
+
       const images = new Images('_profile_image',1);
       images.load();
 

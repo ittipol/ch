@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Session;
+use App\library\date;
 
 class PersonExperience extends Model
 {
-  public $table = 'person_experiences';
+  protected $table = 'person_experiences';
   protected $fillable = ['person_id','name','active'];
+  protected $modelRelated = array('Image','Address','Contact');
   protected $directory = true;
+  protected $imageCache = array('profile-image-xs');
 
   protected $validation = array(
     'rules' => array(
@@ -21,11 +23,34 @@ class PersonExperience extends Model
   ); 
 
   public function getByPersonId() {
-    return $this->where('person_id','=',Session::get('Person.id'))->first();
+    return $this->where('person_id','=',session()->get('Person.id'))->first();
   }
 
   public function checkExistByPersonId() {
-    return $this->where('person_id','=',Session::get('Person.id'))->exists();
+    return $this->where('person_id','=',session()->get('Person.id'))->exists();
+  }
+
+  public function buildModelData() {
+
+    $date = new Date;
+
+    $gender = '-';
+    if(!empty($this->gender)) {
+
+    }
+
+    $birthDate = '-';
+    if(!empty($this->birth_date)) {
+      $date->covertDateToSting($this->birth_date);
+    }
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      'gender' => $gender,
+      'birthDate' => $birthDate
+    );
+
   }
 
 }
