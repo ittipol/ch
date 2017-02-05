@@ -14,7 +14,7 @@ use App\library\modelData;
 use App\library\paginator;
 use Session;
 use Route;
-use Request;
+// use Request;
 
 class Controller extends BaseController
 {
@@ -33,18 +33,18 @@ class Controller extends BaseController
 
     public function __construct() { 
 
-      $this->query = Request::query();
+      $this->query = request()->query();
       $this->param = Route::current()->parameters();
 
-      if(!empty($this->param['slug'])){
-        $this->slug = service::loadModel('Slug')->getData(array(
-          'conditions' => array(
-            array('name','like',$this->param['slug'])
-          ),
-          'first' => true,
-          'fields' => array('name','model','model_id')
-        ));
-      }
+      // if(!empty($this->param['slug'])){
+      //   $this->slug = service::loadModel('Slug')->getData(array(
+      //     'conditions' => array(
+      //       array('slug','like',$this->param['slug'])
+      //     ),
+      //     'first' => true,
+      //     'fields' => array('slug','model','model_id')
+      //   ));
+      // }
 
     }
 
@@ -58,10 +58,12 @@ class Controller extends BaseController
       return view('errors.error',$data);
     }
 
-    protected function setData($data = array()) {
+    protected function setData($index,$value) {
+      $this->data[$index] = $value;
+    }
 
-      $this->data = array_merge($this->data,$data);
-
+    protected function mergeData($data = array()) {
+      $this->data = $this->arrayMerge($this->data,$data);
     }
 
     protected function view($view = null) {
@@ -74,6 +76,26 @@ class Controller extends BaseController
       }
 
     	return view($view,$this->data);
+    }
+
+    protected function arrayMerge(array & $array1, array & $array2)
+    {
+        $merged = $array1;
+
+        foreach ($array2 as $key => & $value)
+        {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key]))
+            {
+                $merged[$key] = $this->arrayMerge($merged[$key], $value);
+            } else if (is_numeric($key))
+            {
+                 if (!in_array($value, $merged))
+                    $merged[] = $value;
+            } else
+                $merged[$key] = $value;
+        }
+
+        return $merged;
     }
 
 }

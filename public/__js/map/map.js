@@ -158,7 +158,7 @@ class Map {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     this.map = new google.maps.Map(document.getElementById("map"), options);
-
+console.log(this.map);
     this.marker = new google.maps.Marker();
 
     if(this.markable){

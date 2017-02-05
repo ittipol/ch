@@ -26,7 +26,7 @@ class RealEstateController extends Controller
     $model->paginator->setPagingUrl('real-estate/list');
     $model->paginator->setUrl('real-estate/detail/{id}','detailUrl');
 
-    $this->setData($model->paginator->build());
+    $this->mergeData($model->paginator->build());
 
     return $this->view('pages.real_estate.list');
   }
@@ -46,7 +46,7 @@ class RealEstateController extends Controller
       'json' => array('Image')
     ));
 
-    $this->setData($model->modelData->build());
+    $this->data = $model->modelData->build();
 
     return $this->view('pages.real_estate.detail');
 
@@ -95,8 +95,8 @@ class RealEstateController extends Controller
       'index' => 'facility'
     ));
 
-    $this->setData($model->form->build());
-    $this->setData(array('defaultAnnouncementType' => 2));
+    $this->mergeData($model->form->build());
+    $this->mergeData(array('defaultAnnouncementType' => 2));
 
     return $this->view('pages.real_estate.form.real_estate_post');
   }
@@ -167,7 +167,7 @@ class RealEstateController extends Controller
       'json' => array('Image','Tagging')
     ));
 
-    $this->setData($model->form->build());
+    $this->mergeData($model->form->build());
 
     return $this->view('pages.real_estate.form.real_estate_edit');
 

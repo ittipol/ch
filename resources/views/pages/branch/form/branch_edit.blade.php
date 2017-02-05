@@ -18,7 +18,11 @@
   @include('components.form_error') 
 
   <?php 
-    echo Form::open(['id' => 'main_form','method' => 'post', 'enctype' => 'multipart/form-data']);
+    echo Form::model($_formData, [
+      'id' => 'main_form',
+      'method' => 'PATCH',
+      'enctype' => 'multipart/form-data'
+    ]);
   ?>
 
   <?php
@@ -137,7 +141,7 @@
   </div>
 
   <?php
-    echo Form::submit('เพิ่มสาขา' , array(
+    echo Form::submit('บันทึก' , array(
       'class' => 'button'
     ));
   ?>
@@ -151,14 +155,16 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
+
     const images = new Images('_image_group',8);
     const district = new District();
     const map = new Map();
     const form = new Form();
 
-    images.load();
-    district.load();
+    images.load('<?php echo $_formData['Image']; ?>');
+    district.load('<?php echo $_formData['Address']['sub_district_id']; ?>');
     map.initialize();
+    map.setLocation('<?php echo $_formData['Address']['_geographic']; ?>');
     form.load();
 
   });

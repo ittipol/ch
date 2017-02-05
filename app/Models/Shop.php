@@ -83,7 +83,7 @@ class Shop extends Model
   
   }
 
-  public function checkPersonInShop($id = null) {
+  public function checkPersonHasShopPermission($id = null) {
 
     if(empty($id)) {
       $id = $this->id;
@@ -98,36 +98,55 @@ class Shop extends Model
 
   }
 
-  public function getPermission($id = null) {
+  // public function getPermission($id = null) {
 
-    if(empty(session()->get('Person.id'))) {
-      return false;
-    }
+  //   if(empty($id)) {
+  //     $id = $this->id;
+  //   }
 
-    if(empty($id)) {
-      $id = $this->id;
-    }
+  //   $personToShop = new PersonToShop;
+  //   $person = $personToShop->getData(array(
+  //     'conditions' => array(
+  //       ['person_id','=',session()->get('Person.id')],
+  //       ['shop_id','=',$id],
+  //     ),
+  //     'fields' => array('role_id'),
+  //     'first' => true
+  //   ));
 
-    $personToShop = new PersonToShop;
-    $person = $personToShop->getData(array(
+  //   $permission = array();
+  //   if(!empty($person)) {
+  //     $role = $person->role;
+  //     $permission = array(
+  //       'add' => $role->adding_permission,
+  //       'edit' => $role->editing_permission,
+  //       'delete' => $role->deleting_permission,
+  //     );
+  //   }
+
+  //   return $permission;
+  // }
+
+  public function getRelatedModelData($modelData) {
+
+    $shopTo = new ShopTo;
+
+    $records = $shopTo->getData(array(
       'conditions' => array(
-        ['person_id','=',session()->get('Person.id')],
-        ['shop_id','=',$id],
+        ['shop_id','=',$this->id],
+        ['model','like',$modelData]
       ),
-      'fields' => array('role_id')
+      'fields' => array('model_id')
     ));
 
-    $permission = array();
-    if(!empty($person)) {
-      $role = $person->role;
-      $permission = array(
-        'add' => $role->adding_permission,
-        'edit' => $role->editing_permission,
-        'delete' => $role->deleting_permission,
-      );
+    $index = lcfirst($modelData);
+
+    $data = array();
+    foreach ($records as $record) {
+      $data[$record->{$index}->id] = $record->{$index}->name;
     }
 
-    return $permission;
+    return $data;
   }
 
   public function buildModelData() {
@@ -138,7 +157,6 @@ class Shop extends Model
       'name' => $this->name,
       'description' => $this->description,
       '_short_description' => $string->subString($this->description,500,true),
-      '_permission' => $this->getPermission(),
       '_logo' => '',
       '_cover' => '',
     );

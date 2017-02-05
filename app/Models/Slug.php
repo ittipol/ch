@@ -7,7 +7,7 @@ use App\library\token;
 class Slug extends Model
 {
   public $table = 'slugs';
-  protected $fillable = ['model','model_id','name'];
+  protected $fillable = ['model','model_id','slug'];
 
   // ** reserved word **
   // company

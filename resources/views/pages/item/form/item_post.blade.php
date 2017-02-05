@@ -139,8 +139,7 @@
       <div class="sub-title">รูปภาพ</div>
 
       <div class="form-row">
-        <div id="_image_group">
-        </div>
+        <div id="_image_group"></div>
       </div>
 
     </div>
@@ -243,17 +242,19 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group',8);
-    const district = new District();
-    const tagging = new Tagging();
-    const form = new Form();
-
+    const images = new Images('_image_group','photo',8);
     images.load();
+
+    const district = new District();
     district.load();
+
+    const tagging = new Tagging();
     tagging.load();
     @if(!empty($_oldData['Tagging']))
       tagging.setTags('{!!$_oldData['Tagging']!!}');
     @endif
+
+    const form = new Form();
     form.load();
 
   });

@@ -83,22 +83,14 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('website', 'เว็บไซต์ส่วนตัว');
-          echo Form::text('website', null, array(
-            'placeholder' => 'เว็บไซต์ส่วนตัว',
-            'autocomplete' => 'off'
-          ));
+          echo Form::label('websites', 'เว็บไซต์ส่วนตัวหรือบล็อก');
         ?>
-      </div>
+        <div id="website_input" class="text-group">
+          <div class="text-group-panel">
 
-      <div class="form-row">
-        <?php 
-          echo Form::label('blog', 'บล็อก');
-          echo Form::text('blog', null, array(
-            'placeholder' => 'บล็อก',
-            'autocomplete' => 'off'
-          ));
-        ?>
+          </div>
+          <a href="javascript:void(0);" class="text-add">เพิ่ม +</a>
+        </div>
       </div>
 
       <div class="form-row">
@@ -166,8 +158,8 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('website', 'ที่อยู่');
-          echo Form::text('website', null, array(
+          echo Form::label('Address[address]', 'ที่อยู่');
+          echo Form::text('Address[address]', null, array(
             'placeholder' => 'ที่อยู่',
             'autocomplete' => 'off'
           ));
@@ -219,6 +211,49 @@
 
   <script type="text/javascript">
 
+    class InputTextGroup {
+
+      constructor(panel = '_text_input_panel',textInputName = '_text_input_data',placeholder = '') {
+        this.panel = panel;
+        this.textInputName = textInputName;
+        this.placeholder = placeholder;
+      }
+
+      load() {
+        this.createTextInput(false);
+        this.bind();
+      }
+
+      bind() {
+
+        let _this = this;
+
+        $('.text-group > .text-add').on('click',function(){
+          _this.createTextInput();
+        });
+
+        $(document).on('click','.button-clear-text',function(){
+          console.log($(this).parent().remove());
+        });
+
+      }
+
+      createTextInput(closeBtn = true) {
+        let html = '';
+        
+        html += '<div class="text-input-wrapper">';
+        html += '<input type="text" name="'+this.textInputName+'[]" placeholder="'+this.placeholder+'" autocomplete="off">';
+        if(closeBtn){
+          html += '<span class="button-clear-text" style="visibility: visible;">×</span>';
+        }
+        html += '</div>';
+
+        $('#'+this.panel+' .text-group-panel').append(html);
+
+      }
+
+    } 
+
     $(document).ready(function(){
 
       const province = new Province();
@@ -229,6 +264,9 @@
 
       const images = new Images('_profile_image',1);
       images.load();
+
+      const inputTextGroup = new InputTextGroup('website_input','private_websites','เว็บไซต์ส่วนตัวหรือบล็อก');
+      inputTextGroup.load();
 
     });
 

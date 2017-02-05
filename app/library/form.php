@@ -67,10 +67,6 @@ class Form {
       case 'Contact':
         $data = $this->loadContact();
         break;
-
-      case 'JobToBranch':
-        $data = $this->loadJobToBranch();
-        break;
     }
 
     if($json) {
@@ -111,8 +107,7 @@ class Form {
           ))
         )
       ),
-      'fields' => array('id','model','model_id','filename','description'),
-      'first' => false
+      'fields' => array('id','model','model_id','filename','description')
     ));
 
     if(empty($images)){
@@ -131,8 +126,7 @@ class Form {
   public function loadTagging() {
     $taggings = $this->model->getRalatedModelData('Tagging',
       array(
-        'fields' => array('word_id'),
-        'first' => false
+        'fields' => array('word_id')
       )
     );
 
@@ -163,19 +157,18 @@ class Form {
 
   }
 
-  public function loadJobToBranch() {
-    $jobToBranch = $this->model->getRalatedData('JobToBranch',array(
-      'first' => false,
-      'fields' => array('branch_id')
-    ));
+  // public function loadBranches() {dd($this->model);
+  //   $jobToBranch = $this->model->getRalatedData('JobToBranch',array(
+  //     'fields' => array('branch_id')
+  //   ));
 
-    $branches = array();
-    foreach ($jobToBranch as $value) {
-      $branches['branch_id'][] = $value->branch->id;
-    }
+  //   $branches = array();
+  //   foreach ($jobToBranch as $value) {
+  //     $branches['branch_id'][] = $value->branch->id;
+  //   }
 
-    return $branches;
-  }
+  //   return $branches;
+  // }
 
   public function loadFieldData($modelName,$options = array()) {
     $model = Service::loadModel($modelName);
@@ -197,52 +190,47 @@ class Form {
     $this->data[$options['index']] = $data;
   }
 
-  public function shopTo($options = array()) {
+  // public function shopTo($options = array()) {
 
-    $records = Service::loadModel('shopTo')->getData(array(
-      'conditions' => array(
-        ['shop_id','=',$options['shopId']],
-        ['model','=',$options['model']]
-      ),
-      'fields' => array('model_id')
-    ));
+  //   $records = Service::loadModel('shopTo')->getData(array(
+  //     'conditions' => array(
+  //       ['shop_id','=',$options['shopId']],
+  //       ['model','=',$options['model']]
+  //     ),
+  //     'fields' => array('model_id')
+  //   ));
 
-    $index = lcfirst($options['model']);
+  //   $index = lcfirst($options['model']);
 
-    $data = array();
-    foreach ($records as $record) {
-      $data[$record->{$index}->id] = $record->{$index}->name;
-    }
+  //   $data = array();
+  //   foreach ($records as $record) {
+  //     $data[$record->{$index}->id] = $record->{$index}->name;
+  //   }
 
-    if(!empty($options['index'])) {
-      $index = $options['index'];
-    }
+  //   if(!empty($options['index'])) {
+  //     $index = $options['index'];
+  //   }
 
-    $this->data[$index] = $data;
-  }
+  //   $this->data[$index] = $data;
+  // }
 
-  public function set($index,$value) {
+  public function setData($index,$value) {
     $this->data[$index] = $value;
   }
 
-  // public function get($index = '') {
+  public function getFieldData() {
+    return $this->data;
+  }
 
-  //   if(!empty($index) && !empty($this->data[$index])){
-  //     return $this->data[$index];
-  //   }
-
-  //   return $this->data;
-  // }
+  public function setFormData($index,$value) {
+    $this->formData[$index] = $value;
+  }
 
   public function getFormModel() {
     return array(
       'id' => $this->model->id,
       'modelName' => $this->model->modelName
     );
-  }
-
-  public function getFieldData() {
-    return $this->data;
   }
 
   public function getFormData() {

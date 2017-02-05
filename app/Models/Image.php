@@ -2,50 +2,79 @@
 
 namespace App\Models;
 
-use App\library\token;
+// use App\library\token;
 use App\library\service;
 use App\library\imageTool;
+use App\library\url;
 use File;
 use Session;
 
 class Image extends Model
 {
   protected $table = 'images';
-  protected $fillable = ['original_image_id','model','model_id','filename','description','image_style_id','created_by'];
-  private $maxFileSizes = 1048576;
+  protected $fillable = ['original_image_id','model','model_id','path','filename','description','image_type_id','created_by'];
+  private $maxFileSizes = 2097152;
   private $acceptedFileTypes = ['image/jpg','image/jpeg','image/png', 'image/pjpeg'];
+
+  private $imagePatterns = array(
+    'profile-image' => array(
+      'path' => 'profile',
+      'rename' => 'profile-image'
+    ),
+    'cover' => array(
+      'path' => 'profile',
+      'rename' => 'cover'
+    ),
+    'image' => array(
+      'path' => 'images'
+    )
+  );
+
+  private $prefix = 'image';
+
+  // photos/?tab=album&album_id=270003133398148
+  // photos/?tab=album&album_id=1299989693406181
 
   public function __construct() {  
     parent::__construct();
   }
 
-  public function imageStyle() {
-    return $this->hasOne('App\Models\ImageStyle','id','image_style_id');
+  public function imageType() {
+    return $this->hasOne('App\Models\ImageType','id','image_type_id');
   }
 
   public function __saveRelatedData($model,$options = array()) {
+    // $this->deleteImages($model,$options['value']['delete']);
     $this->saveImages($model,$options['value'],$options);
   }
 
   private function saveImages($model,$images,$options = array()) {
 
     $temporaryFile = new TemporaryFile;
-    $imageStyle = new ImageStyle;
+    $imageType = new ImageType;
 
-    foreach ($images as $token => $imageGroup) {
+    $count = array();
 
-      $directoryName = $model->modelName.'_'.$token;
+    foreach ($images as $type => $value) {
 
-      if(!empty($imageGroup['remove'])) {
-        $removeFiles = $imageGroup['remove'];
-        unset($imageGroup['remove']);
-        $this->deleteImages($model,$removeFiles);
+      if(!$imageType->checkExistByAlias($type) || 
+        (empty($model->images[$type]) || 
+        ($model->images[$type]['limit'] == 0))) 
+      {
+        continue;
       }
 
-      foreach ($imageGroup as $image) {
+      $directoryName = $model->modelName.'_'.$value['token'].'_'.$type;
 
-        if(empty($image['filename'])) {
-          continue;
+      $count[$type] = 0;
+
+      // Get Image type
+      $imageType = $imageType->where('alias','like',$type)->select('path')->first();
+
+      foreach ($value['images'] as $image) {
+
+        if($model->images[$type]['limit'] < ++$count[$type]) {
+          break;
         }
 
         $path = $temporaryFile->getFilePath($image['filename'],array(
@@ -56,22 +85,24 @@ class Image extends Model
           continue;
         }
 
-        $value = array(
+        $_value = array(
           'filename' => $image['filename'],
-          'image_style_id' => $imageStyle->getIdByalias('original')
+          'image_type_id' => $imageType->getIdByalias($type)
         );
 
         if(!empty($image['description'])) {
-          $value = array_merge($value,array(
-            'description' => $image['description']
-          ));
+          $_value['description'] = $image['description'];
         }
 
         $imageInstance = $this->newInstance();
-        if($imageInstance->fill($model->includeModelAndModelId($value))->save()) {
+        if($imageInstance->fill($model->includeModelAndModelId($_value))->save()) {
+
+          $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
+          if(!is_dir($toPath)){
+            mkdir($toPath,0777,true);
+          }
 
           $this->moveImage($path,$imageInstance->getImagePath());
-          $imageInstance->cache($model);
 
         }
 
@@ -80,103 +111,55 @@ class Image extends Model
       // remove temp dir
       $temporaryFile->deleteTemporaryDirectory($directoryName);
 
-      $temporaryFile->deleteTemporaryRecords($model->modelName,$token);
+      $temporaryFile->deleteTemporaryRecords($model->modelName,$value['token']);
 
     }
 
   }
 
-  public function cache($model) {
+  // public function cache($model) {
 
-    $imageStyle = new ImageStyle;
+  //   $imageStyle = new ImageStyle;
 
-    $imagePath = $this->getImagePath();
+  //   $imagePath = $this->getImagePath();
 
-    $ext = pathinfo($this->filename, PATHINFO_EXTENSION);
-    $filename = pathinfo($this->filename, PATHINFO_FILENAME);
-    list($originalWidth,$originalHeight) = getimagesize($imagePath);
+  //   $ext = pathinfo($this->filename, PATHINFO_EXTENSION);
+  //   $filename = pathinfo($this->filename, PATHINFO_FILENAME);
+  //   list($originalWidth,$originalHeight) = getimagesize($imagePath);
 
-    $styles = $imageStyle->whereIn('alias',$model->getImageCache())->get();
+  //   $styles = $imageStyle->whereIn('alias',$model->getImageCache())->get();
 
-    foreach ($styles as $style) {
+  //   foreach ($styles as $style) {
 
-      $width = $style->width;
-      $height = $style->height;
+  //     $width = $style->width;
+  //     $height = $style->height;
 
-      if(!empty($style->fx) && method_exists($imageStyle,$style->fx)) {
-        list($width,$height) = $imageStyle->getImageSizeByRatio($originalWidth,$originalHeight,$width,$height);
-      }
+  //     if(!empty($style->fx) && method_exists($imageStyle,$style->fx)) {
+  //       list($width,$height) = $imageStyle->getImageSizeByRatio($originalWidth,$originalHeight,$width,$height);
+  //     }
 
-      $_filename = $filename.'_'.$width.'x'.$height.'.'.$ext;
+  //     $_filename = $filename.'_'.$width.'x'.$height.'.'.$ext;
 
-      $imageLib = new ImageTool($imagePath);
-      $imageLib->resize($width,$height);
-      $imageLib->save($this->getDirPath().$style->path_name.'/'.$_filename);
+  //     $path = $this->getDirPath().$style->path_name;
+  //     if(!is_dir($path)){
+  //       mkdir($path,0777,true);
+  //     }
 
-      $value = array(
-        'original_image_id' => $this->id,
-        'filename' => $_filename,
-        'image_style_id' => $imageStyle->getIdByalias($style->alias)
-      );
+  //     $imageLib = new ImageTool($imagePath);
+  //     $imageLib->resize($width,$height);
+  //     $imageLib->save($path.'/'.$_filename);
 
-      $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+  //     $value = array(
+  //       'original_image_id' => $this->id,
+  //       'filename' => $_filename,
+  //       'image_style_id' => $imageStyle->getIdByalias($style->alias)
+  //     );
 
-    }
+  //     $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
+
+  //   }
     
-
-    // $h = 50;
-    // $w = 50;
-    // // $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
-    // $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
-
-    // // $path = $this->getDirPath().'xs/';
-    // // if(!is_dir($path)){
-    // //   mkdir($path,0777,true);
-    // // }
-
-    // $imageLib = new ImageTool($imagePath);
-    // $imageLib->resize($w,$h);
-    // $imageLib->save($this->getDirPath().$_filename);
-
-    // $value = array(
-    //   'original_image_id' => $this->id,
-    //   'filename' => $_filename,
-    //   'image_style_id' => $imageStyle->getIdByalias('xs')
-    // );
-
-    // $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
-
-    // // =====================================================================
-
-    // $h = 250;
-    // $w = 250;
-    
-    // if (($imageInfo[0] > $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
-    //   $w = (int)ceil($imageInfo[0]*($h/$imageInfo[1]));
-    // } else if (($imageInfo[0] < $imageInfo[1]) && (abs($imageInfo[0] - $imageInfo[1]) > 280)){
-    //   $h = (int)ceil($imageInfo[1]*($w/$imageInfo[0]));
-    // }
-
-    // $_filename = $filename.'_'.$w.'x'.$h.'.'.$ext;
-
-    // // $path = $this->getDirPath().'list/';
-    // // if(!is_dir($path)){
-    // //   mkdir($path,0777,true);
-    // // }
-
-    // $imageLib = new ImageTool($imagePath);
-    // $imageLib->resize($w,$h);
-    // $imageLib->save($this->getDirPath().$_filename);
-
-    // $value = array(
-    //   'original_image_id' => $this->id,
-    //   'filename' => $_filename,
-    //   'image_style_id' => $imageStyle->getIdByalias('list')
-    // );
-
-    // $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
-
-  }
+  // }
 
   private function deleteImages($model,$imageIds) {
 
@@ -225,8 +208,9 @@ class Image extends Model
       $filename = $this->filename;
     }
 
-    if(!empty($this->imageStyle->path_name)) {
-      $filename = $this->imageStyle->path_name.'/'.$filename;
+    if(!empty($this->imageType->path)) {
+      $url = new Url;
+      $filename = $url->addSlash($this->imageType->path).$filename;
     }
 
     return $this->getDirPath().$filename;

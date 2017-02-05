@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-md-8 col-xs-12">
         <div class="title">
-          ลงประกาศงาน
+          แก้ไขประกาศงาน
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
       <div class="form-item-group">
         <div class="row">
           <?php 
-            foreach ($_fieldData['branch'] as $id => $branch):
+            foreach ($_fieldData['branches'] as $id => $branch):
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">

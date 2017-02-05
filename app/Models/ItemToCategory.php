@@ -13,10 +13,19 @@ class ItemToCategory extends Model
   }
 
   public function __saveRelatedData($model,$options = array()) {
-    return $this->fill(array(
-      'item_id' => $model->id,
-      'item_category_id' => $options['value']['item_category_id']
-    ))->save();
+
+    if(!empty($options['value']['item_category_id'])) {
+
+      if($model->state == 'update') {
+        $this->where('item_id','=',$model->id)->delete();
+      }
+      
+      return $this->fill(array(
+        'item_id' => $model->id,
+        'item_category_id' => $options['value']['item_category_id']
+      ))->save();
+
+    }
   }
 
 }

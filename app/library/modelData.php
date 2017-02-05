@@ -2,6 +2,8 @@
 
 namespace App\library;
 
+use App\library\image;
+
 class ModelData {
 
 	private $model;
@@ -141,19 +143,12 @@ class ModelData {
 
   public function loadImage() {
 
+    $imageLib = new Image;
+
     $imageStyle = Service::loadModel('ImageStyle');
 
     $images = $this->model->getRalatedModelData('Image',array(
-      'conditions' => array(
-        'in' => array(
-          array('image_style_id',array(
-            $imageStyle->getIdByalias('original'),
-            $imageStyle->getIdByalias('xs')
-          ))
-        )
-      ),
-      'fields' => array('id','original_image_id','model','model_id','filename','description','image_style_id'),
-      'first' => false
+      'fields' => array('id','model','model_id','filename','description','image_type_id')
     ));
 
     if(empty($images)){
@@ -162,38 +157,26 @@ class ModelData {
 
     $_images = array();
     foreach ($images as $image) {
+      $_images[] = $image->buildModelData();
+      // get cache image
+      $imageLib->getCacheImageUrl($image,'xs');
+      $imageLib->cache($image,'xs');
+      dd('aaa');
+    } 
 
-      $id = $image->original_image_id;
-      if(empty($id)) {
-        $id = $image->id;
-      }
+    // $images = array();
+    // foreach ($_images as $image) {
+    //   $images[] = $image;
+    // }
 
-      if(!empty($image->original_image_id)) {
-        $_image = $image->buildModelData();
-        $_images[$id] = array_merge($_images[$id],array(
-          '_'.$image->imageStyle->alias.'_url' => $_image['_url']
-        ));
-
-      }else{
-        $_images[$id] = $image->buildModelData();
-      }
-
-    }
-
-    $images = array();
-    foreach ($_images as $image) {
-      $images[] = $image;
-    }
-
-    return $images;
+    return $_images;
 
   }
 
   public function loadTagging() {
     $taggings = $this->model->getRalatedModelData('Tagging',
       array(
-        'fields' => array('word_id'),
-        'first' => false
+        'fields' => array('word_id')
       )
     );
 

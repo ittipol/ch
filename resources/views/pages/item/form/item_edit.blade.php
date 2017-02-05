@@ -247,17 +247,15 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
+
     const images = new Images('_image_group',8);
     const district = new District();
     const tagging = new Tagging();
     const form = new Form();
 
-    images.load();
-    district.load();
-    tagging.load();
-    @if(!empty($_oldData['Tagging']))
-      tagging.setTags('{!!$_oldData['Tagging']!!}');
-    @endif
+    images.load('<?php echo $_formData['Image']; ?>');
+    district.load('<?php echo $_formData['Address']['sub_district_id']; ?>');
+    tagging.load('<?php echo $_formData['Tagging']; ?>');
     form.load();
 
   });

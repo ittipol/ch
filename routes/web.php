@@ -35,8 +35,8 @@ Route::get('announcement/create','AnnouncementController@create');
 
 // Experience
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('experience','PersonExperienceController@index');
-  Route::post('experience','PersonExperienceController@start');
+  Route::get('experience','PersonExperienceController@index')->name('person.experience.profile');
+  Route::post('experience','PersonExperienceController@start')->name('person.experience.profile');
 });
 Route::group(['middleware' => ['auth','person.experience']], function () {
   Route::get('experience/profile','PersonExperienceController@profileEdit');
@@ -55,19 +55,21 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
 });
 
 
-// community / shop
+// community / Shop
+
 // Route::get('community/shop_feature','ShopController@feature');
-Route::get('shop/{slug}','ShopController@index');
+// Route::get('shop/{slug}','ShopController@index')->name('shop');
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('community/shop_create','ShopController@create');
   Route::post('community/shop_create','ShopController@creatingSubmit');
+});
+Route::group(['middleware' => ['auth','person.shop.permission']], function () {
+  Route::get('shop/{slug}/manage','ShopController@manage')->name('shop.manage');
 
-  Route::get('shop/{slug}/product','ShopController@product');
+  // Route::get('shop/{slug}/product','ShopController@product');
+  // Route::get('shop/{slug}/advertisement','ShopController@advertisement');
 
-  Route::get('shop/{slug}/advertisement','ShopController@advertisement');
-
-  Route::get('shop/{slug}/manage','ShopController@product');
   Route::get('shop/{slug}/setting','ShopController@setting');
 });
 
@@ -87,9 +89,9 @@ Route::group(['middleware' => 'auth'], function () {
 // Route::get('product/{product_slug}','ProductController@detail');
 
 // Job
-Route::get('job/detail/{id}','JobController@detail');
+Route::get('job/detail/{id}','JobController@detail')->name('job.detail');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 
   Route::get('shop/{slug}/job','ShopController@job');
   
@@ -97,26 +99,28 @@ Route::group(['middleware' => 'auth'], function () {
   Route::post('shop/{slug}/job_add','JobController@addingSubmit');
 
   Route::get('shop/{slug}/job_edit/{id}','JobController@edit');
-  Route::patch('shop/{slug}/job_edit/{id}',[
-    'uses' => 'JobController@editingSubmit'
-  ]);
+  Route::patch('shop/{slug}/job_edit/{id}','JobController@editingSubmit');
+
 });
 
 // Branch
-Route::group(['middleware' => 'auth'], function () {
-  Route::get('shop/{slug}/branch_detail/{id}','BranchController@detail');
+Route::group(['middleware' => ['auth','person.shop.permission']], function () {
+  Route::get('shop/{slug}/branch_detail/{id}','BranchController@detail')->name('shop.branch.detail');
 
-  Route::get('shop/{slug}/branch_add','BranchController@add');
-  Route::post('shop/{slug}/branch_add','BranchController@addingSubmit');
+  Route::get('shop/{slug}/branch_add','BranchController@add')->name('shop.branch.add');
+  Route::post('shop/{slug}/branch_add','BranchController@addingSubmit')->name('shop.branch.add');
+
+  Route::get('shop/{slug}/branch_edit/{id}','BranchController@edit')->name('shop.branch.edit');
+  Route::patch('shop/{slug}/branch_edit/{id}','BranchController@editingSubmit')->name('shop.branch.edit');
 });
 
 // Person Post Item
-Route::get('item/list','ItemController@listView');
-Route::get('item/detail/{id}','ItemController@detail');
+Route::get('item/list','ItemController@listView')->name('itme.list');
+Route::get('item/detail/{id}','ItemController@detail')->name('itme.detail');
 
 Route::group(['middleware' => 'auth'], function () {
-  Route::get('item/post','ItemController@post');
-  Route::post('item/post','ItemController@postingSubmit');
+  Route::get('item/post','ItemController@post')->name('itme.post');
+  Route::post('item/post','ItemController@postingSubmit')->name('itme.post');
 
   Route::get('item/edit/{id}','ItemController@edit')->name('item.edit');
   Route::patch('item/edit/{id}','ItemController@editingSubmit')->name('item.edit');

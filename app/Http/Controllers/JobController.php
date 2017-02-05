@@ -30,7 +30,7 @@ class JobController extends Controller
       'json' => array('Image')
     ));
 
-    $this->setData($model->modelData->build());
+    $this->mergeData($model->modelData->build());
 
     // Get Shop Address
     $shop = $model->getRalatedModelData('ShopTo',array(
@@ -38,9 +38,9 @@ class JobController extends Controller
     ))->shop;
 
     // Get Slug
-    $slugName = $shop->getRalatedModelData('Slug',array(
+    $slug = $shop->getRalatedModelData('Slug',array(
       'first' => true,
-    ))->name;
+    ))->slug;
 
     // Get Branches
     $branchIds = $model->getRalatedData('JobToBranch',array(
@@ -48,10 +48,13 @@ class JobController extends Controller
       'fields' => array('branch_id'),
     ));
 
-    $branches = Service::loadModel('Branch')->whereIn('id',$branchIds)->get();
+    $branches = array();
+    if(!empty($branchIds)){
+      $branches = Service::loadModel('Branch')->whereIn('id',$branchIds)->get();
+    }
     
     $url = new Url;
-    $url->setUrl('shop/'.$slugName.'/branch_detail/{id}','detailUrl');
+    $url->setUrl('shop/'.$slug.'/branch_detail/{id}','detailUrl');
 
     $branchLocations = array();
     $hasBranchLocation = false;
@@ -73,7 +76,7 @@ class JobController extends Controller
       }
     }
 
-    $this->setData(array(
+    $this->mergeData(array(
       'shopAddress' => $shop->modelData->loadAddress(),
       'branchLocations' => json_encode($branchLocations),
       'hasBranchLocation' => $hasBranchLocation
@@ -85,13 +88,6 @@ class JobController extends Controller
 
   public function add() {
 
-    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
-      $this->error = array(
-        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
-      );
-      return $this->error();
-    }
-
     $model = Service::loadModel('Job');
 
     $model->form->loadFieldData('EmploymentType',array(
@@ -100,31 +96,24 @@ class JobController extends Controller
       'index' => 'employmentTypes'
     ));
     $model->form->shopTo(array(
-      'shopId' => $this->slug->model_id,
+      'shopId' => request()->get('shop')->id,
       'model' => 'Branch'
     ));
 
-    $this->setData($model->form->build());
+    $this->data = $model->form->build();
 
     return $this->view('pages.job.form.job_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {
 
-    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
-      $this->error = array(
-        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
-      );
-      return $this->error();
-    }
-
     $model = Service::loadModel('Job');
 
-    $request->request->add(['ShopTo' => array('shop_id' => $this->slug->model_id)]);
+    $request->request->add(['ShopTo' => array('shop_id' => request()->get('shop')->id)]);
 
     if($model->fill($request->all())->save()) {
       Message::display('ลงประกาศงานแล้ว','success');
-      return Redirect::to('shop/'.$this->slug->name.'/job');
+      return Redirect::to('shop/'.$request->slug.'/job');
     }else{
       return Redirect::back();
     }
@@ -132,13 +121,6 @@ class JobController extends Controller
   }
 
   public function edit() {
-
-    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
-      $this->error = array(
-        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
-      );
-      return $this->error();
-    }
 
     $model = Service::loadModel('Job')->find($this->param['id']);
 
@@ -148,19 +130,34 @@ class JobController extends Controller
       );
       return $this->error();
     }
-    
-    $model->form->loadData();
+
+    $model->form->loadData(array(
+      'models' => array('Image','Tagging'),
+      'json' => array('Image','Tagging')
+    ));
     $model->form->loadFieldData('EmploymentType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'employmentTypes'
     ));
-    $model->form->shopTo(array(
-      'shopId' => $this->slug->model_id,
-      'model' => 'Branch'
+
+    $jobToBranch = $model->getRalatedData('JobToBranch',array(
+      'fields' => array('branch_id')
     ));
 
-    $this->setData($model->form->build());
+    $branches = array();
+    if(!empty($jobToBranch)) {
+      foreach ($jobToBranch as $value) {
+        $branches['branch_id'][] = $value->branch->id;
+      }
+    }
+
+    // Get Selected Branch
+    $model->form->setFormData('JobToBranch',$branches);
+    // Get branches in shop
+    $model->form->setData('branches',request()->get('shop')->getRelatedModelData('Branch'));
+
+    $this->mergeData($model->form->build());
 
     return $this->view('pages.job.form.job_edit');
   }
@@ -171,7 +168,7 @@ class JobController extends Controller
 
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to('shop/'.$this->slug->name.'/job');
+      return Redirect::to('shop/'.request()->slug.'/job');
     }else{
       return Redirect::back();
     }

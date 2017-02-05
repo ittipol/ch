@@ -28,7 +28,7 @@ class Tagging extends Model
     $deletingId = array();
     if(!empty($currentTaggings)){
       foreach ($currentTaggings as $tagging) {
-      
+
         if(in_array($tagging->word_id, $wordIds)) {
           $currentId[] = $tagging->word_id;
           continue;

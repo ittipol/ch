@@ -7,7 +7,7 @@ use App\library\date;
 class PersonExperience extends Model
 {
   protected $table = 'person_experiences';
-  protected $fillable = ['person_id','name','active'];
+  protected $fillable = ['person_id','name','gender','birth_date','private_websites','active'];
   protected $modelRelated = array('Image','Address','Contact');
   protected $directory = true;
   protected $imageCache = array('profile-image-xs');
@@ -28,6 +28,16 @@ class PersonExperience extends Model
 
   public function checkExistByPersonId() {
     return $this->where('person_id','=',session()->get('Person.id'))->exists();
+  }
+
+  public function fill(array $attributes) {
+
+    if(!empty($attributes)) {
+      $attributes['private_websites'] = json_encode($attributes['private_websites']);
+    }
+
+    return parent::fill($attributes);
+
   }
 
   public function buildModelData() {

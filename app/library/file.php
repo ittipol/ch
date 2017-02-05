@@ -16,6 +16,8 @@ class File
 
 		  $this->file = $file;
 
+		 dd(getimagesize($this->file->getRealPath()));
+
 		  $this->generateFileName();
 
 		  foreach (array('image','pdf') as $type) {

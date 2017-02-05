@@ -13,12 +13,11 @@ class BranchController extends Controller
 
   public function __construct() { 
     parent::__construct();
-    $this->model = Service::loadModel('Branch');
   }
 
   public function detail() {
 
-    $model = $this->model->find($this->param['id']);
+    $model = Service::loadModel('Branch')->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(
@@ -31,8 +30,6 @@ class BranchController extends Controller
       'models' => array('Image','Address','Contact'),
       'json' => array('Image')
     ));
-
-    $this->setData($model->modelData->build());
 
     // Get Branches
     $jobIds = $model->getRalatedData('JobToBranch',array(
@@ -52,9 +49,8 @@ class BranchController extends Controller
       'order' => array('id','DESC')
     ));
 
-    $this->setData(array(
-      'jobs' => $jobs->paginator->getModelData()
-    ));
+    $this->data = $model->modelData->build();
+    $this->setData('jobs',$jobs->paginator->getModelData());
 
     return $this->view('pages.branch.detail');
 
@@ -62,14 +58,16 @@ class BranchController extends Controller
 
   public function add() {
 
-    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
+    if(!Service::loadModel('Shop')->checkPersonHasShopPermission($this->slug->model_id)){
       $this->error = array(
-        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
+        'message' => 'ไม่อนุญาตให้แก้ไชร้านค้านี้ได้'
       );
       return $this->error();
     }
 
-    $this->model->form->loadFieldData('District',array(
+    $model = Service::loadModel('Branch');
+
+    $model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -78,28 +76,74 @@ class BranchController extends Controller
       'index' => 'districts'
     ));
 
-    $this->setData($this->model->form->build());
+    $this->data = $model->form->build();
 
     return $this->view('pages.branch.form.branch_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {
 
-    if(!Service::loadModel('Shop')->checkPersonInShop($this->slug->model_id)){
+    if(!Service::loadModel('Shop')->checkPersonHasShopPermission($this->slug->model_id)){
       $this->error = array(
-        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
+        'message' => 'ไม่อนุญาตให้แก้ไชร้านค้านี้ได้'
       );
       return $this->error();
     }
 
+    $model = Service::loadModel('Branch');
+
     $request->request->add(['ShopTo' => array('shop_id' => $this->slug->model_id)]);
 
-    if($this->model->fill($request->all())->save()) {
-      Message::display('สาขา '.$this->model->name.' ถูกเพิ่มแล้ว','success');
-      return Redirect::to('shop/'.$this->slug->name.'/job');
+    if($model->fill($request->all())->save()) {
+      Message::display('สาขา '.$model->name.' ถูกเพิ่มแล้ว','success');
+      return Redirect::to(route('shop.branch.detail', ['slug' => $this->slug->slug,'id' => 1]));
     }else{
       return Redirect::back();
     }
+  }
+
+  public function edit() {
+
+    $model = Service::loadModel('Branch')->find($this->param['id']);
+
+    $model->form->loadFieldData('District',array(
+      'conditions' => array(
+        ['province_id','=',9]
+      ),
+      'key' =>'id',
+      'field' => 'name',
+      'index' => 'districts'
+    ));
+
+    $model->form->loadData(array(
+      'json' => array('Image')
+    ));
+
+    $this->data = $model->form->build();
+
+    return $this->view('pages.branch.form.branch_edit');
+
+  }
+
+  public function editingSubmit(CustomFormRequest $request) {
+
+    $model = Service::loadModel('Branch')->find($this->param['id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ไม่พบประกาศขายนี้'
+      );
+      return $this->error();
+    }
+
+    if($model->fill($request->all())->save()) {
+
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
+      return Redirect::to(route('shop.branch.detail', ['slug' => $this->slug->slug,'id' => $model->id]));
+    }else{
+      return Redirect::back();
+    }
+    
   }
 
 }

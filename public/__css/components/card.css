@@ -23,8 +23,6 @@
 }
 
 .card .image .product-image {
-	/*max-width: 100%;
-	height: 250px;*/
 	width: 100%;
 	height: 250px;
 	background-position: center;
@@ -48,7 +46,7 @@
 	text-decoration: none;
 	font-size: 18px;
 	line-height: 20px;
-	color: #333;
+	color: #333 !important;
 	font-weight: bold;
 	clear: left;
 	font-style: normal;
@@ -56,5 +54,4 @@
 
 .card .button {
 	margin: 15px 0 0;
-	/*background-color: #EF6C00;*/
 }

@@ -26,7 +26,7 @@ class ItemController extends Controller
     $model->paginator->setPagingUrl('item/list');
     $model->paginator->setUrl('item/detail/{id}','detailUrl');
 
-    $this->setData($model->paginator->build());
+    $this->data = $model->paginator->build();
 
     return $this->view('pages.item.list');
   }
@@ -46,7 +46,7 @@ class ItemController extends Controller
       'json' => array('Image')
     ));
 
-    $this->setData($model->modelData->build());
+    $this->data = $model->modelData->build();
 
     return $this->view('pages.item.detail');
 
@@ -77,8 +77,8 @@ class ItemController extends Controller
       'index' => 'announcementTypes'
     ));
 
-    $this->setData($model->form->build());
-    $this->setData(array('defaultAnnouncementType' => 2));
+    $this->mergeData($model->form->build());
+    $this->setData('defaultAnnouncementType',2);
 
     return $this->view('pages.item.form.item_post');
   }
@@ -99,6 +99,13 @@ class ItemController extends Controller
   public function edit() {
 
     $model = Service::loadModel('Item')->find($this->param['id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ไม่พบประกาศขายนี้'
+      );
+      return $this->error();
+    }
 
     $model->form->loadFieldData('District',array(
       'conditions' => array(
@@ -125,15 +132,12 @@ class ItemController extends Controller
       'json' => array('Image','Tagging')
     ));
 
-    $this->setData($model->form->build());
-    $this->setData(array(
-      '_formData' => array(
-        'ItemToCategory' => array(
-          'item_category_id' => 1
-        )
-      )
+    $model->form->setFormData('ItemToCategory',array(
+      'item_category_id' => Service::loadModel('ItemToCategory')->where('item_id','=',$this->param['id'])->first()->item_category_id
     ));
-// dd($this->data);
+
+    $this->data = $model->form->build();
+
     return $this->view('pages.item.form.item_edit');
 
   }

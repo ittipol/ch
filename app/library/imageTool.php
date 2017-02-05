@@ -58,21 +58,27 @@ class ImageTool {
 	}
 
 	public function save($file, $quality = 90) {
+
 		$info = pathinfo($file);
 
 		$extension = strtolower($info['extension']);
 
+		$result = null;
+
 		if (is_resource($this->image)) {
 			if ($extension == 'jpeg' || $extension == 'jpg') {
-				imagejpeg($this->image, $file, $quality);
+				$result = imagejpeg($this->image, $file, $quality);
 			} elseif ($extension == 'png') {
-				imagepng($this->image, $file);
+				$result = imagepng($this->image, $file);
 			} elseif ($extension == 'gif') {
-				imagegif($this->image, $file);
+				$result = imagegif($this->image, $file);
 			}
 
 			imagedestroy($this->image);
 		}
+
+		return $result;
+
 	}
 
 	public function resize($width = 0, $height = 0, $default = '') {

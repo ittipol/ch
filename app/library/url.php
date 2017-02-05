@@ -6,6 +6,24 @@ class Url
 {
   private $urls = array();
 
+  public function url($url,$check=true) {
+
+    $url = url($url);
+
+    if($check) {
+      $url = $this->addSlash($url);
+    }
+
+    return $url;
+  }
+
+  public function addSlash($str) {
+    if(substr($str, -1) != '/') {
+      $str .= '/';
+    }
+    return $str;
+  }
+
   public function getUrls() {
     return $this->urls;
   }

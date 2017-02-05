@@ -267,6 +267,32 @@ form .input-addon > select:last-child {
 	background-color: rgb(3,192,37);
 }
 
+.text-group .text-add {
+	margin-top: 10px;
+	display: block;
+}
+
+.text-group input[type="text"] {
+	margin-top: 10px;
+}
+
+.text-input-wrapper {
+	position: relative;
+}
+.text-input-wrapper input {
+	padding-right: 20px;
+}
+.text-input-wrapper span {
+  cursor:pointer;
+  color:red;
+  font-weight:bold;
+  font-size: 25px;
+  position: relative;
+  top: 4px;
+  right: 30px;
+
+}
+
 select[name^="OfficeHour"] {
 	font-weight: bold;
 }

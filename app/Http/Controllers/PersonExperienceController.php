@@ -25,12 +25,12 @@ class PersonExperienceController extends Controller
       $profile = $model->where('person_id','=',Session::get('Person.id'))->first();
       $profile->modelData->loadData();
 
-      $this->setData(array(
+      $this->mergeData(array(
         'profile' => $profile->modelData->build(true)
       ));
     }
 
-    $this->setData(array(
+    $this->mergeData(array(
       'exist' => $model->checkExistByPersonId()
     ));
 
@@ -86,13 +86,13 @@ class PersonExperienceController extends Controller
       $year[$i] = $i;
     }
 
-    $this->setData(array(
+    $this->mergeData(array(
       'day' => $day,
       'month' => $month,
       'year' => $year
     ));
 
-    $this->setData($model->form->build());
+    $this->mergeData($model->form->build());
 
     return $this->view('pages.person_experience.form.profile_edit');
 
@@ -103,11 +103,8 @@ class PersonExperienceController extends Controller
     $model = Service::loadModel('PersonExperience')->where('person_id','=',Session::get('Person.id'))->first();
 
     if($model->fill($request->all())->save()) {
-
-      dd('xxx');
-
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to('item/detail/'.$this->model->id);
+      return Redirect::to('item/detail/'.$model->id);
     }else{
       return Redirect::back();
     }

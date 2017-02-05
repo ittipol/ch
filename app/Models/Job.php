@@ -25,15 +25,11 @@ class Job extends Model
   protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',
-      // 'description' => 'required',
-      // 'salary' => 'required|regex:/^[\d,]*(\.\d{1,2})?$/|max:255',
       'salary' => 'required',
     ),
     'messages' => array(
       'name.required' => 'ชื่อห้ามว่าง',
-      // 'description.required' => 'รายละเอียดงานห้ามว่าง',
       'salary.required' => 'เงินเดือนห้ามว่าง',
-      // 'salary.regex' => 'รูปแบบจำนวนเงินเดือนไม่ถูกต้อง',
     )
   ); 
 

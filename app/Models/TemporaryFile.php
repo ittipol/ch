@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\library\url;
 use File;
 use Session;
 
@@ -11,29 +12,43 @@ class TemporaryFile extends Model
   protected $fillable = ['model','filename','token','file_type','created_by'];
   private $temporaryPath = 'temporary/';
 
-  public function moveTemporaryFile($oldPath,$filename,$options = array()) {
+  public function __construct() {
 
-    $temporaryPath = storage_path($this->temporaryPath);
+    parent::__construct();
+    
+    $this->temporaryPath = storage_path($this->temporaryPath);
+  }
+
+  public function createTemporyFolder($folderName) {
+
+    $url = new Url;
+
+    $temporaryPath = $this->temporaryPath;
 
     if(!is_dir($temporaryPath)){
       mkdir($temporaryPath,0777,true);
     }
 
-    if(!empty($options['directoryName'])) {
-      $temporaryPath .= $options['directoryName'].'/';
+    $temporaryPath .= $folderName;
 
-      if(!is_dir($temporaryPath)){
-        mkdir($temporaryPath,0777,true);
-      }
-
+    if(!is_dir($temporaryPath)){
+      mkdir($temporaryPath,0777,true);
     }
 
-    return File::move($oldPath, $temporaryPath.$filename);
+    return $url->addSlash($temporaryPath);
+
   }
+
+  // public function moveTemporaryFile($oldPath,$filename,$options = array()) {
+
+  //   $temporaryPath = $this->createTemporyFolder($options['directoryName']);
+
+  //   return File::move($oldPath, $temporaryPath.$filename);
+  // }
 
   public function getFilePath($filename,$options = array()) {
 
-    $temporaryPath = storage_path($this->temporaryPath);
+    $temporaryPath = $this->temporaryPath;
 
     if(!empty($options['directoryName'])) {
       $temporaryPath .= $options['directoryName'].'/';
@@ -61,7 +76,7 @@ class TemporaryFile extends Model
       return false;
     }
 
-    return File::deleteDirectory(storage_path($this->temporaryPath).$directoryName);
+    return File::deleteDirectory($this->temporaryPath.$directoryName);
   }
 
   public function checkExistSpecifiedTemporaryRecord($modelName,$token) {

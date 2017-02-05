@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\PersonExperience;
-
 use Closure;
 
 class CheckForPersonExperience
@@ -18,7 +17,6 @@ class CheckForPersonExperience
   public function handle($request, Closure $next)
   {
     $personExperience = new PersonExperience;
-
     if(!$personExperience->checkExistByPersonId()) {
       return redirect('experience');
     }

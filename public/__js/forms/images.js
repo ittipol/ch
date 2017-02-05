@@ -1,13 +1,12 @@
 class Images {
-	constructor(panel,limit,style = 'default') {
+	constructor(panel,type,limit = 5,style = 'default') {
 		this.panel = panel;
+		this.type = type;
 		this.limit = limit;
-		this.id = null;
 		this.code = null;
 		this.index = 0;
 		this.runningNumber = 0;
 		this.imagesPlaced = [];
-		this.filenames = []; 
 		this.defaultImage = '/images/common/image.svg';
 		this.allowedClick = true;
 		this.style = style; // default, description
@@ -33,7 +32,14 @@ class Images {
 
 	init(){
 		let token = new Token();
-		this.code = token.generateToken(14);
+		this.code = token.generateToken(7);
+
+  	let hidden = document.createElement('input');
+    hidden.setAttribute('type','hidden');
+    hidden.setAttribute('name','Image['+this.type+'][token]');
+    hidden.setAttribute('value',this.code);
+    $('#'+this.panel).append(hidden);
+
 	}
 
 	bind(){
@@ -71,7 +77,6 @@ class Images {
 
 			  reader.onload = function (e) {
 
-			  	// parent.find('img').css('display','none').attr('src', e.target.result);
 			  	parent.find('div.preview-image').css('display','none').css('background-image', 'url(' + e.target.result + ')');
 
 			  	if(_this.checkImageType(mimeType) && _this.checkImageSize(fileSize)) {
@@ -82,7 +87,6 @@ class Images {
 			  		parent.find('.error-message').css('display','block').text('ไม่รองรับไฟล์นี้');
 			  		parent.find('input[type="hidden"]').remove();
 			  		parent.find('input').val('');
-			  		// parent.find('img').css('display','none');
 			  	}
 
 			  }
@@ -100,7 +104,8 @@ class Images {
 				formData.append('_token', CSRF_TOKEN);  
 				formData.append('model', $('input[name="model"]').val());
 				formData.append('imageToken', this.code);
-				formData.append('file', input.files[0]);
+				formData.append('imageType', this.type);
+				formData.append('image', input.files[0]);
 
 				this.uploadImage(parent,input,formData);
 			}
@@ -161,24 +166,6 @@ class Images {
 
 	  		_this.createImage(parent,key[0],key[1],response.filename);
 
-	  		// let hidden = document.createElement('input');
-			  // hidden.setAttribute('type','hidden');
-			  // hidden.setAttribute('name','Image['+key[0]+']['+key[1]+'][filename]');
-			  // hidden.setAttribute('value',response.filename);
-			  // parent.append(hidden);
-
-			  // if(_this.style == 'description'){
-			  // 	document.getElementById(key[0]+'_textarea_'+key[1]).setAttribute('name','Image['+key[0]+']['+key[1]+'][description]');
-			  // }
-
-	  		// if(_this.imagesPlaced.indexOf(parent.attr('id')) < 0){
-	  		// 	_this.imagesPlaced.push(parent.attr('id'));
-
-	  		// 	if(_this.index < _this.limit){
-	  		// 		_this.index = _this.createUploader(_this.index);
-	  		// 	}
-	  		// }
-
 	  	}else{
 
 	  		if(typeof response.message == 'object') {
@@ -204,12 +191,12 @@ class Images {
 
 		let hidden = document.createElement('input');
 	  hidden.setAttribute('type','hidden');
-	  hidden.setAttribute('name','Image['+code+']['+index+'][filename]');
+	  hidden.setAttribute('name','Image['+this.type+'][images]['+index+'][filename]');
 	  hidden.setAttribute('value',filename);
 	  parent.append(hidden);
 
 	  if(this.style == 'description'){
-	  	document.getElementById(code+'_textarea_'+index).setAttribute('name','Image['+code+']['+index+'][description]');
+	  	document.getElementById(code+'_textarea_'+index).setAttribute('name','Image['+this.type+'][images]['+index+'][description]');
 	  }
 
 	  // if((typeof description == 'string') && (description.length > 0)) {
@@ -250,7 +237,7 @@ class Images {
 				let key = $(parent).attr('id').split('_');
 				let hidden = document.createElement('input');
 			  hidden.setAttribute('type','hidden');
-			  hidden.setAttribute('name','Image['+_this.code+'][remove]['+key[1]+']');
+			  hidden.setAttribute('name','Image['+_this.type+'][delete]['+key[1]+']');
 			  hidden.setAttribute('value',input.getAttribute('data-id'));
 			  parent.parent().parent().append(hidden);
 			}
@@ -277,7 +264,7 @@ class Images {
 		html += '<div class="progress-bar"><div class="status"></div></div>'
 		html += '</label>';
 		if(this.style == 'description'){
-			html += '<textarea id="'+this.code+'_textarea_'+this.runningNumber+'" placeholder="คำอธิบายรูปภาพ"></textarea>';
+			html += '<textarea id="'+this.code+'_textarea_'+this.runningNumber+'" placeholder="คำอธิบายเี่ยวกับรูปภาพนี้"></textarea>';
 		}
 		html += '</div>';
 
@@ -298,7 +285,7 @@ class Images {
 		html += '<p class="error-message"></p>';
 		html += '</label>';
 		if(this.style == 'description'){
-			html += '<textarea name="Image['+this.code+']['+index+'][description]" placeholder="คำอธิบายรูปภาพ">'+image.description+'</textarea>';
+			html += '<textarea name="Image['+this.type+']['+index+'][description]" placeholder="คำอธิบายเี่ยวกับรูปภาพนี้">'+image.description+'</textarea>';
 		}
 		html += '</div>';
 
@@ -326,7 +313,7 @@ class Images {
 
 	checkImageSize(size) {
 		// 1MB
-		let maxSize = 1048576;
+		let maxSize = 2097152;
 
 		let allowed = false;
 

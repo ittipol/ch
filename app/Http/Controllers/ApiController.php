@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\library\service;
-use App\library\file;
+// use App\library\file;
 use App\library\image;
+use App\library\imageTool;
 use Input;
 use Session;
 
@@ -49,7 +50,7 @@ class ApiController extends Controller
       exit('Error!!!');  //trygetRealPath detect AJAX request, simply exist if no Ajax
     }
 
-    if(empty(Input::file('file'))) {
+    if(empty(Input::file('image'))) {
       $result = array(
         'success' => false,
         'message' => array(
@@ -61,34 +62,15 @@ class ApiController extends Controller
       return response()->json($result);
     }
 
-    $file = new File(Input::file('file'));
+    $image = new Image(Input::file('image'));
 
     $result = array(
       'success' => false,
     );
 
-    if($file->checkFileSize() && $file->checkFileType()) {
+    if($image->checkFileSize() && $image->checkFileType()) {
       
       $tempFile = Service::loadModel('TemporaryFile');
-
-      // $value = array(
-      //   'model' => Input::get('model'),
-      //   'token' => Input::get('imageToken'),
-      //   'filename' => $file->getFileName(),
-      //   'file_type' => $file->getFileType()
-      // );
-
-      // if($tempFile->fill($value)->save()){
-      //   $tempFile->moveTemporaryFile($file->getRealPath(),$tempFile->filename,array(
-      //     'directoryName' => $tempFile->model.'_'.$tempFile->token
-      //   ));
-
-      //   $result = array(
-      //     'success' => true,
-      //     'filename' => $tempFile->filename
-      //   );
-
-      // }
 
       if(!$tempFile->checkExistSpecifiedTemporaryRecord(Input::get('model'),Input::get('imageToken'))) {
         $tempFile->fill(array(
@@ -97,11 +79,21 @@ class ApiController extends Controller
         ))->save();
       }
 
-      $filename = $file->getFileName();
+      $filename = $image->getFileName();
 
-      $moved = $tempFile->moveTemporaryFile($file->getRealPath(),$filename,array(
-        'directoryName' => Input::get('model').'_'.Input::get('imageToken')
-      ));
+      list($width,$height) = $image->generateImageSize(Input::get('imageType'));
+
+      $temporaryPath = $tempFile->createTemporyFolder(Input::get('model').'_'.Input::get('imageToken').'_'.Input::get('imageType'));
+
+      // cover don't resize
+
+      $imageTool = new ImageTool($image->getRealPath());
+      $imageTool->resize($width,$height);
+      $moved = $imageTool->save($temporaryPath.$filename);
+
+      // $moved = $tempFile->moveTemporaryFile($image->getRealPath(),$filename,array(
+      //   'directoryName' => Input::get('model').'_'.Input::get('imageToken').'_'.Input::get('imageType')
+      // ));
 
       if($moved) {
         $result = array(

@@ -39,45 +39,49 @@ class Paginator {
     return $this->url->parseUrl($record);
   }
 
-  public function criteria($criteria = array()) {
+  public function criteria($options = array()) {
 
-    if(!empty($criteria['conditions'])){
+    if(!empty($options['conditions'])){
 
-      if(!empty($criteria['conditions']['in'])) {
+      if(!empty($options['conditions']['in'])) {
 
-        foreach ($criteria['conditions']['in'] as $condition) {
+        foreach ($options['conditions']['in'] as $condition) {
           $this->model = $this->model->whereIn($condition[0],$condition[1]);
         }
 
-        unset($criteria['conditions']['in']);
+        unset($options['conditions']['in']);
 
       }
 
-      if(!empty($criteria['conditions']['or'])) {
+      if(!empty($options['conditions']['or'])) {
 
-        $arrLen = count($criteria['conditions']['or']);
+        $arrLen = count($options['conditions']['or']);
         for ($i=0; $i < $arrLen; $i++) {
           $images->orWhere(
-            $criteria['conditions']['or'][$i][0],
-            $criteria['conditions']['or'][$i][1],
-            $criteria['conditions']['or'][$i][2]
+            $options['conditions']['or'][$i][0],
+            $options['conditions']['or'][$i][1],
+            $options['conditions']['or'][$i][2]
           );
         }
 
-        unset($criteria['conditions']['or']);
+        unset($options['conditions']['or']);
 
       }
 
-      if(!empty($criteria['conditions'])){
-        $this->model = $this->model->where($criteria['conditions']);
+      if(!empty($options['conditions'])){
+        $this->model = $this->model->where($options['conditions']);
       }
 
     }
 
-    if(!empty($criteria['order'])){
-      $this->model = $this->model->orderBy(current($criteria['order']),next($criteria['order']));
+    if(!empty($options['order'])){
+      $this->model = $this->model->orderBy(current($options['order']),next($options['order']));
     }
 
+  }
+
+  public function onlyMyData() {
+    $this->model = $this->model->where('created_by','=',Session::get('Person.id'));
   }
 
   public function getModelData() {

@@ -86,16 +86,4 @@ class Service
 
   }
 
-  public static function url($url) {
-
-    $url = url($url);
-
-    if(substr($url, -1) != '/') {
-      $url .= '/';
-    }
-
-    return $url;
-
-  }
-
 }

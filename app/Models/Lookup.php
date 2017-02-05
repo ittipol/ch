@@ -288,11 +288,12 @@ class Lookup extends Model
   }
 
   private function __getAddress($model) {
+
+    // more than 2 address
     // $addresses = $model->getRalatedModelData('Address',array(
     //   'fields' => array(
     //     'address','district_id','sub_district_id'
     //   ),
-    //   'first' => false
     // ));
 
     // if(empty($addresses)) {

@@ -79,6 +79,7 @@ class Model extends BaseModel
     parent::saved(function($model){
 
       if(($model->state == 'create') && $model->exists) {
+
         $model->createDirectory();  
 
         if($model->behavior['Slug']) {
@@ -89,19 +90,52 @@ class Model extends BaseModel
       }
 
       $model->saveRelatedData();
+
+      // look up
    
     });
 
   }
 
+  protected function saveRelatedData() {
+
+    if(!empty($this->formModelData)) {
+
+      foreach ($this->formModelData as $modelName => $value) {
+
+        $options = array(
+          'value' => $value
+        );
+
+        $model = Service::loadModel($modelName);
+
+        if(!method_exists($model,'__saveRelatedData')) {
+          return false;
+        }
+
+        $model->__saveRelatedData($this,$options);
+
+      }
+    }
+    
+  }
+
+  // private function _saveRelatedData($modelName,$options = array()) {
+
+  //   $model = Service::loadModel($modelName);
+
+  //   if(!method_exists($model,'__saveRelatedData')) {
+  //     return false;
+  //   }
+
+  //   return $model->__saveRelatedData($this,$options);
+    
+  // }
+
   public function fill(array $attributes) {
 
     if(!empty($attributes) && !empty($this->modelRelated)){
       foreach ($this->modelRelated as $key => $modelName) {
-
-        // if(is_array($modelName)){
-        //   $modelName = $key;
-        // }
 
         if(empty($attributes[$modelName])) {
           continue;
@@ -109,7 +143,7 @@ class Model extends BaseModel
 
         $this->formModelData[$modelName] = $attributes[$modelName];
         unset($attributes[$modelName]);
-      }
+      }      
     }
 
     if(!empty($attributes)) {
@@ -126,40 +160,7 @@ class Model extends BaseModel
     return parent::fill($attributes);
   }
 
-  public function saveRelatedData() {
-
-    if (!$this->exists) {
-      return false;
-    }
-
-    if(!empty($this->formModelData)) {
-      
-      foreach ($this->formModelData as $modelName => $value) {
-
-        $options = array(
-          'value' => $value
-        );
-
-        $this->_saveRelatedData($modelName,$options);
-
-      }
-    }
-    
-  }
-
-  private function _saveRelatedData($modelName,$options = array()) {
-
-    $model = Service::loadModel($modelName);
-
-    if(!method_exists($model,'__saveRelatedData')) {
-      return false;
-    }
-
-    return $model->__saveRelatedData($this,$options);
-    
-  }
-
-  public function createDirectory() {
+  protected function createDirectory() {
 
     if(empty($this->directory) || empty($this->directoryPath)) {
       return false;
@@ -170,12 +171,12 @@ class Model extends BaseModel
       mkdir($path,0777,true);
     }
 
-    foreach ($this->imageCache as $name) {
-      $_path = $path.$name;
-      if(!is_dir($_path)){
-        mkdir($_path,0777,true);
-      }
-    }
+    // foreach ($this->imageCache as $name) {
+    //   $_path = $path.$name;
+    //   if(!is_dir($_path)){
+    //     mkdir($_path,0777,true);
+    //   }
+    // }
 
   }
 
@@ -192,8 +193,17 @@ class Model extends BaseModel
     return $this->find($id)->exists();
   }
 
+  public function checkExistByAlias($alias) {
+
+    if(!Schema::hasColumn($this->getTable(), 'alias')){
+      return false;
+    }
+
+    return $this->where('alias','like',$alias)->exists();
+  }
+
   public function getIdByalias($alias) {
-    
+
     if(!Schema::hasColumn($this->getTable(), 'alias')){
       return false;
     }
@@ -202,8 +212,13 @@ class Model extends BaseModel
       'conditions' => array(
         ['alias','like',$alias]
       ),
-      'fields' => array('id')
+      'fields' => array('id'),
+      'first' => true
     ));
+
+    if(empty($record)) {
+      return null;
+    }
 
     return $record->id;
   }
@@ -261,16 +276,21 @@ class Model extends BaseModel
       return $this->getList($model->get(),$options['list']);
     }
 
-    if(isset($options['first'])) {
-      if($options['first']) {
-        return $model->first();
-      }
+    // if(isset($options['first'])) {
+    //   if($options['first']) {
+    //     return $model->first();
+    //   }
+    //   return $model->get();
+    // }elseif($model->count() == 1) {
+    //   return $model->first();
+    // }
+
+
+    if(empty($options['first'])) {
       return $model->get();
-    }elseif($model->count() == 1) {
-      return $model->first();
     }
 
-    return $model->get();
+    return $model->first();
 
   }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomFormRequest;
 use App\library\service;
+// use App\library\url;
 use App\library\message;
 use Redirect;
 
@@ -20,25 +21,19 @@ class ShopController extends Controller
     // $this->middleware(function ($request, $next) {
     //   return $next($request);
     // });
-
-    // if(!empty($this->slug->model_id)) {
-    //   $this->model = Service::loadModel('Shop')->find($this->slug->model_id);
-    // }else{
-    //   $this->model = Service::loadModel('Shop');
-    // }
     
   }
 
-  public function index() {
+  // public function index() {}
 
-    $model = Service::loadModel('Shop')->find($this->slug->model_id);
+  public function manage() {
+
+    $model = request()->get('shop');
 
     $model->modelData->loadData();
 
-    $this->setData($model->modelData->build());
-    $this->setData(array(
-      'shopUrl' => Service::url('shop/'.$this->slug->name)
-    ));
+    $this->data = $model->modelData->build();
+    $this->setData('shopUrl',request()->get('shopUrl'));
 
     return $this->view('pages.shop.main');
   }
@@ -57,14 +52,7 @@ class ShopController extends Controller
 
   public function job() {
 
-    $model = Service::loadModel('Shop')->find($this->slug->model_id);
-
-    if(!$model->checkPersonInShop()){
-      $this->error = array(
-        'message' => 'คุณไม่มีสิทธิแก้ไขร้านค้านี้'
-      );
-      return $this->error();
-    }
+    $model = request()->get('shop');
 
     $page = 1;
     if(!empty($this->query)) {
@@ -73,14 +61,13 @@ class ShopController extends Controller
 
     $job = Service::loadModel('Job');
     $job->paginator->setPage($page);
-    $job->paginator->setPagingUrl('shop/'.$this->param['slug'].'/job');
+    $job->paginator->setPagingUrl('shop/'.request()->slug.'/job');
     $job->paginator->setUrl('shop/'.$this->param['slug'].'/job_edit/{id}','editUrl');
     $job->paginator->setUrl('job/detail/{id}','detailUrl');
+    $job->paginator->onlyMyData();
 
-    $this->setData($job->paginator->build());
-    $this->setData(array(
-      'shopUrl' => Service::url('shop/'.$this->param['slug'])
-    ));
+    $this->data = $job->paginator->build();
+    $this->setData('shopUrl',request()->get('shopUrl'));
 
     return $this->view('pages.job.main');
   }
@@ -102,7 +89,7 @@ class ShopController extends Controller
       'index' => 'districts'
     ));
 
-    $this->setData($model->form->build());
+    $this->mergeData($model->form->build());
 
     return $this->view('pages.shop.form.shop_create');
   }
@@ -113,7 +100,7 @@ class ShopController extends Controller
 
     if($model->fill($request->all())->save()) {
       Message::display('บริษัทหรือร้านค้าของคุณถูกเพิ่มลงในชุมชนแล้ว','success');
-      return Redirect::to('shop/'.$this->slug->name);
+      return Redirect::to('shop/'.request()->slug);
     }else{
 
       switch ($model->errorType) {
