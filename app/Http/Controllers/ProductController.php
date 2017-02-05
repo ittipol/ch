@@ -35,7 +35,7 @@ class ProductController extends Controller
 dd($request->all());
     if($this->model->fill($request->all())->save()) {
 
-      $slugName = $this->model->getRalatedModelData('Slug',array(
+      $slugName = $this->model->getModelRelationData('Slug',array(
         'fields' => 'name'
       ))->name;
 
@@ -79,7 +79,7 @@ dd($request->all());
 
     if($product->fill($request->all())->save()) {
 
-      $slugName = $product->getRalatedModelData('Slug',array(
+      $slugName = $product->getModelRelationData('Slug',array(
         'fields' => 'name'
       ))->name;
 

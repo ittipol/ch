@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use App\library\token;
 use App\library\service;
 use App\library\imageTool;
 use App\library\url;
@@ -44,132 +43,105 @@ class Image extends Model
   }
 
   public function __saveRelatedData($model,$options = array()) {
-    // $this->deleteImages($model,$options['value']['delete']);
-    $this->saveImages($model,$options['value'],$options);
+    $this->handleImages($model,$options['value'],$options);
   }
 
-  private function saveImages($model,$images,$options = array()) {
+  private function handleImages($model,$images,$options = array()) {
+
+    $imageType = new ImageType;
+
+    foreach ($images as $type => $value) {
+
+      if(!$imageType->checkExistByAlias($type)) {
+        continue;
+      }
+
+      if(!empty($value['delete'])) {
+        $this->deleteImages($model,$value['delete']);
+      }
+
+      if(!empty($value['images'])) {
+        $this->addImages($model,$value['images'],array(
+          'type' => $type,
+          'token' => $value['token']
+        ));
+      }
+
+    }
+
+  }
+
+  private function addImages($model,$images,$options = array()) {
+
+    if(empty($model->imageTypes[$options['type']]) || ($model->imageTypes[$options['type']]['limit'] == 0)) {
+      return false;
+    }
 
     $temporaryFile = new TemporaryFile;
     $imageType = new ImageType;
 
-    $count = array();
+    $directoryName = $model->modelName.'_'.$options['token'].'_'.$options['type'];
 
-    foreach ($images as $type => $value) {
+    $count[$options['type']] = 0;
 
-      if(!$imageType->checkExistByAlias($type) || 
-        (empty($model->images[$type]) || 
-        ($model->images[$type]['limit'] == 0))) 
-      {
+    // Get Image type
+    $imageType = $imageType->where('alias','like',$options['type'])->select('path')->first();
+
+    foreach ($images as $image) {
+
+      if($model->imageTypes[$options['type']]['limit'] < ++$count[$options['type']]) {
+        break;
+      }
+
+      $path = $temporaryFile->getFilePath($image['filename'],array(
+        'directoryName' => $directoryName
+      ));
+
+      if(!file_exists($path)){
         continue;
       }
 
-      $directoryName = $model->modelName.'_'.$value['token'].'_'.$type;
+      $_value = array(
+        'filename' => $image['filename'],
+        'image_type_id' => $imageType->getIdByalias($options['type'])
+      );
 
-      $count[$type] = 0;
+      if(!empty($image['description'])) {
+        $_value['description'] = $image['description'];
+      }
 
-      // Get Image type
-      $imageType = $imageType->where('alias','like',$type)->select('path')->first();
+      $imageInstance = $this->newInstance();
+      if($imageInstance->fill($model->includeModelAndModelId($_value))->save()) {
 
-      foreach ($value['images'] as $image) {
-
-        if($model->images[$type]['limit'] < ++$count[$type]) {
-          break;
+        $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
+        if(!is_dir($toPath)){
+          mkdir($toPath,0777,true);
         }
 
-        $path = $temporaryFile->getFilePath($image['filename'],array(
-          'directoryName' => $directoryName
-        ));
-
-        if(!file_exists($path)){
-          continue;
-        }
-
-        $_value = array(
-          'filename' => $image['filename'],
-          'image_type_id' => $imageType->getIdByalias($type)
-        );
-
-        if(!empty($image['description'])) {
-          $_value['description'] = $image['description'];
-        }
-
-        $imageInstance = $this->newInstance();
-        if($imageInstance->fill($model->includeModelAndModelId($_value))->save()) {
-
-          $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
-          if(!is_dir($toPath)){
-            mkdir($toPath,0777,true);
-          }
-
-          $this->moveImage($path,$imageInstance->getImagePath());
-
-        }
+        $this->moveImage($path,$imageInstance->getImagePath());
 
       }
 
-      // remove temp dir
-      $temporaryFile->deleteTemporaryDirectory($directoryName);
-
-      $temporaryFile->deleteTemporaryRecords($model->modelName,$value['token']);
-
     }
+
+    // remove temp dir
+    $temporaryFile->deleteTemporaryDirectory($directoryName);
+    // remove temp file record
+    $temporaryFile->deleteTemporaryRecords($model->modelName,$options['token']);
 
   }
 
-  // public function cache($model) {
-
-  //   $imageStyle = new ImageStyle;
-
-  //   $imagePath = $this->getImagePath();
-
-  //   $ext = pathinfo($this->filename, PATHINFO_EXTENSION);
-  //   $filename = pathinfo($this->filename, PATHINFO_FILENAME);
-  //   list($originalWidth,$originalHeight) = getimagesize($imagePath);
-
-  //   $styles = $imageStyle->whereIn('alias',$model->getImageCache())->get();
-
-  //   foreach ($styles as $style) {
-
-  //     $width = $style->width;
-  //     $height = $style->height;
-
-  //     if(!empty($style->fx) && method_exists($imageStyle,$style->fx)) {
-  //       list($width,$height) = $imageStyle->getImageSizeByRatio($originalWidth,$originalHeight,$width,$height);
-  //     }
-
-  //     $_filename = $filename.'_'.$width.'x'.$height.'.'.$ext;
-
-  //     $path = $this->getDirPath().$style->path_name;
-  //     if(!is_dir($path)){
-  //       mkdir($path,0777,true);
-  //     }
-
-  //     $imageLib = new ImageTool($imagePath);
-  //     $imageLib->resize($width,$height);
-  //     $imageLib->save($path.'/'.$_filename);
-
-  //     $value = array(
-  //       'original_image_id' => $this->id,
-  //       'filename' => $_filename,
-  //       'image_style_id' => $imageStyle->getIdByalias($style->alias)
-  //     );
-
-  //     $this->newInstance()->fill($model->includeModelAndModelId($value))->save();
-
-  //   }
-    
-  // }
-
   private function deleteImages($model,$imageIds) {
 
-    $images = $this->newInstance();
+    // $images = $this->newInstance();
 
-    foreach ($imageIds as $imageId) {
-      $images = $images->orWhere('id','=',$imageId)->orWhere('original_image_id','=',$imageId);
-    }
+    // foreach ($imageIds as $imageId) {
+    //   $images = $images->orWhere('id','=',$imageId)->orWhere('original_image_id','=',$imageId);
+    // }
 
-    $images = $images->where([
+    $images = $this->newInstance()
+    ->whereIn('id',$imageIds)
+    ->where([
       ['model','=',$model->modelName],
       ['model_id','=',$model->id],
       ['created_by','=',Session::get('Person.id')]
@@ -191,6 +163,54 @@ class Image extends Model
 
     $images->delete();
 
+  }
+
+  public function handleProfileImage($model,$image) {
+
+    $temporaryFile = new TemporaryFile;
+    $imageType = new ImageType;
+
+    $directoryName = $model->modelName.'_'.$image['token'].'_profile-image';
+
+    $path = $temporaryFile->getFilePath($image['images'][0]['filename'],array(
+      'directoryName' => $directoryName
+    ));
+
+    if(!file_exists($path)){
+      return false;
+    }
+
+    $value = array(
+      'filename' => $image['images'][0]['filename'],
+      'image_type_id' => $imageType->getIdByalias('profile-image')
+    );
+
+    $imageInstance = $this->newInstance();
+    if(!$imageInstance->fill($model->includeModelAndModelId($value))->save()) {
+      return false;
+    }
+
+    $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
+    if(!is_dir($toPath)){
+      mkdir($toPath,0777,true);
+    }
+
+    if(!$this->moveImage($path,$imageInstance->getImagePath())) {
+      $temporaryFile->deleteTemporaryDirectory($directoryName);
+      $temporaryFile->deleteTemporaryRecords($model->modelName,$image['token']);
+      return false;
+    }
+
+    $temporaryFile->deleteTemporaryDirectory($directoryName);
+    $temporaryFile->deleteTemporaryRecords($model->modelName,$image['token']);
+
+    return $imageInstance->id;
+
+    // if (Request::hasFile('article_image')) {
+    //   $file = Request::file('article_image');
+    //   $file->move(base_path() . '/public/images/', $file->getClientOriginalName());
+    //   $article->article_image = 'images/' . $file->getClientOriginalName();
+    // }
   }
 
   public function moveImage($oldPath,$to) {
@@ -234,7 +254,7 @@ class Image extends Model
 
     $imageStyle = new ImageStyle;
 
-    $image = $model->getRalatedModelData('Image',array(
+    $image = $model->getModelRelationData('Image',array(
       'conditions' => array(
         array('image_style_id','=',$imageStyle->getIdByalias($style))
       ),

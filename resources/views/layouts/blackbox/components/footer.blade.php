@@ -1,13 +1,14 @@
-<footer>
 
-  <div class="footer">
+<div class="container-fuild">
 
-      <div class="container">
+  <footer>
 
-        <h3>Chonburi Square</h3>
+    <div class="footer">
 
-      </div>
+      <h3>Chonburi Square</h3>
 
-  </div>
+    </div>
 
-</footer>
+  </footer>
+
+</div>

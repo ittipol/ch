@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\library\service;
-// use App\library\file;
-use App\library\image;
 use App\library\imageTool;
+use App\library\handleImageFile;
 use Input;
 use Session;
 
@@ -62,7 +61,7 @@ class ApiController extends Controller
       return response()->json($result);
     }
 
-    $image = new Image(Input::file('image'));
+    $image = new HandleImageFile(Input::file('image'));
 
     $result = array(
       'success' => false,

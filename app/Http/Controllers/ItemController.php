@@ -155,7 +155,7 @@ class ItemController extends Controller
 
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to('real-estate/detail/'.$model->id);
+      return Redirect::to('item/detail/'.$model->id);
     }else{
       return Redirect::back();
     }

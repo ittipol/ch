@@ -498,7 +498,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group',8,'description');
+    const images = new Images('_image_group','photo',8,'description');
     const district = new District();
     const map = new Map();
     const tagging = new Tagging();

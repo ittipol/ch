@@ -87,7 +87,6 @@
         ?>
         <div id="website_input" class="text-group">
           <div class="text-group-panel">
-
           </div>
           <a href="javascript:void(0);" class="text-add">เพิ่ม +</a>
         </div>
@@ -217,10 +216,20 @@
         this.panel = panel;
         this.textInputName = textInputName;
         this.placeholder = placeholder;
+        this.count = 1;
       }
 
-      load() {
-        this.createTextInput(false);
+      load(data) {
+
+        if((data.length > 0) && (data != '[]')) {
+          data = JSON.parse(data);
+
+          for (var i = 0; i < data.length; i++) {
+            this.createTextInput(data[i]);
+          };
+        }
+
+        this.createTextInput();
         this.bind();
       }
 
@@ -233,17 +242,18 @@
         });
 
         $(document).on('click','.button-clear-text',function(){
-          console.log($(this).parent().remove());
+          --_this.count;
+          $(this).parent().remove();
         });
 
       }
 
-      createTextInput(closeBtn = true) {
+      createTextInput(value = '') {
         let html = '';
         
         html += '<div class="text-input-wrapper">';
-        html += '<input type="text" name="'+this.textInputName+'[]" placeholder="'+this.placeholder+'" autocomplete="off">';
-        if(closeBtn){
+        html += '<input type="text" name="'+this.textInputName+'[]" placeholder="'+this.placeholder+'" autocomplete="off" value="'+value+'">';
+        if((this.count++ > 1) || (value != '')){
           html += '<span class="button-clear-text" style="visibility: visible;">×</span>';
         }
         html += '</div>';
@@ -262,11 +272,11 @@
       // const district = new District();
       // district.load();
 
-      const images = new Images('_profile_image',1);
+      const images = new Images('_profile_image','profile-image',1);
       images.load();
 
       const inputTextGroup = new InputTextGroup('website_input','private_websites','เว็บไซต์ส่วนตัวหรือบล็อก');
-      inputTextGroup.load();
+      inputTextGroup.load('{!!$_formData['private_websites']!!}');
 
     });
 

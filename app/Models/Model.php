@@ -7,6 +7,7 @@ use App\library\service;
 use App\library\currency;
 use App\library\string;
 use App\library\form;
+// use App\library\image;
 use App\library\modelData;
 use App\library\paginator;
 // use Auth;
@@ -19,8 +20,8 @@ class Model extends BaseModel
   public $modelAlias;
   protected $storagePath = 'app/public/';
   protected $state = 'create';
-  protected $formModelData = array();
-  protected $relatedModel = array();
+  protected $modelRelationData = array();
+  // protected $relatedModel = array();
   protected $sortingFields;
   protected $behavior;
   protected $validation;
@@ -89,7 +90,7 @@ class Model extends BaseModel
 
       }
 
-      $model->saveRelatedData();
+      $model->modelRelationsSave();
 
       // look up
    
@@ -97,11 +98,15 @@ class Model extends BaseModel
 
   }
 
-  protected function saveRelatedData() {
+  protected function modelRelationsSave() {
 
-    if(!empty($this->formModelData)) {
+    if(!empty($this->modelRelationData)) {
 
-      foreach ($this->formModelData as $modelName => $value) {
+      foreach ($this->modelRelationData as $modelName => $value) {
+
+        if(empty($value)) {
+          continue;
+        }
 
         $options = array(
           'value' => $value
@@ -115,33 +120,23 @@ class Model extends BaseModel
 
         $model->__saveRelatedData($this,$options);
 
+        unset($this->modelRelationData[$modelName]);
+
       }
     }
     
   }
 
-  // private function _saveRelatedData($modelName,$options = array()) {
-
-  //   $model = Service::loadModel($modelName);
-
-  //   if(!method_exists($model,'__saveRelatedData')) {
-  //     return false;
-  //   }
-
-  //   return $model->__saveRelatedData($this,$options);
-    
-  // }
-
   public function fill(array $attributes) {
 
-    if(!empty($attributes) && !empty($this->modelRelated)){
-      foreach ($this->modelRelated as $key => $modelName) {
+    if(!empty($attributes) && !empty($this->modelRelations)){
+      foreach ($this->modelRelations as $key => $modelName) {
 
         if(empty($attributes[$modelName])) {
           continue;
         }
 
-        $this->formModelData[$modelName] = $attributes[$modelName];
+        $this->modelRelationData[$modelName] = $attributes[$modelName];
         unset($attributes[$modelName]);
       }      
     }
@@ -317,7 +312,7 @@ class Model extends BaseModel
 
   }
 
-  public function getRalatedModelData($modelName,$options = array()) {
+  public function getModelRelationData($modelName,$options = array()) {
 
     $model = Service::loadModel($modelName);
 
@@ -388,13 +383,8 @@ class Model extends BaseModel
 
   }
 
-  public function getModelRelated() {
-
-    // if(empty($this->modelRelated)) {
-    //   return null;
-    // }
-
-    return $this->modelRelated;
+  public function getModelRelations() {
+    return $this->modelRelations;
   }
 
   public function getBehavior($modelName) {
@@ -407,11 +397,6 @@ class Model extends BaseModel
   }
 
   public function getValidation() {
-
-    // if(empty($this->validation)) {
-    //   return null;
-    // }
-    
     return $this->validation;
   }
 
@@ -428,33 +413,21 @@ class Model extends BaseModel
   }
 
   public function buildPaginationData() {
-    
-    $imageStyle = new ImageStyle;
-    $string = new String;
-
-    $image = $this->getRalatedModelData('Image',array(
-      'conditions' => array(
-        array('image_style_id','=',$imageStyle->getIdByalias('list'))
-      ),
-      'first' => true
-    ));
-
-    $imageUrl = '/images/common/no-img.png';
-    if(!empty($image)) {
-      $image = $image->buildModelData();
-      $imageUrl = $image['_url'];
-    }
-
-    return array(
-      'id' => $this->id,
-      'name' => $this->name,
-      '_name_short' => $string->subString($this->name,45),
-      '_imageUrl' => $imageUrl
-    );
+    return $this->getAttributes();
   }
 
   public function buildFormData() {
     return $this->getAttributes();
   }
+
+  // public function createOrUpdate($value) {
+  //   if($this->exists){
+  //     return $this
+  //     ->fill($options['value'])
+  //     ->save();
+  //   }else{
+  //     return $this->fill($value)->save();
+  //   }
+  // }
 
 }

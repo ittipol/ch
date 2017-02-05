@@ -10,7 +10,7 @@ class Contact extends Model
 
   public function __saveRelatedData($model,$options = array()) {
 
-    $contact = $model->getRalatedModelData($this->modelName,
+    $contact = $model->getModelRelationData($this->modelName,
       array(
         'first' => true
       )

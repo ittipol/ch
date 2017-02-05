@@ -156,7 +156,7 @@
 
   $(document).ready(function(){
 
-    const images = new Images('_image_group',8);
+    const images = new Images('_image_group','photo',5);
     const district = new District();
     const map = new Map();
     const form = new Form();

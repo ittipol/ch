@@ -248,7 +248,7 @@
 
   $(document).ready(function(){
 
-    const images = new Images('_image_group',8);
+    const images = new Images('_image_group','photo',8);
     const district = new District();
     const tagging = new Tagging();
     const form = new Form();

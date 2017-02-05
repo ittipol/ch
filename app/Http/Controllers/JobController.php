@@ -33,12 +33,12 @@ class JobController extends Controller
     $this->mergeData($model->modelData->build());
 
     // Get Shop Address
-    $shop = $model->getRalatedModelData('ShopTo',array(
+    $shop = $model->getModelRelationData('ShopTo',array(
       'first' => true,
     ))->shop;
 
     // Get Slug
-    $slug = $shop->getRalatedModelData('Slug',array(
+    $slug = $shop->getModelRelationData('Slug',array(
       'first' => true,
     ))->slug;
 

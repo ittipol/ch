@@ -2,6 +2,7 @@
 
 namespace App\library;
 
+use App\library\cache;
 use Session;
 
 class Paginator {
@@ -97,9 +98,25 @@ class Paginator {
     ->skip($offset)
     ->get();
 
+    $cache = new Cache;
+
     $data = array();
     foreach ($records as $record) {
-      $data[] = array_merge($record->buildPaginationData(),$this->parseUrl($record->getAttributes()));
+
+      $image = $record->getModelRelationData('Image',array(
+        'first' => true
+      ));
+
+      $imageUrl = '/images/common/no-img.png';
+      if(!empty($image)) {
+        $imageUrl = $cache->getCacheImageUrl($image,'list');
+      }
+
+      $data[] = array_merge($record->buildPaginationData(),
+        array('_imageUrl' => $imageUrl),
+        $this->parseUrl($record->getAttributes())
+      );
+
     }
 
     return $data;

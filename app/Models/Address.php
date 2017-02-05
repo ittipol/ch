@@ -25,7 +25,7 @@ class Address extends Model
 
   public function __saveRelatedData($model,$options = array()) {
 
-    $address = $model->getRalatedModelData($this->modelName,
+    $address = $model->getModelRelationData('Address',
       array(
         'first' => true
       )
@@ -35,7 +35,8 @@ class Address extends Model
       'province_id' => 9
     ));
 
-    if(($model->state == 'update') && !empty($address)){
+    // if(($model->state == 'update') && !empty($address)){
+    if(!empty($address)){
       return $address
       ->fill($options['value'])
       ->save();

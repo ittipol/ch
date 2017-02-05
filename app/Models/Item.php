@@ -9,16 +9,12 @@ class Item extends Model
 {
   protected $table = 'items';
   protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','created_by'];
-  protected $modelRelated = array('Image','Address','Tagging','Contact','ItemToCategory');
+  protected $modelRelations = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
 
-  // protected $imageCache = array('xs','list');
-
-
-  public $images = array(
+  public $imageTypes = array(
     'photo' => array(
-      'limit' => 8,
-      'cache' => array('xs','list')
+      'limit' => 8
     )
   );
 
@@ -89,31 +85,16 @@ class Item extends Model
   }
 
   public function buildPaginationData() {
-    
-    $imageStyle = new ImageStyle;
+
     $currency = new Currency;
     $string = new String;
-
-    $image = $this->getRalatedModelData('Image',array(
-      'conditions' => array(
-        array('image_style_id','=',$imageStyle->getIdByalias('list'))
-      ),
-      'first' => true
-    ));
-
-    $imageUrl = '/images/common/no-img.png';
-    if(!empty($image)) {
-      $image = $image->buildModelData();
-      $imageUrl = $image['_url'];
-    }
 
     return array(
       'id' => $this->id,
       'name' => $this->name,
       '_name_short' => $string->subString($this->name,45),
       // 'description' => $this->description,
-      '_price' => $currency->format($this->price),
-      '_imageUrl' => $imageUrl
+      '_price' => $currency->format($this->price)
     );
   }
 

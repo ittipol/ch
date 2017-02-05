@@ -217,7 +217,7 @@
 
   $(document).ready(function(){
 
-    const images = new Images('_image_group',5,'description');
+    const images = new Images('_image_group','photo',5,'description');
     const tagging = new Tagging();
     const job = new Job();
     const form = new Form();

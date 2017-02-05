@@ -9,9 +9,14 @@ class RealEstate extends Model
 {
   protected $table = 'real_estates';
   protected $fillable = ['announcement_type_id','real_estate_type_id','name','description','price','home_area','land_area','indoor','furniture','facility','feature','need_broker',];
-  protected $modelRelated = array('Image','Address','Tagging','Contact');
+  protected $modelRelations = array('Image','Address','Tagging','Contact');
   protected $directory = true;
-  protected $imageCache = array('xs','list');
+  
+  public $imageTypes = array(
+    'photo' => array(
+      'limit' => 8
+    )
+  );
 
   protected $validation = array(
     'rules' => array(
@@ -33,21 +38,6 @@ class RealEstate extends Model
   public function __construct() {  
     parent::__construct();
   }
-
-  // public static function boot() {
-
-  //   parent::boot();
-
-  //   RealEstate::saving(function($model){
-  //     $model->price = str_replace(',', '', $model->price);
-  //     $model->feature = json_encode($model->feature);
-  //     $model->facility = json_encode($model->facility);
-  //     $model->home_area = json_encode($model->home_area);
-  //     $model->land_area = json_encode($model->land_area);
-  //     $model->indoor = json_encode($model->indoor);
-  //   });
-
-  // }
 
   public function announcementType() {
     return $this->hasOne('App\Models\AnnouncementType','id','announcement_type_id');
@@ -214,21 +204,17 @@ class RealEstate extends Model
 
   public function buildPaginationData() {
 
-    $imageStyle = new ImageStyle;
+    $imageLib = new Image;
     $currency = new Currency;
     $string = new String;
 
-    $image = $this->getRalatedModelData('Image',array(
-      'conditions' => array(
-        array('image_style_id','=',$imageStyle->getIdByalias('list'))
-      ),
+    $image = $this->getModelRelationData('Image',array(
       'first' => true
     ));
 
     $imageUrl = '/images/common/no-img.png';
     if(!empty($image)) {
-      $image = $image->buildModelData();
-      $imageUrl = $image['_url'];
+      $imageUrl = $imageLib->getCacheImageUrl($image,'list');
     }
 
     return array(

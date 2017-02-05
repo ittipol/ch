@@ -2,7 +2,7 @@
 
 namespace App\library;
 
-use App\library\image;
+use App\library\cache;
 
 class ModelData {
 
@@ -12,10 +12,6 @@ class ModelData {
 	public function __construct($model = null) {
 	  $this->model = $model;
 	}
-
-	// public function setModel($model = null) {
-	//   $this->model = $model;
-	// }
 
 	public function loadData($options = array()) {
 
@@ -31,7 +27,7 @@ class ModelData {
       $options['models'] = array();
     }
 
-    $modeldNames = $this->model->getModelRelated();
+    $modeldNames = $this->model->getModelRelations();
 
     if(!empty($modeldNames)){
 
@@ -73,7 +69,7 @@ class ModelData {
 
       // case 'OfficeHour':
 
-      //   $officeHour = $this->model->getRalatedModelData('OfficeHour',array(
+      //   $officeHour = $this->model->getModelRelationData('OfficeHour',array(
       //     'first' => true,
       //     'fields' => array('same_time','time')
       //   ));
@@ -125,7 +121,7 @@ class ModelData {
 
   public function loadAddress() {
 
-    $address = $this->model->getRalatedModelData('Address',
+    $address = $this->model->getModelRelationData('Address',
       array(
         'first' => true,
         'fields' => array('address','province_id','district_id','sub_district_id','description','latitude','longitude'),
@@ -143,11 +139,9 @@ class ModelData {
 
   public function loadImage() {
 
-    $imageLib = new Image;
+    $cache = new cache;
 
-    $imageStyle = Service::loadModel('ImageStyle');
-
-    $images = $this->model->getRalatedModelData('Image',array(
+    $images = $this->model->getModelRelationData('Image',array(
       'fields' => array('id','model','model_id','filename','description','image_type_id')
     ));
 
@@ -157,24 +151,17 @@ class ModelData {
 
     $_images = array();
     foreach ($images as $image) {
-      $_images[] = $image->buildModelData();
-      // get cache image
-      $imageLib->getCacheImageUrl($image,'xs');
-      $imageLib->cache($image,'xs');
-      dd('aaa');
+      $_images[] = array_merge($image->buildModelData(),array(
+        '_xs_url' => $cache->getCacheImageUrl($image,'xs')
+      ));
     } 
-
-    // $images = array();
-    // foreach ($_images as $image) {
-    //   $images[] = $image;
-    // }
 
     return $_images;
 
   }
 
   public function loadTagging() {
-    $taggings = $this->model->getRalatedModelData('Tagging',
+    $taggings = $this->model->getModelRelationData('Tagging',
       array(
         'fields' => array('word_id')
       )
@@ -194,7 +181,7 @@ class ModelData {
   }
 
   public function loadContact() {
-    $contact = $this->model->getRalatedModelData('Contact',array(
+    $contact = $this->model->getModelRelationData('Contact',array(
       'first' => true,
       'fields' => array('phone_number','email','line')
     ));
@@ -208,7 +195,7 @@ class ModelData {
   }
 
   // public function shopTo($options = array()) {
-  //   $shopTo = $this->model->getRalatedModelData('ShopTo',array(
+  //   $shopTo = $this->model->getModelRelationData('ShopTo',array(
   //     'first' => true,
   //   ));
 

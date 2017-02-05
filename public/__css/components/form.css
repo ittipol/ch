@@ -123,6 +123,7 @@ form .error {
   display: inline-block;
   position: relative;
   margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 .image-panel input[type="text"] {
@@ -138,21 +139,27 @@ label.image-label {
 	border: 1px solid #E0E0E0;
 	overflow: hidden;
   cursor: pointer;
+  margin: 0;
 }
 
-.image-panel.description {
+/*.image-panel.description {
 	width: 100%;
-}
+}*/
 
-.image-panel.description > label {
+/*.image-panel.description > label {
 	float: left;
-}
+}*/
 
 .image-panel.description > textarea {
-	width: 75%;
-	height: 198px;
-	margin-left: 20px;
-	float: left;
+	/* width: 75%; */
+	height: 100px;
+	/* margin-left: 20px; */
+	/* float: left; */
+	width: 200px;
+	border-color: #E0E0E0;
+	border-top: 0;
+	margin-top: -1px;
+	outline: none;
 }
 
 label.image-label.added {

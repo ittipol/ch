@@ -28,7 +28,7 @@ class Form {
       $options['models'] = array();
     }
 
-    $modeldNames = $this->model->getModelRelated();
+    $modeldNames = $this->model->getModelRelations();
 
     foreach ($modeldNames as $key => $modelName) {
 
@@ -79,7 +79,7 @@ class Form {
 
   public function loadAddress() {
 
-    $address = $this->model->getRalatedModelData('Address',
+    $address = $this->model->getModelRelationData('Address',
       array(
         'first' => true,
         'fields' => array('address','province_id','district_id','sub_district_id','description','latitude','longitude'),
@@ -97,17 +97,8 @@ class Form {
 
   public function loadImage() {
 
-    $imageStyle = Service::loadModel('ImageStyle');
-
-    $images = $this->model->getRalatedModelData('Image',array(
-      'conditions' => array(
-        'in' => array(
-          array('image_style_id',array(
-            $imageStyle->getIdByalias('original'),
-          ))
-        )
-      ),
-      'fields' => array('id','model','model_id','filename','description')
+    $images = $this->model->getModelRelationData('Image',array(
+      'fields' => array('id','model','model_id','filename','description','image_type_id')
     ));
 
     if(empty($images)){
@@ -124,7 +115,7 @@ class Form {
   }
 
   public function loadTagging() {
-    $taggings = $this->model->getRalatedModelData('Tagging',
+    $taggings = $this->model->getModelRelationData('Tagging',
       array(
         'fields' => array('word_id')
       )
@@ -144,7 +135,7 @@ class Form {
   }
 
   public function loadContact() {
-    $contact = $this->model->getRalatedModelData('Contact',array(
+    $contact = $this->model->getModelRelationData('Contact',array(
       'first' => true,
       'fields' => array('phone_number','email','line')
     ));

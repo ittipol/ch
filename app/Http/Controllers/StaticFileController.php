@@ -2,27 +2,30 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
-// use App\Http\Requests;
-use App\Models\User;
 use App\library\service;
+use App\library\cache;
 use Auth;
-// use Response;
-use File;
-// use Storage;
+// use File;
 
 class StaticFileController extends Controller
 {
   private $noImagePath = 'images/common/no-img.png';
 
-  public function serveImages($file){
+  public function serveImages($filename){
+
+    $cache = new Cache;
+    $path = $cache->getCacheImagePath($filename);
+
+    if(!empty($path)) {
+      return response()->download($path, null, [], null);;
+    }
+
     $image = Service::loadModel('Image')
-    ->where('filename','like',$file)
-    ->select(array('model','model_id','filename','image_style_id'))
+    ->where('filename','like',$filename)
+    ->select(array('model','model_id','filename','image_type_id'))
     ->first();
 
     if(empty($image)) {
-      // return response()->download($this->noImagePath, null, [], null);
       return '';
     }
     
@@ -30,7 +33,7 @@ class StaticFileController extends Controller
 
     $path = $image->getImagePath();
 
-    if(!File::exists($path)){
+    if(!file_exists($path)){
       $path = $this->noImagePath;
     }
 

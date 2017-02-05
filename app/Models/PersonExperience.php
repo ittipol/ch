@@ -7,10 +7,15 @@ use App\library\date;
 class PersonExperience extends Model
 {
   protected $table = 'person_experiences';
-  protected $fillable = ['person_id','name','gender','birth_date','private_websites','active'];
-  protected $modelRelated = array('Image','Address','Contact');
+  protected $fillable = ['person_id','name','gender','birth_date','private_websites','profile_image_id','active'];
+  protected $modelRelations = array('Image','Address','Contact');
   protected $directory = true;
-  protected $imageCache = array('profile-image-xs');
+  
+  public $imageTypes = array(
+    'profile-image' => array(
+      'limit' => 1
+    )
+  );
 
   protected $validation = array(
     'rules' => array(
@@ -20,7 +25,29 @@ class PersonExperience extends Model
       'name.required' => 'ชื่อห้ามว่าง',
       'birth_date' => 'required|date_format:Y-m-d'
     )
-  ); 
+  );
+
+  public static function boot() {
+
+    parent::boot();
+
+    PersonExperience::saving(function($model){
+
+      if(!empty($model->modelRelationData['Image']['profile-image'])) {
+
+        $image = new Image;
+        $imageId = $image->handleProfileImage($model,$model->modelRelationData['Image']['profile-image']);
+
+        if(!empty($imageId)) {
+          $model->profile_image_id = $imageId;
+        }
+        
+        unset($model->modelRelationData['Image']['profile-image']);
+      }
+
+    });
+
+  }
 
   public function getByPersonId() {
     return $this->where('person_id','=',session()->get('Person.id'))->first();
@@ -30,10 +57,42 @@ class PersonExperience extends Model
     return $this->where('person_id','=',session()->get('Person.id'))->exists();
   }
 
+//   protected function afterSave() {
+// dd($this);
+//     $imageType = new ImageType;
+
+//     $profileImage = $this->getModelRelationData('Image',
+//       array(
+//         'conditions' => array(
+//           array('image_type_id','=',$imageType->getIdByalias('profile-image'))
+//         ),
+//         'first' => true
+//       )
+//     );
+
+//     $this->profile_image_id = $profileImage->id;
+//     $this->save();
+
+//     dd($profileImage->id);
+
+//   }
+
   public function fill(array $attributes) {
 
     if(!empty($attributes)) {
-      $attributes['private_websites'] = json_encode($attributes['private_websites']);
+
+      $websites = array();
+      foreach ($attributes['private_websites'] as $value) {
+        if(!empty($value)) {
+          $websites[] = $value;
+        }
+      }
+
+      $attributes['private_websites'] = '';
+      if(!empty($websites)) {
+        $attributes['private_websites'] = json_encode($websites);
+      }
+      
     }
 
     return parent::fill($attributes);
@@ -59,6 +118,21 @@ class PersonExperience extends Model
       'name' => $this->name,
       'gender' => $gender,
       'birthDate' => $birthDate
+    );
+
+  }
+
+  public function buildFormData() {
+    
+    list($year,$month,$day) = explode('-', $this->birth_date); 
+
+    return array(
+      'name' => $this->name,
+      'gender' => $this->gerder,
+      'private_websites' => $this->private_websites,
+      'birth_day' => $day,
+      'birth_month' => $month,
+      'birth_year' => ($year+543),
     );
 
   }

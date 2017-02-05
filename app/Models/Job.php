@@ -8,9 +8,15 @@ class Job extends Model
 {
   public $table = 'jobs';
   protected $fillable = ['employment_type_id','name','description','qualification','benefit','salary','recruitment','recruitment_custom_detail'];
-  protected $modelRelated = array('Image','Tagging','JobToBranch','ShopTo');
+  protected $modelRelations = array('Image','Tagging','JobToBranch','ShopTo');
   protected $directory = true;
   protected $imageCache = array('xs','list');
+
+  public $imageTypes = array(
+    'photo' => array(
+      'limit' => 5
+    )
+  );
 
   // protected $behavior = array(
   //   'Lookup' => array(
@@ -58,21 +64,7 @@ class Job extends Model
 
   public function buildPaginationData() {
 
-    $imageStyle = new ImageStyle;
     $string = new String;
-
-    $image = $this->getRalatedModelData('Image',array(
-      'conditions' => array(
-        array('image_style_id','=',$imageStyle->getIdByalias('list'))
-      ),
-      'first' => true
-    ));
-
-    $imageUrl = '/images/common/no-img.png';
-    if(!empty($image)) {
-      $image = $image->buildModelData();
-      $imageUrl = $image['_url'];
-    }
 
     $this->salary = trim($this->salary);
     $this->salary = str_replace(',', '', $this->salary);
@@ -103,8 +95,7 @@ class Job extends Model
       'id' => $this->id,
       'name' => $this->name,
       '_name_short' => $string->subString($this->name,45),
-      '_salary' => $this->salary,
-      '_imageUrl' => $imageUrl
+      '_salary' => $this->salary
     );
 
   }

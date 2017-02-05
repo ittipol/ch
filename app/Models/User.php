@@ -10,7 +10,7 @@ class User extends Model
     protected $table = 'users';
     protected $fillable = ['email','password'];
     protected $hidden = ['password','remember_token'];
-    protected $modelRelated = array('Person');
+    protected $modelRelations = array('Person');
     protected $directory = true;
 
     protected $validation = array(

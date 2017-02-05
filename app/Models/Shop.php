@@ -9,7 +9,7 @@ class Shop extends Model
 {
   protected $table = 'shops';
   protected $fillable = ['name','description','brand_story','created_by'];
-  protected $modelRelated = array('Image','Address','Contact','OfficeHour');
+  protected $modelRelations = array('Image','Address','Contact','OfficeHour');
   public $errorType;
 
   protected $behavior = array(

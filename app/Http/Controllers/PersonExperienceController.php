@@ -92,7 +92,12 @@ class PersonExperienceController extends Controller
       'year' => $year
     ));
 
-    $this->mergeData($model->form->build());
+    $model->form->loadData();
+
+    $this->data = $model->form->build();
+    $this->setData('day',$day);
+    $this->setData('month',$month);
+    $this->setData('year',$year);
 
     return $this->view('pages.person_experience.form.profile_edit');
 
@@ -104,7 +109,7 @@ class PersonExperienceController extends Controller
 
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to('item/detail/'.$model->id);
+      return Redirect::to('experience');
     }else{
       return Redirect::back();
     }
