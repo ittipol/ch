@@ -80,7 +80,7 @@ class Image extends Model
     $temporaryFile = new TemporaryFile;
     $imageType = new ImageType;
 
-    $directoryName = $model->modelName.'_'.$options['token'].'_'.$options['type'];
+    // $directoryName = $model->modelName.'_'.$options['token'].'_'.$options['type'];
 
     $count[$options['type']] = 0;
 
@@ -93,51 +93,47 @@ class Image extends Model
         break;
       }
 
-      $path = $temporaryFile->getFilePath($image['filename'],array(
-        'directoryName' => $directoryName
-      ));
+      $this->handleImage($model,$image,$options);
 
-      if(!file_exists($path)){
-        continue;
-      }
+      // $path = $temporaryFile->getFilePath($image['filename'],array(
+      //   'directoryName' => $directoryName
+      // ));
 
-      $_value = array(
-        'filename' => $image['filename'],
-        'image_type_id' => $imageType->getIdByalias($options['type'])
-      );
+      // if(!file_exists($path)){
+      //   continue;
+      // }
 
-      if(!empty($image['description'])) {
-        $_value['description'] = $image['description'];
-      }
+      // $_value = array(
+      //   'filename' => $image['filename'],
+      //   'image_type_id' => $imageType->getIdByalias($options['type'])
+      // );
 
-      $imageInstance = $this->newInstance();
-      if($imageInstance->fill($model->includeModelAndModelId($_value))->save()) {
+      // if(!empty($image['description'])) {
+      //   $_value['description'] = $image['description'];
+      // }
 
-        $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
-        if(!is_dir($toPath)){
-          mkdir($toPath,0777,true);
-        }
+      // $imageInstance = $this->newInstance();
+      // if($imageInstance->fill($model->includeModelAndModelId($_value))->save()) {
 
-        $this->moveImage($path,$imageInstance->getImagePath());
+      //   $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
+      //   if(!is_dir($toPath)){
+      //     mkdir($toPath,0777,true);
+      //   }
 
-      }
+      //   $this->moveImage($path,$imageInstance->getImagePath());
+
+      // }
 
     }
 
     // remove temp dir
-    $temporaryFile->deleteTemporaryDirectory($directoryName);
+    $temporaryFile->deleteTemporaryDirectory($model->modelName.'_'.$options['token'].'_'.$options['type']);
     // remove temp file record
     $temporaryFile->deleteTemporaryRecords($model->modelName,$options['token']);
 
   }
 
   private function deleteImages($model,$imageIds) {
-
-    // $images = $this->newInstance();
-
-    // foreach ($imageIds as $imageId) {
-    //   $images = $images->orWhere('id','=',$imageId)->orWhere('original_image_id','=',$imageId);
-    // }
 
     $images = $this->newInstance()
     ->whereIn('id',$imageIds)
@@ -165,14 +161,29 @@ class Image extends Model
 
   }
 
-  public function handleProfileImage($model,$image) {
+  public function addImage($model,$image,$options = array()) {
+
+    $temporaryFile = new TemporaryFile;
+
+    // $directoryName = $model->modelName.'_'.$options['token'].'_profile-image';
+
+    $imageId = $this->handleImage($model,$image,$options);
+
+    $temporaryFile->deleteTemporaryDirectory($model->modelName.'_'.$options['token'].'_profile-image');
+    $temporaryFile->deleteTemporaryRecords($model->modelName,$options['token']);
+
+    return $imageId;
+
+  }
+
+  public function handleImage($model,$image,$options = array()) {
 
     $temporaryFile = new TemporaryFile;
     $imageType = new ImageType;
 
-    $directoryName = $model->modelName.'_'.$image['token'].'_profile-image';
+    $directoryName = $model->modelName.'_'.$options['token'].'_profile-image';
 
-    $path = $temporaryFile->getFilePath($image['images'][0]['filename'],array(
+    $path = $temporaryFile->getFilePath($image['filename'],array(
       'directoryName' => $directoryName
     ));
 
@@ -181,9 +192,13 @@ class Image extends Model
     }
 
     $value = array(
-      'filename' => $image['images'][0]['filename'],
-      'image_type_id' => $imageType->getIdByalias('profile-image')
+      'filename' => $image['filename'],
+      'image_type_id' => $imageType->getIdByalias($options['type'])
     );
+
+    if(!empty($image['description'])) {
+      $value['description'] = $image['description'];
+    }
 
     $imageInstance = $this->newInstance();
     if(!$imageInstance->fill($model->includeModelAndModelId($value))->save()) {
@@ -196,21 +211,11 @@ class Image extends Model
     }
 
     if(!$this->moveImage($path,$imageInstance->getImagePath())) {
-      $temporaryFile->deleteTemporaryDirectory($directoryName);
-      $temporaryFile->deleteTemporaryRecords($model->modelName,$image['token']);
       return false;
     }
 
-    $temporaryFile->deleteTemporaryDirectory($directoryName);
-    $temporaryFile->deleteTemporaryRecords($model->modelName,$image['token']);
-
     return $imageInstance->id;
 
-    // if (Request::hasFile('article_image')) {
-    //   $file = Request::file('article_image');
-    //   $file->move(base_path() . '/public/images/', $file->getClientOriginalName());
-    //   $article->article_image = 'images/' . $file->getClientOriginalName();
-    // }
   }
 
   public function moveImage($oldPath,$to) {

@@ -30,10 +30,14 @@ class Address extends Model
         'first' => true
       )
     );
+    
+    if(empty($options['value']['province_id'])) {
+      $options['value']['province_id'] = 9;
+    }
 
-    $options['value'] = array_merge($options['value'],array(
-      'province_id' => 9
-    ));
+    // $options['value'] = array_merge($options['value'],array(
+    //   'province_id' => 9
+    // ));
 
     // if(($model->state == 'update') && !empty($address)){
     if(!empty($address)){

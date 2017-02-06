@@ -83,7 +83,7 @@ class PersonExperienceController extends Controller
     }
 
     for ($i=2500; $i <= $thaiLatestYear; $i++) { 
-      $year[$i] = $i;
+      $year[$i-543] = $i;
     }
 
     $this->mergeData(array(

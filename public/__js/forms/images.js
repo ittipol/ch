@@ -164,7 +164,7 @@ class Images {
 
 	  		let key = parent.attr('id').split('_');
 
-	  		_this.createImage(parent,key[0],key[1],response.filename);
+	  		_this.createAddedImage(parent,key[0],key[1],response.filename);
 
 	  	}else{
 
@@ -187,11 +187,17 @@ class Images {
 
 	}
 
-	createImage(parent,code,index,filename,description='') {
+	createAddedImage(parent,code,index,filename,description='') {
 
 		let hidden = document.createElement('input');
 	  hidden.setAttribute('type','hidden');
-	  hidden.setAttribute('name','Image['+this.type+'][images]['+index+'][filename]');
+
+	  let hiddenInputName = 'Image['+this.type+'][images]['+index+'][filename]';
+	  if(this.type == 'profile-image') {
+	  	hiddenInputName = 'Image['+this.type+'][image][filename]';
+	  }
+
+	  hidden.setAttribute('name',hiddenInputName);
 	  hidden.setAttribute('value',filename);
 	  parent.append(hidden);
 
@@ -235,10 +241,7 @@ class Images {
 
 			if(input.getAttribute('data-id') != null) {
 				let key = $(parent).attr('id').split('_');
-				let hidden = document.createElement('input');
-			  hidden.setAttribute('type','hidden');
-			  hidden.setAttribute('name','Image['+_this.type+'][delete]['+key[1]+']');
-			  hidden.setAttribute('value',input.getAttribute('data-id'));
+			 	let hidden = createDeletedImage(key[1],input.getAttribute('data-id'));
 			  parent.parent().parent().append(hidden);
 			}
 
@@ -250,6 +253,13 @@ class Images {
 
 		}
 		
+	}
+
+	createDeletedImage(index,value) {
+		let hidden = document.createElement('input');
+	  hidden.setAttribute('type','hidden');
+	  hidden.setAttribute('name','Image['+this.type+'][delete]['+index+']');
+	  hidden.setAttribute('value',value);
 	}
 
 	createUploader(index){

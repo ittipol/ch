@@ -278,6 +278,9 @@
       const inputTextGroup = new InputTextGroup('website_input','private_websites','เว็บไซต์ส่วนตัวหรือบล็อก');
       inputTextGroup.load('{!!$_formData['private_websites']!!}');
 
+      const form = new Form();
+      form.load();
+
     });
 
   </script>

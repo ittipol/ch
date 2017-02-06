@@ -24,7 +24,7 @@ class Form {
 				input.setAttribute("type", "hidden");
 				input.setAttribute("name", "birth_date");
 				input.setAttribute("value", $('#birth_year').val()+'-'+$('#birth_month').val()+'-'+$('#birth_day').val());
-			
+
 				this.appendChild(input);
 			}
 

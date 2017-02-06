@@ -33,10 +33,13 @@ class PersonExperience extends Model
 
     PersonExperience::saving(function($model){
 
-      if(!empty($model->modelRelationData['Image']['profile-image'])) {
+      if(!empty($model->modelRelationData['Image']['profile-image']['image'])) {
 
         $image = new Image;
-        $imageId = $image->handleProfileImage($model,$model->modelRelationData['Image']['profile-image']);
+        $imageId = $image->addImage($model,$model->modelRelationData['Image']['profile-image']['image'],array(
+          'type' => 'profile-image',
+          'token' => $model->modelRelationData['Image']['profile-image']['token']
+        ));
 
         if(!empty($imageId)) {
           $model->profile_image_id = $imageId;
@@ -128,11 +131,11 @@ class PersonExperience extends Model
 
     return array(
       'name' => $this->name,
-      'gender' => $this->gerder,
+      'gender' => $this->gender,
       'private_websites' => $this->private_websites,
       'birth_day' => $day,
       'birth_month' => $month,
-      'birth_year' => ($year+543),
+      'birth_year' => $year,
     );
 
   }
