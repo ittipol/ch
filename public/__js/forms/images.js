@@ -17,12 +17,20 @@ class Images {
 		this.init();
 		this.bind();
 
-		if (typeof imageJson != 'undefined') {
+		if((typeof imageJson != 'undefined') && (imageJson != 'null')) {
+
 			let _images = JSON.parse(imageJson);
-			for (let i = 0; i < _images.length; i++) {
+
+			if(typeof _images.length == 'undefined') {
 				this.imagesPlaced.push(this.index);
-				this.index = this._createUploader(this.index,_images[i]);
+				this.index = this._createUploader(this.index,_images);
+			}else{
+				for (let i = 0; i < _images.length; i++) {
+					this.imagesPlaced.push(this.index);
+					this.index = this._createUploader(this.index,_images[i]);
+				}
 			}
+			
 		}
 
 		if(this.index < this.limit){
@@ -241,8 +249,7 @@ class Images {
 
 			if(input.getAttribute('data-id') != null) {
 				let key = $(parent).attr('id').split('_');
-			 	let hidden = createDeletedImage(key[1],input.getAttribute('data-id'));
-			  parent.parent().parent().append(hidden);
+			 	this.createDeletedImage(parent.parent().parent(),key[1],input.getAttribute('data-id'));
 			}
 
 			parent.parent().remove();
@@ -255,11 +262,12 @@ class Images {
 		
 	}
 
-	createDeletedImage(index,value) {
+	createDeletedImage(parent,index,value) {
 		let hidden = document.createElement('input');
 	  hidden.setAttribute('type','hidden');
 	  hidden.setAttribute('name','Image['+this.type+'][delete]['+index+']');
 	  hidden.setAttribute('value',value);
+	  parent.append(hidden);
 	}
 
 	createUploader(index){

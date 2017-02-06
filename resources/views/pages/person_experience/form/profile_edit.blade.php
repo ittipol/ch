@@ -273,7 +273,7 @@
       // district.load();
 
       const images = new Images('_profile_image','profile-image',1);
-      images.load();
+      images.load('{!!$profileImage!!}');
 
       const inputTextGroup = new InputTextGroup('website_input','private_websites','เว็บไซต์ส่วนตัวหรือบล็อก');
       inputTextGroup.load('{!!$_formData['private_websites']!!}');

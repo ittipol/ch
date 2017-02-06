@@ -95,8 +95,8 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 
   Route::get('shop/{slug}/job','ShopController@job');
   
-  Route::get('shop/{slug}/job_add','JobController@add');
-  Route::post('shop/{slug}/job_add','JobController@addingSubmit');
+  Route::get('shop/{slug}/job_post','JobController@add');
+  Route::post('shop/{slug}/job_post','JobController@postingSubmit');
 
   Route::get('shop/{slug}/job_edit/{id}','JobController@edit');
   Route::patch('shop/{slug}/job_edit/{id}','JobController@editingSubmit');

@@ -52,7 +52,7 @@ class RealEstateController extends Controller
 
   }
 
-  public function post() { 
+  public function add() { 
 
     $model = Service::loadModel('RealEstate');
 
@@ -101,7 +101,7 @@ class RealEstateController extends Controller
     return $this->view('pages.real_estate.form.real_estate_post');
   }
 
-  public function postingSubmit(CustomFormRequest $request) {
+  public function addingSubmit(CustomFormRequest $request) {
 
     $model = Service::loadModel('RealEstate');
 

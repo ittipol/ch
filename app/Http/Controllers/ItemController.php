@@ -52,7 +52,7 @@ class ItemController extends Controller
 
   }
 
-  public function post() {
+  public function add() {
 
     $model = Service::loadModel('Item');
 
@@ -83,7 +83,7 @@ class ItemController extends Controller
     return $this->view('pages.item.form.item_post');
   }
 
-  public function postingSubmit(CustomFormRequest $request) {
+  public function addingSubmit(CustomFormRequest $request) {
 
     $model = Service::loadModel('Item');
 

@@ -92,9 +92,16 @@ class PersonExperienceController extends Controller
       'year' => $year
     ));
 
-    $model->form->loadData();
+    $model->form->loadData(array(
+      'model' => array(
+        'Address','Contact'
+      )
+    ));
+
+    // get profile image
 
     $this->data = $model->form->build();
+    $this->setData('profileImage',json_encode($model->getProfileImage()));
     $this->setData('day',$day);
     $this->setData('month',$month);
     $this->setData('year',$year);

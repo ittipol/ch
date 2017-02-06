@@ -33,9 +33,15 @@ class PersonExperience extends Model
 
     PersonExperience::saving(function($model){
 
-      if(!empty($model->modelRelationData['Image']['profile-image']['image'])) {
+      $image = new Image;
+// ANESSA ftv
+      if(!empty($model->modelRelationData['Image']['profile-image']['delete'])) {
+        $image->deleteImages($model,$model->modelRelationData['Image']['profile-image']['delete']);
+        $model->profile_image_id = null;
+      }
 
-        $image = new Image;
+      if(!empty($model->modelRelationData['Image']['profile-image']['image'])) {
+        
         $imageId = $image->addImage($model,$model->modelRelationData['Image']['profile-image']['image'],array(
           'type' => 'profile-image',
           'token' => $model->modelRelationData['Image']['profile-image']['token']
@@ -51,34 +57,6 @@ class PersonExperience extends Model
     });
 
   }
-
-  public function getByPersonId() {
-    return $this->where('person_id','=',session()->get('Person.id'))->first();
-  }
-
-  public function checkExistByPersonId() {
-    return $this->where('person_id','=',session()->get('Person.id'))->exists();
-  }
-
-//   protected function afterSave() {
-// dd($this);
-//     $imageType = new ImageType;
-
-//     $profileImage = $this->getModelRelationData('Image',
-//       array(
-//         'conditions' => array(
-//           array('image_type_id','=',$imageType->getIdByalias('profile-image'))
-//         ),
-//         'first' => true
-//       )
-//     );
-
-//     $this->profile_image_id = $profileImage->id;
-//     $this->save();
-
-//     dd($profileImage->id);
-
-//   }
 
   public function fill(array $attributes) {
 
@@ -100,6 +78,28 @@ class PersonExperience extends Model
 
     return parent::fill($attributes);
 
+  }
+
+  public function getByPersonId() {
+    return $this->where('person_id','=',session()->get('Person.id'))->first();
+  }
+
+  public function checkExistByPersonId() {
+    return $this->where('person_id','=',session()->get('Person.id'))->exists();
+  }
+
+  public function getProfileImage() {
+
+    $image = Image::select('id','model','model_id','filename','image_type_id')->find($this->profile_image_id);
+
+    if(empty($image)) {
+      return null;
+    }
+
+    return array(
+      'id' => $image->id,
+      '_url' => $image->getImageUrl()
+    );
   }
 
   public function buildModelData() {

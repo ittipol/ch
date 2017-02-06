@@ -133,7 +133,7 @@ class Image extends Model
 
   }
 
-  private function deleteImages($model,$imageIds) {
+  public function deleteImages($model,$imageIds) {
 
     $images = $this->newInstance()
     ->whereIn('id',$imageIds)
@@ -248,7 +248,7 @@ class Image extends Model
     }
 
     $path = '';
-    if(File::exists($this->getImagePath())){
+    if(file_exists($this->getImagePath())){
       $path = '/safe_image/'.$filename;
     }
 
@@ -323,7 +323,6 @@ class Image extends Model
 
     return array(
       'id' => $this->id,
-      // 'filename' => $this->filename,
       'description' => $this->description ? $this->description : '',
       '_url' => $this->getImageUrl()
     );
