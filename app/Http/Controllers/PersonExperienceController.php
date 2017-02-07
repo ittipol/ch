@@ -6,12 +6,12 @@ use App\Http\Requests\CustomFormRequest;
 use App\library\service;
 use App\library\message;
 use App\library\date;
+use App\library\url;
 use Redirect;
 use Session;
 
 class PersonExperienceController extends Controller
 {
-
   public function __construct() { 
     parent::__construct();
   }
@@ -23,19 +23,31 @@ class PersonExperienceController extends Controller
     if($model->checkExistByPersonId()) {
       // Get Profile
       $profile = $model->where('person_id','=',Session::get('Person.id'))->first();
-      $profile->modelData->loadData();
-
-      $this->mergeData(array(
-        'profile' => $profile->modelData->build(true)
+      $profile->modelData->loadData(array(
+        'models' => array('Address','Contact')
       ));
+
+      // Get skill
+      $skills = Service::loadModel('PersonSkill')->where('person_id','=',session()->get('Person.id'))->get();
+
+      $url = new Url;
+      $url->setUrl('experience/skill_edit/{skill}','editUrl');
+      $url->setUrl('experience/skill_delete/{skill}','deleteUrl');
+
+      $_skills = array();
+      foreach ($skills as $skill) {
+        $_skills[] = array_merge(array(
+          'skill' => $skill->skill,
+        ),$url->parseUrl($skill->getAttributes())); 
+      }
+
+      $this->setData('profile',$profile->modelData->build(true));
+      $this->setData('profileImageUrl',$profile->getProfileImageUrl());
+      $this->setData('skills',$_skills);
     }
 
-    $this->mergeData(array(
-      'exist' => $model->checkExistByPersonId()
-    ));
+    $this->setData('exist',$model->checkExistByPersonId());
 
-
-    
     return $this->view('pages.person_experience.main');
 
   }
@@ -63,8 +75,16 @@ class PersonExperienceController extends Controller
       'key' =>'id',
       'field' => 'name',
       'index' => 'provinces',
-      'order' => array('top','ASC')
+      'order' => array(
+        array('top','ASC')
+      )
     ));
+
+    $model->form->setData('websiteTypes',json_encode(array(
+      array('private-website','เว็บไซต์ส่วนตัว'),
+      array('blog','บล็อก'),
+      array('company-website','เว็บไซต์บริษัท')
+    )));
 
     $date = new Date;
 
@@ -97,8 +117,6 @@ class PersonExperienceController extends Controller
         'Address','Contact'
       )
     ));
-
-    // get profile image
 
     $this->data = $model->form->build();
     $this->setData('profileImage',json_encode($model->getProfileImage()));

@@ -11,7 +11,7 @@
     </div>
 
     @if(!empty($shopAddress))
-    <h4 class="title-with-icon location-pin">{{$shopAddress['_full_address']}}</h4>
+    <h4 class="title-with-icon location-pin">{{$shopAddress['_short_address']}}</h4>
     @endif
 
     <div class="image-gallery">

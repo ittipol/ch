@@ -148,19 +148,6 @@ class Form {
 
   }
 
-  // public function loadBranches() {dd($this->model);
-  //   $jobToBranch = $this->model->getRalatedData('JobToBranch',array(
-  //     'fields' => array('branch_id')
-  //   ));
-
-  //   $branches = array();
-  //   foreach ($jobToBranch as $value) {
-  //     $branches['branch_id'][] = $value->branch->id;
-  //   }
-
-  //   return $branches;
-  // }
-
   public function loadFieldData($modelName,$options = array()) {
     $model = Service::loadModel($modelName);
 
@@ -169,7 +156,9 @@ class Form {
     }
 
     if(!empty($options['order'])){
-      $model = $model->orderBy(current($options['order']),next($options['order']));
+      foreach ($options['order'] as $order) {
+        $model = $model->orderBy($order[0],$order[1]);
+      }
     }
 
     $records = $model->get();
@@ -178,32 +167,13 @@ class Form {
     foreach ($records as $record) {
       $data[$record->{$options['key']}] = $record->{$options['field']};
     }
+
+    if(!empty($options['json'])) {
+      $data = json_encode($data);
+    }
+
     $this->data[$options['index']] = $data;
   }
-
-  // public function shopTo($options = array()) {
-
-  //   $records = Service::loadModel('shopTo')->getData(array(
-  //     'conditions' => array(
-  //       ['shop_id','=',$options['shopId']],
-  //       ['model','=',$options['model']]
-  //     ),
-  //     'fields' => array('model_id')
-  //   ));
-
-  //   $index = lcfirst($options['model']);
-
-  //   $data = array();
-  //   foreach ($records as $record) {
-  //     $data[$record->{$index}->id] = $record->{$index}->name;
-  //   }
-
-  //   if(!empty($options['index'])) {
-  //     $index = $options['index'];
-  //   }
-
-  //   $this->data[$index] = $data;
-  // }
 
   public function setData($index,$value) {
     $this->data[$index] = $value;

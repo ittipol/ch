@@ -77,7 +77,7 @@ class ItemController extends Controller
       'index' => 'announcementTypes'
     ));
 
-    $this->mergeData($model->form->build());
+    $this->data = $model->form->build();
     $this->setData('defaultAnnouncementType',2);
 
     return $this->view('pages.item.form.item_post');
@@ -102,7 +102,7 @@ class ItemController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ไม่มีข้อมูลนี้ หรือ ข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -148,7 +148,7 @@ class ItemController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ไม่มีข้อมูลนี้ หรือ ข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }

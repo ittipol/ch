@@ -237,6 +237,14 @@
     echo Form::close();
   ?>
 
+  <?php
+
+  if(!empty($_oldInput['Tagging'])) { ?>
+    {!!$_oldInput['Tagging']!!}
+  <?php }
+
+  ?>
+
 </div>
 
 <script type="text/javascript">
@@ -250,8 +258,8 @@
 
     const tagging = new Tagging();
     tagging.load();
-    @if(!empty($_oldData['Tagging']))
-      tagging.setTags('{!!$_oldData['Tagging']!!}');
+    @if(!empty($_oldInput['Tagging']))
+      tagging.setTags({!!$_oldInput['Tagging']!!});
     @endif
 
     const form = new Form();

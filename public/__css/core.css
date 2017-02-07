@@ -1,5 +1,5 @@
 body {
-	background-color: #ffffff;
+	background-color: #fff;
 }
 
 .primary-bar {
@@ -10,19 +10,19 @@ body {
 }
 
 .primary-bar h3 {
-	color: #ffffff;
+	color: #fff;
 	margin: 0;
 	line-height: 80px;
 }
 
 .primary-text {
 	font-size: 62px;
-	color: #ffffff;
+	color: #fff;
 }
 
 .secondary-text {
 	font-size: 22px;
-	color: #ffffff;
+	color: #fff;
 }
 
 .secondary-text.indent {
@@ -31,6 +31,10 @@ body {
 
 a {
 	text-decoration: none !important;
+}
+
+a:visited {
+	color: #fff;
 }
 
 .line {

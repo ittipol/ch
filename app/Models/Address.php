@@ -58,24 +58,29 @@ class Address extends Model
       $geographic['longitude'] = $this->longitude;
     }
 
-    $fullAddress = '';
+    $longAddress = '';
+    $shortAddress = '';
     $subDistrictName = '';
     $districtName = '';
     $provinceName = '';
 
     if(!empty($this->subDistrict->name)) {
       $subDistrictName = $this->subDistrict->name;
-      $fullAddress .= ' ตำบล '.$this->subDistrict->name;
+      $shortAddress .= ' ตำบล '.$this->subDistrict->name;
     }
 
     if(!empty($this->district->name)) {
       $districtName = $this->district->name;
-      $fullAddress .= ' อำเภอ '.$this->district->name;
+      $shortAddress .= ' อำเภอ '.$this->district->name;
     }
 
     if(!empty($this->province->name)) {
       $provinceName = $this->province->name;
-      $fullAddress .= ' '.$this->province->name;
+      $shortAddress .= ' '.$this->province->name;
+    }
+
+    if(!empty($this->address)) {
+      $longAddress = $this->address.$shortAddress;
     }
 
     return array(
@@ -84,7 +89,8 @@ class Address extends Model
       '_province_name' => $provinceName,
       '_district_name' => $districtName,
       '_sub_district_name' => $subDistrictName,
-      '_full_address' => trim($fullAddress),
+      '_short_address' => trim($shortAddress),
+      '_long_address' => trim($longAddress),
       '_geographic' => !empty($geographic) ? json_encode($geographic) : ''
     );
     

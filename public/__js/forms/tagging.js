@@ -10,16 +10,15 @@ class Tagging {
 		this.code = null;
 	}
 
-	load(tagJson){
+	load(tags){
 
 		this.init();
 		this.crateTagList();
 		this.crateInputTagField();
 
-		if (typeof tagJson != 'undefined') {
-			let _tags = JSON.parse(tagJson);
-			for (let i = 0; i < _tags.length; i++) {
-				this.createTagChip(_tags[i]['_word']);
+		if (typeof tags != 'undefined') {
+			for (let i = 0; i < Object.keys(tags).length; i++) {
+				this.createTagChip(tags[i]['_word']);
 			}
 		}
 
@@ -33,9 +32,8 @@ class Tagging {
 
 	setTags(tagJson) {
 		if ((tagJson.length > 0) && (typeof tagJson != 'undefined')){
-			let _tags = JSON.parse(tagJson);
-			for (let i = 0; i < _tags.length; i++) {
-				this.createTagChip(_tags[i]);
+			for (let i = 0; i < tagJson.length; i++) {
+				this.createTagChip(tagJson[i]);
 			}
 		}
 	}

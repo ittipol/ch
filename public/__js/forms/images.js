@@ -12,25 +12,21 @@ class Images {
 		this.style = style; // default, description
 	}
 
-	load(imageJson){
+	load(images){
 
 		this.init();
 		this.bind();
 
-		if((typeof imageJson != 'undefined') && (imageJson != 'null')) {
-
-			let _images = JSON.parse(imageJson);
-
-			if(typeof _images.length == 'undefined') {
+		if((typeof images != 'undefined') && (images != 'null')) {
+			if(typeof images == 'string') {
 				this.imagesPlaced.push(this.index);
-				this.index = this._createUploader(this.index,_images);
+				this.index = this._createUploader(this.index,JSON.parse(images));
 			}else{
-				for (let i = 0; i < _images.length; i++) {
+				for (let i = 0; i < Object.keys(images).length; i++) {
 					this.imagesPlaced.push(this.index);
-					this.index = this._createUploader(this.index,_images[i]);
+					this.index = this._createUploader(this.index,images[i]);
 				}
 			}
-			
 		}
 
 		if(this.index < this.limit){

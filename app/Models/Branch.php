@@ -11,7 +11,7 @@ class Branch extends Model
 
   public $imageTypes = array(
     'photo' => array(
-      'limit' => 5
+      'limit' => 10
     )
   );
 

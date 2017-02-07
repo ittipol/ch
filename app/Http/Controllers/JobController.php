@@ -67,6 +67,7 @@ class JobController extends Controller
         $hasBranchLocation = true;
 
         $graphics = json_decode($address['_geographic'],true);
+        
         $branchLocations[] = array_merge(array(
           'id' => $branch->id,
           'address' => $branch->name,

@@ -113,7 +113,8 @@ form .form-item-group {
 	overflow-x: hidden;
 }
 
-form .error {
+form .error,
+form .input-error {
 	background-color: #FFCDD2;
 	border-color: #D50000;
 }
@@ -276,7 +277,7 @@ form .input-addon > select:last-child {
 
 .text-group .text-add {
 	margin-top: 10px;
-	display: block;
+	display: inline-block;
 }
 
 .text-group input[type="text"] {
@@ -286,9 +287,19 @@ form .input-addon > select:last-child {
 .text-input-wrapper {
 	position: relative;
 }
+
 .text-input-wrapper input {
 	padding-right: 20px;
 }
+
+.text-input-wrapper select {
+	height: 42px;
+}
+
+.text-input-wrapper select + input[type="text"] {
+	border-left: 0;
+}
+
 .text-input-wrapper span {
   cursor:pointer;
   color:red;
@@ -387,6 +398,11 @@ select[name^="OfficeHour"].disabled {
 	form .input-addon input[type="text"] {
 	    width: 50%;
 	}
+
+	.text-input-wrapper select + input[type="text"] {
+		width: 55%;
+	}
+
 }
 
 /* Custom */ 

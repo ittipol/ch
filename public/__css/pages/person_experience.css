@@ -1,8 +1,14 @@
 .profile-image {
 	width: 100px;
 	height: 100px;
+	text-align: center;
 	background-color: #999;
 	border-radius: 100px;
+	overflow: hidden;
+}
+
+.profile-image > img {
+	height: 100%;
 }
 
 .profile-info {
@@ -10,5 +16,5 @@
 }
 
 .profile-info h3 {
-	
+	margin-top: 10px;
 }

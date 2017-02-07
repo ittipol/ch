@@ -34,7 +34,7 @@ class PersonExperience extends Model
     PersonExperience::saving(function($model){
 
       $image = new Image;
-// ANESSA ftv
+
       if(!empty($model->modelRelationData['Image']['profile-image']['delete'])) {
         $image->deleteImages($model,$model->modelRelationData['Image']['profile-image']['delete']);
         $model->profile_image_id = null;
@@ -64,8 +64,11 @@ class PersonExperience extends Model
 
       $websites = array();
       foreach ($attributes['private_websites'] as $value) {
-        if(!empty($value)) {
-          $websites[] = $value;
+        if(!empty($value['name'])) {
+          $websites[] = array(
+            'type' => $value['type'],
+            'name' => $value['name']
+          );
         }
       }
 
@@ -88,6 +91,26 @@ class PersonExperience extends Model
     return $this->where('person_id','=',session()->get('Person.id'))->exists();
   }
 
+  public function getGender($gender = '-') {
+
+    switch ($gender) {
+      case 'm':
+        $gender = 'ชาย';
+        break;
+      
+      case 'f':
+        $gender = 'หญิง';
+        break;
+
+      case '0':
+        $gender = 'ไม่ระบุ';
+        break;
+    }
+
+    return $gender;
+
+  }
+
   public function getProfileImage() {
 
     $image = Image::select('id','model','model_id','filename','image_type_id')->find($this->profile_image_id);
@@ -102,18 +125,27 @@ class PersonExperience extends Model
     );
   }
 
+  public function getProfileImageUrl() {
+
+    if(!$this->exists) {
+      return false;
+    }
+
+    return Image::select('id','model','model_id','filename','image_type_id')->find($this->profile_image_id)->getImageUrl();
+  }
+
   public function buildModelData() {
 
     $date = new Date;
 
     $gender = '-';
     if(!empty($this->gender)) {
-
+      $gender = $this->getGender($this->gender);
     }
 
     $birthDate = '-';
     if(!empty($this->birth_date)) {
-      $date->covertDateToSting($this->birth_date);
+      $birthDate = $date->covertDateToSting($this->birth_date);
     }
 
     return array(

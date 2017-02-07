@@ -253,9 +253,9 @@
     const tagging = new Tagging();
     const form = new Form();
 
-    images.load('<?php echo $_formData['Image']; ?>');
-    district.load('<?php echo $_formData['Address']['sub_district_id']; ?>');
-    tagging.load('<?php echo $_formData['Tagging']; ?>');
+    images.load({!!$_formData['Image']!!});
+    district.load({!!$_formData['Address']['sub_district_id']!!});
+    tagging.load({!!$_formData['Tagging']!!});
     form.load();
 
   });

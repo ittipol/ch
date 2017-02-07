@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <h4 class="title-with-icon location-pin">{{$_modelData['Address']['_full_address']}}</h4>
+    <h4 class="title-with-icon location-pin">{{$_modelData['Address']['_short_address']}}</h4>
 
     <div class="image-gallery">
 

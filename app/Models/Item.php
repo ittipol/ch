@@ -14,7 +14,7 @@ class Item extends Model
 
   public $imageTypes = array(
     'photo' => array(
-      'limit' => 8
+      'limit' => 10
     )
   );
 

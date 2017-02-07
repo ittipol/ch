@@ -21,7 +21,6 @@ class Model extends BaseModel
   protected $storagePath = 'app/public/';
   protected $state = 'create';
   protected $modelRelationData = array();
-  // protected $relatedModel = array();
   protected $sortingFields;
   protected $behavior;
   protected $validation;

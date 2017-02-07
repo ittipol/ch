@@ -1,13 +1,3 @@
-<!-- @if (!Auth::check())
-<li><a href="{{URL::to('login')}}">เข้าสู่ระบบ</a></li>
-<li><a href="{{URL::to('register')}}">สมัครสมาชิก</a></li>
-@else
-<li>
-  <a href="{{URL::to('user/account')}}"><img class="avatar" src="/avatar" /></a>
-</li>
-<li><a href="{{URL::to('user/account')}}">{{Session::get('Person.name')}}</a><li>
-<li><a href="{{URL::to('logout')}}">ออกจากระบบ</a><li>
-@endif -->
 <div id="main_navigation" class="main-navigation">
   <nav>
     <div class="navigation-top">

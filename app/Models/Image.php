@@ -181,7 +181,7 @@ class Image extends Model
     $temporaryFile = new TemporaryFile;
     $imageType = new ImageType;
 
-    $directoryName = $model->modelName.'_'.$options['token'].'_profile-image';
+    $directoryName = $model->modelName.'_'.$options['token'].'_'.$options['type'];
 
     $path = $temporaryFile->getFilePath($image['filename'],array(
       'directoryName' => $directoryName
