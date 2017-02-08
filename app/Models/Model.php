@@ -137,7 +137,7 @@ class Model extends BaseModel
 
         $this->modelRelationData[$modelName] = $attributes[$modelName];
         unset($attributes[$modelName]);
-      }      
+      }
     }
 
     if(!empty($attributes)) {

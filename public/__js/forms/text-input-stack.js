@@ -44,12 +44,12 @@ class TextInputStack {
         let hasError = false;
 
         $('#'+_this.panel+' input[type="text"]').each(function(index) {
-            if(this.value == '') {
+          if(this.value == '') {
 
-              hasError = true;
+            hasError = true;
 
-              $(this).addClass('input-error');
-            }
+            $(this).addClass('input-error');
+          }
         });
 
         if(hasError) {

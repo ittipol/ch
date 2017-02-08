@@ -300,15 +300,31 @@ form .input-addon > select:last-child {
 	border-left: 0;
 }
 
-.text-input-wrapper span {
-  cursor:pointer;
-  color:red;
-  font-weight:bold;
-  font-size: 25px;
+.text-input-wrapper .button-clear-text {
+	cursor:pointer;
+	color:red;
+	font-weight:bold;
+	font-size: 25px;
+}
+
+.text-input-wrapper .button-clear-text.round {
+  height: 40px;
+  line-height: 40px;
+  width: 40px;
+  background-color: pink;
+  border-radius: 40px;
+  text-align: center;
+  display: block;
+}
+
+.text-input-wrapper input[type="text"] + .button-clear-text {
   position: relative;
   top: 4px;
   right: 30px;
+}
 
+.period-controller > span > a {
+	margin: 0 10px;
 }
 
 select[name^="OfficeHour"] {

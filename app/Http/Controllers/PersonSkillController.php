@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\library\service;
 use App\library\message;
+use Redirect;
 
 class PersonSkillController extends Controller
 {
@@ -23,11 +24,11 @@ class PersonSkillController extends Controller
 
     foreach (request()->get('skills') as $value) {
 
-      $value = trim($value);
+      $value = trim($value['name']);
 
       if(!empty($value) && !$model->checkExistBySkill($value)) {
         $model->newInstance()->fill(array(
-          'skill' => $value['name']
+          'skill' => $value
         ))->save();
       }
     }

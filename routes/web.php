@@ -48,8 +48,12 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
   Route::get('experience/profile_edit','PersonExperienceController@profileEdit');
   Route::patch('experience/profile_edit','PersonExperienceController@profileEditingSubmit');
 
-  // Route::get('experience/working','PersonExperienceController@index');
-  // Route::get('experience/education','PersonExperienceController@index');
+  Route::get('experience/working_add','PersonWorkingExperienceController@add');
+  Route::post('experience/working_add','PersonWorkingExperienceController@addingSubmit');
+
+  Route::get('experience/education_add','PersonEducationController@add');
+  Route::post('experience/education_add','PersonEducationController@addingSubmit');
+
   // Route::get('experience/project','PersonExperienceController@index');
   // Route::get('experience/article','PersonExperienceController@index');
   // Route::get('experience/volunteer','PersonExperienceController@index');

@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\library\service;
 use App\library\message;
+use Redirect;
 
 class PersonLanguageSkillController extends Controller
 {
   public function add() {
 
-    $model = Service::loadModel('PersonSkill');
+    $model = Service::loadModel('PersonLanguageSkill');
 
+    // Get languages
     $languages = Service::loadModel('Language')->where('active','=',1)->select('id','name')->get();
 
     $_languages = array();
@@ -21,7 +23,19 @@ class PersonLanguageSkillController extends Controller
       );
     }
 
+    // Get language skill lavels
+    $languageSkillLevels = Service::loadModel('LanguageSkillLevel')->all();
+
+    $levels = array();
+    foreach ($languageSkillLevels as $level) {
+      $levels[] = array(
+        $level->id,
+        $level->name
+      );
+    }
+
     $model->form->setData('languages',json_encode($_languages));
+    $model->form->setData('levels',json_encode($levels));
    
     $this->data = $model->form->build();
 
@@ -31,15 +45,15 @@ class PersonLanguageSkillController extends Controller
 
   public function addingSubmit() {
 
-    $model = Service::loadModel('PersonSkill');
+    $model = Service::loadModel('PersonLanguageSkill');
 
-    foreach (request()->get('skills') as $value) {
+    foreach (request()->get('languages') as $value) {
 
-      $value = trim($value);
 
-      if(!empty($value) && !$model->checkExistBySkill($value)) {
+      if(!empty($value) && !$model->checkExistByLanguageId($value['language'])) {
         $model->newInstance()->fill(array(
-          'skill' => $value['name']
+          'language_id' => $value['language'],
+          'language_skill_level_id' => $value['level']
         ))->save();
       }
     }

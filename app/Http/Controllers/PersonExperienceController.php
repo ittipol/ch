@@ -20,33 +20,75 @@ class PersonExperienceController extends Controller
 
     $model = Service::loadModel('PersonExperience');
 
-    if($model->checkExistByPersonId()) {
-      // Get Profile
-      $profile = $model->where('person_id','=',Session::get('Person.id'))->first();
-      $profile->modelData->loadData(array(
-        'models' => array('Address','Contact')
-      ));
-
-      // Get skill
-      $skills = Service::loadModel('PersonSkill')->where('person_id','=',session()->get('Person.id'))->get();
-
-      $url = new Url;
-      $url->setUrl('experience/skill_edit/{skill}','editUrl');
-      $url->setUrl('experience/skill_delete/{skill}','deleteUrl');
-
-      $_skills = array();
-      foreach ($skills as $skill) {
-        $_skills[] = array_merge(array(
-          'skill' => $skill->skill,
-        ),$url->parseUrl($skill->getAttributes())); 
-      }
-
-      $this->setData('profile',$profile->modelData->build(true));
-      $this->setData('profileImageUrl',$profile->getProfileImageUrl());
-      $this->setData('skills',$_skills);
+    if(!$model->checkExistByPersonId()) {
+      return $this->view('pages.person_experience.start');
     }
 
-    $this->setData('exist',$model->checkExistByPersonId());
+    $url = new Url;
+
+    // Get Profile
+    $profile = $model->where('person_id','=',Session::get('Person.id'))->first();
+    $profile->modelData->loadData(array(
+      'models' => array('Address','Contact')
+    ));
+
+    // Get skill
+    $skills = Service::loadModel('PersonSkill')->where('person_id','=',session()->get('Person.id'))->get();
+    
+    $url->setUrl('experience/skill_edit/{skill}','editUrl');
+    $url->setUrl('experience/skill_delete/{skill}','deleteUrl');
+
+    $_skills = array();
+    foreach ($skills as $skill) {
+      $_skills[] = array_merge(array(
+        'skill' => $skill->skill,
+      ),$url->parseUrl($skill->getAttributes())); 
+    }
+
+    // Get language skill
+    $languageSkills = Service::loadModel('PersonLanguageSkill')->where('person_id','=',session()->get('Person.id'))->get();
+   
+    $url->clearUrls();
+    $url->setUrl('experience/language_skill_edit/{id}','editUrl');
+    $url->setUrl('experience/language_skill_delete/{id}','deleteUrl');
+
+    $_languageSkills = array();
+    foreach ($languageSkills as $languageSkill) {
+      $_languageSkills[] = array_merge(array(
+        'name' => $languageSkill->language->name,
+        'level' => $languageSkill->languageSkillLevel->name
+      ),$url->parseUrl($languageSkill->language->getAttributes()));
+    }
+
+    // Get working
+    $workingDetails = Service::loadModel('PersonExperienceDetail')
+    ->orderBy('start_year','DESC')
+    ->orderBy('start_month','DESC')
+    ->where('person_id','=',session()
+    ->get('Person.id'))->get();
+
+    $url->clearUrls();
+    $url->setUrl('experience/working_edit/{id}','editUrl');
+    $url->setUrl('experience/working_delete/{id}','deleteUrl');
+
+    $workings = array();
+    foreach ($workingDetails as $detail) {
+      
+      $workingDetail = $detail->{lcfirst($detail->model)};
+
+      $workings[] = array_merge(array(
+        'company' => $workingDetail->company,
+        'position' => $workingDetail->position,
+        'peroid' => $detail->getPeriod()
+      ),$url->parseUrl($workingDetail->getAttributes()));
+
+    }
+
+    $this->setData('profile',$profile->modelData->build(true));
+    $this->setData('profileImageUrl',$profile->getProfileImageUrl());
+    $this->setData('skills',$_skills);
+    $this->setData('languageSkills',$_languageSkills);
+    $this->setData('workings',$workings);
 
     return $this->view('pages.person_experience.main');
 
@@ -88,7 +130,7 @@ class PersonExperienceController extends Controller
 
     $date = new Date;
 
-    $thaiLatestYear = date('Y') + 543;
+    $latestYear = date('Y');
     
     $day = array();
     $month = array();
@@ -102,15 +144,15 @@ class PersonExperienceController extends Controller
       $month[$i] = $date->getMonthName($i);
     }
 
-    for ($i=2500; $i <= $thaiLatestYear; $i++) { 
-      $year[$i-543] = $i;
+    for ($i=1957; $i <= $latestYear; $i++) { 
+      $year[$i] = $i+543;
     }
 
-    $this->mergeData(array(
-      'day' => $day,
-      'month' => $month,
-      'year' => $year
-    ));
+    // $this->mergeData(array(
+    //   'day' => $day,
+    //   'month' => $month,
+    //   'year' => $year
+    // ));
 
     $model->form->loadData(array(
       'model' => array(
