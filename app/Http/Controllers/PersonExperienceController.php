@@ -60,27 +60,89 @@ class PersonExperienceController extends Controller
       ),$url->parseUrl($languageSkill->language->getAttributes()));
     }
 
-    // Get working
-    $workingDetails = Service::loadModel('PersonExperienceDetail')
-    ->orderBy('start_year','DESC')
-    ->orderBy('start_month','DESC')
-    ->where('person_id','=',session()
-    ->get('Person.id'))->get();
+    // // Get working
+    // $workingDetails = Service::loadModel('PersonExperienceDetail')
+    // ->orderBy('start_year','DESC')
+    // ->orderBy('start_month','DESC')
+    // ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
+    // ->where(array(
+    //   array('person_id','=',session()->get('Person.id')),
+    //   array('model','like','PersonWorkingExperience')
+    // ))
+    // ->get();
 
-    $url->clearUrls();
-    $url->setUrl('experience/working_edit/{id}','editUrl');
-    $url->setUrl('experience/working_delete/{id}','deleteUrl');
+    // $url->clearUrls();
+    // $url->setUrl('experience/working_edit/{id}','editUrl');
+    // $url->setUrl('experience/working_delete/{id}','deleteUrl');
 
-    $workings = array();
-    foreach ($workingDetails as $detail) {
+    // $workings = array();
+    // foreach ($workingDetails as $detail) {
       
-      $workingDetail = $detail->{lcfirst($detail->model)};
+    //   $workingDetail = $detail->{lcfirst($detail->model)};
 
-      $workings[] = array_merge(array(
-        'company' => $workingDetail->company,
-        'position' => $workingDetail->position,
-        'peroid' => $detail->getPeriod()
-      ),$url->parseUrl($workingDetail->getAttributes()));
+    //   $workings[] = array_merge(
+    //     $workingDetail->buildModelData(),
+    //     array('peroid' => $detail->getPeriod()),
+    //     $url->parseUrl($workingDetail->getAttributes())
+    //   );
+
+    // }
+
+    // // Get Education
+    // $educationDetails = Service::loadModel('PersonExperienceDetail')
+    // ->orderBy('start_year','DESC')
+    // ->orderBy('start_month','DESC')
+    // ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
+    // ->where(array(
+    //   array('person_id','=',session()->get('Person.id')),
+    //   array('model','like','PersonEducation')
+    // ))
+    // ->get();
+
+    // $educations = array();
+    // foreach ($educationDetails as $detail) {
+      
+    //   $educationDetail = $detail->{lcfirst($detail->model)};
+
+    //   $educations[] = array_merge(
+    //     $educationDetail->buildModelData(),
+    //     array('peroid' => $detail->getPeriod()),
+    //     $url->parseUrl($educationDetail->getAttributes())
+    //   );
+
+    // }
+
+    $models = array('PersonWorkingExperience' => 'working','PersonEducation' => 'education');
+
+    foreach ($models as $model => $alias) {
+      $experienceDetails = Service::loadModel('PersonExperienceDetail')
+      ->orderBy('start_year','DESC')
+      ->orderBy('start_month','DESC')
+      ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
+      ->where(array(
+        array('person_id','=',session()->get('Person.id')),
+        array('model','like',$model)
+      ))
+      ->get();
+
+      // $url->clearUrls();
+      $url->setUrl('experience/'.$alias.'_edit/{id}','editUrl');
+      $url->setUrl('experience/'.$alias.'_delete/{id}','deleteUrl');
+
+      $details = array();
+      foreach ($experienceDetails as $experienceDetail) {
+        
+        $_model = $experienceDetail->{lcfirst($experienceDetail->model)};
+
+        $details[] = array_merge(
+          $_model->buildModelData(),
+          array('peroid' => $experienceDetail->getPeriod()),
+          $url->parseUrl($_model->getAttributes())
+        );
+
+      }
+
+      $this->setData($model,$details);
 
     }
 
@@ -88,7 +150,7 @@ class PersonExperienceController extends Controller
     $this->setData('profileImageUrl',$profile->getProfileImageUrl());
     $this->setData('skills',$_skills);
     $this->setData('languageSkills',$_languageSkills);
-    $this->setData('workings',$workings);
+    // $this->setData('workings',$workings);
 
     return $this->view('pages.person_experience.main');
 

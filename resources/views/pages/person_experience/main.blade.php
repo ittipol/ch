@@ -63,11 +63,11 @@
     <h4 class="tile-nav-title pull-left">เพิ่ม</h4>
   </div>
   <div class="list">
-    @foreach($workings as $working)
+    @foreach($PersonWorkingExperience as $detail)
       <div class="list-row row">
         <div class="col-xs-9">
-          <h4>{{$working['position']}} ที่ {{$working['company']}}</h4>
-          <h5>{{$working['peroid']}}</h5>
+          <h4>{{$detail['message']}}</h4>
+          <h5>{{$detail['peroid']}}</h5>
         </div>
         <div class="col-xs-3">
           <div class="additional-option round pull-right">
@@ -75,8 +75,8 @@
             <div class="dot"></div>
             <div class="dot"></div>
             <div class="additional-option-content">
-              <a href="{{$working['editUrl']}}">แก้ไข</a>
-              <a data-modal="1" href="{{$working['deleteUrl']}}">ลบ</a>
+              <a href="{{$detail['editUrl']}}">แก้ไข</a>
+              <a data-modal="1" href="{{$detail['deleteUrl']}}">ลบ</a>
             </div>
           </div>
         </div>
@@ -97,6 +97,27 @@
       </div>
     </div>
     <h4 class="tile-nav-title pull-left">เพิ่ม</h4>
+  </div>
+  <div class="list">
+    @foreach($PersonEducation as $detail)
+      <div class="list-row row">
+        <div class="col-xs-9">
+          <h4>{{$detail['message']}}</h4>
+          <h5>{{$detail['peroid']}}</h5>
+        </div>
+        <div class="col-xs-3">
+          <div class="additional-option round pull-right">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="additional-option-content">
+              <a href="{{$detail['editUrl']}}">แก้ไข</a>
+              <a data-modal="1" href="{{$detail['deleteUrl']}}">ลบ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
   </div>
 
   <div class="line grey space-top-bottom-20"></div>

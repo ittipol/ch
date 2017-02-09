@@ -46,4 +46,25 @@ class PersonWorkingExperience extends Model
 
   }
 
+  public function buildModelData() {
+
+    $message = array();
+
+    if(!empty($this->position)) {
+      $message[] = $this->position;
+    }
+
+    if(!empty($this->company)) {
+      $message[] = $this->company;
+    }
+
+    $message = implode(' ที่ ', $message);
+
+    return array(
+      'company' => $this->company,
+      'position' => $this->position,
+      'message' => $message
+    );
+  }
+
 }

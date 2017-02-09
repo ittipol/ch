@@ -25,6 +25,7 @@
     '__js/forms/tagging.js',
     '__js/forms/real-estate.js',
     '__js/forms/text-input-stack.js',
+    '__js/forms/period-date.js',
     '__js/components/notification-bottom.js',
     '__js/components/additional-option.js',
     '__js/components/custom-scroll.js',

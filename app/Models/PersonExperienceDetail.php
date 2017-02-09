@@ -13,6 +13,10 @@ class PersonExperienceDetail extends Model
     return $this->hasOne('App\Models\PersonWorkingExperience','id','model_id');
   }
 
+  public function personEducation() {
+    return $this->hasOne('App\Models\PersonEducation','id','model_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
     $personExperienceDetail = $model->getModelRelationData('PersonExperienceDetail',
       array(

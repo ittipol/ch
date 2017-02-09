@@ -8,7 +8,7 @@ use App\library\message;
 use App\library\date;
 use Redirect;
 
-class PersonEducationController extends Controller
+class PersonProjectController extends Controller
 {
   public function add() {
 
