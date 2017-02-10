@@ -8,11 +8,11 @@ use App\library\message;
 use App\library\date;
 use Redirect;
 
-class PersonWorkingExperienceController extends Controller
+class PersonCertificateController extends Controller
 {
   public function add() {
-    
-    $model = Service::loadModel('PersonWorkingExperience');
+
+    $model = Service::loadModel('PersonCertificate');
 
     $date = new Date;
 
@@ -24,12 +24,13 @@ class PersonWorkingExperienceController extends Controller
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 
-    return $this->view('pages.person_experience.form.person_working_add');
+    return $this->view('pages.person_experience.form.person_certificate_add');
+
   }
 
   public function addingSubmit(CustomFormRequest $request) {
 
-    $model = Service::loadModel('PersonWorkingExperience');
+    $model = Service::loadModel('PersonCertificate');
 
     if($model->fill($request->all())->save()) {
       Message::display('ลงประกาศเรียบร้อยแล้ว','success');
@@ -42,7 +43,7 @@ class PersonWorkingExperienceController extends Controller
 
   public function edit() {
 
-    $model = Service::loadModel('PersonWorkingExperience')->find($this->param['id']);
+    $model = Service::loadModel('PersonCertificate')->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(
@@ -66,18 +67,23 @@ class PersonWorkingExperienceController extends Controller
     );
 
     $model->form->setFormData('period',json_encode($period->getAttributes()));
-    
+
+    $model->form->loadData(array(
+      'models' => array('Image'),
+      'json' => array('Image')
+    ));
+
     $this->data = $model->form->build();
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 
-    return $this->view('pages.person_experience.form.person_working_edit');
+    return $this->view('pages.person_experience.form.person_certificate_edit');
 
   }
 
   public function editingSubmit(CustomFormRequest $request) {
 
-    $model = Service::loadModel('PersonWorkingExperience')->find($this->param['id']);
+    $model = Service::loadModel('PersonCertificate')->find($this->param['id']);
 
     if(empty($model)) {
       $this->error = array(

@@ -82,7 +82,7 @@ class Paginator {
   }
 
   public function onlyMyData() {
-    $this->model = $this->model->where('created_by','=',Session::get('Person.id'));
+    $this->model = $this->model->where('person_id','=',Session::get('Person.id'));
   }
 
   public function getModelData() {
@@ -93,7 +93,7 @@ class Paginator {
     // $end = min(($offset + $this->perPage), $this->total);
 
     $records = $this->model
-    // ->where('created_by','=',Session::get('Person.id'))
+    // ->where('person_id','=',Session::get('Person.id'))
     ->take($this->perPage)
     ->skip($offset)
     ->get();

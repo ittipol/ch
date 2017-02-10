@@ -7,10 +7,8 @@ use App\library\service;
 use App\library\currency;
 use App\library\string;
 use App\library\form;
-// use App\library\image;
 use App\library\modelData;
 use App\library\paginator;
-// use Auth;
 use Session;
 use Schema;
 
@@ -61,8 +59,8 @@ class Model extends BaseModel
           $model->ip_address = Service::ipAddress();
         }
 
-        if((Schema::hasColumn($model->getTable(), 'created_by')) && (empty($model->created_by))) {
-          $model->created_by = Session::get('Person.id');
+        if((Schema::hasColumn($model->getTable(), 'person_id')) && (empty($model->person_id))) {
+          $model->person_id = Session::get('Person.id');
         }
 
         if((Schema::hasColumn($model->getTable(), 'person_id')) && (empty($model->person_id))) {

@@ -12,32 +12,8 @@ class PersonLanguageSkillController extends Controller
 
     $model = Service::loadModel('PersonLanguageSkill');
 
-    // Get languages
-    $languages = Service::loadModel('Language')->where('active','=',1)->select('id','name')->get();
-
-    $_languages = array();
-    foreach ($languages as $language) {
-      $_languages[] = array(
-        $language->id,
-        $language->name
-      );
-    }
-
-    // Get language skill lavels
-    $languageSkillLevels = Service::loadModel('LanguageSkillLevel')->all();
-
-    $levels = array();
-    foreach ($languageSkillLevels as $level) {
-      $levels[] = array(
-        $level->id,
-        $level->name
-      );
-    }
-
-    $model->form->setData('languages',json_encode($_languages));
-    $model->form->setData('levels',json_encode($levels));
-   
-    $this->data = $model->form->build();
+    $this->getLanguages();
+    $this->mergeData($model->form->build());
 
     return $this->view('pages.person_experience.form.pereson_language_skill_add');
 
@@ -48,7 +24,6 @@ class PersonLanguageSkillController extends Controller
     $model = Service::loadModel('PersonLanguageSkill');
 
     foreach (request()->get('languages') as $value) {
-
 
       if(!empty($value) && !$model->checkExistByLanguageId($value['language'])) {
         $model->newInstance()->fill(array(
@@ -62,4 +37,87 @@ class PersonLanguageSkillController extends Controller
     return Redirect::to('experience');
 
   }
+
+  public function edit() {
+
+    $model = Service::loadModel('PersonLanguageSkill')->where('id','=',$this->param['id'])->first();
+
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
+      );
+      return $this->error();
+    }
+
+    $this->getLanguages(false);
+    $this->mergeData($model->form->build());
+
+    return $this->view('pages.person_experience.form.pereson_language_skill_edit');
+
+  }
+
+  public function editingSubmit() {
+
+    $model = Service::loadModel('PersonLanguageSkill')->where('id','=',$this->param['id'])->first();
+
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
+      );
+      return $this->error();
+    }
+
+    if($model->fill(request()->all())->save()) {
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
+      return Redirect::to('experience');
+    }else{
+      return Redirect::back();
+    }
+    
+  }
+
+  private function getLanguages($json = true) {
+
+    $languages = Service::loadModel('Language')->where('active','=',1)->select('id','name')->get();
+
+    $languageSkillLevels = Service::loadModel('LanguageSkillLevel')->all();
+
+    if($json) {
+
+      $_languages = array();
+      foreach ($languages as $language) {
+        $_languages[] = array(
+          $language->id,
+          $language->name
+        );
+      }
+
+      $levels = array();
+      foreach ($languageSkillLevels as $level) {
+        $levels[] = array(
+          $level->id,
+          $level->name
+        );
+      }
+
+      $this->setData('languages',json_encode($_languages));
+      $this->setData('levels',json_encode($levels));
+    }else{
+
+      $_languages = array();
+      foreach ($languages as $language) {
+        $_languages[$language->id] = $language->name;
+      }
+
+      $levels = array();
+      foreach ($languageSkillLevels as $level) {
+        $levels[$level->id] = $level->name;
+      }
+
+      $this->setData('languages',$_languages);
+      $this->setData('levels',$levels);
+    }
+    
+  }
+
 }

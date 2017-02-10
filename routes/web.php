@@ -13,7 +13,7 @@
 
 //
 
-Route::get('lan','HomeController@lanAdd');
+// Route::get('lan','HomeController@lanAdd');
 
 // 
 
@@ -50,20 +50,33 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
 
   Route::get('experience/working_add','PersonWorkingExperienceController@add');
   Route::post('experience/working_add','PersonWorkingExperienceController@addingSubmit');
+  Route::get('experience/working_edit/{id}','PersonWorkingExperienceController@edit');
+  Route::patch('experience/working_edit/{id}','PersonWorkingExperienceController@editingSubmit');
 
   Route::get('experience/education_add','PersonEducationController@add');
   Route::post('experience/education_add','PersonEducationController@addingSubmit');
+  Route::get('experience/education_edit/{id}','PersonEducationController@edit');
+  Route::patch('experience/education_edit/{id}','PersonEducationController@editingSubmit');
 
-  // Route::get('experience/project','PersonExperienceController@index');
-  // Route::get('experience/article','PersonExperienceController@index');
-  // Route::get('experience/volunteer','PersonExperienceController@index');
-  // Route::get('experience/training','PersonExperienceController@index');
+  Route::get('experience/project_add','PersonProjectController@add');
+  Route::post('experience/project_add','PersonProjectController@addingSubmit');
+  Route::get('experience/project_edit/{id}','PersonProjectController@edit');
+  Route::patch('experience/project_edit/{id}','PersonProjectController@editingSubmit');
+
+  Route::get('experience/certificate_add','PersonCertificateController@add');
+  Route::post('experience/certificate_add','PersonCertificateController@addingSubmit');
+  Route::get('experience/certificate_edit/{id}','PersonCertificateController@edit');
+  Route::patch('experience/certificate_edit/{id}','PersonCertificateController@editingSubmit');
 
   Route::get('experience/skill_add','PersonSkillController@add');
   Route::post('experience/skill_add','PersonSkillController@addingSubmit');
+  Route::get('experience/skill_edit/{id}','PersonSkillController@edit');
+  Route::patch('experience/skill_edit/{id}','PersonSkillController@editingSubmit');
   
   Route::get('experience/language_skill_add','PersonLanguageSkillController@add');
   Route::post('experience/language_skill_add','PersonLanguageSkillController@addingSubmit');
+  Route::get('experience/language_skill_edit/{id}','PersonLanguageSkillController@edit');
+  Route::patch('experience/language_skill_edit/{id}','PersonLanguageSkillController@editingSubmit');
 
 
 });

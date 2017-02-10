@@ -327,6 +327,10 @@ form .input-addon > select:last-child {
 	margin: 0 10px;
 }
 
+.period-separate {
+	margin: 0 10px;
+}
+
 select[name^="OfficeHour"] {
 	font-weight: bold;
 }
@@ -417,6 +421,11 @@ select[name^="OfficeHour"].disabled {
 
 	.text-input-wrapper select + input[type="text"] {
 		width: 55%;
+	}
+
+	.period-separate {
+		display: block;
+		margin: 10px;
 	}
 
 }

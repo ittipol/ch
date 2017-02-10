@@ -25,21 +25,12 @@ class PersonWorkingExperience extends Model
 
       $attributes['PersonExperienceDetail']['experience_type_id'] = 1;
 
-      foreach ($attributes['date_start'] as $key => $value) {
-        $attributes['PersonExperienceDetail']['start_'.$key] = $value;
-      }
-
+      $personExperienceDetail = new PersonExperienceDetail;
+      $attributes['PersonExperienceDetail'] = $personExperienceDetail->setPeriodData($attributes);
       unset($attributes['date_start']);
-
-      if(empty($attributes['current'])) {
-        foreach ($attributes['date_end'] as $key => $value) {
-          $attributes['PersonExperienceDetail']['end_'.$key] = $value;
-        }
-        unset($attributes['date_end']);
-      }
-      else{
-        $attributes['PersonExperienceDetail']['current'] = $attributes['current'];
-      }
+      unset($attributes['date_end']);
+      unset($attributes['current']);
+      
     }
 
     return parent::fill($attributes);
@@ -63,6 +54,7 @@ class PersonWorkingExperience extends Model
     return array(
       'company' => $this->company,
       'position' => $this->position,
+      'description' => $this->description,
       'message' => $message
     );
   }

@@ -5,7 +5,7 @@ namespace App\Models;
 class Contact extends Model
 {
   public $table = 'contacts';
-  protected $fillable = ['model','model_id','phone_number','fax','email','website','line'];
+  protected $fillable = ['model','model_id','phone_number','fax','email','website','line','person_id'];
   public $timestamps  = false;
 
   public function __saveRelatedData($model,$options = array()) {

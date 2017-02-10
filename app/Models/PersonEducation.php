@@ -23,14 +23,15 @@ class PersonEducation extends Model
 
       $attributes['PersonExperienceDetail']['experience_type_id'] = 2;
 
-      foreach ($attributes['date_start'] as $key => $value) {
-        $attributes['PersonExperienceDetail']['start_'.$key] = $value;
+      if(empty($attributes['graduated'])) {
+        $attributes['graduated'] = null;
       }
 
-      foreach ($attributes['date_end'] as $key => $value) {
-        $attributes['PersonExperienceDetail']['end_'.$key] = $value;
-      }
+      $personExperienceDetail = new PersonExperienceDetail;
+      $attributes['PersonExperienceDetail'] = $personExperienceDetail->setPeriodData($attributes);
+      unset($attributes['date_start']);
       unset($attributes['date_end']);
+      unset($attributes['current']);
       
     }
 
@@ -41,7 +42,7 @@ class PersonEducation extends Model
   public function buildModelData() {
 
     $message = array();
-    if(!empty($this->academy)) {
+    if(!empty($this->graduated)) {
       $message[] = 'จบการศึกษา';
     }
 
@@ -53,6 +54,7 @@ class PersonEducation extends Model
 
     return array(
       'academy' => $this->academy,
+      'description' => $this->description,
       // 'graduated' => $this->graduated,
       'message' => $message
     );

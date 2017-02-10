@@ -37,9 +37,7 @@ class PeriodDate {
     });
 
     $(document).on('click','#start_day > a',function(){
-      let year = $('#start_year select').val();
-      let month = $('#start_month select').val();
-      _this.createStartDay(_this.getDaysInMonth(month,year));
+      _this.createStartDay(_this.getDaysInMonth($('#start_month select').val(),$('#start_year select').val()));
       $('#start_month select option:first-child').css('display','none');
     });
 
@@ -49,6 +47,10 @@ class PeriodDate {
       if(this.value == '-') {
         _this.createAddBtn('start_year','เพิ่มปี');
         _this.startYearEnabled = false;
+      }else if(_this.startDayEnabled) {
+        let year = $('#start_year select').val();
+        let month = $('#start_month select').val();
+        _this.createStartDay(_this.getDaysInMonth(month,year));
       }
     });
 
@@ -59,9 +61,7 @@ class PeriodDate {
         $('#start_year select option:first-child').css('display','block');
         _this.startMonthEnabled = false;
       }else if(_this.startDayEnabled) {
-        let year = $('#start_year select').val();
-        let month = $('#start_month select').val();
-        _this.createStartDay(_this.getDaysInMonth(month,year));
+        _this.createStartDay(_this.getDaysInMonth($('#start_month select').val(),$('#start_year select').val()));
       }
     });
 
@@ -97,6 +97,8 @@ class PeriodDate {
       if(this.value == '-') {
         _this.createAddBtn('end_year','เพิ่มปี');
         _this.endYearEnabled = false;
+      }else if(_this.endDayEnabled) {
+        _this.createEndDay(_this.getDaysInMonth($('#end_month select').val(),$('#end_year select').val()));
       }
     });
 
@@ -106,9 +108,7 @@ class PeriodDate {
         $('#end_year select option:first-child').css('display','block');
         _this.endMonthEnabled = false;
       }else if(_this.endDayEnabled) {
-        let year = $('#end_year select').val();
-        let month = $('#end_month select').val();
-        _this.createEndDay(_this.getDaysInMonth(month,year));
+        _this.createEndDay(_this.getDaysInMonth($('#end_month select').val(),$('#end_year select').val()));
       }
     });
 
@@ -128,13 +128,56 @@ class PeriodDate {
 
   }
 
-  createStartYear() {
+  setData(data) {
+
+    if(data['start_year'] != null) {
+      this.createStartYear(data['start_year']);
+    }
+
+    if((data['start_month'] != null) && this.startYearEnabled) {
+      this.createStartMonth(data['start_month']);
+    }
+
+    if((data['start_day'] != null) && this.startMonthEnabled) {
+      this.createStartDay(this.getDaysInMonth($('#start_month select').val(),$('#start_year select').val()),data['start_day']);
+    }
+
+    if(data['current'] != null) {
+      $('#chk_current').prop('checked',true);
+      this.checkIsCurrent();
+    }else{
+
+      if(data['end_year'] != null) {
+        this.createEndYear(data['end_year']);
+      }
+
+      if((data['end_month'] != null) && this.endYearEnabled) {
+        this.createEndMonth(data['end_month']);
+      }
+
+      if((data['end_day'] != null) && this.endMonthEnabled) {
+        this.createEndDay(this.getDaysInMonth($('#end_month select').val(),$('#end_year select').val()),data['end_day']);
+      }
+
+    }
+
+
+  }
+
+  createStartYear(year = '') {
+
+    let lastestYear = this.lastestYear + 1;
+    let selectedValue = lastestYear;
+
+    if(year != '') {
+      selectedValue = year;
+    }
 
     let html = '';
     html += '<select name="date_start[year]">';
     html += '<option value="-">ลบ</option>';
-    for (var i = this.lastestYear; i >= 1982 ; i--) {
-      if(i == this.lastestYear) {
+    for (var i = lastestYear; i >= 1982 ; i--) {
+      if(i == selectedValue) {
         html += '<option value="'+i+'" selected>'+(i+543)+'</option>';
       }else{
         html += '<option value="'+i+'">'+(i+543)+'</option>';
@@ -150,13 +193,19 @@ class PeriodDate {
 
   }
 
-  createStartMonth() {
+  createStartMonth(month = '') {
+
+    let selectedValue = 1;
+
+    if(month != '') {
+      selectedValue = month;
+    }
 
     let html = '';
     html += '<select name="date_start[month]">';
     html += '<option value="-">ลบ</option>';
     for (var i = 1; i <= 12; i++) {
-      if(i == 1) {
+      if(i == selectedValue) {
         html += '<option value="'+i+'" selected>'+this.months[i]+'</option>';
       }else{
         html += '<option value="'+i+'">'+this.months[i]+'</option>';
@@ -168,13 +217,17 @@ class PeriodDate {
 
     this.createAddBtn('start_day','เพิ่มวัน');
 
-    this.startYearEnabled = true;
+    this.startMonthEnabled = true;
   }
 
-  createStartDay(lastestNumberOfDay) {
+  createStartDay(lastestNumberOfDay,day = '') {
 
     let create = true;
     let selectedValue = 1;
+
+    if(day != '') {
+      selectedValue = day;
+    }
 
     if(this.startDayEnabled && (this.lastestNumberOfStartDay == lastestNumberOfDay)) {
       create = false;
@@ -208,13 +261,20 @@ class PeriodDate {
     this.startDayEnabled = true;
   }
 
-  createEndYear() {
+  createEndYear(year = '') {
+
+    let lastestYear = this.lastestYear + 2;
+    let selectedValue = lastestYear;
+
+    if(year != '') {
+      selectedValue = year;
+    }
 
     let html = '';
     html += '<select name="date_end[year]">';
     html += '<option value="-">ลบ</option>';
-    for (var i = this.lastestYear; i >= 1982 ; i--) {
-      if(i == this.lastestYear) {
+    for (var i = lastestYear; i >= 1982 ; i--) {
+      if(i == selectedValue) {
         html += '<option value="'+i+'" selected>'+(i+543)+'</option>';
       }else{
         html += '<option value="'+i+'">'+(i+543)+'</option>';
@@ -230,13 +290,19 @@ class PeriodDate {
 
   }
 
-  createEndMonth() {
+  createEndMonth(month = '') {
+
+    let selectedValue = 1;
+
+    if(month != '') {
+      selectedValue = month;
+    }
 
     let html = '';
     html += '<select name="date_end[month]">';
     html += '<option value="-">ลบ</option>';
     for (var i = 1; i <= 12; i++) {
-      if(i == 1) {
+      if(i == selectedValue) {
         html += '<option value="'+i+'" selected>'+this.months[i]+'</option>';
       }else{
         html += '<option value="'+i+'">'+this.months[i]+'</option>';
@@ -251,15 +317,19 @@ class PeriodDate {
     this.endMonthEnabled = true;
   }
 
-  createEndDay(lastestNumberOfDay) {
+  createEndDay(lastestNumberOfDay,day = '') {
 
     let create = true;
     let selectedValue = 1;
 
-    if(this.startDayEnabled && (this.lastestNumberOfStartDay == lastestNumberOfDay)) {
+    if(day != '') {
+      selectedValue = day;
+    }
+
+    if(this.endDayEnabled && (this.lastestNumberOfEndDay == lastestNumberOfDay)) {
       create = false;
-    }else if(typeof $('#start_day select').val() != 'undefined'){
-      selectedValue = $('#start_day select').val();
+    }else if(typeof $('#end_day select').val() != 'undefined'){
+      selectedValue = $('#end_day select').val();
     }
 
     if(selectedValue > lastestNumberOfDay) {

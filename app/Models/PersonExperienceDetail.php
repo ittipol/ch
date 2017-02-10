@@ -17,6 +17,14 @@ class PersonExperienceDetail extends Model
     return $this->hasOne('App\Models\PersonEducation','id','model_id');
   }
 
+  public function personProject() {
+    return $this->hasOne('App\Models\PersonProject','id','model_id');
+  }
+
+  public function personCertificate() {
+    return $this->hasOne('App\Models\PersonCertificate','id','model_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
     $personExperienceDetail = $model->getModelRelationData('PersonExperienceDetail',
       array(
@@ -31,6 +39,37 @@ class PersonExperienceDetail extends Model
     }else{
       return $this->fill($model->includeModelAndModelId($options['value']))->save();
     }
+
+  }
+
+  public function setPeriodData($attributes) {
+
+    $data = array();
+
+    $data = array(
+      'start_year' => null,
+      'start_month' => null,
+      'start_day' => null,
+      'end_year' => null,
+      'end_month' => null,
+      'end_day' => null,
+      'current' => null,
+    );
+
+    foreach ($attributes['date_start'] as $key => $value) {
+      $data['start_'.$key] = $value;
+    }
+
+    if(empty($attributes['current'])) {
+      foreach ($attributes['date_end'] as $key => $value) {
+        $data['end_'.$key] = $value;
+      }
+    }
+    else{
+      $data['current'] = $attributes['current'];
+    }
+
+    return $data;
 
   }
 
@@ -51,16 +90,12 @@ class PersonExperienceDetail extends Model
     }
 
     if(!empty($this->start_year)) {
-      $startDate[] = $this->start_year;
+      $startDate[] = $this->start_year+543;
     }
 
     if(!empty($startDate)) {
       $period[] = implode(' ', $startDate);
     }
-
-    // if(empty($this->start_year) || empty($this->start_month) || empty($this->start_day)) {
-    //   $displayStartDate = false;
-    // }
 
     if(!empty($this->current) && $this->current) {
       $period[] = 'ถึงปัจจุบัน';
@@ -74,7 +109,7 @@ class PersonExperienceDetail extends Model
       }
 
       if(!empty($this->end_year)) {
-        $endDate[] = $this->end_year;
+        $endDate[] = $this->end_year+543;
       }
 
       if(!empty($startDate)) {

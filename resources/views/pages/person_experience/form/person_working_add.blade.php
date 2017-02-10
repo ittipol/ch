@@ -72,7 +72,7 @@
           </span>
           <span id="start_month"></span>
           <span id="start_day"></span>
-          <span>ถึง</span>
+          <span class="period-separate">ถึง</span>
           <span id="current">ปัจจุบัน</span>
           <span id="end_year">
             <a href="javascript:void(0);">เพิ่มปี</a>

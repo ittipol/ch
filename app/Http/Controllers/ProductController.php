@@ -58,7 +58,7 @@ dd($request->all());
       return $this->error();
     }
 
-    // if($model->created_by != Session::get('Person.id')) {
+    // if($model->person_id != Session::get('Person.id')) {
     //   $this->error = array(
     //     'message' => 'คุณไม่สามารถแก้ไขประกาศขายนี้ได้'
     //   );

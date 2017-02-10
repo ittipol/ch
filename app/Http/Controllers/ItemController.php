@@ -102,7 +102,7 @@ class ItemController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ไม่มีข้อมูลนี้ หรือ ข้อมูลนี้อาจถูกลบแล้ว'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -148,7 +148,7 @@ class ItemController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ไม่มีข้อมูลนี้ หรือ ข้อมูลนี้อาจถูกลบแล้ว'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }

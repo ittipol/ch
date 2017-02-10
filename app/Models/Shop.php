@@ -8,7 +8,7 @@ use Session;
 class Shop extends Model
 {
   protected $table = 'shops';
-  protected $fillable = ['name','description','brand_story','created_by'];
+  protected $fillable = ['name','description','brand_story','person_id'];
   protected $modelRelations = array('Image','Address','Contact','OfficeHour');
   public $errorType;
 
@@ -49,7 +49,7 @@ class Shop extends Model
 
       if($model->where([
           ['name','like',$model->name],
-          ['created_by','=',Session::get('Person.id')]
+          ['person_id','=',Session::get('Person.id')]
         ])
         ->exists()) {
         $model->errorType = 1;
@@ -97,35 +97,6 @@ class Shop extends Model
     ))->exists();
 
   }
-
-  // public function getPermission($id = null) {
-
-  //   if(empty($id)) {
-  //     $id = $this->id;
-  //   }
-
-  //   $personToShop = new PersonToShop;
-  //   $person = $personToShop->getData(array(
-  //     'conditions' => array(
-  //       ['person_id','=',session()->get('Person.id')],
-  //       ['shop_id','=',$id],
-  //     ),
-  //     'fields' => array('role_id'),
-  //     'first' => true
-  //   ));
-
-  //   $permission = array();
-  //   if(!empty($person)) {
-  //     $role = $person->role;
-  //     $permission = array(
-  //       'add' => $role->adding_permission,
-  //       'edit' => $role->editing_permission,
-  //       'delete' => $role->deleting_permission,
-  //     );
-  //   }
-
-  //   return $permission;
-  // }
 
   public function getRelatedModelData($modelData) {
 

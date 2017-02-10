@@ -8,7 +8,7 @@ use App\library\string;
 class Item extends Model
 {
   protected $table = 'items';
-  protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','created_by'];
+  protected $fillable = ['name','announcement_detail','description','price','announcement_type_id','used','person_id'];
   protected $modelRelations = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
 

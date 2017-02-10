@@ -26,21 +26,6 @@
   <div class="form-section">
 
     <div class="form-row">
-
-      <?php
-
-        // echo Form::select('Address[district_id]', $_fieldData['languages'] ,null, array(
-        //   'id' => 'district'
-        // ));
-
-        // echo Form::select('xxx', $_fieldData['levels'] ,null, array(
-        //   'id' => 'district'
-        // ));
-      ?>
-
-    </div>
-
-    <div class="form-row">
       <div id="language_input" class="text-group">
         <div class="text-group-panel">
         </div>
@@ -63,13 +48,6 @@
 </div>
 
 <script type="text/javascript">
-
-  // ระดับความสามารถในการสื่อสาร
-  // สามารถใช้งานได้อย่างพอใช้
-  // สามารถใช้งานได้อย่างดี
-  // สามารถใช้งานได้อย่างมืออาชีพ
-  // เจ้าของภาษา
-
 
   class LanguageInputStack {
     constructor(panel,languages,levels) {
@@ -141,7 +119,7 @@
   }
 
   $(document).ready(function(){
-    const languageInputStack = new LanguageInputStack('language_input',{!!$_fieldData['languages']!!},{!!$_fieldData['levels']!!});
+    const languageInputStack = new LanguageInputStack('language_input',{!!$languages!!},{!!$levels!!});
     languageInputStack.load();
   });
 

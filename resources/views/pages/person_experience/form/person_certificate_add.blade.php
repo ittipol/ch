@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="title">
-          เพิ่มประวัติการศึกษา
+          เพิ่มประกาศนียบัตรและการฝึกอบรม
         </div>
       </div>
     </div>
@@ -27,32 +27,24 @@
   
     <div class="form-row">
       <?php 
-        echo Form::label('academy', 'สถานศึกษา', array(
+        echo Form::label('name', 'ชื่อประกาศนียบัตรหรือหัวข้อการฝึกอบรม', array(
           'class' => 'required'
         ));
-        echo Form::text('academy', null, array(
-          'placeholder' => 'สถานศึกษา',
+        echo Form::text('name', null, array(
+          'placeholder' => 'ชื่อประกาศนียบัตรหรือหัวข้อการฝึกอบรม',
           'autocomplete' => 'off'
         ));
       ?>
     </div>
 
     <div class="form-row">
-      <label class="box">
-        <?php
-          echo Form::checkbox('graduated', 1);
-        ?>
-        <div class="inner">จบการศึกษา</div>
-      </label>
-    </div>
-
-    <div class="form-row">
 
       <?php 
-        echo Form::label('period_date', 'ระยะเวลา');
+        echo Form::label('period_date', 'ระยะเวลาการฝึกอบรม');
       ?>
 
       <div class="period-panel" id="period_date">
+
         <div class="period-controller">
           <span id="start_year">
             <a href="javascript:void(0);">เพิ่มปี</a>
@@ -71,10 +63,21 @@
 
     </div>
 
+    <div class="form-row">
+
+      <?php 
+        echo Form::label('cerificate', 'รูปภาพประกาศนียบัตร');
+      ?>
+
+      <div class="form-row">
+        <div id="_image_group"></div>
+      </div>
+
+    </div>
 
     <div class="form-row">
       <?php 
-        echo Form::label('description', 'รายละเอียด');
+        echo Form::label('description', 'รายละเอียดเกี่ยวกับโปรเจค');
         echo Form::textarea('description', null, array(
           'class' => 'ckeditor'
         ));
@@ -103,6 +106,9 @@
 
     const periodDate = new PeriodDate('period_date',{{$latestYear}},{!!$month!!});
     periodDate.load();
+
+    const images = new Images('_image_group','photo',1);
+    images.load();
 
     const form = new Form();
     form.load();

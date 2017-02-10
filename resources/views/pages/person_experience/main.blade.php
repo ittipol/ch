@@ -126,26 +126,68 @@
   <div class="clearfix">
     <div class="tile-nav xs pull-left">
       <div class="tile-nav-image">
-        <a href="{{URL::to('experience/project')}}">
+        <a href="{{URL::to('experience/project_add')}}">
           <img src="/images/common/plus.png">
         </a>
       </div>
     </div>
     <h4 class="tile-nav-title pull-left">เพิ่ม</h4>
   </div>
+  <div class="list">
+    @foreach($PersonProject as $detail)
+      <div class="list-row row">
+        <div class="col-xs-9">
+          <h4>{{$detail['name']}}</h4>
+          <h5>{{$detail['peroid']}}</h5>
+        </div>
+        <div class="col-xs-3">
+          <div class="additional-option round pull-right">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="additional-option-content">
+              <a href="{{$detail['editUrl']}}">แก้ไข</a>
+              <a data-modal="1" href="{{$detail['deleteUrl']}}">ลบ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+  </div>
 
   <div class="line grey space-top-bottom-20"></div>
 
-  <h4>การฝึกอบรมและประกาศนียบัตร</h4>
+  <h4>ประกาศนียบัตรและการฝึกอบรม</h4>
   <div class="clearfix">
     <div class="tile-nav xs pull-left">
       <div class="tile-nav-image">
-        <a href="{{URL::to('experience/training')}}">
+        <a href="{{URL::to('experience/certificate_add')}}">
           <img src="/images/common/plus.png">
         </a>
       </div>
     </div>
     <h4 class="tile-nav-title pull-left">เพิ่ม</h4>
+  </div>
+  <div class="list">
+    @foreach($PersonCertificate as $detail)
+      <div class="list-row row">
+        <div class="col-xs-9">
+          <h4>{{$detail['name']}}</h4>
+          <h5>{{$detail['peroid']}}</h5>
+        </div>
+        <div class="col-xs-3">
+          <div class="additional-option round pull-right">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="additional-option-content">
+              <a href="{{$detail['editUrl']}}">แก้ไข</a>
+              <a data-modal="1" href="{{$detail['deleteUrl']}}">ลบ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
   </div>
 
   <div class="line grey space-top-bottom-20"></div>

@@ -40,33 +40,35 @@ class PersonSkillController extends Controller
 
   public function edit() {
 
-    $model = Service::loadModel('PersonSkill');
+    $model = Service::loadModel('PersonSkill')->where('id','=',$this->param['id'])->first();
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่มีข้อมูลนี้ หรือ ข้อมูลนี้อาจถูกลบแล้ว'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
 
-    return $this->view('pages.item.form.item_edit');
+    $this->data = $model->form->build();
+
+    return $this->view('pages.person_experience.form.pereson_skill_edit');
 
   }
 
-  public function editingSubmit(CustomFormRequest $request) {
+  public function editingSubmit() {
 
-    $model = Service::loadModel('PersonSkill');
-// check skill is exist then return error cannot add this skill
-    if(empty($model)) {
+    $model = Service::loadModel('PersonSkill')->where('id','=',$this->param['id'])->first();
+
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่มีข้อมูลนี้ หรือ ข้อมูลนี้อาจถูกลบแล้ว'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
 
-    if($model->fill($request->all())->save()) {
+    if($model->fill(request()->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to('item/detail/'.$model->id);
+      return Redirect::to('experience');
     }else{
       return Redirect::back();
     }
