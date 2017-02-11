@@ -50,8 +50,18 @@
   </div>
 
   <div class="line grey space-top-bottom-20"></div>
+  <h4>จุดมุ่งหมายในอาชีพ</h4>
 
-  <h4>ประวัติการทำงาน</h4>
+  @if(empty($careerObjective))
+  <div class="space-top-bottom-10">ยังไม่มีจุดมุ่งหมายในอาชีพ</div>
+  @else
+  <div class="space-top-bottom-10">มีจุดมุ่งหมายในอาชีพแล้ว</div>
+  @endif
+  <a href="{{URL::to('experience/career_objective')}}" class="button">เพิ่มเติม หรือแก้ไขจุดมุ่งหมายในอาชีพ</a>
+
+  <div class="line grey space-top-bottom-20"></div>
+
+  <h4>ประสบการณ์การทำงาน</h4>
   <div class="clearfix">
     <div class="tile-nav xs pull-left">
       <div class="tile-nav-image">
@@ -84,6 +94,40 @@
     @endforeach
   </div>
 
+  <div class="line grey space-top-bottom-20"></div>
+
+  <h4>ประสบการณ์การฝึกงาน</h4>
+  <div class="clearfix">
+    <div class="tile-nav xs pull-left">
+      <div class="tile-nav-image">
+        <a href="{{URL::to('experience/internship_add')}}">
+          <img src="/images/common/plus.png">
+        </a>
+      </div>
+    </div>
+    <h4 class="tile-nav-title pull-left">เพิ่ม</h4>
+  </div>
+  <div class="list">
+    @foreach($PersonInternship as $detail)
+      <div class="list-row row">
+        <div class="col-xs-9">
+          <h4>{{$detail['company']}}</h4>
+          <h5>{{$detail['peroid']}}</h5>
+        </div>
+        <div class="col-xs-3">
+          <div class="additional-option round pull-right">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="additional-option-content">
+              <a href="{{$detail['editUrl']}}">แก้ไข</a>
+              <a data-modal="1" href="{{$detail['deleteUrl']}}">ลบ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    @endforeach
+  </div>
 
   <div class="line grey space-top-bottom-20"></div>
 

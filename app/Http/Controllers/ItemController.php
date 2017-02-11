@@ -100,7 +100,7 @@ class ItemController extends Controller
 
     $model = Service::loadModel('Item')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
         'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
@@ -146,7 +146,7 @@ class ItemController extends Controller
 
     $model = Service::loadModel('Item')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
         'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );

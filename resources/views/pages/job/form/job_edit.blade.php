@@ -33,7 +33,7 @@
       <?php 
         echo Form::label('item_category_id', 'กำหนดสาขาที่เปิดรับสมัคร (สามารถเว้นว่างได้)');
       ?>
-      @if(!empty($_fieldData['branch']))
+      @if(!empty($_fieldData['branches']))
       <div class="form-item-group">
         <div class="row">
           <?php 
@@ -53,7 +53,7 @@
         </div>
       </div>
       @else
-      <p class="notice info">ยังไม่ได้เพิ่มสาขาลงในร้านค้านี้</p>
+      <p class="notice info">ยังไม่มีสาขาลงในร้านค้านี้</p>
       @endif
     </div>
 

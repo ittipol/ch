@@ -33,9 +33,9 @@ a {
 	text-decoration: none !important;
 }
 
-a:visited {
+/*a:visited {
 	color: #fff;
-}
+}*/
 
 .line {
 	width: 100%;
@@ -118,4 +118,20 @@ a:visited {
 
 .no-padding {
 	padding: 0 !important;
+}
+
+.sign {
+	display: inline-block;
+	padding: 10px 20px;
+	margin: 0;
+	color: #fff;
+	font-size: 14px;
+}
+
+.sign.wide {
+	display: block;
+}
+
+.sign.info {
+	background-color: rgb(44,89,169);
 }

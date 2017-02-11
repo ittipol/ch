@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="title">
-          เพิ่มประกาศนียบัตรและการฝึกอบรม
+          ประกาศนียบัตรและการฝึกอบรม
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
     periodDate.load();
     periodDate.setData({!!$_formData['period']!!});
 
-    const images = new Images('_image_group','photo',1);
+    const images = new Images('_image_group','photo',5);
     images.load({!!$_formData['Image']!!});
 
     const form = new Form();

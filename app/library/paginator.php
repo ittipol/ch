@@ -14,6 +14,7 @@ class Paginator {
   private $pagingUrl;
   private $urls = array();
   private $url;
+  private $getImage = true;
 
   public function __construct($model = null) {
     $this->model = $model;
@@ -38,6 +39,10 @@ class Paginator {
 
   public function parseUrl($record) {
     return $this->url->parseUrl($record);
+  }
+
+  public function disableGetImage() {
+    $this->getImage = false;
   }
 
   public function criteria($options = array()) {
@@ -103,17 +108,23 @@ class Paginator {
     $data = array();
     foreach ($records as $record) {
 
-      $image = $record->getModelRelationData('Image',array(
-        'first' => true
-      ));
+      $_data = array();
+      if($this->getImage) {
 
-      $imageUrl = '/images/common/no-img.png';
-      if(!empty($image)) {
-        $imageUrl = $cache->getCacheImageUrl($image,'list');
+        $image = $record->getModelRelationData('Image',array(
+          'first' => true
+        ));
+
+        $_data['_imageUrl'] = '/images/common/no-img.png';
+        if(!empty($image)) {
+          $_data['_imageUrl'] = $cache->getCacheImageUrl($image,'list');
+        }
+
       }
 
-      $data[] = array_merge($record->buildPaginationData(),
-        array('_imageUrl' => $imageUrl),
+      $data[] = array_merge(
+        $_data,
+        $record->buildPaginationData(),
         $this->parseUrl($record->getAttributes())
       );
 
@@ -254,10 +265,6 @@ class Paginator {
 
     $this->total = $this->model->count();
     $this->lastPage = (int)ceil($this->total / $this->perPage);
-
-    // if(($this->page < 1) || ($this->page > $this->lastPage)) {
-    //   return false;
-    // }
 
     return array(
       '_pagination' => array(

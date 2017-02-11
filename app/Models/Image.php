@@ -165,8 +165,6 @@ class Image extends Model
 
     $temporaryFile = new TemporaryFile;
 
-    // $directoryName = $model->modelName.'_'.$options['token'].'_profile-image';
-
     $imageId = $this->handleImage($model,$image,$options);
 
     $temporaryFile->deleteTemporaryDirectory($model->modelName.'_'.$options['token'].'_profile-image');

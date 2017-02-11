@@ -20,6 +20,10 @@
     <!-- <h4 class="title-with-icon location-pin">{{$shopAddress['_short_address']}}</h4> -->
     @endif
 
+    @if($personApplyJob)
+      <h4 class="sign info wide">สมัครงานนี้แล้ว</h4>
+    @endif
+
     <div class="image-gallery">
 
       <div class="row">
@@ -129,9 +133,14 @@
     <h4>สมัครงานนี้</h4>
 
     <div class="text-center space-top-bottom-20">
-      <a href="{{URL::to('job/apply_job')}}">
+
+      @if($personApplyJob)
+        <h4 class="sign info">สมัครงานนี้แล้ว</h4>
+      @else
+      <a href="{{$jobApplyUrl}}">
         <span class="button">สมัครงานนี้ผ่าน CHONBURI SQUARE</span>
       </a>
+      @endif
     </div>
 
     @if(!empty($_modelData['_recruitment_custom']) && !empty($_modelData['recruitment_custom_detail']))

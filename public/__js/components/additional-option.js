@@ -36,7 +36,7 @@ class AdditionalOption {
 
       setTimeout(function(){
         _this.obj = div;
-      },500);
+      },200);
     });
 
     $(document).on('click',function(){

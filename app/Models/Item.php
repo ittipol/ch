@@ -96,6 +96,7 @@ class Item extends Model
       // 'description' => $this->description,
       '_price' => $currency->format($this->price)
     );
+    
   }
 
 }

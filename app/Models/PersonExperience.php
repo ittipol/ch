@@ -23,7 +23,7 @@ class PersonExperience extends Model
     ),
     'messages' => array(
       'name.required' => 'ชื่อห้ามว่าง',
-      'birth_date' => 'required|date_format:Y-m-d'
+      // 'birth_date' => 'required|date_format:Y-m-d'
     )
   );
 
@@ -158,8 +158,14 @@ class PersonExperience extends Model
   }
 
   public function buildFormData() {
+
+    $day = null;
+    $month = null;
+    $year = null;
     
-    list($year,$month,$day) = explode('-', $this->birth_date); 
+    if(!empty($this->birth_date)) {
+      list($year,$month,$day) = explode('-', $this->birth_date); 
+    }
 
     return array(
       'name' => $this->name,

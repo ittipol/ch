@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\PersonExperience;
+use App\library\message;
 use Closure;
 
 class CheckForPersonExperience
@@ -18,6 +19,7 @@ class CheckForPersonExperience
   {
     $personExperience = new PersonExperience;
     if(!$personExperience->checkExistByPersonId()) {
+      Message::display('ไม่พบประวัติการทำงานของคุณ','info');
       return redirect('experience');
     }
 

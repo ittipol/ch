@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="title">
-          เพิ่มประสบการณ์การทำงาน
+          ประสบการณ์การทำงาน
         </div>
       </div>
     </div>

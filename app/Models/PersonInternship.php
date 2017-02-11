@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-class PersonProject extends Model
+class PersonInternship extends Model
 {
-  protected $table = 'person_projects';
-  protected $fillable = ['person_id','name','description'];
+  protected $table = 'person_internships';
+  protected $fillable = ['person_id','company','description'];
   protected $modelRelations = array('PersonExperienceDetail');
 
   protected $validation = array(
     'rules' => array(
-      'name' => 'required|max:255',
+      'company' => 'required|max:255'
     ),
     'messages' => array(
-      'name.required' => 'ห้วข้อโปรเจคห้ามว่าง',
+      'company.required' => 'บริษัทหรือสถานที่ฝึกงานห้ามว่าง'
     )
   );
 
@@ -27,7 +27,7 @@ class PersonProject extends Model
       unset($attributes['date_end']);
       unset($attributes['current']);
 
-      $attributes['PersonExperienceDetail']['experience_type_id'] = 4;
+      $attributes['PersonExperienceDetail']['experience_type_id'] = 2;
       
     }
 
@@ -36,11 +36,10 @@ class PersonProject extends Model
   }
 
   public function buildModelData() {
-
     return array(
-      'name' => $this->name,
+      'company' => $this->company,
       'description' => $this->description
     );
-
   }
+
 }

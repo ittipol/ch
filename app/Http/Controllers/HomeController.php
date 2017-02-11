@@ -6,6 +6,36 @@ use App\Models\Language;
 
 class HomeController extends Controller
 {
+  public function addCat() {
+    exit('!!!');
+        $data = array(
+    'โต๊ะรีดผ้า',
+    'ตะกร้าผ้า',
+    'จักรเย็บผ้าและอุปกรณ์',
+    'อุปกรณ์ดับกลิ่นผ้า'
+        );
+
+        $parentId = 927;
+
+        foreach ($data as $value) {
+
+          $_value = array(
+            'name' => $value
+          );
+
+          if(!empty($parentId)) {
+            $_value = array(
+              'parent_id' => $parentId,
+              'name' => $value
+            );
+          }
+
+          Service::loadModel('Category')->newInstance()->fill($_value)->save();
+        }
+        dd('saved');
+
+  }
+
   public function lanAdd() {
 dd('ccc');
       $model = new Language;

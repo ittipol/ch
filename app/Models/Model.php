@@ -63,10 +63,6 @@ class Model extends BaseModel
           $model->person_id = Session::get('Person.id');
         }
 
-        if((Schema::hasColumn($model->getTable(), 'person_id')) && (empty($model->person_id))) {
-          $model->person_id = Session::get('Person.id');
-        }
-
       }else{
         $model->state = 'update';
       }

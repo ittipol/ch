@@ -1,4 +1,4 @@
-class OfficeHour {
+class OpenHour {
 	constructor() {
 		this.panel = '_office_time';
 		this.sameTime = false;
@@ -13,7 +13,7 @@ class OfficeHour {
 		}
 	}
 
-	load(officeHours,sameTime) {
+	load(openHours,sameTime) {
 
 		let _this = this;
 
@@ -24,21 +24,21 @@ class OfficeHour {
 			this.sameTime = sameTime;
 		}
 
-		if (typeof officeHours != 'undefined') {
-			let _officeHours = JSON.parse(officeHours);
+		if (openHours != '') {
+			openHours = JSON.parse(openHours);
 
-			this.setLatestTime ('start','hour',_officeHours[1]['start_time']['hour']);
-			this.setLatestTime ('start','min',_officeHours[1]['start_time']['min']);
-			this.setLatestTime ('end','hour',_officeHours[1]['end_time']['hour']);
-			this.setLatestTime ('end','min',_officeHours[1]['end_time']['min']);
+			this.setLatestTime ('start','hour',openHours[1]['start_time']['hour']);
+			this.setLatestTime ('start','min',openHours[1]['start_time']['min']);
+			this.setLatestTime ('end','hour',openHours[1]['end_time']['hour']);
+			this.setLatestTime ('end','min',openHours[1]['end_time']['min']);
 
-			for (let i = 1; i <= Object.keys(_officeHours).length; i++) {
+			for (let i = 1; i <= Object.keys(openHours).length; i++) {
 
-				if(_officeHours[i]['open']){
-					$('#'+this.code+'_'+i+'_start_hour').val(_officeHours[i]['start_time']['hour']);
-					$('#'+this.code+'_'+i+'_start_min').val(_officeHours[i]['start_time']['min']);
-					$('#'+this.code+'_'+i+'_end_hour').val(_officeHours[i]['end_time']['hour']);
-					$('#'+this.code+'_'+i+'_end_min').val(_officeHours[i]['end_time']['min']);
+				if(openHours[i]['open']){
+					$('#'+this.code+'_'+i+'_start_hour').val(openHours[i]['start_time']['hour']);
+					$('#'+this.code+'_'+i+'_start_min').val(openHours[i]['start_time']['min']);
+					$('#'+this.code+'_'+i+'_end_hour').val(openHours[i]['end_time']['hour']);
+					$('#'+this.code+'_'+i+'_end_min').val(openHours[i]['end_time']['min']);
 				}else{
 					$('#'+this.code+'_'+i+'_open').removeAttr('checked');
 					let obj = $('#'+this.code+'_'+i+'_switch');
@@ -46,6 +46,7 @@ class OfficeHour {
 				}
 
 			}
+
 		}
 
 		// $('.'+this.code+'-office-switch-btn').each(function(key, value) {
@@ -159,20 +160,18 @@ class OfficeHour {
 		html += '<div class="line space-top-bottom-10"></div>';          
 		html += '<label>'+day+'</label> ';   
 		html += '<label id="'+code+'_'+index+'_switch" class="switch '+code+'-office-switch-btn">';
-		html += '<input id="'+code+'_'+index+'_open" type="checkbox" name="OfficeHour[time]['+index+'][open]" value="1" checked>';
+		html += '<input id="'+code+'_'+index+'_open" type="checkbox" name="openHours['+index+'][open]" value="1" checked>';
 		html += '<div class="slider round office-hour"></div>';
 		html += '</label>';
 		html += '<span>เวลาเปิด</span>';
-		html += '<select id="'+code+'_'+index+'_start_hour" name="OfficeHour[time]['+index+'][start_time][hour]"></select>';
+		html += '<select id="'+code+'_'+index+'_start_hour" name="openHours['+index+'][start_time][hour]"></select>';
 		html += '<b> : </b>';
-		html += '<select id="'+code+'_'+index+'_start_min" name="OfficeHour[time]['+index+'][start_time][min]"></select>';
-		// html += '<b> - </b>';
+		html += '<select id="'+code+'_'+index+'_start_min" name="openHours['+index+'][start_time][min]"></select>';
 		html += '<br/><br/>';
 		html += '<span>เวลาปิด</span>';
-		html += '<select id="'+code+'_'+index+'_end_hour" name="OfficeHour[time]['+index+'][end_time][hour]"></select>';
+		html += '<select id="'+code+'_'+index+'_end_hour" name="openHours['+index+'][end_time][hour]"></select>';
 		html += '<b> : </b>';
-		html += '<select id="'+code+'_'+index+'_end_min" name="OfficeHour[time]['+index+'][end_time][min]"></select>';
-		// html += '<div id="'+code+'_'+index+'_status" class="office-status active"></div>';
+		html += '<select id="'+code+'_'+index+'_end_min" name="openHours['+index+'][end_time][min]"></select>';
 		html += '</div>';
 
 		$('#'+this.panel).append(html);

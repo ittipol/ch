@@ -13,6 +13,10 @@ class PersonExperienceDetail extends Model
     return $this->hasOne('App\Models\PersonWorkingExperience','id','model_id');
   }
 
+  public function personInternship() {
+    return $this->hasOne('App\Models\PersonInternship','id','model_id');
+  }
+
   public function personEducation() {
     return $this->hasOne('App\Models\PersonEducation','id','model_id');
   }
@@ -56,11 +60,13 @@ class PersonExperienceDetail extends Model
       'current' => null,
     );
 
-    foreach ($attributes['date_start'] as $key => $value) {
-      $data['start_'.$key] = $value;
+    if(!empty($attributes['date_start'])) {
+      foreach ($attributes['date_start'] as $key => $value) {
+        $data['start_'.$key] = $value;
+      }
     }
 
-    if(empty($attributes['current'])) {
+    if(empty($attributes['current']) && !empty($attributes['date_end'])) {
       foreach ($attributes['date_end'] as $key => $value) {
         $data['end_'.$key] = $value;
       }

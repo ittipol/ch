@@ -117,9 +117,9 @@ class RealEstateController extends Controller
 
     $model = Service::loadModel('RealEstate')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -177,9 +177,9 @@ class RealEstateController extends Controller
 
     $model = Service::loadModel('RealEstate')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }

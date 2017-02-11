@@ -19,7 +19,7 @@
     '__js/map/map.js',
     '__js/forms/form.js',
     '__js/forms/images.js',
-    '__js/forms/office-hour.js',
+    '__js/forms/open-hours.js',
     '__js/forms/district.js',
     '__js/forms/province.js',
     '__js/forms/tagging.js',

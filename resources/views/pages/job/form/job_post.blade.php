@@ -29,11 +29,11 @@
       <?php 
         echo Form::label('item_category_id', 'กำหนดสาขาที่เปิดรับสมัคร (สามารถเว้นว่างได้)');
       ?>
-      @if(!empty($_fieldData['branch']))
+      @if(!empty($_fieldData['branches']))
       <div class="form-item-group">
         <div class="row">
           <?php 
-            foreach ($_fieldData['branch'] as $id => $branch):
+            foreach ($_fieldData['branches'] as $id => $branch):
           ?>
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
@@ -49,7 +49,7 @@
         </div>
       </div>
       @else
-      <p class="notice info">ยังไม่ได้เพิ่มสาขาลงในร้านค้านี้</p>
+      <p class="notice info">ยังไม่มีสาขาลงในร้านค้านี้</p>
       @endif
     </div>
 

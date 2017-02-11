@@ -27,10 +27,20 @@ class PersonExperienceController extends Controller
     $url = new Url;
 
     // Get Profile
-    $profile = $model->where('person_id','=',Session::get('Person.id'))->first();
+    $profile = $model
+    ->select(array('id','name','gender','birth_date','private_websites','profile_image_id','active'))
+    ->where('person_id','=',Session::get('Person.id'))
+    ->first();
+
     $profile->modelData->loadData(array(
       'models' => array('Address','Contact')
     ));
+
+    // Get career objective
+    $careerObjective = Service::loadModel('PersonCareerObjective')
+    ->select(array('id','career_objective'))
+    ->where('person_id','=',Session::get('Person.id'))
+    ->first();
 
     // Get skill
     $skills = Service::loadModel('PersonSkill')->where('person_id','=',session()->get('Person.id'))->get();
@@ -62,6 +72,7 @@ class PersonExperienceController extends Controller
 
     $models = array(
       'PersonWorkingExperience' => 'working',
+      'PersonInternship' => 'internship',
       'PersonEducation' => 'education',
       'PersonProject' => 'project',
       'PersonCertificate' => 'certificate'
@@ -71,6 +82,7 @@ class PersonExperienceController extends Controller
       $experienceDetails = Service::loadModel('PersonExperienceDetail')
       ->orderBy('start_year','DESC')
       ->orderBy('start_month','DESC')
+      ->orderBy('start_day','DESC')
       ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
       ->where(array(
         array('person_id','=',session()->get('Person.id')),
@@ -100,6 +112,7 @@ class PersonExperienceController extends Controller
     }
 
     $this->setData('profile',$profile->modelData->build(true));
+    $this->setData('careerObjective',$careerObjective->career_objective);
     $this->setData('profileImageUrl',$profile->getProfileImageUrl());
     $this->setData('skills',$_skills);
     $this->setData('languageSkills',$_languageSkills);
@@ -113,10 +126,14 @@ class PersonExperienceController extends Controller
     $model = Service::loadModel('PersonExperience');
 
     if(!$model->checkExistByPersonId()) {
+      
       $model->fill(array(
         'name' => Session::get('Person.name'),
         'active' => 0
       ))->save();
+
+      Service::loadModel('PersonCareerObjective')->save();
+
     }
 
     return Redirect::to('experience');
@@ -189,6 +206,36 @@ class PersonExperienceController extends Controller
     $model = Service::loadModel('PersonExperience')->where('person_id','=',Session::get('Person.id'))->first();
 
     if($model->fill($request->all())->save()) {
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
+      return Redirect::to('experience');
+    }else{
+      return Redirect::back();
+    }
+
+  }
+
+  public function careerObjectiveEdit() {
+
+    $model = Service::loadModel('PersonCareerObjective')
+    ->select(array('id','career_objective'))
+    ->where('person_id','=',Session::get('Person.id'))
+    ->first();
+
+    $this->data = $model->form->build();
+    $this->setData('careerObjective',$model->career_objective);
+
+    return $this->view('pages.person_experience.form.career_objective_edit');
+
+  }
+
+  public function careerObjectiveEditingSubmit() {
+
+    $model = Service::loadModel('PersonCareerObjective')
+    ->select(array('id','career_objective'))
+    ->where('person_id','=',Session::get('Person.id'))
+    ->first();
+
+    if($model->fill(request()->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
       return Redirect::to('experience');
     }else{

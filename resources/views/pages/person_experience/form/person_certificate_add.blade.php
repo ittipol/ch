@@ -107,7 +107,7 @@
     const periodDate = new PeriodDate('period_date',{{$latestYear}},{!!$month!!});
     periodDate.load();
 
-    const images = new Images('_image_group','photo',1);
+    const images = new Images('_image_group','photo',5);
     images.load();
 
     const form = new Form();

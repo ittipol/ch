@@ -10,7 +10,7 @@ class PersonCertificate extends Model
 
   public $imageTypes = array(
     'photo' => array(
-      'limit' => 1
+      'limit' => 5
     )
   );
 
@@ -27,13 +27,13 @@ class PersonCertificate extends Model
 
     if(!empty($attributes)) {
 
-      $attributes['PersonExperienceDetail']['experience_type_id'] = 5;
-
       $personExperienceDetail = new PersonExperienceDetail;
       $attributes['PersonExperienceDetail'] = $personExperienceDetail->setPeriodData($attributes);
       unset($attributes['date_start']);
       unset($attributes['date_end']);
       unset($attributes['current']);
+
+      $attributes['PersonExperienceDetail']['experience_type_id'] = 5;
 
     }
 

@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="title">
-          เพิ่มโปรเจค
+          โปรเจค
         </div>
       </div>
     </div>

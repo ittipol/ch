@@ -18,12 +18,12 @@
 
       <div class="tile-nav small">
         <div class="tile-nav-image">
-          <a href="{{$shopUrl}}job_add">
+          <a href="{{$jobPostUrl}}">
             <img src="/images/common/job.png">
           </a>
         </div>
         <div class="tile-nav-info">
-          <a href="{{$shopUrl}}job_add">
+          <a href="{{$jobPostUrl}}">
             <h4 class="tile-nav-title">ลงประกาศงาน</h4>
           </a>
         </div>
@@ -31,12 +31,12 @@
 
       <div class="tile-nav small">
         <div class="tile-nav-image">
-          <a href="{{$shopUrl}}job_add">
+          <a href="{{$jobApplyListUrl}}">
             <img src="/images/common/job.png">
           </a>
         </div>
         <div class="tile-nav-info">
-          <a href="{{$shopUrl}}job_add">
+          <a href="{{$jobApplyListUrl}}">
             <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สนใจงานของคุณ</h4>
           </a>
         </div>
@@ -44,26 +44,13 @@
 
       <div class="tile-nav small">
         <div class="tile-nav-image">
-            <a href="{{$shopUrl}}branch_add">
+            <a href="{{$branchAddUrl}}">
               <img src="/images/common/plus.png">
             </a>
         </div>
         <div class="tile-nav-info">
-          <a href="{{$shopUrl}}branch_add">
+          <a href="{{$branchAddUrl}}">
             <h4 class="tile-nav-title">เพิ่มสาขา</h4>
-          </a>
-        </div>
-      </div>
-
-      <div class="tile-nav small">
-        <div class="tile-nav-image">
-            <a href="{{$shopUrl}}department_add">
-              <img src="/images/common/plus.png">
-            </a>
-        </div>
-        <div class="tile-nav-info">
-          <a href="{{$shopUrl}}department_add">
-            <h4 class="tile-nav-title">เพิ่มแผนก</h4>
           </a>
         </div>
       </div>

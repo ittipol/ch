@@ -11,6 +11,10 @@ class Person extends Model
     parent::__construct();
   }
 
+  public function personExperience() {
+    return $this->hasOne('App\Models\PersonExperience','person_id','id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
 
     $options['value'] = array_merge($options['value'],array(

@@ -44,7 +44,7 @@ class CheckForPersonHasShopPermission
       //   'first' => true
       // ));
 
-      if(!$request->session()->has('Shop.'.$id.'.id')) {
+      if($request->session()->has('Shop.'.$id.'.id')) {
 
         $personToShop = new PersonToShop;
         $person = $personToShop->getData(array(
@@ -61,8 +61,6 @@ class CheckForPersonHasShopPermission
         $request->session()->put('Shop.'.$id.'.role_name',$person->role->name);
         $request->session()->put('Shop.'.$id.'.role_permission',$person->role->getPermission());
       }
-dd($request->session());
-      
 
       // get permission
       $request->attributes->add([

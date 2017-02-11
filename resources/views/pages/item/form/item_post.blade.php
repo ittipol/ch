@@ -237,14 +237,6 @@
     echo Form::close();
   ?>
 
-  <?php
-
-  if(!empty($_oldInput['Tagging'])) { ?>
-    {!!$_oldInput['Tagging']!!}
-  <?php }
-
-  ?>
-
 </div>
 
 <script type="text/javascript">

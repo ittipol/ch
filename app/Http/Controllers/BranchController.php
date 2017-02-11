@@ -106,6 +106,13 @@ class BranchController extends Controller
 
     $model = Service::loadModel('Branch')->find($this->param['id']);
 
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
+      );
+      return $this->error();
+    }
+
     $model->form->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
@@ -129,9 +136,9 @@ class BranchController extends Controller
 
     $model = Service::loadModel('Branch')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }

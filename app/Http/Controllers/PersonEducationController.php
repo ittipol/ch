@@ -33,7 +33,7 @@ class PersonEducationController extends Controller
     $model = Service::loadModel('PersonEducation');
 
     if($model->fill($request->all())->save()) {
-      Message::display('ลงประกาศเรียบร้อยแล้ว','success');
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
       return Redirect::to('experience');
     }else{
       return Redirect::back();
@@ -45,7 +45,7 @@ class PersonEducationController extends Controller
 
     $model = Service::loadModel('PersonEducation')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
         'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
@@ -80,7 +80,7 @@ class PersonEducationController extends Controller
 
     $model = Service::loadModel('PersonEducation')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
         'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );

@@ -8,11 +8,11 @@ use App\library\message;
 use App\library\date;
 use Redirect;
 
-class PersonProjectController extends Controller
+class PersonInternshipController extends Controller
 {
   public function add() {
 
-    $model = Service::loadModel('PersonProject');
+    $model = Service::loadModel('PersonInternship');
 
     $date = new Date;
 
@@ -24,13 +24,13 @@ class PersonProjectController extends Controller
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 
-    return $this->view('pages.person_experience.form.person_project_add');
+    return $this->view('pages.person_experience.form.person_internship_add');
 
   }
 
   public function addingSubmit(CustomFormRequest $request) {
 
-    $model = Service::loadModel('PersonProject');
+    $model = Service::loadModel('PersonInternship');
 
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
@@ -43,7 +43,7 @@ class PersonProjectController extends Controller
 
   public function edit() {
 
-    $model = Service::loadModel('PersonProject')->find($this->param['id']);
+    $model = Service::loadModel('PersonInternship')->find($this->param['id']);
 
     if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
@@ -72,13 +72,13 @@ class PersonProjectController extends Controller
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 
-    return $this->view('pages.person_experience.form.person_project_edit');
+    return $this->view('pages.person_experience.form.person_internship_edit');
 
   }
 
   public function editingSubmit(CustomFormRequest $request) {
 
-    $model = Service::loadModel('PersonProject')->find($this->param['id']);
+    $model = Service::loadModel('PersonInternship')->find($this->param['id']);
 
     if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(

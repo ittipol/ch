@@ -23,13 +23,13 @@ class PersonWorkingExperience extends Model
 
     if(!empty($attributes)) {
 
-      $attributes['PersonExperienceDetail']['experience_type_id'] = 1;
-
       $personExperienceDetail = new PersonExperienceDetail;
       $attributes['PersonExperienceDetail'] = $personExperienceDetail->setPeriodData($attributes);
       unset($attributes['date_start']);
       unset($attributes['date_end']);
       unset($attributes['current']);
+
+      $attributes['PersonExperienceDetail']['experience_type_id'] = 1;
       
     }
 

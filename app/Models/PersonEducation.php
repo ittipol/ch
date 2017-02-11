@@ -19,9 +19,7 @@ class PersonEducation extends Model
 
   public function fill(array $attributes) {
 
-    if(!empty($attributes)) {
-
-      $attributes['PersonExperienceDetail']['experience_type_id'] = 2;
+    if(!empty($attributes)) {      
 
       if(empty($attributes['graduated'])) {
         $attributes['graduated'] = null;
@@ -32,6 +30,8 @@ class PersonEducation extends Model
       unset($attributes['date_start']);
       unset($attributes['date_end']);
       unset($attributes['current']);
+
+      $attributes['PersonExperienceDetail']['experience_type_id'] = 3;
       
     }
 

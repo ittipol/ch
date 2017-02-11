@@ -14,7 +14,7 @@ class ProductController extends Controller
     parent::__construct();
     $this->model = Service::loadModel('Product');
   }
-
+// ข้อความถึงผู้ขาย:
   public function index() {
     dd('pd index');
   }
@@ -51,9 +51,9 @@ dd($request->all());
 
     $model = $this->model->find($productId);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }

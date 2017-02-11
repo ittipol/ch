@@ -48,10 +48,18 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
   Route::get('experience/profile_edit','PersonExperienceController@profileEdit');
   Route::patch('experience/profile_edit','PersonExperienceController@profileEditingSubmit');
 
+  Route::get('experience/career_objective','PersonExperienceController@careerObjectiveEdit');
+  Route::patch('experience/career_objective','PersonExperienceController@careerObjectiveEditingSubmit');
+
   Route::get('experience/working_add','PersonWorkingExperienceController@add');
   Route::post('experience/working_add','PersonWorkingExperienceController@addingSubmit');
   Route::get('experience/working_edit/{id}','PersonWorkingExperienceController@edit');
   Route::patch('experience/working_edit/{id}','PersonWorkingExperienceController@editingSubmit');
+
+  Route::get('experience/internship_add','PersonInternshipController@add');
+  Route::post('experience/internship_add','PersonInternshipController@addingSubmit');
+  Route::get('experience/internship_edit/{id}','PersonInternshipController@edit');
+  Route::patch('experience/internship_edit/{id}','PersonInternshipController@editingSubmit');
 
   Route::get('experience/education_add','PersonEducationController@add');
   Route::post('experience/education_add','PersonEducationController@addingSubmit');
@@ -98,6 +106,10 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
   // Route::get('shop/{slug}/advertisement','ShopController@advertisement');
 
   Route::get('shop/{slug}/setting','ShopController@setting');
+  
+  Route::get('shop/{slug}/opening_hours','ShopController@openingHours');
+  Route::patch('shop/{slug}/opening_hours','ShopController@openingHoursSubmit');
+
 });
 
 
@@ -121,12 +133,21 @@ Route::get('job/detail/{id}','JobController@detail')->name('job.detail');
 Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 
   Route::get('shop/{slug}/job','ShopController@job');
+
+    Route::get('shop/{slug}/job_apply_list','JobController@jobApplyList');
   
   Route::get('shop/{slug}/job_post','JobController@add');
   Route::post('shop/{slug}/job_post','JobController@addingSubmit');
 
   Route::get('shop/{slug}/job_edit/{id}','JobController@edit');
   Route::patch('shop/{slug}/job_edit/{id}','JobController@editingSubmit');
+
+});
+
+Route::group(['middleware' => ['auth','person.experience']], function () {
+
+  Route::get('job/apply/{id}','JobController@apply');
+  Route::post('job/apply/{id}','JobController@applyingSubmit');
 
 });
 
@@ -139,6 +160,21 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 
   Route::get('shop/{slug}/branch_edit/{id}','BranchController@edit')->name('shop.branch.edit');
   Route::patch('shop/{slug}/branch_edit/{id}','BranchController@editingSubmit')->name('shop.branch.edit');
+});
+
+// Advertisement
+Route::get('advertisement/detail/{id}','AdvertisementController@detail')->name('advertisement.detail');
+
+Route::group(['middleware' => ['auth','person.shop.permission']], function () {
+
+  Route::get('shop/{slug}/advertisement','ShopController@advertisement');
+  
+  Route::get('shop/{slug}/advertisement_post','AdvertisementController@add');
+  Route::post('shop/{slug}/advertisement_post','AdvertisementController@addingSubmit');
+
+  Route::get('shop/{slug}/advertisement_edit/{id}','AdvertisementController@edit');
+  Route::patch('shop/{slug}/advertisement_edit/{id}','AdvertisementController@editingSubmit');
+
 });
 
 // Person Post Item

@@ -20,7 +20,7 @@ class JobController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ขออภัย ไม่พบประกาศนี้'
+        'message' => 'ไม่พบประกาศนี้'
       );
       return $this->error();
     }
@@ -54,7 +54,6 @@ class JobController extends Controller
     }
     
     $url = new Url;
-    $url->setUrl('shop/'.$slug.'/branch_detail/{id}','detailUrl');
 
     $branchLocations = array();
     $hasBranchLocation = false;
@@ -68,20 +67,31 @@ class JobController extends Controller
 
         $graphics = json_decode($address['_geographic'],true);
         
-        $branchLocations[] = array_merge(array(
+        $branchLocations[] = array(
           'id' => $branch->id,
           'address' => $branch->name,
           'latitude' => $graphics['latitude'],
-          'longitude' => $graphics['longitude']
-        ),$url->parseUrl($branch->getAttributes())); 
+          'longitude' => $graphics['longitude'],
+          'detailUrl' => $url->setAndParseUrl('shop/'.$slug.'/branch_detail/{id}',$branch->getAttributes())
+        );
       }
     }
 
-    $this->mergeData(array(
-      'shopAddress' => $shop->modelData->loadAddress(),
-      'branchLocations' => json_encode($branchLocations),
-      'hasBranchLocation' => $hasBranchLocation
-    ));
+    $this->setData('shopAddress',$shop->modelData->loadAddress());
+    $this->setData('branchLocations',json_encode($branchLocations));
+    $this->setData('hasBranchLocation',$hasBranchLocation);
+
+    // Get person apply job
+    $personApplyJob = Service::loadModel('PersonApplyJob')->where(array(
+      array('person_id','=',session()->get('Person.id')),
+      array('job_id','=',$this->param['id'])
+    ))->exists();
+
+    $this->setData('personApplyJob',$personApplyJob);
+
+    if(!$personApplyJob) {
+      $this->setData('jobApplyUrl',$url->setAndParseUrl('job/apply/{id}',array('id' => $this->param['id'])));
+    }
 
     return $this->view('pages.job.detail');
 
@@ -96,14 +106,12 @@ class JobController extends Controller
       'field' => 'name',
       'index' => 'employmentTypes'
     ));
-    $model->form->shopTo(array(
-      'shopId' => request()->get('shop')->id,
-      'model' => 'Branch'
-    ));
+
+    $model->form->setData('branches',request()->get('shop')->getRelatedModelData('Branch'));
 
     $this->data = $model->form->build();
 
-    return $this->view('pages.job.form.job_add');
+    return $this->view('pages.job.form.job_post');
   }
 
   public function addingSubmit(CustomFormRequest $request) {
@@ -125,9 +133,9 @@ class JobController extends Controller
 
     $model = Service::loadModel('Job')->find($this->param['id']);
 
-    if(empty($model)) {
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
       $this->error = array(
-        'message' => 'ไม่พบประกาศขายนี้'
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -155,10 +163,10 @@ class JobController extends Controller
 
     // Get Selected Branch
     $model->form->setFormData('JobToBranch',$branches);
-    // Get branches in shop
+    // Get All branches in shop
     $model->form->setData('branches',request()->get('shop')->getRelatedModelData('Branch'));
 
-    $this->mergeData($model->form->build());
+    $this->data = $model->form->build();
 
     return $this->view('pages.job.form.job_edit');
   }
@@ -166,6 +174,13 @@ class JobController extends Controller
   public function editingSubmit(CustomFormRequest $request) {
 
     $model = Service::loadModel('Job')->find($this->param['id']);
+
+    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
+      );
+      return $this->error();
+    }
 
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
@@ -176,33 +191,105 @@ class JobController extends Controller
 
   }
 
-  // public function addCat() {
-  //   exit('!!!');
-  //       $data = array(
-  //   'โต๊ะรีดผ้า',
-  //   'ตะกร้าผ้า',
-  //   'จักรเย็บผ้าและอุปกรณ์',
-  //   'อุปกรณ์ดับกลิ่นผ้า'
-  //       );
+  public function apply() {
 
-  //       $parentId = 927;
+    $model = Service::loadModel('PersonApplyJob');
 
-  //       foreach ($data as $value) {
+    $exist = $model->where(array(
+      array('person_id','=',session()->get('Person.id')),
+      array('job_id','=',$this->param['id'])
+    ))->exists();
 
-  //         $_value = array(
-  //           'name' => $value
-  //         );
+    if($exist) {
+      Message::display('สมัครงานนี้แล้ว','info');
+      return Redirect::to('job/detail/'.$this->param['id']);
+    }
 
-  //         if(!empty($parentId)) {
-  //           $_value = array(
-  //             'parent_id' => $parentId,
-  //             'name' => $value
-  //           );
-  //         }
+    $jobModel = Service::loadModel('Job')->find($this->param['id']);
 
-  //         Service::loadModel('Category')->newInstance()->fill($_value)->save();
-  //       }
-  //       dd('saved');
+    $shopToModel = Service::loadModel('ShopTo')
+    ->select('shop_id')
+    ->where(array(
+      array('model','like','Job'),
+      array('model_id','=',$this->param['id'])
+    ))
+    ->first();
 
-  // }
+    $this->data = $model->form->build();
+    $this->setData('shopName',$shopToModel->shop->name);
+    $this->setData('jobName',$jobModel->name);
+
+    return $this->view('pages.job.form.job_apply');
+
+  }
+
+  public function applyingSubmit() {
+
+    $model = Service::loadModel('PersonApplyJob');
+
+    $exist = $model->where(array(
+      array('person_id','=',session()->get('Person.id')),
+      array('job_id','=',$this->param['id'])
+    ))->exists();
+
+    if($exist) {
+      Message::display('สมัครงานนี้แล้ว','info');
+      return Redirect::to('job/detail/'.$this->param['id']);
+    }
+
+    $shopToModel = Service::loadModel('ShopTo')
+    ->select('shop_id')
+    ->where(array(
+      array('model','like','Job'),
+      array('model_id','=',$this->param['id'])
+    ))
+    ->first();
+
+    request()->request->add(['job_id' => $this->param['id']]);
+    request()->request->add(['shop_id' => $shopToModel->shop_id]);
+
+    if($model->fill(request()->all())->save()) {
+      Message::display('สมัครงานนี้เรียบร้อยแล้ว','success');
+      return Redirect::to('job/detail/'.$this->param['id']);
+    }else{
+      return Redirect::back();
+    }
+
+  }
+
+  public function jobApplyList() {
+
+    $model = Service::loadModel('PersonApplyJob');
+
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $model->paginator->disableGetImage();
+    $model->paginator->criteria(array(
+      'conditions' => array(
+        array('shop_id','=',request()->get('shopId'))
+      )
+    ));
+    $model->paginator->setPage($page);
+    $model->paginator->setPagingUrl('shop/'.request()->slug.'/job_apply_list');
+    $model->paginator->setUrl('experience/detail/{person_id}','experienceDetailUrl');
+dd($model->paginator->build());
+    $this->data = $model->paginator->build();
+
+    // // Get job apply
+    // $jobApplies = Service::loadModel('PersonApplyJob')
+    // ->where('shop_id','=',request()->get('shopId'))
+    // ->get();
+
+    // foreach ($jobApplies as $jobApply) {
+    //   // dd($jobApply->job);
+    //   dd($jobApply->person);
+    // }
+
+    dd('dsad');
+
+  }
+
 }

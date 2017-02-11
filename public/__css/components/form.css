@@ -1,11 +1,3 @@
-/*form {
-	margin: 0 0 20px;
-}
-*/
-/*form form {
-	margin: 0;
-}*/
-
 input[type="text"],
 input[type="password"] {
 	padding: 10px;
@@ -342,6 +334,20 @@ select[name^="OfficeHour"].disabled {
 .office-hour span {
 	width: 60px;
 	display: inline-block;
+}
+
+.office-status {
+	width: 14px;
+	height: 14px;
+	border-radius: 14px;
+	margin-left: 10px;
+	background-color: red;
+	border: 1px solid #eaeaea;
+	display: inline-block;
+}
+
+.office-status.active {
+	background-color: rgb(28,156,1);
 }
 
 

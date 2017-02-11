@@ -38,11 +38,34 @@ class Url
     );
   }
 
+  public function setAndParseUrl($url,$data) {
+
+    preg_match_all('/{[\w0-9]+}/', $url, $matches);
+
+    $url = array(
+      'url' => url($url),
+      'pattern' => $matches[0]
+    );
+
+    foreach ($url['pattern'] as $pattern) {
+    
+      $field = substr($pattern, 1,-1);
+
+      if(!empty($data[$field])) {
+        $url['url'] = str_replace($pattern, $data[$field], $url['url']);
+      }
+
+    }
+
+    return $url['url'];
+
+  }
+
   public function clearUrls() {
     $this->urls = array();
   }
 
-  public function parseUrl($record) {
+  public function parseUrl($data) {
     $urls = array();
 
     foreach ($this->urls as $index => $url) {
@@ -51,8 +74,8 @@ class Url
     
         $field = substr($pattern, 1,-1);
 
-        if(!empty($record[$field])) {
-          $url['url'] = str_replace($pattern, $record[$field], $url['url']);
+        if(!empty($data[$field])) {
+          $url['url'] = str_replace($pattern, $data[$field], $url['url']);
         }
 
       }
