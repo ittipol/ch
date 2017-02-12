@@ -19,11 +19,23 @@
 
     <div class="clearfix">
       <div class="profile-image pull-left">
+        @if(!empty($profileImageUrl))
         <img src="{{$profileImageUrl}}">
+        @endif
       </div>
 
       <div class="profile-info pull-left">
         <h3>{{$profile['name']}}</h3>
+
+        <dl>
+          <dt>เพศ</dt>
+          <dd>{{$profile['gender']}}</dd>
+        </dl>
+
+        <dl>
+          <dt>วันเกิด</dt>
+          <dd>{{$profile['birthDate']}}</dd>
+        </dl>
       </div>
 
     </div>
@@ -33,16 +45,6 @@
         <dt>ที่อยู่ปัจจุบัน</dt>
         <dd>{{$profile['Address']['_long_address']}}</dd>
       </dl>
-
-      <dl>
-        <dt>เพศ</dt>
-        <dd>{{$profile['gender']}}</dd>
-      </dl>
-
-      <dl>
-        <dt>วันเกิด</dt>
-        <dd>{{$profile['birthDate']}}</dd>
-      </dl>
     </div>
 
     <a href="{{URL::to('experience/profile_edit')}}" class="button">แก้ไขโปรไฟล์</a>
@@ -50,6 +52,7 @@
   </div>
 
   <div class="line grey space-top-bottom-20"></div>
+  
   <h4>จุดมุ่งหมายในอาชีพ</h4>
 
   @if(empty($careerObjective))

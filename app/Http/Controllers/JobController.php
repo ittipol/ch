@@ -326,12 +326,76 @@ class JobController extends Controller
     // Get career objective
     $careerObjective = Service::loadModel('PersonCareerObjective')
     ->select(array('id','career_objective'))
-    ->where('person_id','=',Session::get('Person.id'))
+    ->where('person_experience_id','=',$profile->id)
     ->first();
 
-    $this->data = $model->modelData->build();
+    // Get skill
+    $skills = Service::loadModel('PersonSkill')->where('person_experience_id','=',$profile->id)->get();
+
+    $_skills = array();
+    foreach ($skills as $skill) {
+      $_skills[] = array(
+        'skill' => $skill->skill
+      );
+    }
+
+    // Get language skill
+    $languageSkills = Service::loadModel('PersonLanguageSkill')->where('person_experience_id','=',$profile->id)->get();
+
+    $_languageSkills = array();
+    foreach ($languageSkills as $languageSkill) {
+      $_languageSkills[] = array(
+        'name' => $languageSkill->language->name,
+        'level' => $languageSkill->languageSkillLevel->name
+      );
+    }
+
+    $models = array(
+      'PersonWorkingExperience' => 'working',
+      'PersonInternship' => 'internship',
+      'PersonEducation' => 'education',
+      'PersonProject' => 'project',
+      'PersonCertificate' => 'certificate'
+    );
+
+    foreach ($models as $_model => $alias) {
+      $experienceDetails = Service::loadModel('PersonExperienceDetail')
+      ->orderBy('start_year','DESC')
+      ->orderBy('start_month','DESC')
+      ->orderBy('start_day','DESC')
+      ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
+      ->where(array(
+        array('person_experience_id','=',$profile->id),
+        array('model','like',$_model)
+      ))
+      ->get();
+
+      $details = array();
+      foreach ($experienceDetails as $experienceDetail) {
+        
+        $__model = $experienceDetail->{lcfirst($experienceDetail->model)};
+
+        $details[] = array_merge(
+          $__model->buildModelData(),
+          array(
+            'peroid' => $experienceDetail->getPeriod()
+          )
+        );
+
+      }
+
+      $this->setData($_model,$details);
+
+    }
+
+    $this->setData('jobName',$model->job->name);
+    $this->setData('jobApply',$model->modelData->build(true));
+    $this->setData('profile',$profile->modelData->build(true));
+    $this->setData('careerObjective',$careerObjective->career_objective);
     $this->setData('profileImageUrl',$profile->getProfileImageUrl());
-dd($this->data);
+    $this->setData('skills',$_skills);
+    $this->setData('languageSkills',$_languageSkills);
+
     return $this->view('pages.job.job_apply_detail');
 
   }

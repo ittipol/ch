@@ -8,6 +8,8 @@ class PersonInternship extends Model
   protected $fillable = ['person_id','company','description'];
   protected $modelRelations = array('PersonExperienceDetail');
 
+  public $formHelper = true;
+
   protected $validation = array(
     'rules' => array(
       'company' => 'required|max:255'

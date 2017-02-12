@@ -43,8 +43,8 @@ class PersonExperienceController extends Controller
     ->first();
 
     // Get skill
-    $skills = Service::loadModel('PersonSkill')->where('person_id','=',session()->get('Person.id'))->get();
-    
+    $skills = Service::loadModel('PersonSkill')->where('person_experience_id','=',$profile->id)->get();
+
     $url->setUrl('experience/skill_edit/{id}','editUrl');
     $url->setUrl('experience/skill_delete/{id}','deleteUrl');
 
@@ -56,7 +56,7 @@ class PersonExperienceController extends Controller
     }
 
     // Get language skill
-    $languageSkills = Service::loadModel('PersonLanguageSkill')->where('person_id','=',session()->get('Person.id'))->get();
+    $languageSkills = Service::loadModel('PersonLanguageSkill')->where('person_experience_id','=',$profile->id)->get();
    
     $url->clearUrls();
     $url->setUrl('experience/language_skill_edit/{id}','editUrl');
@@ -85,7 +85,7 @@ class PersonExperienceController extends Controller
       ->orderBy('start_day','DESC')
       ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
       ->where(array(
-        array('person_id','=',session()->get('Person.id')),
+        array('person_experience_id','=',$profile->id),
         array('model','like',$model)
       ))
       ->get();

@@ -135,7 +135,7 @@ class PersonExperience extends Model
     $image = Image::select('id','model','model_id','filename','image_type_id')->find($this->profile_image_id);
 
     if(empty($image)) {
-      return 'images/common/no-img.png';
+      return '';
     }
 
     return $image->getImageUrl();

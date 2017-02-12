@@ -36,7 +36,7 @@
     @if(!empty($branches))
     <div class="form-row">
       <?php 
-        echo Form::label('item_category_id', 'เลือกสาขาที่สามารถทำงานได้ (เลือกได้มากกว่า 1 ตัวเลือก)');
+        echo Form::label('branch', 'เลือกสาขาที่สามารถทำงานได้ (เลือกได้มากกว่า 1 ตัวเลือก)');
       ?>
       <div class="form-item-group">
         <div class="row">
@@ -62,6 +62,11 @@
     <div class="form-row">
       <?php 
         echo Form::label('message', 'ข้อความถึงผู้รับสมัครงานนี้');
+      ?>
+      <p>แนะนำตัวคุณหรือกล่าวอะไรบ้างอย่างถึงผู้รับสมัครงานนี้</p>
+      <p class="notice info">ข้อความนี้จะแสดงเป็นส่วนแรกของรายละเอียดการสมัครงานของคุณ</p>
+      <p class="notice info">สามารถเว้นว่างข้อความนี้ได้</p>
+      <?php
         echo Form::textarea('message', null, array(
           'class' => 'ckeditor'
         ));

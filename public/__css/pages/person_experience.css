@@ -1,9 +1,9 @@
 .profile-image {
-	width: 100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
 	text-align: center;
 	background-color: #999;
-	border-radius: 100px;
+	border-radius: 150px;
 	overflow: hidden;
 }
 

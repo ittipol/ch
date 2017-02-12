@@ -25,20 +25,12 @@ class PersonWorkingExperience extends Model
 
     if(!empty($attributes)) {
 
-      $personExperience = new PersonExperience;
-
       $personExperienceDetail = new PersonExperienceDetail;
       $attributes['PersonExperienceDetail'] = $personExperienceDetail->setPeriodData($attributes);
       unset($attributes['date_start']);
       unset($attributes['date_end']);
       unset($attributes['current']);
 
-      $personExperience = $personExperience
-      ->select(array('id'))
-      ->where('person_id','=',session()->get('Person.id'))
-      ->first();
-
-      $attributes['PersonExperienceDetail']['person_experience_id'] = $personExperience->id;
       $attributes['PersonExperienceDetail']['experience_type_id'] = 1;
      
     }

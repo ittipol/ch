@@ -29,6 +29,29 @@ class PersonExperienceDetail extends Model
     return $this->hasOne('App\Models\PersonCertificate','id','model_id');
   }
 
+  public static function boot() {
+
+    parent::boot();
+
+    // before saving
+    PersonExperienceDetail::saving(function($model){
+
+      if(!$model->exists){
+
+        $personExperience = new PersonExperience;
+        $personExperience = $personExperience
+        ->select(array('id'))
+        ->where('person_id','=',session()->get('Person.id'))
+        ->first();
+
+        $model->person_experience_id = $personExperience->id;
+
+      }
+
+    });
+
+  }
+
   public function __saveRelatedData($model,$options = array()) {
     $personExperienceDetail = $model->getModelRelationData('PersonExperienceDetail',
       array(
@@ -71,7 +94,7 @@ class PersonExperienceDetail extends Model
         $data['end_'.$key] = $value;
       }
     }
-    else{
+    elseif(!empty($attributes['current'])) {
       $data['current'] = $attributes['current'];
     }
 
