@@ -45,9 +45,9 @@ class District {
         
         let option = $("<option></option>");
 
-        if(key == _this.subDistrictId){
-          option.prop('selected',true);
-        }
+        // if(key == _this.subDistrictId){
+        //   option.prop('selected',true);
+        // }
 
         $('#sub_district').append(option.attr("value", key).text(value));
 

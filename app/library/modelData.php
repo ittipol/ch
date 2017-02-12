@@ -191,6 +191,7 @@ class ModelData {
     }
 
     return $contact->getAttributes();
+    // return $contact->buildModelData();
 
   }
 

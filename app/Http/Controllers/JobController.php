@@ -14,6 +14,24 @@ class JobController extends Controller
     parent::__construct();
   }
 
+  public function listView() {
+
+    $model = Service::loadModel('Job');
+    
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $model->paginator->setPage($page);
+    $model->paginator->setPagingUrl('job/list');
+    $model->paginator->setUrl('job/detail/{id}','detailUrl');
+
+    $this->data = $model->paginator->build();
+
+    return $this->view('pages.job.list');
+  }
+
   public function detail() {
 
     $model = Service::loadModel('Job')->find($this->param['id']);

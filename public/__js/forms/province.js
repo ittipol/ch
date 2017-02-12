@@ -45,9 +45,9 @@ class Province {
         
         let option = $("<option></option>");
 
-        if(key == _this.districtId){
-          option.prop('selected',true);
-        }
+        // if(key == _this.districtId){
+        //   option.prop('selected',true);
+        // }
 
         $('#district').append(option.attr("value", key).text(value));
 

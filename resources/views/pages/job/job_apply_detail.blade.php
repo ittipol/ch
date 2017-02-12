@@ -47,10 +47,34 @@
     </div>
 
     <div class="space-top-bottom-20">
+      
+      @if(!empty($profile['Address']['_long_address']))
       <dl>
         <dt>ที่อยู่ปัจจุบัน</dt>
         <dd>{{$profile['Address']['_long_address']}}</dd>
       </dl>
+      @endif
+
+      @if(!empty($profile['Contact']['phone_number']))
+      <dl>
+        <dt>หมายเลขโทรศัพท์</dt>
+        <dd>{{$profile['Contact']['phone_number']}}</dd>
+      </dl>
+      @endif
+
+      @if(!empty($profile['Contact']['email']))
+      <dl>
+        <dt>อีเมล</dt>
+        <dd>{{$profile['Contact']['email']}}</dd>
+      </dl>
+      @endif
+
+      @if(!empty($profile['Contact']['line']))
+      <dl>
+        <dt>Line ID</dt>
+        <dd>{{$profile['Contact']['line']}}</dd>
+      </dl>
+      @endif
 
     </div>
 

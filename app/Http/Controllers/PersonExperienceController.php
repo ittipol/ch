@@ -183,12 +183,6 @@ class PersonExperienceController extends Controller
       $year[$i] = $i+543;
     }
 
-    // $this->mergeData(array(
-    //   'day' => $day,
-    //   'month' => $month,
-    //   'year' => $year
-    // ));
-
     $model->formHelper->loadData(array(
       'model' => array(
         'Address','Contact'

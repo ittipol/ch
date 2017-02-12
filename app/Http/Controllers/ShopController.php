@@ -205,4 +205,20 @@ class ShopController extends Controller
 
   }
 
+  public function address() {
+    dd('address');
+  }
+
+  public function addressSubmit() {
+
+  }
+
+  public function contact() {
+    dd('contact');
+  }
+
+  public function contactSubmit() {
+
+  }
+
 }

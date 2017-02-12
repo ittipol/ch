@@ -86,7 +86,6 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
   Route::get('experience/language_skill_edit/{id}','PersonLanguageSkillController@edit');
   Route::patch('experience/language_skill_edit/{id}','PersonLanguageSkillController@editingSubmit');
 
-
 });
 
 
@@ -110,6 +109,12 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
   Route::get('shop/{slug}/opening_hours','ShopController@openingHours');
   Route::patch('shop/{slug}/opening_hours','ShopController@openingHoursSubmit');
 
+  Route::get('shop/{slug}/address','ShopController@address');
+  Route::patch('shop/{slug}/address','ShopController@addressSubmit');
+
+  Route::get('shop/{slug}/contact','ShopController@contact');
+  Route::patch('shop/{slug}/contact','ShopController@contactSubmit');
+
 });
 
 
@@ -128,7 +133,7 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 // Route::get('product/{product_slug}','ProductController@detail');
 
 // Job
-Route::get('job/list','JobController@listView');
+Route::get('job/list','JobController@listView')->name('job.list');;
 Route::get('job/detail/{id}','JobController@detail')->name('job.detail');
 
 Route::group(['middleware' => ['auth','person.shop.permission']], function () {
@@ -147,10 +152,8 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 });
 
 Route::group(['middleware' => ['auth','person.experience']], function () {
-
   Route::get('job/apply/{id}','JobController@apply');
   Route::post('job/apply/{id}','JobController@applyingSubmit');
-
 });
 
 // Branch

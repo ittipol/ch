@@ -21,15 +21,14 @@
                 <div class="product-title">{{$data['_name_short']}}</div>
               </a>
               <div class="price">
-                {{$data['_price']}}
+                {{$data['_salary']}}
               </div>
             </div>
             <div>
-              <a href="{{$data['detailUrl']}}"><div class="button wide-button">แสดงสินค้านี้</div></a>
+              <a href="{{$data['detailUrl']}}"><div class="button wide-button">แสดง</div></a>
             </div>
           </div>
         </div>
-
         @endforeach
 
       </div>

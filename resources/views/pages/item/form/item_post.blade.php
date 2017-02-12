@@ -217,7 +217,7 @@
           echo Form::label('Address[sub_district_id]', 'ตำบล', array(
             'class' => 'required'
           ));
-          echo Form::select('Address[sub_district_id]', array('0' => '-') , null, array(
+          echo Form::select('Address[sub_district_id]', array() , null, array(
             'id' => 'sub_district'
           ));
         ?>

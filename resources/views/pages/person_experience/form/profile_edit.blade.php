@@ -183,16 +183,16 @@
         ?>
       </div>
 
-<!--       <div class="form-row">
+      <div class="form-row">
         <?php 
           echo Form::label('Address[sub_district_id]', 'ตำบล', array(
             'class' => 'required'
           ));
-          echo Form::select('Address[sub_district_id]', array('0' => '-') , null, array(
+          echo Form::select('Address[sub_district_id]', array() , null, array(
             'id' => 'sub_district'
           ));
         ?>
-      </div> -->
+      </div>
 
     </div>
 
@@ -212,11 +212,14 @@
 
     $(document).ready(function(){
 
-      const province = new Province();
-      province.load();
+      // const address = new Address();
+      // address.load({{$_formData['Address']['district_id']}},{{$_formData['Address']['sub_district_id']}});
 
-      // const district = new District();
-      // district.load();
+      const province = new Province();
+      province.load({{$_formData['Address']['district_id']}});
+
+      const district = new District();
+      district.load();
 
       const images = new Images('_profile_image','profile-image',1);
       images.load('{!!$profileImage!!}');

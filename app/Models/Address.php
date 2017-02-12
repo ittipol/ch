@@ -62,12 +62,12 @@ class Address extends Model
 
     if(!empty($this->subDistrict->name)) {
       $subDistrictName = $this->subDistrict->name;
-      $shortAddress .= ' ตำบล '.$this->subDistrict->name;
+      $shortAddress .= ' '.$this->subDistrict->name;
     }
 
     if(!empty($this->district->name)) {
       $districtName = $this->district->name;
-      $shortAddress .= ' อำเภอ '.$this->district->name;
+      $shortAddress .= ' '.$this->district->name;
     }
 
     if(!empty($this->province->name)) {

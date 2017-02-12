@@ -22,6 +22,7 @@
     '__js/forms/open-hours.js',
     '__js/forms/district.js',
     '__js/forms/province.js',
+    '__js/forms/address.js',
     '__js/forms/tagging.js',
     '__js/forms/real-estate.js',
     '__js/forms/text-input-stack.js',
