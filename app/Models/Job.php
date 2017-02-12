@@ -10,7 +10,10 @@ class Job extends Model
   protected $fillable = ['employment_type_id','name','description','qualification','benefit','salary','recruitment','recruitment_custom_detail'];
   protected $modelRelations = array('Image','Tagging','JobToBranch','ShopTo');
   protected $directory = true;
-  protected $imageCache = array('xs','list');
+
+  public $formHelper = true;
+  public $modelData = true;
+  public $paginator = true;
 
   public $imageTypes = array(
     'photo' => array(
@@ -77,9 +80,10 @@ class Job extends Model
     }
 
     $_salary = substr($this->salary, -3);
+
     $addBaht = true;
-    for ($i=0; $i < 3; $i++) { 
-      
+    for ($i=0; $i < strlen($_salary); $i++) { 
+
       if((ord($_salary[$i]) < 48) || (ord($_salary[$i]) > 57)) {
         $addBaht = false;
         break;

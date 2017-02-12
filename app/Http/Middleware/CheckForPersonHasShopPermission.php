@@ -34,28 +34,17 @@ class CheckForPersonHasShopPermission
         return redirect('item/post');
       }
 
-      // $personToShop = new PersonToShop;
-      // $person = $personToShop->getData(array(
-      //   'conditions' => array(
-      //     ['person_id','=',session()->get('Person.id')],
-      //     ['shop_id','=',$id],
-      //   ),
-      //   'fields' => array('role_id'),
-      //   'first' => true
-      // ));
+      $personToShop = new PersonToShop;
+      $person = $personToShop->getData(array(
+        'conditions' => array(
+          ['person_id','=',session()->get('Person.id')],
+          ['shop_id','=',$id],
+        ),
+        'fields' => array('role_id'),
+        'first' => true
+      ));
 
-      if($request->session()->has('Shop.'.$id.'.id')) {
-
-        $personToShop = new PersonToShop;
-        $person = $personToShop->getData(array(
-          'conditions' => array(
-            ['person_id','=',session()->get('Person.id')],
-            ['shop_id','=',$id],
-          ),
-          'fields' => array('role_id'),
-          'first' => true
-        ));
-        
+      if($request->session()->has('Shop.'.$id.'.id')) {       
         $request->session()->put('Shop.'.$id.'.id',$id);
         $request->session()->put('Shop.'.$id.'.model',$shop);
         $request->session()->put('Shop.'.$id.'.role_name',$person->role->name);

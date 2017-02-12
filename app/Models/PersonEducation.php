@@ -8,6 +8,8 @@ class PersonEducation extends Model
   protected $fillable = ['person_id','academy','description','graduated'];
   protected $modelRelations = array('PersonExperienceDetail');
 
+  public $formHelper = true;
+
   protected $validation = array(
     'rules' => array(
       'academy' => 'required|max:255',

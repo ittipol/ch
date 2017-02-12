@@ -20,7 +20,7 @@ class PersonCertificateController extends Controller
       $month[$i] = $date->getMonthName($i);
     }
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 
@@ -66,14 +66,14 @@ class PersonCertificateController extends Controller
       )
     );
 
-    $model->form->setFormData('period',json_encode($period->getAttributes()));
+    $model->formHelper->setFormData('period',json_encode($period->getAttributes()));
 
-    $model->form->loadData(array(
+    $model->formHelper->loadData(array(
       'models' => array('Image'),
       'json' => array('Image')
     ));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 

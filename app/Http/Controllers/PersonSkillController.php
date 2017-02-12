@@ -12,7 +12,7 @@ class PersonSkillController extends Controller
 
     $model = Service::loadModel('PersonSkill');
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.person_experience.form.pereson_skill_add');
 
@@ -22,12 +22,18 @@ class PersonSkillController extends Controller
 
     $model = Service::loadModel('PersonSkill');
 
+    $personExperience = Service::loadModel('PersonExperience')
+    ->select(array('id'))
+    ->where('person_id','=',session()->get('Person.id'))
+    ->first();
+
     foreach (request()->get('skills') as $value) {
 
       $value = trim($value['name']);
 
       if(!empty($value) && !$model->checkExistBySkill($value)) {
         $model->newInstance()->fill(array(
+          'person_experience_id' => $personExperience->id,
           'skill' => $value
         ))->save();
       }
@@ -49,7 +55,7 @@ class PersonSkillController extends Controller
       return $this->error();
     }
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.person_experience.form.pereson_skill_edit');
 

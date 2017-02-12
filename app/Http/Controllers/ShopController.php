@@ -54,19 +54,31 @@ class ShopController extends Controller
 
     $url = new Url;
 
-    $model = request()->get('shop');
-
     $page = 1;
     if(!empty($this->query)) {
       $page = $this->query['page'];
     }
 
+    $shopTos = Service::loadModel('ShopTo')
+    ->select('model_id')
+    ->where(array(
+      array('model','like','Job'),
+      array('shop_id','=',request()->get('shopId'))
+    ))->get();
+
     $job = Service::loadModel('Job');
+    $job->paginator->criteria(array(
+      'conditions' => array(
+        'in' => array(
+          array('id',Service::getList($shopTos,'model_id'))
+        )
+      ),
+      'order' => array('id','DESC')
+    ));
     $job->paginator->setPage($page);
     $job->paginator->setPagingUrl('shop/'.request()->slug.'/job');
     $job->paginator->setUrl('shop/'.$this->param['slug'].'/job_edit/{id}','editUrl');
     $job->paginator->setUrl('job/detail/{id}','detailUrl');
-    $job->paginator->onlyMyData();
 
     $this->data = $job->paginator->build();
     $this->setData('shopUrl',request()->get('shopUrl'));
@@ -86,7 +98,7 @@ class ShopController extends Controller
 
     $model = Service::loadModel('Shop');
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -95,7 +107,7 @@ class ShopController extends Controller
       'index' => 'districts'
     ));
 
-    $this->mergeData($model->form->build());
+    $this->mergeData($model->formHelper->build());
 
     return $this->view('pages.shop.form.shop_create');
   }
@@ -164,7 +176,7 @@ class ShopController extends Controller
       $sameTime = $model->same_time;
     }
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('openHours',$openHours);
     $this->setData('sameTime',$sameTime);
 

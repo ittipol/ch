@@ -20,7 +20,7 @@ class PersonWorkingExperienceController extends Controller
       $month[$i] = $date->getMonthName($i);
     }
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 
@@ -65,9 +65,9 @@ class PersonWorkingExperienceController extends Controller
       )
     );
 
-    $model->form->setFormData('period',json_encode($period->getAttributes()));
+    $model->formHelper->setFormData('period',json_encode($period->getAttributes()));
     
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('latestYear',date('Y'));
     $this->setData('month',json_encode($month));
 

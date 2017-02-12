@@ -15,9 +15,11 @@ class Paginator {
   private $urls = array();
   private $url;
   private $getImage = true;
+  private $model;
 
   public function __construct($model = null) {
     $this->model = $model;
+    $this->total = $model->count();
     $this->url = new Url;
   }
 
@@ -63,7 +65,7 @@ class Paginator {
 
         $arrLen = count($options['conditions']['or']);
         for ($i=0; $i < $arrLen; $i++) {
-          $images->orWhere(
+          $this->model = $this->model->orWhere(
             $options['conditions']['or'][$i][0],
             $options['conditions']['or'][$i][1],
             $options['conditions']['or'][$i][2]
@@ -80,15 +82,29 @@ class Paginator {
 
     }
 
+    if(!empty($options['fields'])){
+      $model = $model->select($options['fields']);
+    }
+
     if(!empty($options['order'])){
-      $this->model = $this->model->orderBy(current($options['order']),next($options['order']));
+
+      if(is_array(current($options['order']))) {
+
+        foreach ($options['order'] as $value) {
+          $this->model = $this->model->orderBy($value[0],$value[1]);
+        }
+
+      }else{
+        $this->model = $this->model->orderBy(current($options['order']),next($options['order']));
+      }
+      
     }
 
   }
 
-  public function onlyMyData() {
-    $this->model = $this->model->where('person_id','=',Session::get('Person.id'));
-  }
+  // public function onlyMyData() {
+  //   $this->model = $this->model->where('person_id','=',Session::get('Person.id'));
+  // }
 
   public function getModelData() {
 
@@ -98,7 +114,6 @@ class Paginator {
     // $end = min(($offset + $this->perPage), $this->total);
 
     $records = $this->model
-    // ->where('person_id','=',Session::get('Person.id'))
     ->take($this->perPage)
     ->skip($offset)
     ->get();
@@ -263,7 +278,6 @@ class Paginator {
       return false;
     }
 
-    $this->total = $this->model->count();
     $this->lastPage = (int)ceil($this->total / $this->perPage);
 
     return array(

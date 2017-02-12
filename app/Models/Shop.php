@@ -12,6 +12,9 @@ class Shop extends Model
   protected $modelRelations = array('Image','Address','Contact','OfficeHour');
   public $errorType;
 
+  public $formHelper = true;
+  public $modelData = true;
+
   protected $behavior = array(
     'Slug' => array(
       'field' => 'name'
@@ -98,7 +101,7 @@ class Shop extends Model
 
   }
 
-  public function getRelatedModelData($modelData) {
+  public function getRelatedShopData($modelData) {
 
     $shopTo = new ShopTo;
 
@@ -113,8 +116,10 @@ class Shop extends Model
     $index = lcfirst($modelData);
 
     $data = array();
-    foreach ($records as $record) {
-      $data[$record->{$index}->id] = $record->{$index}->name;
+    if(!empty($records)) {
+      foreach ($records as $record) {
+        $data[$record->{$index}->id] = $record->{$index}->name;
+      }
     }
 
     return $data;

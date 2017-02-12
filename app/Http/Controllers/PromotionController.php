@@ -11,8 +11,8 @@ class PromotionController extends Controller
 
   public function add() {
 
-    // $this->form->setModel($this->model);
-    // $this->form->district();
+    // $this->formHelper->setModel($this->model);
+    // $this->formHelper->district();
 
     // return $this->view('pages.product.form.add.product');
 

@@ -13,7 +13,7 @@ class PersonLanguageSkillController extends Controller
     $model = Service::loadModel('PersonLanguageSkill');
 
     $this->getLanguages();
-    $this->mergeData($model->form->build());
+    $this->mergeData($model->formHelper->build());
 
     return $this->view('pages.person_experience.form.pereson_language_skill_add');
 
@@ -23,10 +23,16 @@ class PersonLanguageSkillController extends Controller
 
     $model = Service::loadModel('PersonLanguageSkill');
 
+    $personExperience = Service::loadModel('PersonExperience')
+    ->select(array('id'))
+    ->where('person_id','=',session()->get('Person.id'))
+    ->first();
+
     foreach (request()->get('languages') as $value) {
 
       if(!empty($value) && !$model->checkExistByLanguageId($value['language'])) {
         $model->newInstance()->fill(array(
+          'person_experience_id' => $personExperience->id,
           'language_id' => $value['language'],
           'language_skill_level_id' => $value['level']
         ))->save();
@@ -50,7 +56,7 @@ class PersonLanguageSkillController extends Controller
     }
 
     $this->getLanguages(false);
-    $this->mergeData($model->form->build());
+    $this->mergeData($model->formHelper->build());
 
     return $this->view('pages.person_experience.form.pereson_language_skill_edit');
 

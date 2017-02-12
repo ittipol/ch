@@ -9,6 +9,10 @@ class Branch extends Model
   protected $modelRelations = array('Image','Address','Contact','ShopTo');
   protected $directory = true;
 
+  public $formHelper = true;
+  public $modelData = true;
+  public $paginator = true;
+
   public $imageTypes = array(
     'photo' => array(
       'limit' => 10
@@ -30,7 +34,7 @@ class Branch extends Model
 
   public function buildModelData() {
     return array(
-      'name' => $this->name,
+      'name' => $this->name
     );
   }
 

@@ -24,9 +24,9 @@ class ProductController extends Controller
   }
 
   public function add() {
-    $this->form->setModel($this->model);
-    $this->form->district();
-    $this->form->productCategory();
+    $this->formHelper->setModel($this->model);
+    $this->formHelper->district();
+    $this->formHelper->productCategory();
 
     return $this->view('pages.product.form.add.product');
   }
@@ -65,9 +65,9 @@ dd($request->all());
     //   return $this->error();
     // }
 
-    $this->form->setModel($model);
-    $this->form->loadFormData();
-    $this->form->district();
+    $this->formHelper->setModel($model);
+    $this->formHelper->loadFormData();
+    $this->formHelper->district();
     
     return $this->view('pages.product.form.edit.product');
 

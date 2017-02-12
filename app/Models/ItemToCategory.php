@@ -26,6 +26,7 @@ class ItemToCategory extends Model
       ))->save();
 
     }
+    
   }
 
 }

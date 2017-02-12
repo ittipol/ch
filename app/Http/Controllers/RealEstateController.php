@@ -37,7 +37,7 @@ class RealEstateController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ขออภัย ไม่พบประกาศนี้'
+        'message' => 'ขออภัย ไม่พบประกาศนี้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -56,7 +56,7 @@ class RealEstateController extends Controller
 
     $model = Service::loadModel('RealEstate');
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -65,19 +65,19 @@ class RealEstateController extends Controller
       'index' => 'districts'
     ));
 
-    $model->form->loadFieldData('RealEstateType',array(
+    $model->formHelper->loadFieldData('RealEstateType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'realEstateTypes'
     ));
 
-    $model->form->loadFieldData('AnnouncementType',array(
+    $model->formHelper->loadFieldData('AnnouncementType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'announcementTypes'
     ));
 
-    $model->form->loadFieldData('RealEstateFeature',array(
+    $model->formHelper->loadFieldData('RealEstateFeature',array(
       'conditions' => array(
         ['real_estate_feature_type_id','=',1]
       ),
@@ -86,7 +86,7 @@ class RealEstateController extends Controller
       'index' => 'feature'
     ));
 
-    $model->form->loadFieldData('RealEstateFeature',array(
+    $model->formHelper->loadFieldData('RealEstateFeature',array(
       'conditions' => array(
         ['real_estate_feature_type_id','=',2]
       ),
@@ -95,7 +95,7 @@ class RealEstateController extends Controller
       'index' => 'facility'
     ));
 
-    $this->mergeData($model->form->build());
+    $this->mergeData($model->formHelper->build());
     $this->mergeData(array('defaultAnnouncementType' => 2));
 
     return $this->view('pages.real_estate.form.real_estate_post');
@@ -124,7 +124,7 @@ class RealEstateController extends Controller
       return $this->error();
     }
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -133,19 +133,19 @@ class RealEstateController extends Controller
       'index' => 'districts'
     ));
 
-    $model->form->loadFieldData('RealEstateType',array(
+    $model->formHelper->loadFieldData('RealEstateType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'realEstateTypes'
     ));
 
-    $model->form->loadFieldData('AnnouncementType',array(
+    $model->formHelper->loadFieldData('AnnouncementType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'announcementTypes'
     ));
 
-    $model->form->loadFieldData('RealEstateFeature',array(
+    $model->formHelper->loadFieldData('RealEstateFeature',array(
       'conditions' => array(
         ['real_estate_feature_type_id','=',1]
       ),
@@ -154,7 +154,7 @@ class RealEstateController extends Controller
       'index' => 'feature'
     ));
 
-    $model->form->loadFieldData('RealEstateFeature',array(
+    $model->formHelper->loadFieldData('RealEstateFeature',array(
       'conditions' => array(
         ['real_estate_feature_type_id','=',2]
       ),
@@ -163,11 +163,11 @@ class RealEstateController extends Controller
       'index' => 'facility'
     ));
 
-    $model->form->loadData(array(
+    $model->formHelper->loadData(array(
       'json' => array('Image','Tagging')
     ));
 
-    $this->mergeData($model->form->build());
+    $this->mergeData($model->formHelper->build());
 
     return $this->view('pages.real_estate.form.real_estate_edit');
 

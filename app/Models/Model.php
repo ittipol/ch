@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 use App\library\service;
 use App\library\currency;
 use App\library\string;
-use App\library\form;
+use App\library\formHelper;
 use App\library\modelData;
 use App\library\paginator;
 use Session;
@@ -26,22 +26,30 @@ class Model extends BaseModel
   protected $directoryPath;
   protected $imageCache = array();
 
-  public $form;
-  public $modelData;
-  public $paginator;
+  public $formHelper = false;
+  public $modelData = false;
+  public $paginator = false;
   
   public function __construct(array $attributes = []) { 
-
-    parent::__construct($attributes);
     
     $this->modelName = class_basename(get_class($this));
     $this->modelAlias = Service::generateUnderscoreName($this->modelName);
     $this->directoryPath = $this->storagePath.$this->modelAlias.'/';
 
-    $this->form = new Form($this);
-    $this->modelData = new ModelData($this);
-    $this->paginator = new Paginator($this);
+    if($this->formHelper) {
+      $this->formHelper = new FormHelper($this);
+    }
+    
+    if($this->modelData) {
+      $this->modelData = new ModelData($this);
+    }
+    
+    if($this->paginator) {
+      $this->paginator = new Paginator($this);
+    }
 
+    parent::__construct($attributes);
+    
   }
 
   public static function boot() {
@@ -231,7 +239,7 @@ class Model extends BaseModel
 
         $arrLen = count($options['conditions']['or']);
         for ($i=0; $i < $arrLen; $i++) {
-          $images->orWhere(
+          $model = $model->orWhere(
             $options['conditions']['or'][$i][0],
             $options['conditions']['or'][$i][1],
             $options['conditions']['or'][$i][2]
@@ -257,11 +265,21 @@ class Model extends BaseModel
     }
 
     if(!empty($options['order'])){
-      $model = $model->orderBy(current($options['order']),next($options['order']));
+
+      if(is_array(current($options['order']))) {
+
+        foreach ($options['order'] as $value) {
+          $model = $model->orderBy($value[0],$value[1]);
+        }
+
+      }else{
+        $model = $model->orderBy(current($options['order']),next($options['order']));
+      }
+      
     }
 
     if(!empty($options['list'])) {
-      return $this->getList($model->get(),$options['list']);
+      return Service::getList($model->get(),$options['list']);
     }
 
     // if(isset($options['first'])) {
@@ -328,16 +346,16 @@ class Model extends BaseModel
 
   }
 
-  public function getList($records,$field) {
-    
-    $lists = array();
-    foreach ($records as $record) {
-      $lists[] = $record->{$field};
-    }
+  // public function getList($records,$field) {
+   
+  //   $lists = array();
+  //   foreach ($records as $record) {
+  //     $lists[] = $record->{$field};
+  //   }
 
-    return $lists;
+  //   return $lists;
 
-  }
+  // }
 
   public function deleteByModelNameAndModelId($model,$modelId) {
 

@@ -7,7 +7,7 @@ use App\library\date;
 class PersonExperienceDetail extends Model
 {
   protected $table = 'person_experience_details';
-  protected $fillable = ['model','model_id','person_id','experience_type_id','start_year','start_month','start_day','end_year','end_month','end_day','current'];
+  protected $fillable = ['person_experience_id','model','model_id','person_id','experience_type_id','start_year','start_month','start_day','end_year','end_month','end_day','current'];
 
   public function personWorkingExperience() {
     return $this->hasOne('App\Models\PersonWorkingExperience','id','model_id');

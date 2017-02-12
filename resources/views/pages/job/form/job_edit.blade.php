@@ -29,11 +29,11 @@
 
   <div class="form-section">
 
+    @if(!empty($_fieldData['branches']))
     <div class="form-row">
       <?php 
-        echo Form::label('item_category_id', 'กำหนดสาขาที่เปิดรับสมัคร (สามารถเว้นว่างได้)');
+        echo Form::label('branch', 'เลือกสาขาที่เปิดรับสมัครงานนี้ (สามารถเว้นว่างได้)');
       ?>
-      @if(!empty($_fieldData['branches']))
       <div class="form-item-group">
         <div class="row">
           <?php 
@@ -52,10 +52,8 @@
           ?>
         </div>
       </div>
-      @else
-      <p class="notice info">ยังไม่มีสาขาลงในร้านค้านี้</p>
-      @endif
     </div>
+    @endif
 
     <div class="form-row">
       <?php 

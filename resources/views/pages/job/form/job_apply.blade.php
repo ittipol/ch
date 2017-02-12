@@ -24,7 +24,7 @@
   <div class="form-section">
 
     <div class="form-row">
-      <h4>ชื่อบริษัท หรือสถานประกอบการณ์</h4>
+      <h4>ชื่อบริษัท หรือสถานประกอบการ</h4>
       <div>{{$shopName}}</div>
     </div>
 
@@ -32,6 +32,32 @@
       <h4>งาน</h4>
       <div>{{$jobName}}</div>
     </div>
+
+    @if(!empty($branches))
+    <div class="form-row">
+      <?php 
+        echo Form::label('item_category_id', 'เลือกสาขาที่สามารถทำงานได้ (เลือกได้มากกว่า 1 ตัวเลือก)');
+      ?>
+      <div class="form-item-group">
+        <div class="row">
+          <?php 
+            foreach ($branches as $id => $branch):
+          ?>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
+              <label class="box">
+                <?php
+                  echo Form::checkbox('JobApplyToBranch[branch_id][]', $id);
+                ?>
+                <div class="inner"><?php echo $branch; ?></div>
+              </label>
+            </div>
+          <?php
+            endforeach;
+          ?>
+        </div>
+      </div>
+    </div>
+    @endif
 
     <div class="form-row">
       <?php 

@@ -128,13 +128,15 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 // Route::get('product/{product_slug}','ProductController@detail');
 
 // Job
+Route::get('job/list','JobController@listView');
 Route::get('job/detail/{id}','JobController@detail')->name('job.detail');
 
 Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 
   Route::get('shop/{slug}/job','ShopController@job');
 
-    Route::get('shop/{slug}/job_apply_list','JobController@jobApplyList');
+  Route::get('shop/{slug}/job_apply_list','JobController@jobApplyList');
+  Route::get('shop/{slug}/job_apply_detail/{id}','JobController@jobApplyDetail');
   
   Route::get('shop/{slug}/job_post','JobController@add');
   Route::post('shop/{slug}/job_post','JobController@addingSubmit');

@@ -50,7 +50,10 @@ class JobController extends Controller
 
     $branches = array();
     if(!empty($branchIds)){
-      $branches = Service::loadModel('Branch')->whereIn('id',$branchIds)->get();
+      $branches = Service::loadModel('Branch')
+      ->select(array('id','name'))
+      ->whereIn('id',$branchIds)
+      ->get();
     }
     
     $url = new Url;
@@ -77,7 +80,8 @@ class JobController extends Controller
       }
     }
 
-    $this->setData('shopAddress',$shop->modelData->loadAddress());
+    $this->setData('shopName',$shop->name);
+    // $this->setData('shopAddress',$shop->modelData->loadAddress());
     $this->setData('branchLocations',json_encode($branchLocations));
     $this->setData('hasBranchLocation',$hasBranchLocation);
 
@@ -101,15 +105,15 @@ class JobController extends Controller
 
     $model = Service::loadModel('Job');
 
-    $model->form->loadFieldData('EmploymentType',array(
+    $model->formHelper->loadFieldData('EmploymentType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'employmentTypes'
     ));
 
-    $model->form->setData('branches',request()->get('shop')->getRelatedModelData('Branch'));
+    $model->formHelper->setData('branches',request()->get('shop')->getRelatedShopData('Branch'));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.job.form.job_post');
   }
@@ -140,11 +144,11 @@ class JobController extends Controller
       return $this->error();
     }
 
-    $model->form->loadData(array(
+    $model->formHelper->loadData(array(
       'models' => array('Image','Tagging'),
       'json' => array('Image','Tagging')
     ));
-    $model->form->loadFieldData('EmploymentType',array(
+    $model->formHelper->loadFieldData('EmploymentType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'employmentTypes'
@@ -162,11 +166,11 @@ class JobController extends Controller
     }
 
     // Get Selected Branch
-    $model->form->setFormData('JobToBranch',$branches);
+    $model->formHelper->setFormData('JobToBranch',$branches);
     // Get All branches in shop
-    $model->form->setData('branches',request()->get('shop')->getRelatedModelData('Branch'));
+    $model->formHelper->setData('branches',request()->get('shop')->getRelatedShopData('Branch'));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.job.form.job_edit');
   }
@@ -207,6 +211,24 @@ class JobController extends Controller
 
     $jobModel = Service::loadModel('Job')->find($this->param['id']);
 
+    $branchIds = $jobModel->getRalatedData('JobToBranch',array(
+      'list' => 'branch_id',
+      'fields' => array('branch_id'),
+    ));
+
+    $branches = array();
+    if(!empty($branchIds)){
+      $branches = Service::loadModel('Branch')
+      ->select(array('id','name'))
+      ->whereIn('id',$branchIds)
+      ->get();
+    }
+
+    $_branches = array();
+    foreach ($branches as $branch) {
+      $_branches[$branch->id] = $branch->name;
+    }
+
     $shopToModel = Service::loadModel('ShopTo')
     ->select('shop_id')
     ->where(array(
@@ -215,9 +237,10 @@ class JobController extends Controller
     ))
     ->first();
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('shopName',$shopToModel->shop->name);
     $this->setData('jobName',$jobModel->name);
+    $this->setData('branches',$_branches);
 
     return $this->view('pages.job.form.job_apply');
 
@@ -274,21 +297,42 @@ class JobController extends Controller
     ));
     $model->paginator->setPage($page);
     $model->paginator->setPagingUrl('shop/'.request()->slug.'/job_apply_list');
+    $model->paginator->setUrl('shop/'.request()->slug.'/job_apply_detail/{id}','detailUrl');
     $model->paginator->setUrl('experience/detail/{person_id}','experienceDetailUrl');
-dd($model->paginator->build());
+
     $this->data = $model->paginator->build();
 
-    // // Get job apply
-    // $jobApplies = Service::loadModel('PersonApplyJob')
-    // ->where('shop_id','=',request()->get('shopId'))
-    // ->get();
+    return $this->view('pages.job.job_apply_list');
 
-    // foreach ($jobApplies as $jobApply) {
-    //   // dd($jobApply->job);
-    //   dd($jobApply->person);
-    // }
+  }
 
-    dd('dsad');
+  public function jobApplyDetail() {
+
+    $model = Service::loadModel('PersonApplyJob')->find($this->param['id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ขออภัย ไม่พบประกาศนี้ หรือข้อมูลนี้อาจถูกลบแล้ว'
+      );
+      return $this->error();
+    }
+
+    $profile = $model->person->personExperience;
+
+    $profile->modelData->loadData(array(
+      'models' => array('Address','Contact')
+    ));
+
+    // Get career objective
+    $careerObjective = Service::loadModel('PersonCareerObjective')
+    ->select(array('id','career_objective'))
+    ->where('person_id','=',Session::get('Person.id'))
+    ->first();
+
+    $this->data = $model->modelData->build();
+    $this->setData('profileImageUrl',$profile->getProfileImageUrl());
+dd($this->data);
+    return $this->view('pages.job.job_apply_detail');
 
   }
 

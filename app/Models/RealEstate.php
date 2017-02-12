@@ -11,6 +11,10 @@ class RealEstate extends Model
   protected $fillable = ['announcement_type_id','real_estate_type_id','name','description','price','home_area','land_area','indoor','furniture','facility','feature','need_broker',];
   protected $modelRelations = array('Image','Address','Tagging','Contact');
   protected $directory = true;
+
+  public $formHelper = true;
+  public $modelData = true;
+  public $paginator = true;
   
   public $imageTypes = array(
     'photo' => array(

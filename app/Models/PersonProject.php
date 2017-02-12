@@ -8,6 +8,8 @@ class PersonProject extends Model
   protected $fillable = ['person_id','name','description'];
   protected $modelRelations = array('PersonExperienceDetail');
 
+  public $formHelper = true;
+
   protected $validation = array(
     'rules' => array(
       'name' => 'required|max:255',

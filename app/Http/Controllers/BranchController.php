@@ -21,7 +21,7 @@ class BranchController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ขออภัย ไม่พบประกาศนี้'
+        'message' => 'ขออภัย ไม่พบประกาศนี้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -58,16 +58,9 @@ class BranchController extends Controller
 
   public function add() {
 
-    if(!Service::loadModel('Shop')->checkPersonHasShopPermission($this->slug->model_id)){
-      $this->error = array(
-        'message' => 'ไม่อนุญาตให้แก้ไชร้านค้านี้ได้'
-      );
-      return $this->error();
-    }
-
     $model = Service::loadModel('Branch');
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -76,19 +69,12 @@ class BranchController extends Controller
       'index' => 'districts'
     ));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.branch.form.branch_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {
-
-    if(!Service::loadModel('Shop')->checkPersonHasShopPermission($this->slug->model_id)){
-      $this->error = array(
-        'message' => 'ไม่อนุญาตให้แก้ไชร้านค้านี้ได้'
-      );
-      return $this->error();
-    }
 
     $model = Service::loadModel('Branch');
 
@@ -113,7 +99,7 @@ class BranchController extends Controller
       return $this->error();
     }
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -122,11 +108,11 @@ class BranchController extends Controller
       'index' => 'districts'
     ));
 
-    $model->form->loadData(array(
+    $model->formHelper->loadData(array(
       'json' => array('Image')
     ));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.branch.form.branch_edit');
 

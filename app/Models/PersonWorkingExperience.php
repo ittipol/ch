@@ -8,6 +8,8 @@ class PersonWorkingExperience extends Model
   protected $fillable = ['person_id','company','position','description'];
   protected $modelRelations = array('PersonExperienceDetail');
 
+  public $formHelper = true;
+
   protected $validation = array(
     'rules' => array(
       'company' => 'required|max:255',
@@ -23,14 +25,22 @@ class PersonWorkingExperience extends Model
 
     if(!empty($attributes)) {
 
+      $personExperience = new PersonExperience;
+
       $personExperienceDetail = new PersonExperienceDetail;
       $attributes['PersonExperienceDetail'] = $personExperienceDetail->setPeriodData($attributes);
       unset($attributes['date_start']);
       unset($attributes['date_end']);
       unset($attributes['current']);
 
+      $personExperience = $personExperience
+      ->select(array('id'))
+      ->where('person_id','=',session()->get('Person.id'))
+      ->first();
+
+      $attributes['PersonExperienceDetail']['person_experience_id'] = $personExperience->id;
       $attributes['PersonExperienceDetail']['experience_type_id'] = 1;
-      
+     
     }
 
     return parent::fill($attributes);

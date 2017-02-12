@@ -37,7 +37,7 @@ class ItemController extends Controller
 
     if(empty($model)) {
       $this->error = array(
-        'message' => 'ขออภัย ไม่พบประกาศนี้'
+        'message' => 'ขออภัย ไม่พบประกาศนี้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
       return $this->error();
     }
@@ -56,7 +56,7 @@ class ItemController extends Controller
 
     $model = Service::loadModel('Item');
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -65,19 +65,19 @@ class ItemController extends Controller
       'index' => 'districts'
     ));
 
-    $model->form->loadFieldData('ItemCategory',array(
+    $model->formHelper->loadFieldData('ItemCategory',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'itemCategories'
     ));
 
-    $model->form->loadFieldData('AnnouncementType',array(
+    $model->formHelper->loadFieldData('AnnouncementType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'announcementTypes'
     ));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('defaultAnnouncementType',2);
 
     return $this->view('pages.item.form.item_post');
@@ -107,7 +107,7 @@ class ItemController extends Controller
       return $this->error();
     }
 
-    $model->form->loadFieldData('District',array(
+    $model->formHelper->loadFieldData('District',array(
       'conditions' => array(
         ['province_id','=',9]
       ),
@@ -116,27 +116,27 @@ class ItemController extends Controller
       'index' => 'districts'
     ));
 
-    $model->form->loadFieldData('ItemCategory',array(
+    $model->formHelper->loadFieldData('ItemCategory',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'itemCategories'
     ));
 
-    $model->form->loadFieldData('AnnouncementType',array(
+    $model->formHelper->loadFieldData('AnnouncementType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'announcementTypes'
     ));
 
-    $model->form->loadData(array(
+    $model->formHelper->loadData(array(
       'json' => array('Image','Tagging')
     ));
 
-    $model->form->setFormData('ItemToCategory',array(
+    $model->formHelper->setFormData('ItemToCategory',array(
       'item_category_id' => Service::loadModel('ItemToCategory')->where('item_id','=',$this->param['id'])->first()->item_category_id
     ));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
 
     return $this->view('pages.item.form.item_edit');
 

@@ -4,7 +4,7 @@ namespace App\library;
 
 use Input;
 
-class Form {
+class FormHelper {
   
   private $model;
   private $data = array();

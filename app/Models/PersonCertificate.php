@@ -8,6 +8,8 @@ class PersonCertificate extends Model
   protected $fillable = ['person_id','name','description'];
   protected $modelRelations = array('PersonExperienceDetail','Image');
 
+  public $formHelper = true;
+
   public $imageTypes = array(
     'photo' => array(
       'limit' => 5

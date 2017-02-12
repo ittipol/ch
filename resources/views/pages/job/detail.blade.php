@@ -9,6 +9,7 @@
       <h4 class="sub-title">งาน</h4>
       <h2 class="title">{{$_modelData['name']}}</h2>
       <div class="tag-group">
+        <a class="tag-box">{{$shopName}}</a>
         <a class="tag-box">{{$_modelData['_employmentTypeName']}}</a>
         @foreach ($_modelData['Tagging'] as $tagging)
           <a class="tag-box">{{$tagging['_word']}}</a>
@@ -16,12 +17,8 @@
       </div>
     </div>
 
-    @if(!empty($shopAddress))
-    <!-- <h4 class="title-with-icon location-pin">{{$shopAddress['_short_address']}}</h4> -->
-    @endif
-
     @if($personApplyJob)
-      <h4 class="sign info wide">สมัครงานนี้แล้ว</h4>
+      <h4 class="sign info wide space-bottom-20">สมัครงานนี้แล้ว</h4>
     @endif
 
     <div class="image-gallery">

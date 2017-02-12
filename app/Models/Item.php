@@ -12,6 +12,10 @@ class Item extends Model
   protected $modelRelations = array('Image','Address','Tagging','Contact','ItemToCategory');
   protected $directory = true;
 
+  public $formHelper = true;
+  public $modelData = true;
+  public $paginator = true;
+
   public $imageTypes = array(
     'photo' => array(
       'limit' => 10

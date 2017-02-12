@@ -38,9 +38,6 @@ class Service
     $alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $len = strlen($modelName);
 
-    // $posStart = 0;
-    // $subCount = 0;
-
     $parts = array();
     $loop = true;
     $index = 0;
@@ -65,24 +62,18 @@ class Service
 
     }
 
-    // for ($i=0; $i < $len; $i++) { 
-      
-    //   if(strpos($alpha, $modelName[$i]) && ($i > 0)) {
-    //     $parts[] = strtolower(substr($modelName, $posStart, $subCount));
-    //     $posStart = $i;
-    //     $subCount = 0;
-    //   }
-    //   $subCount++;
-
-    //   // if($i == $len-1) {
-    //   //   $parts[] = strtolower(substr($modelName, $posStart, $i));
-    //   // }
-
-    // }
-
-    // $parts[] = strtolower(substr($modelName, $posStart, $i));
-
     return implode('_', $parts);
+
+  }
+
+  public static function getList($records,$field) {
+
+    $lists = array();
+    foreach ($records as $record) {
+      $lists[] = $record->{$field};
+    }
+
+    return $lists;
 
   }
 

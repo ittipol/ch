@@ -38,5 +38,6 @@ class JobToBranch extends Model
     }
 
     return true;
+    
   }
 }

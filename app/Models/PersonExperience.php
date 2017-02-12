@@ -10,6 +10,9 @@ class PersonExperience extends Model
   protected $fillable = ['person_id','name','gender','birth_date','private_websites','profile_image_id','active'];
   protected $modelRelations = array('Image','Address','Contact');
   protected $directory = true;
+
+  public $formHelper = true;
+  public $modelData = true;
   
   public $imageTypes = array(
     'profile-image' => array(
@@ -63,12 +66,14 @@ class PersonExperience extends Model
     if(!empty($attributes)) {
 
       $websites = array();
-      foreach ($attributes['private_websites'] as $value) {
-        if(!empty($value['name'])) {
-          $websites[] = array(
-            'type' => $value['type'],
-            'name' => $value['name']
-          );
+      if(!empty($attributes['private_websites'])) {
+        foreach ($attributes['private_websites'] as $value) {
+          if(!empty($value['name'])) {
+            $websites[] = array(
+              'type' => $value['type'],
+              'name' => $value['name']
+            );
+          }
         }
       }
 
@@ -127,11 +132,13 @@ class PersonExperience extends Model
 
   public function getProfileImageUrl() {
 
-    if(!$this->exists) {
-      return false;
+    $image = Image::select('id','model','model_id','filename','image_type_id')->find($this->profile_image_id);
+
+    if(empty($image)) {
+      return 'images/common/no-img.png';
     }
 
-    return Image::select('id','model','model_id','filename','image_type_id')->find($this->profile_image_id)->getImageUrl();
+    return $image->getImageUrl();
   }
 
   public function buildModelData() {

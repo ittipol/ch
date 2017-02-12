@@ -26,18 +26,18 @@ class StaticFileController extends Controller
     ->first();
 
     if(empty($image)) {
-      return '';
+      return response()->download($this->noImagePath, null, [], null);
     }
     
     // Storage::get($this->id.'/'.$this->id.'.jpeg');
 
     $path = $image->getImagePath();
 
-    if(!file_exists($path)){
-      $path = $this->noImagePath;
+    if(file_exists($path)){
+      return response()->download($path, null, [], null);
     }
 
-    return response()->download($path, null, [], null);
+    return response()->download($this->noImagePath, null, [], null);
 
     // $headers = array(
     //   'Cache-Control' => 'no-cache, must-revalidate',

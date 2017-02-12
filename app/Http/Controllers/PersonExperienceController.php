@@ -132,7 +132,11 @@ class PersonExperienceController extends Controller
         'active' => 0
       ))->save();
 
-      Service::loadModel('PersonCareerObjective')->save();
+      Service::loadModel('PersonCareerObjective')
+      ->fill(array(
+        'person_experience_id' => $model->id
+      ))
+      ->save();
 
     }
 
@@ -144,7 +148,7 @@ class PersonExperienceController extends Controller
 
     $model = Service::loadModel('PersonExperience')->where('person_id','=',Session::get('Person.id'))->first();
 
-    $model->form->loadFieldData('Province',array(
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'provinces',
@@ -153,7 +157,7 @@ class PersonExperienceController extends Controller
       )
     ));
 
-    $model->form->setData('websiteTypes',json_encode(array(
+    $model->formHelper->setData('websiteTypes',json_encode(array(
       array('private-website','เว็บไซต์ส่วนตัว'),
       array('blog','บล็อก'),
       array('company-website','เว็บไซต์บริษัท')
@@ -185,13 +189,13 @@ class PersonExperienceController extends Controller
     //   'year' => $year
     // ));
 
-    $model->form->loadData(array(
+    $model->formHelper->loadData(array(
       'model' => array(
         'Address','Contact'
       )
     ));
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('profileImage',json_encode($model->getProfileImage()));
     $this->setData('day',$day);
     $this->setData('month',$month);
@@ -221,7 +225,7 @@ class PersonExperienceController extends Controller
     ->where('person_id','=',Session::get('Person.id'))
     ->first();
 
-    $this->data = $model->form->build();
+    $this->data = $model->formHelper->build();
     $this->setData('careerObjective',$model->career_objective);
 
     return $this->view('pages.person_experience.form.career_objective_edit');
