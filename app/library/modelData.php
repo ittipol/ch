@@ -190,22 +190,9 @@ class ModelData {
       return array();
     }
 
-    return $contact->getAttributes();
-    // return $contact->buildModelData();
+    return $contact->buildModelData();
 
   }
-
-  // public function shopTo($options = array()) {
-  //   $shopTo = $this->model->getModelRelationData('ShopTo',array(
-  //     'first' => true,
-  //   ));
-
-  //   $shopTo = new ModelData($shopTo->shop);
-  //   $shopTo->loadData(array(
-  //     'models' => array('Address')
-  //   ));
-  //   dd($shopTo->build(true));
-  // }
 
   public function set($index,$value) {
     $this->data[$index] = $value;
@@ -219,11 +206,7 @@ class ModelData {
   }
 
   public function build($onlyData = false) {
-
-    // if(empty($this->model)) {
-    //   return false;
-    // }
-
+    
     if($onlyData) {
       return $this->getModelData();
     }

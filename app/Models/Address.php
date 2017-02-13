@@ -31,9 +31,9 @@ class Address extends Model
       )
     );
     
-    if(empty($options['value']['province_id'])) {
-      $options['value']['province_id'] = 9;
-    }
+    // if(empty($options['value']['province_id'])) {
+    //   $options['value']['province_id'] = 9;
+    // }
 
     // if(($model->state == 'update') && !empty($address)){
     if(!empty($address)){

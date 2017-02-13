@@ -4,12 +4,12 @@ class Address {
 		this.districtId = null;
 	}
 
-	load(districtId,subDistrictId) {
-		console.log(districtId);
-		console.log(subDistrictId);
+	load() {
+
+		this.bind();
 
 		// this.getSubDistrict($('#district').val());
-		// this.getDistrict($('#province').val());
+		this.getDistrict($('#province').val());
 	}
 
 	bind(){
@@ -26,14 +26,22 @@ class Address {
 
 	} 
 
-	getDistrict(districtId){
+	setDistrictId(districtId) {
+		this.districtId = districtId;
+	}
+
+	setSubDistrictId(subDistrictId) {
+		this.subDistrictId = subDistrictId;
+	}
+
+	getDistrict(provinceId){
 
 	  let _this = this;
 
 	  let CSRF_TOKEN = $('input[name="_token"]').val();        
 
 	  let request = $.ajax({
-	    url: "/api/v1/get_district/"+districtId,
+	    url: "/api/v1/get_district/"+provinceId,
 	    type: "get",
 	    dataType:'json'
 	  });
@@ -42,18 +50,17 @@ class Address {
 	  request.done(function (response, textStatus, jqXHR){
 	    $('#district').empty();
 	    $.each(response, function(key,value) {
-	      
 	      let option = $("<option></option>");
 
-	      // if(key == _this.districtId){
-	      //   option.prop('selected',true);
-	      // }
+  	    if(key == _this.districtId){
+  	      option.prop('selected',true);
+  	      _this.districtId = null;
+  	    }
 
 	      $('#district').append(option.attr("value", key).text(value));
-
 	    });
 
-	    // _this.districtId = null;
+	    _this.getSubDistrict($('#district').val());
 	    
 	  });
 
@@ -80,20 +87,25 @@ class Address {
 	  });
 
 	  request.done(function (response, textStatus, jqXHR){
+
 	    $('#sub_district').empty();
-	    $.each(response, function(key,value) {
-	      
-	      let option = $("<option></option>");
 
-	      // if(key == _this.subDistrictId){
-	      //   option.prop('selected',true);
-	      // }
+	    if(Object.keys(response).length > 0) {
+	    	$.each(response, function(key,value) {
+	    	  let option = $("<option></option>");
 
-	      $('#sub_district').append(option.attr("value", key).text(value));
+	    	  if(key == _this.subDistrictId){
+	    	    option.prop('selected',true);
+	    	    _this.subDistrictId = null;
+	    	  }
+	    	  
+	    	  $('#sub_district').append(option.attr("value", key).text(value));
+	    	});	
+	    }else{
+	    	let option = $("<option></option>");
+	    	$('#sub_district').append(option.attr("value", '0').text('-'));
+	    }
 
-	    });
-
-	    // _this.subDistrictId = null;
 	    
 	  });
 

@@ -25,8 +25,7 @@ class PersonExperience extends Model
       'name' => 'required|max:255',
     ),
     'messages' => array(
-      'name.required' => 'ชื่อห้ามว่าง',
-      // 'birth_date' => 'required|date_format:Y-m-d'
+      'name.required' => 'ชื่อห้ามว่าง'
     )
   );
 
@@ -65,21 +64,25 @@ class PersonExperience extends Model
 
     if(!empty($attributes)) {
 
-      $websites = array();
       if(!empty($attributes['private_websites'])) {
-        foreach ($attributes['private_websites'] as $value) {
-          if(!empty($value['name'])) {
-            $websites[] = array(
-              'type' => $value['type'],
-              'name' => $value['name']
-            );
-          }
-        }
-      }
 
-      $attributes['private_websites'] = '';
-      if(!empty($websites)) {
-        $attributes['private_websites'] = json_encode($websites);
+        $websites = array();
+        foreach ($attributes['private_websites'] as $value) {
+          if(empty($value['value'])) {
+            continue;
+          }
+
+          $websites[] = array(
+            'type' => $value['type'],
+            'name' => $value['value']
+          );
+        }
+
+        $attributes['private_websites'] = '';
+        if(!empty($websites)) {
+          $attributes['private_websites'] = json_encode($websites);
+        }
+
       }
       
     }

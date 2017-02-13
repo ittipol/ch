@@ -272,7 +272,7 @@ form .input-addon > select:last-child {
 	display: inline-block;
 }
 
-.text-group input[type="text"] {
+.text-group .text-input-wrapper:not(:first-child) input[type="text"] {
 	margin-top: 10px;
 }
 

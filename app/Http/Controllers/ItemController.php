@@ -56,13 +56,13 @@ class ItemController extends Controller
 
     $model = Service::loadModel('Item');
 
-    $model->formHelper->loadFieldData('District',array(
-      'conditions' => array(
-        ['province_id','=',9]
-      ),
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
-      'index' => 'districts'
+      'index' => 'provinces',
+      'order' => array(
+        array('top','ASC')
+      )
     ));
 
     $model->formHelper->loadFieldData('ItemCategory',array(
@@ -107,13 +107,13 @@ class ItemController extends Controller
       return $this->error();
     }
 
-    $model->formHelper->loadFieldData('District',array(
-      'conditions' => array(
-        ['province_id','=',9]
-      ),
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
-      'index' => 'districts'
+      'index' => 'provinces',
+      'order' => array(
+        array('top','ASC')
+      )
     ));
 
     $model->formHelper->loadFieldData('ItemCategory',array(

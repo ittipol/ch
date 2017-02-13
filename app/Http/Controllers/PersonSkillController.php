@@ -29,7 +29,7 @@ class PersonSkillController extends Controller
 
     foreach (request()->get('skills') as $value) {
 
-      $value = trim($value['name']);
+      $value = trim($value['value']);
 
       if(!empty($value) && !$model->checkExistBySkill($value)) {
         $model->newInstance()->fill(array(

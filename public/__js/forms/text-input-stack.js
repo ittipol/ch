@@ -7,20 +7,27 @@ class TextInputStack {
     this.options = options;
     this.index = 1;
     this.runningNumber = 0;
-    this.checkEmpty = true;
+    this.checkEmpty = false;
+    this.disableCreating = false;
+    // this.singleField = false;
   }
 
   load(data = []) {
 
     if((data.length > 0) && (data != '[]')) {
-      data = JSON.parse(data);
 
       for (var i = 0; i < data.length; i++) {
-        this.createTextInput(data[i]['name'],data[i]['type']);
+
+        if(typeof data[i]['name'] != 'undefined') {
+          this.createTextInput(data[i]['name'],data[i]['type'],true);
+        }else{
+          this.createTextInput(data[i],'',true);
+        }
+
       };
     }
 
-    this.createTextInput();
+    this.createTextInput('','');
     this.bind();
   }
 
@@ -33,8 +40,13 @@ class TextInputStack {
     });
 
     $(document).on('click','.button-clear-text',function(){
-      --_this.index;
+      
       $(this).parent().remove();
+
+      if(--_this.index == 1) {
+        _this.createTextInput('','',true);
+      }
+
     });
 
     $('#main_form').on('submit',function(){
@@ -62,7 +74,19 @@ class TextInputStack {
 
   }
 
-  createTextInput(value = '',type='') {
+  setData(data = []) {
+
+  }
+
+  createTextInput(value = '',type='',forceCreate = false) {
+
+    // if((this.disableCreating || (this.singleField && (this.runningNumber > 0))) && !forceCreate) {
+    //   return ;
+    // }
+
+    if((this.disableCreating && (this.runningNumber > 0)) && !forceCreate) {
+      return ;
+    }
 
     let html = '';
     html += '<div class="text-input-wrapper">';
@@ -79,8 +103,9 @@ class TextInputStack {
        html += '</select>';
     }
    
-    html += '<input type="text" name="'+this.textInputName+'['+this.runningNumber+'][name]" placeholder="'+this.placeholder+'" autocomplete="off" value="'+value+'">';
-    if((this.index > 1) || (value != '')){
+    html += '<input type="text" name="'+this.textInputName+'['+this.runningNumber+'][value]" placeholder="'+this.placeholder+'" autocomplete="off" value="'+value+'">';
+    // if(((this.index > 1) || (value != '')) && !this.singleField){
+    if(((this.index > 1) || (value != '')) && !this.disableCreating){
       html += '<span class="button-clear-text" style="visibility: visible;">×</span>';
     }
     html += '</div>';
@@ -91,8 +116,16 @@ class TextInputStack {
 
   }
 
-  disbleCheckingEmpty() {
-    this.checkEmpty = false;
+  // createSingleField() {
+  //   this.singleField = true;
+  // }
+
+  disableCreatingInput() {
+    this.disableCreating = true;
+  }
+
+  enableCheckingEmpty() {
+    this.checkEmpty = true;
   }
 
 }

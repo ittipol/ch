@@ -156,35 +156,30 @@
       </div>
 
       <div class="form-row">
-      <?php 
-        echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
-        'class' => 'required'
-        ));
-        echo Form::text('Contact[phone_number]', null, array(
-          'placeholder' => 'เบอร์โทรศัพท์',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
+        ?>
+        <div id="phone_number_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
-      <?php
-        echo Form::label('Contact[email]', 'อีเมล');
-        echo Form::text('Contact[email]', null, array(
-          'placeholder' => 'อีเมล',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[email]', 'อีเมล');
+        ?>
+        <div id="email_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
-      <?php
-        echo Form::label('Contact[line]', 'Line ID');
-        echo Form::text('Contact[line]', null, array(
-          'placeholder' => 'Line ID',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[line]', 'Line ID');
+        ?>
+        <div id="line_id_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
     </div>
@@ -197,21 +192,17 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('province', 'จังหวัด');
-          echo Form::text('province', 'ชลบุรี', array(
-            'placeholder' => 'จังหวัด',
-            'autocomplete' => 'off',
-            'disabled' => 'disabled'
+          echo Form::label('Address[province_id]', 'จังหวัด');
+          echo Form::select('Address[province_id]', $_fieldData['provinces'] ,null, array(
+            'id' => 'province'
           ));
         ?>
       </div>
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[district_id]', 'อำเภอ', array(
-            'class' => 'required'
-          ));
-          echo Form::select('Address[district_id]', $_fieldData['districts'] ,null, array(
+          echo Form::label('Address[district_id]', 'อำเภอ');
+          echo Form::select('Address[district_id]', array() ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -219,9 +210,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[sub_district_id]', 'ตำบล', array(
-            'class' => 'required'
-          ));
+          echo Form::label('Address[sub_district_id]', 'ตำบล');
           echo Form::select('Address[sub_district_id]', array() , null, array(
             'id' => 'sub_district'
           ));
@@ -249,14 +238,29 @@
   $(document).ready(function(){
 
     const images = new Images('_image_group','photo',8);
-    const district = new District();
     const tagging = new Tagging();
     const form = new Form();
 
     images.load({!!$_formData['Image']!!});
-    district.load({!!$_formData['Address']['sub_district_id']!!});
     tagging.load({!!$_formData['Tagging']!!});
     form.load();
+
+    const address = new Address();
+    address.setDistrictId({{$_formData['Address']['district_id']}});
+    address.setSubDistrictId({{$_formData['Address']['sub_district_id']}});
+    address.load();
+
+    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','เบอร์โทรศัพท์');
+    phoneNumberInput.disableCreatingInput();
+    phoneNumberInput.load({!!$_formData['Contact']['phone_number']!!});
+
+    const emailInput = new TextInputStack('email_input','Contact[email]','อีเมล');
+    emailInput.disableCreatingInput();
+    emailInput.load({!!$_formData['Contact']['email']!!});
+
+    const lindIdInput = new TextInputStack('line_id_input','Contact[line]','Line ID');
+    lindIdInput.disableCreatingInput();
+    lindIdInput.load({!!$_formData['Contact']['line']!!});
 
   });
 

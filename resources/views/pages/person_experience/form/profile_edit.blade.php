@@ -103,8 +103,7 @@
           echo Form::label('websites', 'เว็บไซต์ส่วนตัว');
         ?>
         <div id="website_input" class="text-group">
-          <div class="text-group-panel">
-          </div>
+          <div class="text-group-panel"></div>
           <a href="javascript:void(0);" class="text-add">เพิ่ม +</a>
         </div>
       </div>
@@ -119,32 +118,29 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
-          echo Form::text('Contact[phone_number]', null, array(
-            'placeholder' => 'หมายเลขโทรศัพท์',
-            'autocomplete' => 'off'
-          ));
+          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
         ?>
+        <div id="phone_number_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
         <?php 
           echo Form::label('Contact[email]', 'อีเมล');
-          echo Form::text('Contact[email]', null, array(
-            'placeholder' => 'อีเมล',
-            'autocomplete' => 'off'
-          ));
         ?>
+        <div id="email_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
         <?php 
           echo Form::label('Contact[line]', 'Line ID');
-          echo Form::text('Contact[line]', null, array(
-            'placeholder' => 'Line ID',
-            'autocomplete' => 'off'
-          ));
         ?>
+        <div id="line_id_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
     </div>
@@ -212,21 +208,47 @@
 
     $(document).ready(function(){
 
-      // const address = new Address();
-      // address.load({{$_formData['Address']['district_id']}},{{$_formData['Address']['sub_district_id']}});
+      const address = new Address();
 
-      const province = new Province();
-      province.load({{$_formData['Address']['district_id']}});
+      @if(!empty($_formData['Address']['district_id']))
+        address.setDistrictId({{$_formData['Address']['district_id']}});
+      @endif
 
-      const district = new District();
-      district.load();
+      @if(!empty($_formData['Address']['sub_district_id']))
+        address.setSubDistrictId({{$_formData['Address']['sub_district_id']}});
+      @endif
+
+      address.load();
 
       const images = new Images('_profile_image','profile-image',1);
       images.load('{!!$profileImage!!}');
 
       const textInputStack = new TextInputStack('website_input','private_websites','เว็บไซต์',{!!$_fieldData['websiteTypes']!!});
-      textInputStack.load('{!!$_formData['private_websites']!!}');
-      textInputStack.disbleCheckingEmpty();
+      textInputStack.load({!!$_formData['private_websites']!!});
+
+      const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','เบอร์โทรศัพท์');
+      phoneNumberInput.disableCreatingInput();
+      @if(!empty($_formData['Contact']['phone_number']))
+        phoneNumberInput.load({!!$_formData['Contact']['phone_number']!!});
+      @else
+        phoneNumberInput.load();
+      @endif
+
+      const emailInput = new TextInputStack('email_input','Contact[email]','อีเมล');
+      emailInput.disableCreatingInput();
+      @if(!empty($_formData['Contact']['email']))
+        emailInput.load({!!$_formData['Contact']['email']!!});
+      @else
+        emailInput.load();
+      @endif
+
+      const lindIdInput = new TextInputStack('line_id_input','Contact[line]','Line ID');
+      lindIdInput.disableCreatingInput();
+      @if(!empty($_formData['Contact']['line']))
+        lindIdInput.load({!!$_formData['Contact']['line']!!});
+      @else
+        lindIdInput.load();
+      @endif
 
       const form = new Form();
       form.load();
