@@ -9,7 +9,18 @@ class TextInputStack {
     this.runningNumber = 0;
     this.checkEmpty = false;
     this.disableCreating = false;
-    // this.singleField = false;
+    this.dataAtLeast = 0;
+    this.checkType = null;
+    this.regex = {
+      tel : /^[0-9+][0-9\-]{3,}[0-9]$/g,
+      numeric : /^[0-9]+$/g,
+      string : /^\w+$/g
+    };
+    this.errors = {
+      tel: '* หมายเลขโทรศัพท์ไม่ถูกต้อง',
+      numeric: '* กรุณากรอกเป็นตัวเลข',
+      string: '* กรุณากรอกเป็นตัวหนังสือ'
+    }
   }
 
   load(data = []) {
@@ -35,11 +46,11 @@ class TextInputStack {
 
     let _this = this;
 
-    $('.text-group > .text-add').on('click',function(){
+    $('#'+this.panel+' .text-add').on('click',function(){
       _this.createTextInput();
     });
 
-    $(document).on('click','.button-clear-text',function(){
+    $(document).on('click','#'+this.panel+' .button-clear-text',function(){
       
       $(this).parent().remove();
 
@@ -53,20 +64,47 @@ class TextInputStack {
 
       if(_this.checkEmpty) {
 
+        let dataCount = 0;
         let hasError = false;
 
         $('#'+_this.panel+' input[type="text"]').each(function(index) {
+
+          ++dataCount;
+
+          $(this).removeClass('input-error');
+          $(this).parent().find('p.error-message').text('');
+
           if(this.value == '') {
 
+            --dataCount;
+            $(this).addClass('input-error');
             hasError = true;
 
-            $(this).addClass('input-error');
+          }else if(typeof _this.regex[_this.checkType] != 'undefined') {
+
+            let patt = new RegExp(_this.regex[_this.checkType]);
+
+            if(!patt.test(this.value)) {
+
+              --dataCount;
+              $(this).addClass('input-error');
+              $(this).parent().find('p.error-message').text(_this.errors[_this.checkType]);
+              hasError = true;
+            
+            }
+
           }
+          
         });
 
-        if(hasError) {
+        if(hasError || _this.dataAtLeast > dataCount) {
+          // hasError = true;
           return false;
         }
+
+        // if(hasError) {
+        //   return false;
+        // }
 
       }
       
@@ -74,15 +112,7 @@ class TextInputStack {
 
   }
 
-  setData(data = []) {
-
-  }
-
   createTextInput(value = '',type='',forceCreate = false) {
-
-    // if((this.disableCreating || (this.singleField && (this.runningNumber > 0))) && !forceCreate) {
-    //   return ;
-    // }
 
     if((this.disableCreating && (this.runningNumber > 0)) && !forceCreate) {
       return ;
@@ -90,6 +120,8 @@ class TextInputStack {
 
     let html = '';
     html += '<div class="text-input-wrapper">';
+
+    html += '<p class="error-message"></p>'
 
     if(this.options.length > 0) {
       html += '<select name="'+this.textInputName+'['+this.runningNumber+'][type]">';
@@ -104,7 +136,6 @@ class TextInputStack {
     }
    
     html += '<input type="text" name="'+this.textInputName+'['+this.runningNumber+'][value]" placeholder="'+this.placeholder+'" autocomplete="off" value="'+value+'">';
-    // if(((this.index > 1) || (value != '')) && !this.singleField){
     if(((this.index > 1) || (value != '')) && !this.disableCreating){
       html += '<span class="button-clear-text" style="visibility: visible;">×</span>';
     }
@@ -116,9 +147,13 @@ class TextInputStack {
 
   }
 
-  // createSingleField() {
-  //   this.singleField = true;
-  // }
+  dataCheck(type) {
+    this.checkType = type;
+  }
+
+  setDataInputAtLease(dataAtLeast) {
+    this.dataAtLeast = dataAtLeast
+  }
 
   disableCreatingInput() {
     this.disableCreating = true;

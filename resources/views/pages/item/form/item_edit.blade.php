@@ -24,7 +24,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -157,7 +157,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
+          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
         ?>
         <div id="phone_number_input" class="text-group">
           <div class="text-group-panel"></div>
@@ -237,12 +237,13 @@
 
   $(document).ready(function(){
 
-    const images = new Images('_image_group','photo',8);
-    const tagging = new Tagging();
-    const form = new Form();
-
+    const images = new Images('_image_group','photo',10);
     images.load({!!$_formData['Image']!!});
+
+    const tagging = new Tagging();
     tagging.load({!!$_formData['Tagging']!!});
+    
+    const form = new Form();
     form.load();
 
     const address = new Address();
@@ -250,7 +251,7 @@
     address.setSubDistrictId({{$_formData['Address']['sub_district_id']}});
     address.load();
 
-    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','เบอร์โทรศัพท์');
+    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','หมายเลขโทรศัพท์');
     phoneNumberInput.disableCreatingInput();
     phoneNumberInput.load({!!$_formData['Contact']['phone_number']!!});
 

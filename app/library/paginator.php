@@ -49,37 +49,38 @@ class Paginator {
 
   public function criteria($options = array()) {
 
+    if(!empty($options['conditions']['in'])) {
+
+      foreach ($options['conditions']['in'] as $condition) {
+
+        if(empty($condition[1])) {
+          continue;
+        }
+
+        $this->model = $this->model->whereIn($condition[0],$condition[1]);
+      }
+
+      unset($options['conditions']['in']);
+
+    }
+
+    if(!empty($options['conditions']['or'])) {
+
+      $arrLen = count($options['conditions']['or']);
+      for ($i=0; $i < $arrLen; $i++) {
+        $this->model = $this->model->orWhere(
+          $options['conditions']['or'][$i][0],
+          $options['conditions']['or'][$i][1],
+          $options['conditions']['or'][$i][2]
+        );
+      }
+
+      unset($options['conditions']['or']);
+
+    }
+
     if(!empty($options['conditions'])){
-
-      if(!empty($options['conditions']['in'])) {
-
-        foreach ($options['conditions']['in'] as $condition) {
-          $this->model = $this->model->whereIn($condition[0],$condition[1]);
-        }
-
-        unset($options['conditions']['in']);
-
-      }
-
-      if(!empty($options['conditions']['or'])) {
-
-        $arrLen = count($options['conditions']['or']);
-        for ($i=0; $i < $arrLen; $i++) {
-          $this->model = $this->model->orWhere(
-            $options['conditions']['or'][$i][0],
-            $options['conditions']['or'][$i][1],
-            $options['conditions']['or'][$i][2]
-          );
-        }
-
-        unset($options['conditions']['or']);
-
-      }
-
-      if(!empty($options['conditions'])){
-        $this->model = $this->model->where($options['conditions']);
-      }
-
+      $this->model = $this->model->where($options['conditions']);
     }
 
     if(!empty($options['fields'])){

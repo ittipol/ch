@@ -58,6 +58,16 @@
         </div>
       </div>
 
+      <div class="col-lg-4 col-md-4 col-sm-6 col-sm-12">
+        <div class="box">
+          <div class="inner">
+            <h4>เพิ่มร้านค้าของคุณลงในชุมชน</h4>
+            <p>คำอธิบาย</p>
+            <a href="{{URL::to('real-estate/add')}}" class="button">รายละเอียดเพิ่มเติม</a>
+          </div>
+        </div>
+      </div>
+
     </div> 
 
 

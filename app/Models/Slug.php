@@ -8,6 +8,7 @@ class Slug extends Model
 {
   public $table = 'slugs';
   protected $fillable = ['model','model_id','slug'];
+  public $timestamps  = false;
 
   // ** reserved word **
   // company
@@ -44,7 +45,7 @@ class Slug extends Model
       $slug .= '-'.Token::generateNumber(8);
     }
 
-    return $this->fill($model->includeModelAndModelId(array('name' => $slug)))->save();
+    return $this->fill($model->includeModelAndModelId(array('slug' => $slug)))->save();
 
   }
 
@@ -65,7 +66,7 @@ class Slug extends Model
     return $this->where([
       ['model','like',$model->modelName],
       ['model_id','like',$model->id],
-      ['name','like',$slug]
+      ['slug','like',$slug]
     ]
     )->exists();
   }

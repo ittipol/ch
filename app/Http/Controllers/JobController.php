@@ -144,7 +144,7 @@ class JobController extends Controller
 
     if($model->fill($request->all())->save()) {
       Message::display('ลงประกาศงานแล้ว','success');
-      return Redirect::to('shop/'.$request->slug.'/job');
+      return Redirect::to('shop/'.$request->shopSlug.'/job');
     }else{
       return Redirect::back();
     }
@@ -206,7 +206,7 @@ class JobController extends Controller
 
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to('shop/'.request()->slug.'/job');
+      return Redirect::to('shop/'.request()->shopSlug.'/job');
     }else{
       return Redirect::back();
     }
@@ -314,8 +314,8 @@ class JobController extends Controller
       )
     ));
     $model->paginator->setPage($page);
-    $model->paginator->setPagingUrl('shop/'.request()->slug.'/job_apply_list');
-    $model->paginator->setUrl('shop/'.request()->slug.'/job_apply_detail/{id}','detailUrl');
+    $model->paginator->setPagingUrl('shop/'.request()->shopSlug.'/job_apply_list');
+    $model->paginator->setUrl('shop/'.request()->shopSlug.'/job_apply_detail/{id}','detailUrl');
     $model->paginator->setUrl('experience/detail/{person_id}','experienceDetailUrl');
 
     $this->data = $model->paginator->build();
@@ -393,6 +393,10 @@ class JobController extends Controller
         
         $__model = $experienceDetail->{lcfirst($experienceDetail->model)};
 
+        if(empty($__model)) {
+          continue;
+        }
+
         $details[] = array_merge(
           $__model->buildModelData(),
           array(
@@ -406,6 +410,16 @@ class JobController extends Controller
 
     }
 
+    // Get branch
+    $branches = Service::loadModel('JobApplyToBranch')
+    ->where('person_apply_job_id','=',$this->param['id'])
+    ->get();
+
+    $_branches = array();
+    foreach ($branches as $branch) {
+      $_branches[] = $branch->branch->name;
+    }
+
     $this->setData('jobName',$model->job->name);
     $this->setData('jobApply',$model->modelData->build(true));
     $this->setData('profile',$profile->modelData->build(true));
@@ -413,6 +427,7 @@ class JobController extends Controller
     $this->setData('profileImageUrl',$profile->getProfileImageUrl());
     $this->setData('skills',$_skills);
     $this->setData('languageSkills',$_languageSkills);
+    $this->setData('branches',$_branches);
 
     return $this->view('pages.job.job_apply_detail');
 

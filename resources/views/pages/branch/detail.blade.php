@@ -104,7 +104,7 @@
 
     @if(!empty($jobs))
 
-      <div class="list">
+      <div class="grid-card">
 
         <div class="row">
 
@@ -153,11 +153,11 @@
   <script type="text/javascript">
     $(document).ready(function(){
       imageGallery = new ImageGallery(true);
-      imageGallery.load(<?php echo $_modelData['Image']; ?>);
+      imageGallery.load({!!$_modelData['Image']!!});
 
       const map = new Map(false,false,false);
       map.initialize();
-      map.setLocation('<?php echo $_modelData['Address']['_geographic']; ?>');
+      map.setLocation({!!$_modelData['Address']['_geographic']!!});
     });
   </script>
 @stop

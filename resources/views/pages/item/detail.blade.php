@@ -92,7 +92,7 @@
 <script type="text/javascript">
   $(document).ready(function(){
     imageGallery = new ImageGallery();
-    imageGallery.load(<?php echo $_modelData['Image']; ?>);
+    imageGallery.load({!!$_modelData['Image']!!});
   });
 </script>
 

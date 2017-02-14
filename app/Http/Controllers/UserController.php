@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use App\Models\Profile;
+// use App\Models\Profile;
 use App\Models\Person;
-use App\Models\PersonInterest;
-use App\Models\Word;
-use App\library\date;
-// use App\library\Token;
+// use App\Models\PersonInterest;
+// use App\Models\Word;
+// use App\library\date;
 use App\library\message;
 use App\library\service;
+use App\library\url;
 use Auth;
 use Session;
 use Redirect;
@@ -37,7 +37,7 @@ class UserController extends Controller
     );
 
     if(Auth::check()){
-      return redirect('home');
+      return redirect('/');
     }else{
       return $this->view('pages.login');
     }
@@ -57,9 +57,35 @@ class UserController extends Controller
       Session::put('Person.id',$person->id);
       Session::put('Person.name',$person->name);
 
+      // Get shop
+      // $personToShop = service::loadModel('PersonToShop')
+      // ->where('person_id','=',$person->id);
+
+      // if($personToShop->exists()) {
+
+      //   $url = new Url;
+      //   $slug = service::loadModel('Slug');
+      //   $records = $personToShop->get();
+
+      //   foreach ($records as $record) {
+
+      //     $shop = $record->shop;
+
+      //     $slugName = $slug->where(array(
+      //       array('model','like','Shop'),
+      //       array('model_id','=',$shop->id)
+      //     ))->first()->slug;
+
+      //     $request->session()->put('Shop.'.$shop->id.'.name',$shop->name);
+      //     $request->session()->put('Shop.'.$shop->id.'.url',$url->url('shop/'.$slugName));
+
+      //   }
+
+      // }
+
       $message = new Message;
       $message->loginSuccess();
-      return Redirect::intended('home');
+      return Redirect::intended('/');
     }else{
       // $message = new Message;
       // $message->loginFail();

@@ -24,7 +24,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -183,49 +183,18 @@
 
 <script type="text/javascript">
 
-  class Job {
-
-    constructor() {
-      this.txtRecruitmentDetail = $('textarea[name="recruitment_custom_detail"]');
-    }
-
-    load() {
-      this.bind();
-      
-      if($('#recruitment_custom').is(':checked')) {
-        $('textarea[name="recruitment_custom_detail"]').prop('disabled',false);
-      }else{
-        $('textarea[name="recruitment_custom_detail"]').prop('disabled',true);
-      }
-
-    }
-
-    bind() {
-      $('#recruitment_custom').on('click',function(){
-        if($(this).is(':checked')) {
-          CKEDITOR.instances['recruitment_custom_detail'].setReadOnly(false);
-        }else{
-          CKEDITOR.instances['recruitment_custom_detail'].setReadOnly(true);
-          CKEDITOR.instances['recruitment_custom_detail'].setData('');
-        }
-      });
-    }
-
-  }
-
   $(document).ready(function(){
 
-    const images = new Images('_image_group','photo',5,'description');
-    const tagging = new Tagging();
-    const job = new Job();
-    const form = new Form();
+    const images = new Images('_image_group','photo',10,'description');
+    images.load({!!$_formData['Image']!!});
 
-    images.load();
-    tagging.load();
-    @if(!empty($_oldInput['Tagging']))
-      tagging.setTags('{!!$_oldInput['Tagging']!!}');
-    @endif
+    const tagging = new Tagging();
+    tagging.load({!!$_formData['Tagging']!!});
+
+    const job = new Job();
     job.load();
+
+    const form = new Form();
     form.load();
     
   });    

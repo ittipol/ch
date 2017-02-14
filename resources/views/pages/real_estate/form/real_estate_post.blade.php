@@ -22,7 +22,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -398,34 +398,29 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์', array(
-            'class' => 'required'
-          ));
-          echo Form::text('Contact[phone_number]', null, array(
-            'placeholder' => 'เบอร์โทรศัพท์',
-            'autocomplete' => 'off'
-          ));
+          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
         ?>
+        <div id="phone_number_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
-        <?php
+        <?php 
           echo Form::label('Contact[email]', 'อีเมล');
-          echo Form::text('Contact[email]', null, array(
-            'placeholder' => 'อีเมล',
-            'autocomplete' => 'off'
-          ));
         ?>
+        <div id="email_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
-        <?php
+        <?php 
           echo Form::label('Contact[line]', 'Line ID');
-          echo Form::text('Contact[line]', null, array(
-            'placeholder' => 'Line ID',
-            'autocomplete' => 'off'
-          ));
         ?>
+        <div id="line_id_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
     </div>
@@ -438,21 +433,17 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('province', 'จังหวัด');
-          echo Form::text('province', 'ชลบุรี', array(
-            'placeholder' => 'จังหวัด',
-            'autocomplete' => 'off',
-            'disabled' => 'disabled'
+          echo Form::label('Address[province_id]', 'จังหวัด');
+          echo Form::select('Address[province_id]', $_fieldData['provinces'] ,null, array(
+            'id' => 'province'
           ));
         ?>
       </div>
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[district_id]', 'อำเภอ', array(
-            'class' => 'required'
-          ));
-          echo Form::select('Address[district_id]', $_fieldData['districts'] ,null, array(
+          echo Form::label('Address[district_id]', 'อำเภอ');
+          echo Form::select('Address[district_id]', array() ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -460,9 +451,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[sub_district_id]', 'ตำบล', array(
-            'class' => 'required'
-          ));
+          echo Form::label('Address[sub_district_id]', 'ตำบล');
           echo Form::select('Address[sub_district_id]', array() , null, array(
             'id' => 'sub_district'
           ));
@@ -494,22 +483,50 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    const images = new Images('_image_group','photo',8,'description');
-    const district = new District();
-    const map = new Map();
-    const tagging = new Tagging();
-    const form = new Form();
-    const realEstate = new RealEstate();
-
+    const images = new Images('_image_group','photo',10,'description');
     images.load();
-    district.load();
+
+    const map = new Map();
     map.initialize();
+
+    const address = new Address();
+    address.load();
+
+    const tagging = new Tagging();
     tagging.load();
-    @if(!empty($_oldData['Tagging']))
-      tagging.setTags('{!!$_oldData['Tagging']!!}');
+    @if(!empty($_oldInput['Tagging']))
+      tagging.setTags({!!$_oldInput['Tagging']!!});
     @endif
-    form.load();
+
+    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','หมายเลขโทรศัพท์');
+    phoneNumberInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['phone_number']))
+      phoneNumberInput.load({!!$_oldInput['Contact']['phone_number']!!});
+    @else
+      phoneNumberInput.load();
+    @endif
+
+    const emailInput = new TextInputStack('email_input','Contact[email]','อีเมล');
+    emailInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['email']))
+      emailInput.load({!!$_oldInput['Contact']['email']!!});
+    @else
+      emailInput.load();
+    @endif
+
+    const lindIdInput = new TextInputStack('line_id_input','Contact[line]','Line ID');
+    lindIdInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['line']))
+      lindIdInput.load({!!$_oldInput['Contact']['line']!!});
+    @else
+      lindIdInput.load();
+    @endif
+
+    const realEstate = new RealEstate();
     realEstate.load();
+
+    const form = new Form();
+    form.load();
 
   });
 

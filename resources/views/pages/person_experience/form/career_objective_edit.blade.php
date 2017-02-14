@@ -25,7 +25,7 @@
     ?>
 
     <?php
-      echo Form::hidden('model', $_formModel['modelName']);
+      echo Form::hidden('_model', $_formModel['modelName']);
     ?>
 
     <div class="form-section">

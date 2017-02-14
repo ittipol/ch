@@ -77,7 +77,7 @@ class OpenHour {
 
 		let _this = this;
 
-		$('#office_hour_same_time').on('click',function(){
+		$('#same_time').on('click',function(){
 			if($(this).is(':checked')){
 				_this.sameTime = true;
 				_this.setSameTime(_this.code);

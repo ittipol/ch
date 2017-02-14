@@ -38,5 +38,14 @@ class Branch extends Model
     );
   }
 
+  public function buildPaginationData() {
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name
+    );
+    
+  }
+
 }
 

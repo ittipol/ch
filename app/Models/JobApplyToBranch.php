@@ -8,6 +8,10 @@ class JobApplyToBranch extends Model
   protected $fillable = ['person_apply_job_id','branch_id'];
   public $timestamps  = false;
 
+  public function branch() {
+    return $this->hasOne('App\Models\Branch','id','branch_id');
+  }
+
   public function __saveRelatedData($model,$options = array()) {
 
     if(!empty($options['value']['branch_id'])) {

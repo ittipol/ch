@@ -1,17 +1,10 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<div class="container">
+<h2 class="top-header">ตั้งค่า</h2>
+<div class="line"></div>
 
-  <div class="container-header">
-    <div class="row">
-      <div class="col-lg-7 col-sm-12">
-        <div class="title">
-          เวลาเปิดทำการ
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container">
 
   @include('components.form_error') 
 
@@ -24,7 +17,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -41,7 +34,9 @@
     <div class="form-row">
       <label class="box">
         <?php
-          echo Form::checkbox('same_time', 1);
+          echo Form::checkbox('same_time', 1, null, array(
+            'id' => 'same_time'
+          ));
         ?>
         <div class="inner">กำหนดเวลาทำการเหมือนกันทุกวัน</div>
       </label>

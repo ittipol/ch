@@ -17,7 +17,7 @@ class Tagging {
 		this.crateInputTagField();
 
 		if (typeof tags != 'undefined') {
-			for (let i = 0; i < Object.keys(tags).length; i++) {
+			for (let i = 0; i < tags.length; i++) {
 				this.createTagChip(tags[i]['_word']);
 			}
 		}
@@ -31,7 +31,7 @@ class Tagging {
 	}
 
 	setTags(tagJson) {
-		if ((tagJson.length > 0) && (typeof tagJson != 'undefined')){
+		if ((typeof tagJson != 'undefined') && (tagJson.length > 0)){
 			for (let i = 0; i < tagJson.length; i++) {
 				this.createTagChip(tagJson[i]);
 			}

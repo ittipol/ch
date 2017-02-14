@@ -8,6 +8,8 @@ class Contact extends Model
   protected $fillable = ['model','model_id','phone_number','fax','email','website','line','person_id'];
   public $timestamps  = false;
 
+  public $formHelper = true;
+
   public function fill(array $attributes) {
 
     if(!empty($attributes)) {

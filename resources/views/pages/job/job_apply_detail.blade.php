@@ -10,13 +10,29 @@
     </div>
   </div>
 
-  <div>{!!$jobApply['message']!!}</div>
+  @if(!empty($jobApply['message']))
+    <div>{!!$jobApply['message']!!}</div>
+    <div class="line space-top-bottom-30"></div>
+  @endif
 
-  <div class="line space-top-bottom-30"></div>
+  <div class="row">
+    <dt class="col-sm-3">สาขาที่ผู้สมัครสามารถทำงานได้</dt>
+    <dd class="col-sm-9">
+    @if(!empty($branches))
+      @foreach($branches as $branch)
 
-  <h4>จุดมุ่งหมายในอาชีพ</h4>
-  <div>{!!$careerObjective!!}</div>
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="title-with-icon space tick-green">{{$branch}}</div>
+      </div>
 
+      @endforeach
+    @else
+      <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="">-</div>
+      </div>
+    @endif
+    </dd>
+  </div>
   <div class="line space-top-bottom-30"></div>
 
   <h3>ข้อมูลผู้สมัครงาน</h3>
@@ -78,10 +94,18 @@
 
     </div>
 
+    @if(!empty($careerObjective))
+    <div class="space-top-50"></div>
+    <h4>จุดมุ่งหมายในอาชีพ</h4>
+    <div class="line"></div>
+    <p>{!!$careerObjective!!}</p>
+    @endif
+
+    @if(!empty($PersonWorkingExperience))
     <div class="space-top-50"></div>
     <h4>ประสบการณ์การทำงาน</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($PersonWorkingExperience as $detail)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -91,11 +115,13 @@
         </div>
       @endforeach
     </div>
+    @endif
 
+    @if(!empty($PersonInternship))
     <div class="space-top-50"></div>
     <h4>ประสบการณ์การฝึกงาน</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($PersonInternship as $detail)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -105,11 +131,13 @@
         </div>
       @endforeach
     </div>
+    @endif
 
+    @if(!empty($PersonEducation))
     <div class="space-top-50"></div>
     <h4>ประวัติการศึกษา</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($PersonEducation as $detail)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -119,11 +147,13 @@
         </div>
       @endforeach
     </div>
+    @endif
 
+    @if(!empty($PersonProject))
     <div class="space-top-50"></div>
     <h4>โปรเจค</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($PersonProject as $detail)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -133,11 +163,13 @@
         </div>
       @endforeach
     </div>
+    @endif
 
+    @if(!empty($PersonCertificate))
     <div class="space-top-50"></div>
     <h4>ประกาศนียบัตรและการฝึกอบรม</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($PersonCertificate as $detail)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -147,11 +179,13 @@
         </div>
       @endforeach
     </div>
+    @endif
 
+    @if(!empty($skills))
     <div class="space-top-50"></div>
     <h4>ทักษะและความสามารถ</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($skills as $skill)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -160,11 +194,13 @@
         </div>
       @endforeach
     </div>
+    @endif
 
+    @if(!empty($languageSkills))
     <div class="space-top-50"></div>
     <h4>ภาษาที่สามารถสื่อสารได้</h4>
     <div class="line"></div>
-    <div class="list">
+    <div class="list-group">
       @foreach($languageSkills as $languageSkill)
         <div class="list-row row">
           <div class="col-xs-9">
@@ -174,6 +210,7 @@
         </div>
       @endforeach
     </div>
+    @endif
 
   </div>
 

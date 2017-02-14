@@ -158,10 +158,7 @@
   <script type="text/javascript">
     $(document).ready(function(){
       imageGallery = new ImageGallery(true);
-      imageGallery.load(<?php echo $_modelData['Image']; ?>);
-
-      tabs = new Tabs('branch_location');
-      tabs.load();
+      imageGallery.load({!!$_modelData['Image']!!});
 
       const map = new Map(false,false,false);
       map.setLocations({!!$branchLocations!!});

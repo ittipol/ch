@@ -106,7 +106,7 @@ class Images {
 
 				let formData = new FormData();
 				formData.append('_token', CSRF_TOKEN);  
-				formData.append('model', $('input[name="model"]').val());
+				formData.append('model', $('input[name="_model"]').val());
 				formData.append('imageToken', this.code);
 				formData.append('imageType', this.type);
 				formData.append('image', input.files[0]);
@@ -197,7 +197,7 @@ class Images {
 	  hidden.setAttribute('type','hidden');
 
 	  let hiddenInputName = 'Image['+this.type+'][images]['+index+'][filename]';
-	  if(this.type == 'profile-image') {
+	  if((this.type == 'profile-image') || (this.type == 'cover')) {
 	  	hiddenInputName = 'Image['+this.type+'][image][filename]';
 	  }
 

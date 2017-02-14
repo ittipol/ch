@@ -8,6 +8,8 @@ class OpenHour extends Model
   protected $fillable = ['shop_id','same_time','time','active'];
   public $timestamps  = false;
 
+  public $formHelper = true;
+
   public function fill(array $attributes) {
 
     if(!empty($attributes)) {
@@ -15,7 +17,6 @@ class OpenHour extends Model
       $officeHours = array();
 
       for ($i=1; $i <= 7; $i++) { 
-      // foreach ($attributes['openHours'] as $key => $value) {
 
         $data['open'] = 0;
         $data['start_time'] = '00:00:00';

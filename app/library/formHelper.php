@@ -209,12 +209,35 @@ class FormHelper {
       $oldInput['Tagging'] = json_encode(Input::old('Tagging'));
     }
 
+    if(!empty(Input::old('Contact'))) {
+      
+      foreach (Input::old('Contact') as $key => $value) {
+
+        $data = array();
+        if(is_array($value)) {
+
+          foreach ($value as $_value) {
+            if(empty($_value['value'])) {
+              continue;
+            }
+            $data[] = $_value['value'];
+          }
+
+          if(!empty($data)) {
+            $oldInput['Contact'][$key] = json_encode($data);
+          }
+          
+        }
+
+      }
+
+    }
+
     if(!empty(Input::old('Image'))) {
 
       foreach (Input::old('Image') as $token => $value) {
         $temporaryFile = Service::loadModel('TemporaryFile');
         $temporaryFile->deleteTemporaryDirectory(Input::old('model').'_'.$token);
-        // $temporaryFile->deleteTemporaryRecords($oldInput['model'],$token);
       }
 
     }

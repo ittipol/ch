@@ -151,4 +151,54 @@ class PersonExperienceDetail extends Model
 
   }
 
+  public function getExperienceDetails($personExperienceId) {
+
+    $data = array();
+
+    $models = array(
+      'PersonWorkingExperience' => 'working',
+      'PersonInternship' => 'internship',
+      'PersonEducation' => 'education',
+      'PersonProject' => 'project',
+      'PersonCertificate' => 'certificate'
+    );
+
+    foreach ($models as $_model => $alias) {
+      $experienceDetails = $this
+      ->orderBy('start_year','DESC')
+      ->orderBy('start_month','DESC')
+      ->orderBy('start_day','DESC')
+      ->select(array('model','model_id','start_year','start_month','start_day','end_year','end_month','end_day','current'))
+      ->where(array(
+        array('person_experience_id','=',$personExperienceId),
+        array('model','like',$_model)
+      ))
+      ->get();
+
+      $details = array();
+      foreach ($experienceDetails as $experienceDetail) {
+        
+        $__model = $experienceDetail->{lcfirst($experienceDetail->model)};
+
+        if(empty($__model)) {
+          continue;
+        }
+
+        $details[] = array_merge(
+          $__model->buildModelData(),
+          array(
+            'peroid' => $experienceDetail->getPeriod()
+          )
+        );
+
+      }
+
+      $data[$_model] = $details;
+
+    }
+
+    return $data;
+
+  }
+
 }

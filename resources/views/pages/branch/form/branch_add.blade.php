@@ -22,7 +22,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -66,23 +66,21 @@
       </div>
 
       <div class="form-row">
-      <?php 
-        echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
-        echo Form::text('Contact[phone_number]', null, array(
-          'placeholder' => 'เบอร์โทรศัพท์',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
+        ?>
+        <div id="phone_number_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
-      <?php
-        echo Form::label('Contact[email]', 'อีเมล');
-        echo Form::text('Contact[email]', null, array(
-          'placeholder' => 'อีเมล',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[email]', 'อีเมล');
+        ?>
+        <div id="email_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
     </div>
@@ -95,21 +93,27 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('province', 'จังหวัด');
-          echo Form::text('province', 'ชลบุรี', array(
-            'placeholder' => 'จังหวัด',
-            'autocomplete' => 'off',
-            'disabled' => 'disabled'
+          echo Form::label('Address[address]', 'ที่อยู่');
+          echo Form::text('Address[address]', null, array(
+            'placeholder' => 'ที่อยู่',
+            'autocomplete' => 'off'
           ));
         ?>
       </div>
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[district_id]', 'อำเภอ', array(
-            'class' => 'required'
+          echo Form::label('Address[province_id]', 'จังหวัด');
+          echo Form::select('Address[province_id]', $_fieldData['provinces'] ,null, array(
+            'id' => 'province'
           ));
-          echo Form::select('Address[district_id]', $_fieldData['districts'] ,null, array(
+        ?>
+      </div>
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('Address[district_id]', 'อำเภอ');
+          echo Form::select('Address[district_id]', array() ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -117,9 +121,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[sub_district_id]', 'ตำบล', array(
-            'class' => 'required'
-          ));
+          echo Form::label('Address[sub_district_id]', 'ตำบล');
           echo Form::select('Address[sub_district_id]', array() , null, array(
             'id' => 'sub_district'
           ));
@@ -151,14 +153,33 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
+    
     const images = new Images('_image_group','photo',10);
-    const district = new District();
-    const map = new Map();
-    const form = new Form();
-
     images.load();
-    district.load();
+
+    const address = new Address();
+    address.load();
+    
+    const map = new Map();
     map.initialize();
+
+    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','หมายเลขโทรศัพท์');
+    phoneNumberInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['phone_number']))
+      phoneNumberInput.load({!!$_oldInput['Contact']['phone_number']!!});
+    @else
+      phoneNumberInput.load();
+    @endif
+
+    const emailInput = new TextInputStack('email_input','Contact[email]','อีเมล');
+    emailInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['email']))
+      emailInput.load({!!$_oldInput['Contact']['email']!!});
+    @else
+      emailInput.load();
+    @endif
+
+    const form = new Form();
     form.load();
 
   });

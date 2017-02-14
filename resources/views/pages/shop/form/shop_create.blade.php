@@ -46,7 +46,7 @@
       <div class="row">
         <div class="col-lg-7 col-sm-12">
           <div class="title">
-            นำบริษัท ร้านค้าหรือธุรกิจเข้าสู่ชุมชน
+            นำบริษัท ร้านค้า หรือธุรกิจเข้าสู่ชุมชน
           </div>
           <p>รวมสร้างชุมชน นำสินค้าของคุณมาขายในชุมชน ค้นหาพนักงานให้กับธุรกิจของคุณ รวมถึงการโฆษณาแบรนด์ ธุรกิจ หรืองานบริการของคุณ</p>
         </div>
@@ -60,7 +60,7 @@
     ?>
 
     <?php
-      echo Form::hidden('model', $_formModel['modelName']);
+      echo Form::hidden('_model', $_formModel['modelName']);
     ?>
 
     <div class="form-section">

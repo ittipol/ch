@@ -54,14 +54,66 @@
             <a href="{{URL::to('/')}}">Wiki ชลบุรี</a>
           </li>
           <li class="item">
-            <a href="{{URL::to('/')}}">เพิ่มประวัติการทำงาน</a>
+            <a href="{{URL::to('experience')}}">เพิ่มประวัติการทำงาน</a>
           </li>
 
           @if (Auth::check())
 
             <li class="line space-top-bottom-10"></li>
+
             <li class="item">
-              <a href="javascript:void(0)">เพิ่มประกาศและโฆษณา</a>
+              <a href="javascript:void(0)">ร้านค้าในชุมชนของคุณ</a>
+              <ul class="submenu">
+                <li class="submenu-item">
+
+                  @if(!empty($_shops)) 
+
+                    @foreach ($_shops as $shop)
+
+                    <div class="submenu-item-row">
+                      <a href="{{$shop['url']}}">{{$shop['name']}}</a>
+                      <div class="additional-option">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="additional-option-content">
+                          <a href="{{$shop['url']}}manage">จัดการสินค้า</a>
+                          <a href="{{$shop['url']}}">ประกาศงาน</a>
+                          <a href="{{$shop['url']}}">จัดการโฆษณา</a>
+                          <a href="{{$shop['url']}}setting">ตั้งค่า</a>
+                        </div>
+                      </div>
+                    </div>
+
+                    @endforeach
+
+                    <div class="submenu-item-row">
+                      <a href="{{URL::to('community/shop_create')}}">เพิ่มร้านค้า</a>
+                    </div>
+
+                  @else
+
+                    <div class="submenu-item-row">
+                      <a href="{{URL::to('community/shop_create')}}">ยังไม่มีร้านค้าของคุณในชุมชน</a>
+                      <div class="additional-option">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="additional-option-content">
+                          <a href="{{URL::to('community/shop_create')}}">เพิ่มร้านค้าของคุณ</a>
+                        </div>
+                      </div>
+                    </div>
+
+                  @endif
+
+                </li>
+              </ul>
+            </li>
+
+            <li class="line space-top-bottom-10"></li>
+            <li class="item">
+              <a href="javascript:void(0)">ประกาศ</a>
               <div class="additional-option">
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -72,9 +124,8 @@
               </div>
               <ul class="submenu">
                 <li class="submenu-item">
-                  <a href="{{URL::to('product/add')}}">ประกาศขายสินค้า</a>
-                  <a href="{{URL::to('job/add')}}">ประกาศรับสมัครพนักงาน</a>
-                  <a href="{{URL::to('real-estate/add')}}">โฆษณาเช่า-ขายอสังหาริมทรัพย์</a>
+                  <a href="{{URL::to('product/add')}}">ประกาศซื้อ-เช่า-ขายสินค้า</a>
+                  <a href="{{URL::to('real-estate/add')}}">โฆษณาซื้อ-เช่า-ขายอสังหาริมทรัพย์</a>
                 </li>
               </ul>
             </li>

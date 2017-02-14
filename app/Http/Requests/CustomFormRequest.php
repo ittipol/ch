@@ -14,7 +14,7 @@ class CustomFormRequest extends FormRequest
 
   public function __construct() {
     $data = Request::all();
-    $this->model = service::loadModel($data['model']);
+    $this->model = service::loadModel($data['_model']);
     $this->validation = $this->model->getValidation();
   }
 

@@ -15,6 +15,25 @@ class BranchController extends Controller
     parent::__construct();
   }
 
+  public function listView() {
+
+    $model = Service::loadModel('Branch');
+    
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $model->paginator->setPage($page);
+    $model->paginator->setPagingUrl('branch/list');
+    $model->paginator->setUrl('branch/detail/{id}','detailUrl');
+
+    $this->data = $model->paginator->build();
+
+    return $this->view('pages.branch.list');
+
+  }
+
   public function detail() {
 
     $model = Service::loadModel('Branch')->find($this->param['id']);
@@ -37,15 +56,20 @@ class BranchController extends Controller
       'fields' => array('job_id'),
     ));
 
+    $conditions = array();
+    if(!empty($jobIds)) {
+      $conditions = array(
+        'in' => array(
+          array('id',$jobIds)
+        )
+      );
+    }
+
     $jobs = Service::loadModel('Job');
     $jobs->paginator->setPerPage(12);
     $jobs->paginator->setUrl('job/detail/{id}','detailUrl');
     $jobs->paginator->criteria(array(
-      'conditions' => array(
-        'in' => array(
-          array('id',$jobIds)
-        )
-      ),
+      'conditions' => $conditions,
       'order' => array('id','DESC')
     ));
 
@@ -60,13 +84,14 @@ class BranchController extends Controller
 
     $model = Service::loadModel('Branch');
 
-    $model->formHelper->loadFieldData('District',array(
-      'conditions' => array(
-        ['province_id','=',9]
-      ),
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
-      'index' => 'districts'
+      'index' => 'provinces',
+      'order' => array(
+        array('top','ASC'),
+        array('id','ASC')
+      )
     ));
 
     $this->data = $model->formHelper->build();
@@ -78,11 +103,12 @@ class BranchController extends Controller
 
     $model = Service::loadModel('Branch');
 
-    $request->request->add(['ShopTo' => array('shop_id' => $this->slug->model_id)]);
+    $request->request->add(['ShopTo' => array('shop_id' => request()->get('shopId'))]);
 
     if($model->fill($request->all())->save()) {
       Message::display('สาขา '.$model->name.' ถูกเพิ่มแล้ว','success');
-      return Redirect::to(route('shop.branch.detail', ['slug' => $this->slug->slug,'id' => 1]));
+      // return Redirect::to(route('shop.branch.detail', ['slug' => $this->param['slug'],'id' => $model->id]));
+      return Redirect::to(route('branch.detail', ['id' => $model->id]));
     }else{
       return Redirect::back();
     }
@@ -99,13 +125,14 @@ class BranchController extends Controller
       return $this->error();
     }
 
-    $model->formHelper->loadFieldData('District',array(
-      'conditions' => array(
-        ['province_id','=',9]
-      ),
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
-      'index' => 'districts'
+      'index' => 'provinces',
+      'order' => array(
+        array('top','ASC'),
+        array('id','ASC')
+      )
     ));
 
     $model->formHelper->loadData(array(
@@ -132,7 +159,7 @@ class BranchController extends Controller
     if($model->fill($request->all())->save()) {
 
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to(route('shop.branch.detail', ['slug' => $this->slug->slug,'id' => $model->id]));
+      return Redirect::to(route('shop.branch.detail', ['slug' => $this->param['slug'],'id' => $model->id]));
     }else{
       return Redirect::back();
     }

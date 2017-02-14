@@ -7,6 +7,8 @@ class Address extends Model
   protected $table = 'addresses';
   protected $fillable = ['model','model_id','address','province_id','district_id','sub_district_id','description','latitude','longitude','person_id'];
 
+  public $formHelper = true;
+
   public function __construct() {  
     parent::__construct();
   }
@@ -30,10 +32,6 @@ class Address extends Model
         'first' => true
       )
     );
-    
-    // if(empty($options['value']['province_id'])) {
-    //   $options['value']['province_id'] = 9;
-    // }
 
     // if(($model->state == 'update') && !empty($address)){
     if(!empty($address)){
@@ -80,8 +78,6 @@ class Address extends Model
     }
 
     return array(
-      // 'address' => $this->address,
-      // 'description' => $this->description,
       '_province_name' => $provinceName,
       '_district_name' => $districtName,
       '_sub_district_name' => $subDistrictName,
@@ -105,10 +101,20 @@ class Address extends Model
       'province_id' => $this->province_id,
       'district_id' => $this->district_id,
       'sub_district_id' => $this->sub_district_id,
-      // 'description' => $this->description,
       '_geographic' => json_encode($geographic)
     );
     
+  }
+
+  public function getGeographic() {
+
+    $geographic = array();
+    if(!empty($this->latitude) && !empty($this->latitude)) {
+      $geographic['latitude'] = $this->latitude;
+      $geographic['longitude'] = $this->longitude;
+    }
+    
+    return !empty($geographic) ? json_encode($geographic) : '';
   }
 
 }

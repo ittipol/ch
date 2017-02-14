@@ -15,6 +15,17 @@
 
 // Route::get('lan','HomeController@lanAdd');
 
+Route::get('/',function(){
+  // dd(session()->all());
+
+  // foreach (session()->get('Shop') as $key => $value) {
+  //   dd($value);
+  // }
+
+  return view('pages.announcement.create');
+
+});
+
 // 
 
 Route::get('logout',function(){
@@ -92,31 +103,38 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
 // community / Shop
 
 // Route::get('community/shop_feature','ShopController@feature');
-// Route::get('shop/{slug}','ShopController@index')->name('shop');
+
+Route::group(['middleware' => ['auth','shop']], function () {
+  Route::get('shop/{shopSlug}','ShopController@index')->name('shop.index');
+});
 
 Route::group(['middleware' => 'auth'], function () {
   Route::get('community/shop_create','ShopController@create');
   Route::post('community/shop_create','ShopController@creatingSubmit');
 });
-Route::group(['middleware' => ['auth','person.shop.permission']], function () {
-  Route::get('shop/{slug}/manage','ShopController@manage')->name('shop.manage');
+Route::group(['middleware' => ['auth','shop','person.shop.permission']], function () {
+  Route::get('shop/{shopSlug}/manage','ShopController@manage')->name('shop.manage');
 
-  // Route::get('shop/{slug}/product','ShopController@product');
-  // Route::get('shop/{slug}/advertisement','ShopController@advertisement');
+  // Route::get('shop/{shopSlug}/product','ShopController@product');
+  // Route::get('shop/{shopSlug}/advertisement','ShopController@advertisement');
 
-  Route::get('shop/{slug}/setting','ShopController@setting');
+  Route::get('shop/{shopSlug}/setting','ShopController@setting');
+
+  Route::get('shop/{shopSlug}/profile_image','ShopController@profileImage');
+  Route::patch('shop/{shopSlug}/profile_image','ShopController@profileImageSubmit');
+
+  Route::get('shop/{shopSlug}/description','ShopController@description');
+  Route::patch('shop/{shopSlug}/description','ShopController@descriptionSubmit');
   
-  Route::get('shop/{slug}/opening_hours','ShopController@openingHours');
-  Route::patch('shop/{slug}/opening_hours','ShopController@openingHoursSubmit');
+  Route::get('shop/{shopSlug}/address','ShopController@address');
+  Route::patch('shop/{shopSlug}/address','ShopController@addressSubmit');
 
-  Route::get('shop/{slug}/address','ShopController@address');
-  Route::patch('shop/{slug}/address','ShopController@addressSubmit');
+  Route::get('shop/{shopSlug}/contact','ShopController@contact');
+  Route::patch('shop/{shopSlug}/contact','ShopController@contactSubmit');
 
-  Route::get('shop/{slug}/contact','ShopController@contact');
-  Route::patch('shop/{slug}/contact','ShopController@contactSubmit');
-
+  Route::get('shop/{shopSlug}/opening_hours','ShopController@openingHours');
+  Route::patch('shop/{shopSlug}/opening_hours','ShopController@openingHoursSubmit');
 });
-
 
 // PRODUCT
 // Route::group(['middleware' => 'auth'], function () {
@@ -136,18 +154,18 @@ Route::group(['middleware' => ['auth','person.shop.permission']], function () {
 Route::get('job/list','JobController@listView')->name('job.list');;
 Route::get('job/detail/{id}','JobController@detail')->name('job.detail');
 
-Route::group(['middleware' => ['auth','person.shop.permission']], function () {
+Route::group(['middleware' => ['auth','shop','person.shop.permission']], function () {
 
-  Route::get('shop/{slug}/job','ShopController@job');
+  Route::get('shop/{shopSlug}/job','ShopController@job');
 
-  Route::get('shop/{slug}/job_apply_list','JobController@jobApplyList');
-  Route::get('shop/{slug}/job_apply_detail/{id}','JobController@jobApplyDetail');
+  Route::get('shop/{shopSlug}/job_apply_list','JobController@jobApplyList');
+  Route::get('shop/{shopSlug}/job_apply_detail/{id}','JobController@jobApplyDetail');
   
-  Route::get('shop/{slug}/job_post','JobController@add');
-  Route::post('shop/{slug}/job_post','JobController@addingSubmit');
+  Route::get('shop/{shopSlug}/job_post','JobController@add');
+  Route::post('shop/{shopSlug}/job_post','JobController@addingSubmit');
 
-  Route::get('shop/{slug}/job_edit/{id}','JobController@edit');
-  Route::patch('shop/{slug}/job_edit/{id}','JobController@editingSubmit');
+  Route::get('shop/{shopSlug}/job_edit/{id}','JobController@edit');
+  Route::patch('shop/{shopSlug}/job_edit/{id}','JobController@editingSubmit');
 
 });
 
@@ -157,28 +175,34 @@ Route::group(['middleware' => ['auth','person.experience']], function () {
 });
 
 // Branch
-Route::group(['middleware' => ['auth','person.shop.permission']], function () {
-  Route::get('shop/{slug}/branch_detail/{id}','BranchController@detail')->name('shop.branch.detail');
+Route::get('branch/list','BranchController@listView')->name('branch.list');
+Route::get('branch/detail/{id}','BranchController@detail')->name('branch.detail');
 
-  Route::get('shop/{slug}/branch_add','BranchController@add')->name('shop.branch.add');
-  Route::post('shop/{slug}/branch_add','BranchController@addingSubmit')->name('shop.branch.add');
+Route::group(['middleware' => ['auth','shop','person.shop.permission']], function () {
 
-  Route::get('shop/{slug}/branch_edit/{id}','BranchController@edit')->name('shop.branch.edit');
-  Route::patch('shop/{slug}/branch_edit/{id}','BranchController@editingSubmit')->name('shop.branch.edit');
+  Route::get('shop/{shopSlug}/branch','ShopController@branch')->name('shop.branch.list');
+
+  // Route::get('shop/{shopSlug}/branch_detail/{id}','BranchController@detail')->name('shop.branch.detail');
+
+  Route::get('shop/{shopSlug}/branch_add','BranchController@add')->name('shop.branch.add');
+  Route::post('shop/{shopSlug}/branch_add','BranchController@addingSubmit')->name('shop.branch.add');
+
+  Route::get('shop/{shopSlug}/branch_edit/{id}','BranchController@edit')->name('shop.branch.edit');
+  Route::patch('shop/{shopSlug}/branch_edit/{id}','BranchController@editingSubmit')->name('shop.branch.edit');
 });
 
 // Advertisement
 Route::get('advertisement/detail/{id}','AdvertisementController@detail')->name('advertisement.detail');
 
-Route::group(['middleware' => ['auth','person.shop.permission']], function () {
+Route::group(['middleware' => ['auth','shop','person.shop.permission']], function () {
 
-  Route::get('shop/{slug}/advertisement','ShopController@advertisement');
+  Route::get('shop/{shopSlug}/advertisement','ShopController@advertisement');
   
-  Route::get('shop/{slug}/advertisement_post','AdvertisementController@add');
-  Route::post('shop/{slug}/advertisement_post','AdvertisementController@addingSubmit');
+  Route::get('shop/{shopSlug}/advertisement_post','AdvertisementController@add');
+  Route::post('shop/{shopSlug}/advertisement_post','AdvertisementController@addingSubmit');
 
-  Route::get('shop/{slug}/advertisement_edit/{id}','AdvertisementController@edit');
-  Route::patch('shop/{slug}/advertisement_edit/{id}','AdvertisementController@editingSubmit');
+  Route::get('shop/{shopSlug}/advertisement_edit/{id}','AdvertisementController@edit');
+  Route::patch('shop/{shopSlug}/advertisement_edit/{id}','AdvertisementController@editingSubmit');
 
 });
 

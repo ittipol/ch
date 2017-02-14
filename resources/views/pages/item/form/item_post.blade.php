@@ -20,7 +20,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -152,7 +152,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
+          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
         ?>
         <div id="phone_number_input" class="text-group">
           <div class="text-group-panel"></div>
@@ -243,14 +243,29 @@
       tagging.setTags({!!$_oldInput['Tagging']!!});
     @endif
 
-    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','เบอร์โทรศัพท์');
-    phoneNumberInput.load();
+    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','หมายเลขโทรศัพท์');
+    phoneNumberInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['phone_number']))
+      phoneNumberInput.load({!!$_oldInput['Contact']['phone_number']!!});
+    @else
+      phoneNumberInput.load();
+    @endif
 
     const emailInput = new TextInputStack('email_input','Contact[email]','อีเมล');
-    emailInput.load();
+    emailInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['email']))
+      emailInput.load({!!$_oldInput['Contact']['email']!!});
+    @else
+      emailInput.load();
+    @endif
 
     const lindIdInput = new TextInputStack('line_id_input','Contact[line]','Line ID');
-    lindIdInput.load();
+    lindIdInput.disableCreatingInput();
+    @if(!empty($_oldInput['Contact']['line']))
+      lindIdInput.load({!!$_oldInput['Contact']['line']!!});
+    @else
+      lindIdInput.load();
+    @endif
 
     const form = new Form();
     form.load();

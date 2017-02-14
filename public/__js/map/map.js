@@ -7,6 +7,8 @@ class Map {
     this.createLngLat = createLngLat;
     this.icon = '/images/map/location-pin.png';
     this.sideBarClosed = false;
+    this.latitudeInputName = 'Address[latitude]';
+    this.longitudeInputName = 'Address[longitude]';
   }
 
   load() {}
@@ -128,21 +130,19 @@ class Map {
 
   setLocation(geographic) {
 
-    let _geographic = JSON.parse(geographic);
+    if ((typeof geographic['latitude'] != 'undefined') && (typeof geographic['longitude'] != 'undefined')) {
 
-    if ((typeof _geographic.latitude != 'undefined') && (typeof _geographic.longitude != 'undefined')) {
+      let position = new google.maps.LatLng(geographic['latitude'],geographic['longitude']);
 
-        let position = new google.maps.LatLng(_geographic.latitude,_geographic.longitude);
+      this.marker = new google.maps.Marker({
+        map: this.map,
+        icon: this.icon,
+        position: position,
+      });
 
-        this.marker = new google.maps.Marker({
-          map: this.map,
-          icon: this.icon,
-          position: position,
-        });
+      this.map.setCenter(position);
 
-        this.map.setCenter(position);
-
-        this.createHiddenData(_geographic.latitude,_geographic.longitude);
+      this.createHiddenData(geographic['latitude'],geographic['longitude']);
 
     }
 
@@ -158,7 +158,7 @@ class Map {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     }
     this.map = new google.maps.Map(document.getElementById("map"), options);
-console.log(this.map);
+
     this.marker = new google.maps.Marker();
 
     if(this.markable){
@@ -287,6 +287,11 @@ console.log(this.map);
     $('#location_items').append(html);
   }
 
+  setInputName(latitudeName,longitudeName) {
+    this.latitudeInputName = latitudeName;
+    this.longitudeInputName = longitudeName;
+  }
+
   createHiddenData(latitude,longitude) {
 
     if(this.createLngLat) {
@@ -295,13 +300,13 @@ console.log(this.map);
 
       let lat = document.createElement('input');
       lat.setAttribute('type','hidden');
-      lat.setAttribute('name','Address[latitude]');
+      lat.setAttribute('name',this.latitudeInputName);
       lat.setAttribute('id','lat');
       lat.value = latitude;
 
       let lng = document.createElement('input');
       lng.setAttribute('type','hidden');
-      lng.setAttribute('name','Address[longitude]');
+      lng.setAttribute('name',this.longitudeInputName);
       lng.setAttribute('id','lng');
       lng.value = longitude;
 

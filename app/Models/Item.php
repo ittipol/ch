@@ -35,7 +35,7 @@ class Item extends Model
       'name.required' => 'ชื่อห้ามว่าง',
       'price.required' => 'จำนวนราคาห้ามว่าง',
       'price.regex' => 'รูปแบบจำนวนราคาไม่ถูกต้อง',
-      'Contact.phone_number.required' => 'เบอร์โทรศัพท์ห้ามว่าง',
+      'Contact.phone_number.required' => 'หมายเลขโทรศัพท์ห้ามว่าง',
       'ItemToCategory.item_category_id.required' => 'หมวดหมู่หลักสินค้าห้ามว่าง',
     )
   ); 

@@ -17,7 +17,6 @@ class Controller extends BaseController
 {
   use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-  // protected $model;
   protected $slug;
   protected $data = array();
   protected $param;
@@ -32,16 +31,6 @@ class Controller extends BaseController
 
     $this->query = request()->query();
     $this->param = Route::current()->parameters();
-
-    // if(!empty($this->param['slug'])){
-    //   $this->slug = service::loadModel('Slug')->getData(array(
-    //     'conditions' => array(
-    //       array('slug','like',$this->param['slug'])
-    //     ),
-    //     'first' => true,
-    //     'fields' => array('slug','model','model_id')
-    //   ));
-    // }
 
   }
 

@@ -72,10 +72,18 @@
   position: relative;
 }
 
+.navigation-primary-menu ul > li.item {
+  margin: 5px 0;
+}
+
+.navigation-primary-menu ul > li > .submenu-item-row {
+  position: relative;
+}
+
 .navigation-primary-menu ul > li a { 
 	position: relative;
-  padding: 14px 0 14px 20px;
-  line-height: 22px;
+  padding: 8px 0 8px 20px;
+  /*line-height: 22px;*/
   display: block;
   color: #ffffff;
   cursor: pointer;

@@ -223,40 +223,41 @@ class Model extends BaseModel
 
     $model = $this;
 
-    if(!empty($options['conditions'])){
+    if(!empty($options['conditions']['in'])) {
 
-      if(!empty($options['conditions']['in'])) {
+      foreach ($options['conditions']['in'] as $condition) {
 
-        foreach ($options['conditions']['in'] as $condition) {
-          $model = $model->whereIn($condition[0],$condition[1]);
+        if(empty($condition[1])) {
+          continue;
         }
 
-        unset($options['conditions']['in']);
-
+        $model = $model->whereIn($condition[0],$condition[1]);
       }
 
-      if(!empty($options['conditions']['or'])) {
-
-        $arrLen = count($options['conditions']['or']);
-        for ($i=0; $i < $arrLen; $i++) {
-          $model = $model->orWhere(
-            $options['conditions']['or'][$i][0],
-            $options['conditions']['or'][$i][1],
-            $options['conditions']['or'][$i][2]
-          );
-        }
-
-        unset($options['conditions']['or']);
-
-      }
-
-      if(!empty($options['conditions'])){
-        $model = $model->where($options['conditions']);
-      }
+      unset($options['conditions']['in']);
 
     }
 
-    if(empty($model->count())) {
+    if(!empty($options['conditions']['or'])) {
+
+      $arrLen = count($options['conditions']['or']);
+      for ($i=0; $i < $arrLen; $i++) {
+        $model = $model->orWhere(
+          $options['conditions']['or'][$i][0],
+          $options['conditions']['or'][$i][1],
+          $options['conditions']['or'][$i][2]
+        );
+      }
+
+      unset($options['conditions']['or']);
+
+    }
+
+    if(!empty($options['conditions'])){
+      $model = $model->where($options['conditions']);
+    }
+
+    if(!$model->exists()) {
       return null;
     }
 

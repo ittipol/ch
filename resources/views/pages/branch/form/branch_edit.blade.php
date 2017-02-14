@@ -26,7 +26,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -70,23 +70,21 @@
       </div>
 
       <div class="form-row">
-      <?php 
-        echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
-        echo Form::text('Contact[phone_number]', null, array(
-          'placeholder' => 'เบอร์โทรศัพท์',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
+        ?>
+        <div id="phone_number_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
       <div class="form-row">
-      <?php
-        echo Form::label('Contact[email]', 'อีเมล');
-        echo Form::text('Contact[email]', null, array(
-          'placeholder' => 'อีเมล',
-          'autocomplete' => 'off'
-        ));
-      ?>
+        <?php 
+          echo Form::label('Contact[email]', 'อีเมล');
+        ?>
+        <div id="email_input" class="text-group">
+          <div class="text-group-panel"></div>
+        </div>
       </div>
 
     </div>
@@ -99,21 +97,27 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('province', 'จังหวัด');
-          echo Form::text('province', 'ชลบุรี', array(
-            'placeholder' => 'จังหวัด',
-            'autocomplete' => 'off',
-            'disabled' => 'disabled'
+          echo Form::label('Address[address]', 'ที่อยู่');
+          echo Form::text('Address[address]', null, array(
+            'placeholder' => 'ที่อยู่',
+            'autocomplete' => 'off'
           ));
         ?>
       </div>
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[district_id]', 'อำเภอ', array(
-            'class' => 'required'
+          echo Form::label('Address[province_id]', 'จังหวัด');
+          echo Form::select('Address[province_id]', $_fieldData['provinces'] ,null, array(
+            'id' => 'province'
           ));
-          echo Form::select('Address[district_id]', $_fieldData['districts'] ,null, array(
+        ?>
+      </div>
+
+      <div class="form-row">
+        <?php 
+          echo Form::label('Address[district_id]', 'อำเภอ');
+          echo Form::select('Address[district_id]', array() ,null, array(
             'id' => 'district'
           ));
         ?>
@@ -121,9 +125,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Address[sub_district_id]', 'ตำบล', array(
-            'class' => 'required'
-          ));
+          echo Form::label('Address[sub_district_id]', 'ตำบล');
           echo Form::select('Address[sub_district_id]', array() , null, array(
             'id' => 'sub_district'
           ));
@@ -156,15 +158,30 @@
 
   $(document).ready(function(){
 
-    const images = new Images('_image_group','photo',5);
-    const district = new District();
-    const map = new Map();
-    const form = new Form();
+    const images = new Images('_image_group','photo',10,'description');
+    images.load({!!$_formData['Image']!!});
 
-    images.load('<?php echo $_formData['Image']; ?>');
-    district.load('<?php echo $_formData['Address']['sub_district_id']; ?>');
+    const address = new Address();
+    address.setDistrictId({{$_formData['Address']['district_id']}});
+    address.setSubDistrictId({{$_formData['Address']['sub_district_id']}});
+    address.load();
+
+    const map = new Map();
     map.initialize();
-    map.setLocation('<?php echo $_formData['Address']['_geographic']; ?>');
+    map.setLocation({!!$_formData['Address']['_geographic']!!});
+
+    const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','หมายเลขโทรศัพท์');
+    phoneNumberInput.disableCreatingInput();
+    phoneNumberInput.load({!!$_formData['Contact']['phone_number']!!});
+
+    const emailInput = new TextInputStack('email_input','Contact[email]','อีเมล');
+    emailInput.disableCreatingInput();
+    emailInput.load({!!$_formData['Contact']['email']!!});
+    
+    const realEstate = new RealEstate();
+    realEstate.load();
+
+    const form = new Form();
     form.load();
 
   });

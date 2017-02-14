@@ -27,7 +27,7 @@
     ?>
 
     <?php
-      echo Form::hidden('model', $_formModel['modelName']);
+      echo Form::hidden('_model', $_formModel['modelName']);
     ?>
 
     <div class="form-section">
@@ -118,7 +118,7 @@
 
       <div class="form-row">
         <?php 
-          echo Form::label('Contact[phone_number]', 'เบอร์โทรศัพท์');
+          echo Form::label('Contact[phone_number]', 'หมายเลขโทรศัพท์');
         ?>
         <div id="phone_number_input" class="text-group">
           <div class="text-group-panel"></div>
@@ -226,7 +226,7 @@
       const textInputStack = new TextInputStack('website_input','private_websites','เว็บไซต์',{!!$_fieldData['websiteTypes']!!});
       textInputStack.load({!!$_formData['private_websites']!!});
 
-      const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','เบอร์โทรศัพท์');
+      const phoneNumberInput = new TextInputStack('phone_number_input','Contact[phone_number]','หมายเลขโทรศัพท์');
       phoneNumberInput.disableCreatingInput();
       @if(!empty($_formData['Contact']['phone_number']))
         phoneNumberInput.load({!!$_formData['Contact']['phone_number']!!});

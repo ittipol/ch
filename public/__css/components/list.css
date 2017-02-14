@@ -1,4 +1,27 @@
-.list > .list-row {
+.list-group > .list-row {
 	padding: 10px 0;
 	position: relative;
+}
+
+.list {
+
+}
+
+.list > .list-item {
+	padding: 10px;
+	border-bottom: 1px solid #bababa;
+}
+
+.list > .list-item > a {
+	display: block;
+}
+
+.list > .list-item img {
+	display: inline-block;
+	width: 25px;
+	margin-right: 10px;
+}
+
+.list > .list-item h4 {
+	display: inline-block;
 }

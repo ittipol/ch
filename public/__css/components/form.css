@@ -272,12 +272,16 @@ form .input-addon > select:last-child {
 	display: inline-block;
 }
 
-.text-group .text-input-wrapper:not(:first-child) input[type="text"] {
+/*.text-group .text-input-wrapper:not(:first-child) input[type="text"] {
 	margin-top: 10px;
-}
+}*/
 
 .text-input-wrapper {
 	position: relative;
+}
+
+.text-input-wrapper .error-message {
+	margin: 10px 0 5px;
 }
 
 .text-input-wrapper input {

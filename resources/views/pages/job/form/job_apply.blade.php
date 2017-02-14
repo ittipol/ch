@@ -18,7 +18,7 @@
   ?>
 
   <?php
-    echo Form::hidden('model', $_formModel['modelName']);
+    echo Form::hidden('_model', $_formModel['modelName']);
   ?>
 
   <div class="form-section">
@@ -63,14 +63,16 @@
       <?php 
         echo Form::label('message', 'ข้อความถึงผู้รับสมัครงานนี้');
       ?>
-      <p>แนะนำตัวคุณหรือกล่าวอะไรบ้างอย่างถึงผู้รับสมัครงานนี้</p>
-      <p class="notice info">ข้อความนี้จะแสดงเป็นส่วนแรกของรายละเอียดการสมัครงานของคุณ</p>
-      <p class="notice info">สามารถเว้นว่างข้อความนี้ได้</p>
+      <p class="notice info">แนะนำตัวคุณหรือกล่าวอะไรบ้างอย่างถึงผู้รับสมัครงานนี้</p>
       <?php
         echo Form::textarea('message', null, array(
           'class' => 'ckeditor'
         ));
       ?>
+      <div class="space-top-10">
+        <p class="error-message">* ข้อความนี้จะแสดงอยู่ส่วนแรกของรายละเอียดการสมัครงานของคุณ</p>
+        <p class="error-message">* สามารถเว้นว่างข้อความนี้ได้</p>
+      </div>
     </div>
 
   </div>

@@ -61,7 +61,8 @@ class ItemController extends Controller
       'field' => 'name',
       'index' => 'provinces',
       'order' => array(
-        array('top','ASC')
+        array('top','ASC'),
+        array('id','ASC')
       )
     ));
 
@@ -112,7 +113,8 @@ class ItemController extends Controller
       'field' => 'name',
       'index' => 'provinces',
       'order' => array(
-        array('top','ASC')
+        array('top','ASC'),
+        array('id','ASC')
       )
     ));
 

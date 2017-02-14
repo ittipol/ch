@@ -115,6 +115,11 @@ a {
 	padding: 0 !important;
 }
 
+.top-header {
+	width: 80%;
+	margin: 20px auto 10px;
+}
+
 .container-header {
 	margin: 20px 0 0;
 }

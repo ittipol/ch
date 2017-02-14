@@ -56,13 +56,14 @@ class RealEstateController extends Controller
 
     $model = Service::loadModel('RealEstate');
 
-    $model->formHelper->loadFieldData('District',array(
-      'conditions' => array(
-        ['province_id','=',9]
-      ),
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
-      'index' => 'districts'
+      'index' => 'provinces',
+      'order' => array(
+        array('top','ASC'),
+        array('id','ASC')
+      )
     ));
 
     $model->formHelper->loadFieldData('RealEstateType',array(
@@ -124,13 +125,14 @@ class RealEstateController extends Controller
       return $this->error();
     }
 
-    $model->formHelper->loadFieldData('District',array(
-      'conditions' => array(
-        ['province_id','=',9]
-      ),
+    $model->formHelper->loadFieldData('Province',array(
       'key' =>'id',
       'field' => 'name',
-      'index' => 'districts'
+      'index' => 'provinces',
+      'order' => array(
+        array('top','ASC'),
+        array('id','ASC')
+      )
     ));
 
     $model->formHelper->loadFieldData('RealEstateType',array(

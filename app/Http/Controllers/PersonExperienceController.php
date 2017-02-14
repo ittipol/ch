@@ -99,6 +99,10 @@ class PersonExperienceController extends Controller
         
         $_model = $experienceDetail->{lcfirst($experienceDetail->model)};
 
+        if(empty($_model)) {
+          continue;
+        }
+
         $details[] = array_merge(
           $_model->buildModelData(),
           array('peroid' => $experienceDetail->getPeriod()),
@@ -153,7 +157,8 @@ class PersonExperienceController extends Controller
       'field' => 'name',
       'index' => 'provinces',
       'order' => array(
-        array('top','ASC')
+        array('top','ASC'),
+        array('id','ASC')
       )
     ));
 

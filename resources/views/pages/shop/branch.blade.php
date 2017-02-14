@@ -7,7 +7,7 @@
       <div class="row">
         <div class="col-lg-6 col-sm-12">
           <div class="title">
-            งาน
+            สาขา
           </div>
         </div>
       </div>
@@ -18,26 +18,13 @@
 
       <div class="tile-nav small">
         <div class="tile-nav-image">
-          <a href="{{$jobPostUrl}}">
+          <a href="{{$jobUrl}}">
             <img src="/images/common/job.png">
           </a>
         </div>
         <div class="tile-nav-info">
-          <a href="{{$jobPostUrl}}">
-            <h4 class="tile-nav-title">ลงประกาศงาน</h4>
-          </a>
-        </div>
-      </div>
-
-      <div class="tile-nav small">
-        <div class="tile-nav-image">
-          <a href="{{$jobApplyListUrl}}">
-            <img src="/images/common/job.png">
-          </a>
-        </div>
-        <div class="tile-nav-info">
-          <a href="{{$jobApplyListUrl}}">
-            <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สนใจงานของคุณ</h4>
+          <a href="{{$jobUrl}}">
+            <h4 class="tile-nav-title">งาน</h4>
           </a>
         </div>
       </div>
@@ -61,7 +48,7 @@
 
     @if(!empty($_pagination['data']))
 
-      <div class="list">
+      <div class="grid-card">
 
         <div class="row">
 
@@ -76,11 +63,8 @@
               </div>
               <div class="product-detail">
                 <a href="{{$data['detailUrl']}}">
-                  <div class="product-title">{{$data['_name_short']}}</div>
+                  <div class="product-title">{{$data['name']}}</div>
                 </a>
-                <div class="price">
-                  {{$data['_salary']}}
-                </div>
               </div>
               <div>
       
@@ -106,12 +90,12 @@
 
     @else
 
-      <div class="shop-notice text-center">
-        <img src="/images/common/job.png">
+      <div class="shop-notice text-center space-top-20">
+        <img src="/images/common/building.png">
         <div>
-          <h3>ลงประกาศงานของคุณ</h3>
-          <p>ยังไม่มีประกาศงานของคุณ เพิ่มประกาศงานของคุณเพื่อค้นหาพนักงานใหม่</p>
-          <a href="{{$jobPostUrl}}" class="button">ลงประกาศงาน</a>
+          <h3>สาขา</h3>
+          <p>ยังไม่มีสาขา เพิ่มสาขาเพื่อมให้ผู้ทราบถึงสินค้า งานบริการ หรืออื่นๆ ในแต่ละสาขาของคุณ</p>
+          <a href="{{$branchAddUrl}}" class="button">เพิ่มสาขา</a>
         </div>
       </div>
 
