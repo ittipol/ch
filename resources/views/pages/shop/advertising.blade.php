@@ -1,55 +1,22 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<div class="container">
+<h2 class="top-header">โฆษณา</h2>
+<div class="line"></div>
 
-  <div class="container-header">
-    <div class="row">
-      <div class="col-lg-6 col-sm-12">
-        <div class="title">
-          งาน
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container">
 
   <div class="tile-nav-group space-top-bottom-20 clearfix">
 
     <div class="tile-nav small">
       <div class="tile-nav-image">
-        <a href="{{$jobPostUrl}}">
-          <img src="/images/common/career.png">
+        <a href="{{$advertisingPostUrl}}">
+          <img src="/images/common/megaphone.png">
         </a>
       </div>
       <div class="tile-nav-info">
-        <a href="{{$jobPostUrl}}">
-          <h4 class="tile-nav-title">ลงประกาศงาน</h4>
-        </a>
-      </div>
-    </div>
-
-    <div class="tile-nav small">
-      <div class="tile-nav-image">
-        <a href="{{$jobApplyListUrl}}">
-          <img src="/images/common/resume.png">
-        </a>
-      </div>
-      <div class="tile-nav-info">
-        <a href="{{$jobApplyListUrl}}">
-          <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สมัครงานของคุณ</h4>
-        </a>
-      </div>
-    </div>
-
-    <div class="tile-nav small">
-      <div class="tile-nav-image">
-          <a href="{{$branchUrl}}">
-            <img src="/images/common/building.png">
-          </a>
-      </div>
-      <div class="tile-nav-info">
-        <a href="{{$branchAddUrl}}">
-          <h4 class="tile-nav-title">สาขา</h4>
+        <a href="{{$advertisingPostUrl}}">
+          <h4 class="tile-nav-title">ลงโฆษณา</h4>
         </a>
       </div>
     </div>
@@ -68,6 +35,9 @@
 
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
           <div class="card">
+
+            <div class="overlay-top-info text-center">ประเภทโฆษณา: {{$data['_advertisingType']}}</div>
+
             <div class="image">
               <a href="{{$data['detailUrl']}}">
                 <div class="product-image" style="background-image:url({{$data['_imageUrl']}});"></div>
@@ -77,8 +47,9 @@
               <a href="{{$data['detailUrl']}}">
                 <div class="product-title">{{$data['_name_short']}}</div>
               </a>
-              <div class="price">
-                {{$data['_salary']}}
+              <div>
+                <div>ประเภทโฆษณา</div>
+                {{$data['_advertisingType']}}
               </div>
             </div>
             <div>
@@ -106,11 +77,11 @@
   @else
 
     <div class="shop-notice text-center space-top-20">
-      <img src="/images/common/career.png">
+      <img src="/images/common/megaphone.png">
       <div>
-        <h3>ลงประกาศงาน</h3>
+        <h3>โฆษณา</h3>
         <p>ยังไม่มีประกาศงานของคุณ เพิ่มประกาศงานของคุณเพื่อค้นหาพนักงานใหม่</p>
-        <a href="{{$jobPostUrl}}" class="button">ลงประกาศงาน</a>
+        <a href="{{$advertisingPostUrl}}" class="button">ลงโฆษณา</a>
       </div>
     </div>
 

@@ -28,7 +28,9 @@ class String
 
     if(ord($lastChar) != 32) {
       $pos = mb_strpos($_string,' ',$len);
-      $string = mb_substr($_string, 0, $pos).'...';
+      if(!empty($pos)) {
+        $string = mb_substr($_string, 0, $pos).'...';
+      }
     }
 
     return $string;

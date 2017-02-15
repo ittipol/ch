@@ -172,7 +172,7 @@ class Shop extends Model
 
   public function getRelatedShopData($modelData) {
 
-    $shopTo = new ShopTo;
+    $shopTo = new ShopRelateTo;
 
     $records = $shopTo->getData(array(
       'conditions' => array(

@@ -32,7 +32,7 @@ class Item extends Model
       'ItemToCategory.item_category_id' => 'required' 
     ),
     'messages' => array(
-      'name.required' => 'ชื่อห้ามว่าง',
+      'name.required' => 'ชื่อสินค้าที่ต้องการประกาศห้ามว่าง',
       'price.required' => 'จำนวนราคาห้ามว่าง',
       'price.regex' => 'รูปแบบจำนวนราคาไม่ถูกต้อง',
       'Contact.phone_number.required' => 'หมายเลขโทรศัพท์ห้ามว่าง',
@@ -97,7 +97,6 @@ class Item extends Model
       'id' => $this->id,
       'name' => $this->name,
       '_name_short' => $string->subString($this->name,45),
-      // 'description' => $this->description,
       '_price' => $currency->format($this->price)
     );
     

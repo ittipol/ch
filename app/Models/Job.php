@@ -7,8 +7,8 @@ use App\library\string;
 class Job extends Model
 {
   public $table = 'jobs';
-  protected $fillable = ['employment_type_id','name','description','qualification','benefit','salary','recruitment','recruitment_custom_detail'];
-  protected $modelRelations = array('Image','Tagging','JobToBranch','ShopTo');
+  protected $fillable = ['employment_type_id','name','description','qualification','benefit','salary','recruitment','recruitment_custom_detail','person_id'];
+  protected $modelRelations = array('Image','Tagging','RelateToBranch','ShopRelateTo');
   protected $directory = true;
 
   public $formHelper = true;
@@ -98,7 +98,7 @@ class Job extends Model
     return array(
       'id' => $this->id,
       'name' => $this->name,
-      '_name_short' => $string->subString($this->name,45),
+      '_name_short' => $string->subString($this->name,60),
       '_salary' => $this->salary
     );
 

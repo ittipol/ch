@@ -16,7 +16,7 @@
     </div>
 
     <div class="list-item">
-      <a href="{{$addressUrl}}">
+      <a href="{{$descriptionUrl}}">
         <img class="icon" src="/images/common/pencil.png" >
         <h4>คำอธิบายร้านค้า</h4>
       </a>

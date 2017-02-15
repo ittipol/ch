@@ -29,7 +29,7 @@
 
           <div class="shop-notice-content">
             <div class="shop-notice-row">
-              <a href="{{$shopUrl}}setting"><h4 class="text-center">เพิ่มข้อมูลของร้านค้า</h4></a>
+              <a href="{{$settingUrl}}"><h4 class="text-center">เพิ่มข้อมูลของร้านค้า</h4></a>
             </div>
           </div>
 
@@ -43,12 +43,12 @@
 
           <div class="tile-nav">
             <div class="tile-nav-image">
-              <a href="{{$shopUrl}}job">
+              <a href="{{$productUrl}}">
                 <img src="/images/common/tag.png">
               </a>
             </div>
             <div class="tile-nav-info">
-              <a href="{{$shopUrl}}product">
+              <a href="{{$productUrl}}">
                 <h4 class="tile-nav-title">สินค้า</h4>
               </a>
             </div>
@@ -56,12 +56,12 @@
 
           <div class="tile-nav">
             <div class="tile-nav-image">
-                <a href="{{$shopUrl}}job">
+                <a href="{{$jobUrl}}">
                   <img src="/images/common/career.png">
                 </a>
             </div>
             <div class="tile-nav-info">
-              <a href="{{$shopUrl}}job">
+              <a href="{{$jobUrl}}">
                 <h4 class="tile-nav-title">ลงประกาศงานงาน</h4>
               </a>
             </div>
@@ -69,12 +69,12 @@
 
           <div class="tile-nav">
             <div class="tile-nav-image">
-                <a href="{{$shopUrl}}advertisement">
+                <a href="{{$advertisingUrl}}">
                   <img src="/images/common/megaphone.png">
                 </a>
             </div>
             <div class="tile-nav-info">
-              <a href="{{$shopUrl}}advertisement">
+              <a href="{{$advertisingUrl}}">
                 <h4 class="tile-nav-title">โฆษณา</h4>
               </a>
             </div>
@@ -82,12 +82,12 @@
 
           <div class="tile-nav">
             <div class="tile-nav-image">
-                <a href="{{$shopUrl}}advertisement">
+                <a href="#">
                   <img src="/images/common/additional.png">
                 </a>
             </div>
             <div class="tile-nav-info">
-              <a href="{{$shopUrl}}advertisement">
+              <a href="#">
                 <h4 class="tile-nav-title">แสดงทั้งหมด</h4>
               </a>
             </div>

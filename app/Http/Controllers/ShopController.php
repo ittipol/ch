@@ -19,11 +19,6 @@ class ShopController extends Controller
   
   public function __construct() { 
     parent::__construct();
-
-    // $this->middleware(function ($request, $next) {
-    //   return $next($request);
-    // });
-    
   }
 
   // public function index() {}
@@ -35,7 +30,11 @@ class ShopController extends Controller
     $model->modelData->loadData();
 
     $this->data = $model->modelData->build();
-    $this->setData('shopUrl',request()->get('shopUrl'));
+
+    $this->setData('settingUrl',request()->get('shopUrl').'setting');
+    $this->setData('productUrl',request()->get('shopUrl').'product');
+    $this->setData('jobUrl',request()->get('shopUrl').'job');
+    $this->setData('advertisingUrl',request()->get('shopUrl').'advertising');
 
     return $this->view('pages.shop.manage');
   }
@@ -59,7 +58,7 @@ class ShopController extends Controller
       $page = $this->query['page'];
     }
 
-    $shopTos = Service::loadModel('ShopTo')
+    $shopTos = Service::loadModel('ShopRelateTo')
     ->select('model_id')
     ->where(array(
       array('model','like','Job'),
@@ -79,12 +78,11 @@ class ShopController extends Controller
       ));
       $job->paginator->setPage($page);
       $job->paginator->setPagingUrl('shop/'.request()->shopSlug.'/job');
-      $job->paginator->setUrl('shop/'.$this->param['slug'].'/job_edit/{id}','editUrl');
+      $job->paginator->setUrl('shop/'.$this->param['shopSlug'].'/job_edit/{id}','editUrl');
       $job->paginator->setUrl('job/detail/{id}','detailUrl');
 
       $this->data = $job->paginator->build();
     }
-
     
     $this->setData('jobPostUrl',request()->get('shopUrl').'job_post');
     $this->setData('jobApplyListUrl',request()->get('shopUrl').'job_apply_list');
@@ -104,7 +102,7 @@ class ShopController extends Controller
       $page = $this->query['page'];
     }
 
-    $shopTos = Service::loadModel('ShopTo')
+    $shopTos = Service::loadModel('ShopRelateTo')
     ->select('model_id')
     ->where(array(
       array('model','like','branch'),
@@ -123,7 +121,7 @@ class ShopController extends Controller
       ));
       $branch->paginator->setPage($page);
       $branch->paginator->setPagingUrl('shop/'.request()->shopSlug.'/branch');
-      $branch->paginator->setUrl('shop/'.$this->param['slug'].'/branch_edit/{id}','editUrl');
+      $branch->paginator->setUrl('shop/'.$this->param['shopSlug'].'/branch_edit/{id}','editUrl');
       $branch->paginator->setUrl('branch/detail/{id}','detailUrl');
 
       $this->data = $branch->paginator->build();
@@ -135,7 +133,45 @@ class ShopController extends Controller
     return $this->view('pages.shop.branch');
   }
 
-  public function advertisement() {
+  public function advertising() {
+
+    $url = new Url;
+
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $shopTos = Service::loadModel('ShopRelateTo')
+    ->select('model_id')
+    ->where(array(
+      array('model','like','Advertising'),
+      array('shop_id','=',request()->get('shopId'))
+    ));
+
+    if($shopTos->exists()) {
+
+      $advertising = Service::loadModel('Advertising');
+      $advertising->paginator->criteria(array(
+        'conditions' => array(
+          'in' => array(
+            array('id',Service::getList($shopTos->get(),'model_id'))
+          )
+        ),
+        'order' => array('id','DESC')
+      ));
+      $advertising->paginator->setPage($page);
+      $advertising->paginator->setPagingUrl('shop/'.request()->shopSlug.'/advertising');
+      $advertising->paginator->setUrl('shop/'.$this->param['shopSlug'].'/shop_ad_edit/{id}','editUrl');
+      $advertising->paginator->setUrl('advertising/detail/{id}','detailUrl');
+
+      $this->data = $advertising->paginator->build();
+
+    }
+
+    $this->setData('advertisingPostUrl',request()->get('shopUrl').'shop_ad_post');
+
+    return $this->view('pages.shop.advertising');
 
   }
 
@@ -229,6 +265,15 @@ class ShopController extends Controller
   }
 
   public function descriptionSubmit() {
+
+    $model = request()->get('shop');
+
+    if($model->fill(request()->all())->save()) {
+      Message::display('ข้อมูลถูกบันทึกแล้ว','success');
+      return Redirect::to('shop/'.request()->shopSlug.'/manage');
+    }else{
+      return Redirect::back();
+    }
 
   }
 

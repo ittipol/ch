@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-class ShopTo extends Model
+class ShopRelateTo extends Model
 {
-  public $table = 'shop_tos';
+  public $table = 'shop_relate_to';
   protected $fillable = ['shop_id','model','model_id'];
   public $timestamps  = false;
 
@@ -16,8 +16,8 @@ class ShopTo extends Model
     return $this->hasOne('App\Models\Branch','id','model_id');
   }
 
-  public function advertisement() {
-    return $this->hasOne('App\Models\Advertisement','id','model_id');
+  public function advertising() {
+    return $this->hasOne('App\Models\Advertising','id','model_id');
   }
 
   public function shop() {
@@ -31,4 +31,5 @@ class ShopTo extends Model
       'model_id' => $model->id
     ))->save();
   }
+  
 }

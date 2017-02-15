@@ -32,20 +32,16 @@
       ?>
       <div class="form-item-group">
         <div class="row">
-          <?php 
-            foreach ($_fieldData['branches'] as $id => $branch):
-          ?>
+            @foreach ($_fieldData['branches'] as $id => $branch)
             <div class="col-lg-4 col-md-6 col-sm-6 col-sm-12">
               <label class="box">
                 <?php
-                  echo Form::checkbox('JobToBranch[branch_id][]', $id);
+                  echo Form::checkbox('RelateToBranch[branch_id][]', $id);
                 ?>
                 <div class="inner"><?php echo $branch; ?></div>
               </label>
             </div>
-          <?php
-            endforeach;
-          ?>
+            @endforeach
         </div>
       </div>
     </div>

@@ -293,13 +293,14 @@ class Images {
 
 		let html = '';
 		html += '<div class="image-panel '+this.style+' clearfix">';
+		html += '<input type="hidden" name="Image['+this.type+'][edit]['+index+'][id]" value="'+image.id+'" >';
 		html += '<label id="'+this.code+'_'+this.runningNumber+'" class="image-label added">';
 		html +=	'<div class="preview-image" style="background-image:url('+image._url+')"></div>';
-		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn" data-id="'+image.id+'" style="display:block;">×</a>'
+		html += '<a href="javscript:void(0);" class="'+this.code+'-remove-btn" data-id="'+image.id+'" style="display:block;">×</a>';
 		html += '<p class="error-message"></p>';
 		html += '</label>';
 		if(this.style == 'description'){
-			html += '<textarea name="Image['+this.type+']['+index+'][description]" placeholder="คำอธิบายเี่ยวกับรูปภาพนี้">'+image.description+'</textarea>';
+			html += '<textarea name="Image['+this.type+'][edit]['+index+'][description]" placeholder="คำอธิบายเี่ยวกับรูปภาพนี้">'+image.description+'</textarea>';
 		}
 		html += '</div>';
 

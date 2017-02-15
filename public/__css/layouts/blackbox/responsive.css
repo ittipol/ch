@@ -66,11 +66,15 @@
     visibility: visible;
     opacity: 1;
   }
+
+  .top-header {
+    width: 94%;
+  }
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (max-width : 992px) {
-
+  
 }
 
 /* Small Devices, Tablets */
@@ -84,6 +88,10 @@
 @media only screen and (max-width : 480px) {
   .form-error-messages {
     background-position: 136% 60%;
+  }
+
+  .top-header {
+    width: 90%;
   }
 }
 

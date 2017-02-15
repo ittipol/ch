@@ -1,7 +1,7 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<h2 class="top-header">ตั้งค่า</h2>
+<h2 class="top-header">เวลาทำการ</h2>
 <div class="line"></div>
 
 <div class="container">

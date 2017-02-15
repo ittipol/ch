@@ -1,9 +1,12 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
+<h2 class="top-header">ลงประกาศ ซื้อ ขาย สินค้า</h2>
+<div class="line"></div>
+
 <div class="container">
 
-  <div class="container-header">
+<!--   <div class="container-header">
     <div class="row">
       <div class="col-lg-12">
         <div class="title">
@@ -11,7 +14,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   @include('components.form_error') 
 

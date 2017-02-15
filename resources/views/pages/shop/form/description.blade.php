@@ -1,7 +1,7 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<h2 class="top-header">รปูภาพโปรไฟล์และหน้าปก</h2>
+<h2 class="top-header">คำอธิบายร้านค้า</h2>
 <div class="line"></div>
 
 <div class="container">
@@ -51,7 +51,7 @@
 
     <div class="form-row">
       <?php 
-        echo Form::label('mission', 'วพันธกิจ');
+        echo Form::label('mission', 'พันธกิจ');
         echo Form::textarea('mission', null, array(
           'class' => 'ckeditor'
         ));
@@ -71,10 +71,5 @@
   ?>
 
 </div>
-
-<script type="text/javascript">
-
-
-</script>
 
 @stop

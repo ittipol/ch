@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
-class JobToBranch extends Model
+class RelateToBranch extends Model
 {
-  protected $table = 'job_to_branches';
-  protected $fillable = ['job_id','branch_id'];
+  protected $table = 'relate_to_branches';
+  protected $fillable = ['model','model_id','branch_id'];
   public $timestamps  = false;
 
+  public function advertising() {
+    return $this->hasOne('App\Models\Advertising','id','model_id');
+  }
+
   public function job() {
-    return $this->hasOne('App\Models\Job','id','job_id');
+    return $this->hasOne('App\Models\Job','id','model_id');
   }
 
   public function branch() {
@@ -23,14 +27,18 @@ class JobToBranch extends Model
       // check branch is in shop first
 
       if($model->state == 'update') {
-        $this->where('job_id','=',$model->id)->delete();
+        $this->where(array(
+          array('model','like',$model->modelName),
+          array('model_id','=',$model->id),
+        ))->delete();
       }
       
       foreach ($options['value']['branch_id'] as $branchId) {
         
         $this->newInstance()->fill(array(
-          'job_id' => $model->id,
-          'branch_id' => $branchId,
+          'model' => $model->modelName,
+          'model_id' => $model->id,
+          'branch_id' => $branchId
         ))->save();
 
       }
@@ -40,4 +48,5 @@ class JobToBranch extends Model
     return true;
     
   }
+
 }

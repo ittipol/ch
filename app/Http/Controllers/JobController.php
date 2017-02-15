@@ -51,7 +51,7 @@ class JobController extends Controller
     $this->mergeData($model->modelData->build());
 
     // Get Shop Address
-    $shop = $model->getModelRelationData('ShopTo',array(
+    $shop = $model->getModelRelationData('ShopRelateTo',array(
       'first' => true,
     ))->shop;
 
@@ -61,7 +61,7 @@ class JobController extends Controller
     ))->slug;
 
     // Get Branches
-    $branchIds = $model->getRalatedData('JobToBranch',array(
+    $branchIds = $model->getRalatedData('RelateToBranch',array(
       'list' => 'branch_id',
       'fields' => array('branch_id'),
     ));
@@ -140,10 +140,10 @@ class JobController extends Controller
 
     $model = Service::loadModel('Job');
 
-    $request->request->add(['ShopTo' => array('shop_id' => request()->get('shop')->id)]);
+    $request->request->add(['ShopRelateTo' => array('shop_id' => request()->get('shop')->id)]);
 
     if($model->fill($request->all())->save()) {
-      Message::display('ลงประกาศงานแล้ว','success');
+      Message::display('ลงประกาศแล้ว','success');
       return Redirect::to('shop/'.$request->shopSlug.'/job');
     }else{
       return Redirect::back();
@@ -155,7 +155,7 @@ class JobController extends Controller
 
     $model = Service::loadModel('Job')->find($this->param['id']);
 
-    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
+    if(empty($model)) {
       $this->error = array(
         'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
@@ -166,25 +166,26 @@ class JobController extends Controller
       'models' => array('Image','Tagging'),
       'json' => array('Image','Tagging')
     ));
+
     $model->formHelper->loadFieldData('EmploymentType',array(
       'key' =>'id',
       'field' => 'name',
       'index' => 'employmentTypes'
     ));
 
-    $jobToBranch = $model->getRalatedData('JobToBranch',array(
+    $relateToBranch = $model->getModelRelationData('RelateToBranch',array(
       'fields' => array('branch_id')
     ));
 
     $branches = array();
-    if(!empty($jobToBranch)) {
-      foreach ($jobToBranch as $value) {
+    if(!empty($relateToBranch)) {
+      foreach ($relateToBranch as $value) {
         $branches['branch_id'][] = $value->branch->id;
       }
     }
 
     // Get Selected Branch
-    $model->formHelper->setFormData('JobToBranch',$branches);
+    $model->formHelper->setFormData('RelateToBranch',$branches);
     // Get All branches in shop
     $model->formHelper->setData('branches',request()->get('shop')->getRelatedShopData('Branch'));
 
@@ -229,7 +230,7 @@ class JobController extends Controller
 
     $jobModel = Service::loadModel('Job')->find($this->param['id']);
 
-    $branchIds = $jobModel->getRalatedData('JobToBranch',array(
+    $branchIds = $jobModel->getRalatedData('RelateToBranch',array(
       'list' => 'branch_id',
       'fields' => array('branch_id'),
     ));
@@ -247,7 +248,7 @@ class JobController extends Controller
       $_branches[$branch->id] = $branch->name;
     }
 
-    $shopToModel = Service::loadModel('ShopTo')
+    $shopToModel = Service::loadModel('ShopRelateTo')
     ->select('shop_id')
     ->where(array(
       array('model','like','Job'),
@@ -278,7 +279,7 @@ class JobController extends Controller
       return Redirect::to('job/detail/'.$this->param['id']);
     }
 
-    $shopToModel = Service::loadModel('ShopTo')
+    $shopToModel = Service::loadModel('ShopRelateTo')
     ->select('shop_id')
     ->where(array(
       array('model','like','Job'),

@@ -24,6 +24,23 @@ class CheckForPersonHasShopPermission
 
       $pages = array(
         'shop.manage' => true,
+        'shop.setting' => true,
+        'shop.edit.profile_image' => 'edit',
+        'shop.edit.description' => 'edit',
+        'shop.edit.address' => 'edit',
+        'shop.edit.contact' => 'edit',
+        'shop.edit.opening_hours' => 'edit',
+        'shop.job' => true,
+        'shop.job.add' => 'add',
+        'shop.job.edit' => 'edit',
+        'shop.job.apply_list' => true,
+        'shop.job.apply_detail' => true,
+        'shop.branch' => true,
+        'shop.branch.add' => 'add',
+        'shop.branch.edit' => 'edit',
+        'shop.advertising' => true,
+        'shop.advertising.add' => 'add',
+        'shop.advertising.edit' => 'edit',
       );
 
       if(empty($name) || empty($pages[$name])) {
@@ -31,19 +48,13 @@ class CheckForPersonHasShopPermission
         return redirect('/');
       }
 
-      $id = Slug::where('slug','like',$request->shopSlug)->select('model_id')->first()->model_id;
-      // $shop = Shop::find($id);
-
-      // if(!$shop->checkPersonHasShopPermission()) {
-      //   Message::display('ไม่อนุญาตให้แก้ไขร้านค้านี้ได้','error');
-      //   return redirect('/');
-      // }
+      // $id = Slug::where('slug','like',$request->shopSlug)->select('model_id')->first()->model_id;
 
       $personToShop = new PersonToShop;
       $person = $personToShop->getData(array(
         'conditions' => array(
           ['person_id','=',session()->get('Person.id')],
-          ['shop_id','=',$id],
+          ['shop_id','=',Slug::where('slug','like',$request->shopSlug)->select('model_id')->first()->model_id],
         ),
         'fields' => array('role_id'),
         'first' => true
@@ -54,22 +65,19 @@ class CheckForPersonHasShopPermission
         return redirect('/');
       }
 
-      $permission = $person->role->getPermission();
+      $permissions = $person->role->getPermission();
 
-      if(is_array($pages[$name])) {
-        dd('xxx');
+      if(!$pages[$name] && empty($permissions[$pages[$name]])) {
+        Message::display('ไม่อนุญาตให้แก้ไขร้านค้านี้ได้','error');
+        return redirect('/');
       }
-
-      // get permission
-      // $request->attributes->add([
-      //   'role' => $person->role->name,
-      //   'permission' => $person->role->getPermission()
-      // ]);
 
       // page level
       // who can access in this page?
       // admin = 1, can access all page
       // if(level <= pageLevel)
+      // have 4 levels
+      // just concept
 
       return $next($request);
     }

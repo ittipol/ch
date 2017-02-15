@@ -51,7 +51,7 @@ class BranchController extends Controller
     ));
 
     // Get Branches
-    $jobIds = $model->getRalatedData('JobToBranch',array(
+    $jobIds = $model->getRalatedData('RelateToBranch',array(
       'list' => 'job_id',
       'fields' => array('job_id'),
     ));
@@ -103,11 +103,10 @@ class BranchController extends Controller
 
     $model = Service::loadModel('Branch');
 
-    $request->request->add(['ShopTo' => array('shop_id' => request()->get('shopId'))]);
+    $request->request->add(['ShopRelateTo' => array('shop_id' => request()->get('shopId'))]);
 
     if($model->fill($request->all())->save()) {
       Message::display('สาขา '.$model->name.' ถูกเพิ่มแล้ว','success');
-      // return Redirect::to(route('shop.branch.detail', ['slug' => $this->param['slug'],'id' => $model->id]));
       return Redirect::to(route('branch.detail', ['id' => $model->id]));
     }else{
       return Redirect::back();
@@ -118,7 +117,7 @@ class BranchController extends Controller
 
     $model = Service::loadModel('Branch')->find($this->param['id']);
 
-    if(empty($model) || ($model->person_id != session()->get('Person.id'))) {
+    if(empty($model)) {
       $this->error = array(
         'message' => 'ขออภัย ไม่สามารถแก้ไขข้อมูลนี้ได้ หรือข้อมูลนี้อาจถูกลบแล้ว'
       );
@@ -159,7 +158,7 @@ class BranchController extends Controller
     if($model->fill($request->all())->save()) {
 
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
-      return Redirect::to(route('shop.branch.detail', ['slug' => $this->param['slug'],'id' => $model->id]));
+      return Redirect::to(route('branch.detail', ['id' => $model->id]));
     }else{
       return Redirect::back();
     }
