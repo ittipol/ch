@@ -1,8 +1,9 @@
 @extends('layouts.blackbox.main')
 @section('content')
 
-<h2 class="top-header">โฆษณา</h2>
-<div class="line"></div>
+<div class="top-header-wrapper">
+  <h2 class="top-header">โฆษณา</h2>
+</div>
 
 <div class="container">
 

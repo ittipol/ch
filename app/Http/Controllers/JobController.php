@@ -50,18 +50,15 @@ class JobController extends Controller
 
     $this->mergeData($model->modelData->build());
 
-    // Get Shop Address
     $shop = $model->getModelRelationData('ShopRelateTo',array(
       'first' => true,
     ))->shop;
 
-    // Get Slug
     $slug = $shop->getModelRelationData('Slug',array(
       'first' => true,
     ))->slug;
-
-    // Get Branches
-    $branchIds = $model->getRalatedData('RelateToBranch',array(
+    
+    $branchIds = $model->getModelRelationData('RelateToBranch',array(
       'list' => 'branch_id',
       'fields' => array('branch_id'),
     ));
@@ -93,7 +90,7 @@ class JobController extends Controller
           'address' => $branch->name,
           'latitude' => $graphics['latitude'],
           'longitude' => $graphics['longitude'],
-          'detailUrl' => $url->setAndParseUrl('shop/'.$slug.'/branch_detail/{id}',$branch->getAttributes())
+          'detailUrl' => $url->setAndParseUrl('branch/detail/{id}',$branch->getAttributes())
         );
       }
     }
@@ -230,7 +227,14 @@ class JobController extends Controller
 
     $jobModel = Service::loadModel('Job')->find($this->param['id']);
 
-    $branchIds = $jobModel->getRalatedData('RelateToBranch',array(
+    if(empty($jobModel)) {
+      $this->error = array(
+        'message' => 'ไม่พบงานนี้'
+      );
+      return $this->error();
+    }    
+
+    $branchIds = $jobModel->getModelRelationData('RelateToBranch',array(
       'list' => 'branch_id',
       'fields' => array('branch_id'),
     ));

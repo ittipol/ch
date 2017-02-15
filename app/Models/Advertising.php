@@ -32,6 +32,22 @@ class Advertising extends Model
     )
   );
 
+  public function buildModelData() {
+
+    $string = new String;
+
+    // $advertisingType = AdvertisingType::select(array('name'))->find($this->advertising_type_id);
+
+    return array(
+      'id' => $this->id,
+      'name' => $this->name,
+      'description' => !empty($this->description) ? $this->description : '-',
+      '_name_short' => $string->subString($this->name,60),
+      '_advertisingType' => AdvertisingType::select(array('name'))->find($this->advertising_type_id)->name
+    );
+    
+  }
+
   public function buildPaginationData() {
 
     $string = new String;

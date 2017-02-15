@@ -93,36 +93,16 @@ class Image extends Model
         break;
       }
 
-      $this->handleImage($model,$image,$options);
+      if(!empty($image['id'])) {
+        $_image = $this->find($image['id']);
+        
+        if($_image->exists) {
+          $_image->fill($image)->save();
+        }
 
-      // $path = $temporaryFile->getFilePath($image['filename'],array(
-      //   'directoryName' => $directoryName
-      // ));
-
-      // if(!file_exists($path)){
-      //   continue;
-      // }
-
-      // $_value = array(
-      //   'filename' => $image['filename'],
-      //   'image_type_id' => $imageType->getIdByalias($options['type'])
-      // );
-
-      // if(!empty($image['description'])) {
-      //   $_value['description'] = $image['description'];
-      // }
-
-      // $imageInstance = $this->newInstance();
-      // if($imageInstance->fill($model->includeModelAndModelId($_value))->save()) {
-
-      //   $toPath = $imageInstance->getDirPath().$imageInstance->imageType->path;
-      //   if(!is_dir($toPath)){
-      //     mkdir($toPath,0777,true);
-      //   }
-
-      //   $this->moveImage($path,$imageInstance->getImagePath());
-
-      // }
+      }else{
+        $this->handleImage($model,$image,$options);
+      }
 
     }
 

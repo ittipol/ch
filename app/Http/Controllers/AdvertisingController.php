@@ -15,6 +15,111 @@ class AdvertisingController extends Controller
     parent::__construct();
   }
 
+  // public function listView() {
+
+  //   $model = Service::loadModel('Advertising');
+    
+  //   $page = 1;
+  //   if(!empty($this->query)) {
+  //     $page = $this->query['page'];
+  //   }
+
+  //   $model->paginator->setPage($page);
+  //   $model->paginator->setPagingUrl('advertising/list');
+  //   $model->paginator->setUrl('advertising/detail/{id}','detailUrl');
+
+  //   $this->data = $model->paginator->build();
+
+  //   return $this->view('pages.dvertising.list');
+  // }
+
+  public function detail() {
+
+    $model = Service::loadModel('Advertising')->find($this->param['id']);
+
+    if(empty($model)) {
+      $this->error = array(
+        'message' => 'ไม่พบประกาศนี้'
+      );
+      return $this->error();
+    }
+
+    $model->modelData->loadData(array(
+      'models' => array('Image','Tagging'),
+      'json' => array('Image')
+    ));
+
+    $this->mergeData($model->modelData->build());
+
+    // Get Shop Address
+    $shop = $model->getModelRelationData('ShopRelateTo',array(
+      'first' => true,
+    ))->shop;
+
+    // Get Slug
+    $slug = $shop->getModelRelationData('Slug',array(
+      'first' => true,
+    ))->slug;
+
+    // Get Branches
+    $branchIds = $model->getModelRelationData('RelateToBranch',array(
+      'list' => 'branch_id',
+      'fields' => array('branch_id'),
+    ));
+
+    $branches = array();
+    if(!empty($branchIds)){
+      $branches = Service::loadModel('Branch')
+      ->select(array('id','name'))
+      ->whereIn('id',$branchIds)
+      ->get();
+    }
+    
+    $url = new Url;
+
+    $branchLocations = array();
+    $hasBranchLocation = false;
+    foreach ($branches as $branch) {
+
+      $address = $branch->modelData->loadAddress();
+
+      if(!empty($address)){
+
+        $hasBranchLocation = true;
+
+        $graphics = json_decode($address['_geographic'],true);
+        
+        $branchLocations[] = array(
+          'id' => $branch->id,
+          'address' => $branch->name,
+          'latitude' => $graphics['latitude'],
+          'longitude' => $graphics['longitude'],
+          'detailUrl' => $url->setAndParseUrl('branch/detail/{id}',$branch->getAttributes())
+        );
+      }
+    }
+
+    $this->setData('shopName',$shop->name);
+    // $this->setData('shopAddress',$shop->modelData->loadAddress());
+    $this->setData('branchLocations',json_encode($branchLocations));
+    $this->setData('hasBranchLocation',$hasBranchLocation);
+
+    // Get person apply job
+    $personApplyJob = Service::loadModel('PersonApplyJob')->where(array(
+      array('person_id','=',session()->get('Person.id')),
+      array('job_id','=',$this->param['id'])
+    ))->exists();
+
+    $this->setData('personApplyJob',$personApplyJob);
+
+    if(!$personApplyJob) {
+      $this->setData('jobApplyUrl',$url->setAndParseUrl('job/apply/{id}',array('id' => $this->param['id'])));
+    }
+
+    return $this->view('pages.advertising.detail');
+
+  }
+
   public function add() {
 
     $model = Service::loadModel('Advertising');
@@ -99,7 +204,7 @@ class AdvertisingController extends Controller
       );
       return $this->error();
     }
-dd($request->all());
+
     if($model->fill($request->all())->save()) {
       Message::display('ข้อมูลถูกบันทึกแล้ว','success');
       return Redirect::to('shop/'.request()->shopSlug.'/advertising');

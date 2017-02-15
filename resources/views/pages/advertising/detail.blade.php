@@ -6,11 +6,11 @@
 <div class="top-header-wrapper">
   <div class="top-header">
     <div class="detail-title">
-      <h4 class="sub-title">ประกาศงาน</h4>
+      <h4 class="sub-title">งาน</h4>
       <h2 class="title">{{$_modelData['name']}}</h2>
       <div class="tag-group">
         <a class="tag-box">{{$shopName}}</a>
-        <a class="tag-box">{{$_modelData['_employmentTypeName']}}</a>
+        <a class="tag-box">{{$_modelData['_advertisingType']}}</a>
         @foreach ($_modelData['Tagging'] as $tagging)
           <a class="tag-box">{{$tagging['_word']}}</a>
         @endforeach
@@ -20,10 +20,6 @@
 </div>
 
 <div class="detail container">
-
-  @if($personApplyJob)
-    <h4 class="sign info wide space-bottom-20">สมัครงานนี้แล้ว</h4>
-  @endif
 
   <div class="image-gallery">
 
@@ -62,21 +58,6 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6 col-sm-12">
-      <div class="item-info">
-
-        <div class="item-info-row">
-          <p>เงินเดือน (บาท)</p>
-          <h4 class="price">{{$_modelData['_salary']}}</h4>
-        </div>
-
-      </div>
-    </div> 
-  </div>
-
-  <div class="line space-top-bottom-20"></div>
-
-  <div class="row">
     <div class="col-xs-12">
     <p>ชื่อบริษัทหรือร้านค้า</p>
     <h4>{{$shopName}}</h4>
@@ -86,37 +67,23 @@
   <div class="row">
     <div class="list-description col-md-6 col-sm-12">
       <dl class="list-description-item row">
-        <dt class="col-sm-4">รูปแบบงาน</dt>
-        <dd class="col-sm-8">{{$_modelData['_employmentTypeName']}}</dd>
+        <dt class="col-sm-4">ประเภทโฆษณา</dt>
+        <dd class="col-sm-8">{{$_modelData['_advertisingType']}}</dd>
       </dl>
     </div>
   </div>
 
   <div class="line space-top-bottom-20"></div>
 
-  <h4>คุณสมบัติผู้สมัคร</h4>   
-  <div>
-    {!!$_modelData['qualification']!!}
-  </div>
-
-  <div class="line space-top-bottom-20"></div>
-
-  <h4>รายละเอียดงาน</h4>   
+  <h4>รายละเอียดโฆษณา</h4>   
   <div>
     {!!$_modelData['description']!!}
   </div>
 
   <div class="line space-top-bottom-20"></div>
 
-  <h4>สวัสดิการ</h4>   
-  <div>
-    {!!$_modelData['benefit']!!}
-  </div>
-
-  <div class="line space-top-bottom-20"></div>
-
   @if($hasBranchLocation)
-  <h4>สาขาที่กำลังเปิดรับสมัครงานนี้</h4>   
+  <h4>สาขาที่ลงโฆษณานี้</h4>   
   <div class="row">
     <div class="col-xs-12">
 
@@ -137,32 +104,6 @@
   <div class="line space-top-bottom-20"></div>
 
   @endif
-
-  <h4>สมัครงานนี้</h4>
-
-  <div class="text-center space-top-bottom-20">
-
-    @if($personApplyJob)
-      <h4 class="sign info">สมัครงานนี้แล้ว</h4>
-    @else
-    <a href="{{$jobApplyUrl}}">
-      <span class="button">สมัครงานนี้ผ่าน CHONBURI SQUARE</span>
-    </a>
-    @endif
-  </div>
-
-  @if(!empty($_modelData['_recruitment_custom']) && !empty($_modelData['recruitment_custom_detail']))
-
-  <div class="text-strike">
-    <span>หรือ</span>
-    <div class="line"></div>
-  </div>
-  
-  <div>
-    {!!$_modelData['recruitment_custom_detail']!!}
-  </div>
-  @endif
-
 
 </div>
 

@@ -50,8 +50,12 @@ class BranchController extends Controller
       'json' => array('Image')
     ));
 
+    $shop = $model->getModelRelationData('ShopRelateTo',array(
+      'first' => true,
+    ))->shop;
+
     // Get Branches
-    $jobIds = $model->getRalatedData('RelateToBranch',array(
+    $jobIds = $model->getModelRelationData('RelateToBranch',array(
       'list' => 'job_id',
       'fields' => array('job_id'),
     ));
@@ -75,6 +79,7 @@ class BranchController extends Controller
 
     $this->data = $model->modelData->build();
     $this->setData('jobs',$jobs->paginator->getModelData());
+    $this->setData('shopName',$shop->name);
 
     return $this->view('pages.branch.detail');
 

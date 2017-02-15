@@ -3,7 +3,7 @@
 }
 
 .form-error-messages {
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 	background-color: rgb(233,95,98);
 	background-image: url('/images/common/error.png');
 	background-repeat: no-repeat;

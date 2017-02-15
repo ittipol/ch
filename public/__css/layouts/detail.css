@@ -7,7 +7,7 @@
 }
 
 .detail-title {
-	border-bottom: 1px solid #bababa;
+	/*border-bottom: 1px solid #bababa;*/
 	margin-bottom: 20px;
 }
 
@@ -60,7 +60,7 @@
 
 .image-gallery .image-gallary-display {
 	width: 100%;
-	height: 500px;
+	height: 600px;
 	background-color: #fff;
 	position: relative;
 }
@@ -97,7 +97,7 @@
 	overflow: hidden;
 	z-index: 9;
 	display: none;
-	transition: all 320ms ease-out;
+	transition: all 250ms ease-out;
 }
 
 .image-gallery .image-description .image-description-inner {
@@ -225,6 +225,7 @@
 .detail h4.title-with-icon {
 	font-size: 18px;
 	line-height: 30px;
+	margin-top: 10px;
 }
 
 .detail .title-with-icon::before {

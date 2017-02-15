@@ -25,3 +25,7 @@
 .list > .list-item h4 {
 	display: inline-block;
 }
+
+.list-description .list-description-item:last-child {
+	margin-bottom: 0;
+}

@@ -48,8 +48,6 @@ class CheckForPersonHasShopPermission
         return redirect('/');
       }
 
-      // $id = Slug::where('slug','like',$request->shopSlug)->select('model_id')->first()->model_id;
-
       $personToShop = new PersonToShop;
       $person = $personToShop->getData(array(
         'conditions' => array(
