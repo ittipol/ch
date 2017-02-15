@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 14, 2017 at 12:53 PM
+-- Generation Time: Feb 15, 2017 at 09:31 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -69,8 +69,61 @@ INSERT INTO `addresses` (`id`, `model`, `model_id`, `address`, `province_id`, `d
 (20, 'Branch', 2, '', 9, 153, 76, NULL, '13.208111151170357', '100.97418308258057', 1, '2017-02-13 11:05:21', '2017-02-13 20:24:57'),
 (21, 'Branch', 3, NULL, 9, 146, 1, NULL, '13.083324030787123', '100.92189073562622', 1, '2017-02-13 11:06:03', '2017-02-13 11:06:03'),
 (22, 'Branch', 4, NULL, 9, 146, 1, NULL, '13.285851486839508', '100.92583894729614', 1, '2017-02-13 11:06:29', '2017-02-13 11:06:29'),
-(27, 'Shop', 3, '17/99', 9, 146, 1, NULL, '13.621296798808691', '101.01139068603516', 1, '2017-02-13 13:27:33', '2017-02-13 13:27:33'),
-(28, 'Branch', 5, '', 9, 146, 1, NULL, '13.17272085558931', '100.94221115112305', 1, '2017-02-14 06:22:26', '2017-02-14 06:22:26');
+(27, 'Shop', 3, '17/99', 60, 727, 0, NULL, '13.556556689521157', '100.60111999511719', 1, '2017-02-13 13:27:33', '2017-02-14 19:23:46'),
+(28, 'Branch', 5, '', 9, 146, 1, NULL, '13.17272085558931', '100.94221115112305', 1, '2017-02-14 06:22:26', '2017-02-14 06:22:26'),
+(29, 'Branch', 6, '', 9, 146, 1, NULL, NULL, NULL, 1, '2017-02-14 19:36:00', '2017-02-14 19:36:00'),
+(30, 'Branch', 7, '', 9, 146, 1, NULL, '13.28806511412028', '100.953369140625', 1, '2017-02-15 10:05:34', '2017-02-15 10:05:34'),
+(31, 'RealEstate', 57, NULL, 9, 146, 1, NULL, NULL, NULL, 1, '2017-02-15 14:54:22', '2017-02-15 14:54:22');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advertisings`
+--
+
+CREATE TABLE `advertisings` (
+  `id` int(11) NOT NULL,
+  `advertising_type_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `person_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `advertisings`
+--
+
+INSERT INTO `advertisings` (`id`, `advertising_type_id`, `name`, `description`, `person_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'xxxx', '', 1, '2017-02-15 10:01:09', '2017-02-15 10:01:09'),
+(2, 1, 'xxx', '', 1, '2017-02-15 10:05:58', '2017-02-15 10:05:58'),
+(3, 1, 'xxx', '', 1, '2017-02-15 10:06:11', '2017-02-15 10:06:11'),
+(4, 1, 'xxx', '', 1, '2017-02-15 10:24:09', '2017-02-15 10:24:09'),
+(5, 2, 'xxxxxxx', '<p>aaaaaaaaaaa</p>', 1, '2017-02-15 10:55:24', '2017-02-15 10:55:24'),
+(6, 2, 'บริการรับเขียน website ราคาถูก รายละเอียดข้างใน', '', 1, '2017-02-15 10:57:30', '2017-02-15 11:01:55'),
+(7, 1, '333', '', 1, '2017-02-15 13:50:11', '2017-02-15 13:50:11'),
+(8, 1, 'xxx', '', 1, '2017-02-15 13:50:25', '2017-02-15 13:50:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advertising_types`
+--
+
+CREATE TABLE `advertising_types` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `advertising_types`
+--
+
+INSERT INTO `advertising_types` (`id`, `name`) VALUES
+(1, 'สินค้า'),
+(2, 'งานบริการ'),
+(3, 'สถาที่');
 
 -- --------------------------------------------------------
 
@@ -116,7 +169,9 @@ INSERT INTO `branches` (`id`, `name`, `description`, `person_id`, `created_at`, 
 (2, 'บางพระ 2', '', 1, '2017-02-13 11:05:21', '2017-02-14 07:08:56'),
 (3, 'อ่าวอุดม', '', 1, '2017-02-13 11:06:03', '2017-02-14 07:08:57'),
 (4, 'บางแสน', '', 1, '2017-02-13 11:06:29', '2017-02-14 07:08:59'),
-(5, 'วังหิน', '', 1, '2017-02-14 06:22:26', '2017-02-14 07:09:00');
+(5, 'วังหิน', '', 1, '2017-02-14 06:22:26', '2017-02-14 07:09:00'),
+(6, '12345', '', 1, '2017-02-14 19:36:00', '2017-02-14 19:36:29'),
+(7, '1111', '', 1, '2017-02-15 10:05:34', '2017-02-15 10:05:34');
 
 -- --------------------------------------------------------
 
@@ -1090,7 +1145,10 @@ INSERT INTO `contacts` (`id`, `model`, `model_id`, `phone_number`, `fax`, `email
 (16, 'Shop', 15, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-14 11:24:26', '2017-02-14 11:24:26'),
 (17, 'Shop', 16, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-14 11:25:26', '2017-02-14 11:25:26'),
 (18, 'Shop', 17, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-14 11:25:45', '2017-02-14 11:25:45'),
-(19, 'Shop', 18, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-14 11:27:40', '2017-02-14 11:27:40');
+(19, 'Shop', 18, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-14 11:27:40', '2017-02-14 11:27:40'),
+(20, 'Branch', 6, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-14 19:36:00', '2017-02-14 19:36:00'),
+(21, 'Branch', 7, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-15 10:05:34', '2017-02-15 10:05:34'),
+(22, 'RealEstate', 57, NULL, NULL, NULL, NULL, NULL, 1, '2017-02-15 14:54:22', '2017-02-15 14:54:22');
 
 -- --------------------------------------------------------
 
@@ -2109,8 +2167,22 @@ INSERT INTO `images` (`id`, `model`, `model_id`, `path`, `filename`, `descriptio
 (21, 'Shop', 3, NULL, '14870547530462380844349997132859.jpg', NULL, 3, 1, '2017-02-14 13:45:57', '2017-02-14 13:45:57'),
 (22, 'Shop', 3, NULL, '14870547790117678262371550150693.jpg', NULL, 3, 1, '2017-02-14 13:47:32', '2017-02-14 13:47:32'),
 (23, 'Shop', 3, NULL, '14870548729677958770045449135382.jpg', NULL, 3, 1, '2017-02-14 13:48:00', '2017-02-14 13:48:00'),
-(30, 'Shop', 3, NULL, '1487059701409766419247134418136.png', NULL, 2, 1, '2017-02-14 15:08:22', '2017-02-14 15:08:22'),
-(31, 'Shop', 3, NULL, '1487059753074382250349928546579.jpg', NULL, 3, 1, '2017-02-14 15:09:14', '2017-02-14 15:09:14');
+(32, 'Branch', 6, NULL, '1487075754664820312291867357032.jpg', NULL, 1, 1, '2017-02-14 19:36:00', '2017-02-14 19:36:00'),
+(33, 'Advertising', 6, NULL, '1487131151014812215271571273242.png', NULL, 1, 1, '2017-02-15 11:00:05', '2017-02-15 11:00:05'),
+(34, 'Advertising', 6, NULL, '1487131160160044475212629590024.jpg', NULL, 1, 1, '2017-02-15 11:00:05', '2017-02-15 11:00:05'),
+(35, 'Advertising', 6, NULL, '1487131296433899597342360642497.jpg', NULL, 1, 1, '2017-02-15 11:01:55', '2017-02-15 11:01:55'),
+(36, 'Advertising', 6, NULL, '1487131300653420249870389185991.jpg', NULL, 1, 1, '2017-02-15 11:01:55', '2017-02-15 11:01:55'),
+(37, 'Advertising', 7, NULL, '1487131394628083470260635046352.jpg', 'คู้เย็น', 1, 1, '2017-02-15 11:03:28', '2017-02-15 11:03:28'),
+(38, 'Advertising', 7, NULL, '1487131396465685987124385756110.jpg', 'bed', 1, 1, '2017-02-15 11:03:28', '2017-02-15 11:03:28'),
+(39, 'Advertising', 7, NULL, '1487141407005735753250136456110.jpg', 'bed', 1, 1, '2017-02-15 13:50:12', '2017-02-15 13:50:12'),
+(40, 'Advertising', 7, NULL, '14871414102441807045072300239704.png', 'xxx', 1, 1, '2017-02-15 13:50:12', '2017-02-15 13:50:12'),
+(42, 'Advertising', 8, NULL, '1487142036647761851957629529614.jpg', 'YYYY', 1, 1, '2017-02-15 14:00:37', '2017-02-15 14:02:20'),
+(43, 'Advertising', 8, NULL, '1487142139710352190791769246579.jpg', '', 1, 1, '2017-02-15 14:02:20', '2017-02-15 14:04:50'),
+(44, 'Advertising', 8, NULL, '14871427538002973618840090312206.jpg', NULL, 1, 1, '2017-02-15 14:12:38', '2017-02-15 14:12:38'),
+(45, 'Advertising', 8, NULL, '14871427555735544295123669555863.jpg', NULL, 1, 1, '2017-02-15 14:12:38', '2017-02-15 14:12:38'),
+(49, 'Shop', 3, NULL, '1487142917902730929287907142806.jpg', NULL, 2, 1, '2017-02-15 14:15:19', '2017-02-15 14:15:19'),
+(50, 'Shop', 3, NULL, '14871429081235229826233627665960.jpg', NULL, 3, 1, '2017-02-15 14:15:19', '2017-02-15 14:15:19'),
+(51, 'Job', 4, NULL, '14871472098093143829757427239704.png', NULL, 1, 1, '2017-02-15 15:26:51', '2017-02-15 15:26:51');
 
 -- --------------------------------------------------------
 
@@ -2298,7 +2370,8 @@ CREATE TABLE `jobs` (
 INSERT INTO `jobs` (`id`, `employment_type_id`, `name`, `salary`, `description`, `qualification`, `benefit`, `recruitment`, `recruitment_custom_detail`, `person_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 'หัวหน้างานฝ่ายผลิต', 'สามารถต่อรองได้', '<p>- หน้าที่หลักเน้นด้านการบริหาร อาทิเช่น วางแผนงาน สั่งการ ควบคุมงาน ให้ได้ตามแผน<br />\r\n- ประสานงานระหว่าง ผู้จัดการโรงงาน และ พนักงานในฝ่ายผลิต</p>', '<p>สัญชาติ :</p>\r\n\r\n<p>Thai</p>\r\n\r\n<p>เพศ :</p>\r\n\r\n<p>N/A</p>\r\n\r\n<p>อายุ :</p>\r\n\r\n<p>35-43 ปี</p>\r\n\r\n<p>ระดับการศึกษา :</p>\r\n\r\n<p>ปริญญาตรี</p>\r\n\r\n<p>ประเภทของการทำงาน :</p>\r\n\r\n<p>งานประจำ</p>\r\n\r\n<p>ประสบการณ์การทำงาน :</p>\r\n\r\n<p>5&nbsp;-&nbsp;10&nbsp;ปี</p>\r\n\r\n<p>จำนวนที่รับ :</p>\r\n\r\n<p>2&nbsp;ตำแหน่ง</p>', '<p>- กองทุนเงินทดแทน<br />\r\n- ประกันชีวิต<br />\r\n- ค่ารถ<br />\r\n- ค่าอาหาร<br />\r\n- เงินช่วยเหลือทางสังคมต่างๆ</p>', '{"s":"1","c":"0"}', NULL, 1, '2017-02-12 13:03:13', '2017-02-12 13:03:13'),
 (2, 1, 'HR 12000+', '120000', '', '', '', '{"s":"1","c":"0"}', NULL, 1, '2017-02-13 10:27:43', '2017-02-13 10:30:34'),
-(3, 1, 'หัวหน้าฝ่ายขนส่งสินค้า', '15000 - 20000', '', '', '', '{"s":"1","c":"0"}', NULL, 1, '2017-02-13 11:07:49', '2017-02-13 11:07:49');
+(3, 1, 'หัวหน้าฝ่ายขนส่งสินค้า', '15000 - 20000', '', '', '', '{"s":"1","c":"0"}', NULL, 1, '2017-02-13 11:07:49', '2017-02-13 11:07:49'),
+(4, 1, 'หัวหน้าฝ่ายขาย', '12000', '', '', '', '{"s":"1","c":"0"}', NULL, 1, '2017-02-15 15:26:40', '2017-02-15 15:26:40');
 
 -- --------------------------------------------------------
 
@@ -2318,30 +2391,8 @@ CREATE TABLE `job_apply_to_branches` (
 INSERT INTO `job_apply_to_branches` (`person_apply_job_id`, `branch_id`) VALUES
 (1, 3),
 (1, 4),
-(1, 6),
-(1, 7),
 (2, 1),
 (2, 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `job_to_branches`
---
-
-CREATE TABLE `job_to_branches` (
-  `job_id` int(11) NOT NULL,
-  `branch_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `job_to_branches`
---
-
-INSERT INTO `job_to_branches` (`job_id`, `branch_id`) VALUES
-(3, 1),
-(3, 3),
-(3, 4);
 
 -- --------------------------------------------------------
 
@@ -3066,7 +3117,8 @@ INSERT INTO `real_estates` (`id`, `announcement_type_id`, `real_estate_type_id`,
 (53, 2, 2, 'aaaa', '', 1, '{"sqm":""}', '{"rai":"","ngan":"","wa":"","sqm":""}', '{"bedroom":"0","bathroom":"0","living_room":"0","home_office":"0","floors":"0","carpark":"0"}', 's', NULL, NULL, '0', 1, '2017-02-03 17:27:50', '2017-02-03 17:27:50'),
 (54, 2, 1, 'abc', '', 1200000, '{"sqm":""}', '{"rai":"","ngan":"","wa":"","sqm":""}', '{"bedroom":"0","bathroom":"0","living_room":"0","home_office":"0","floors":"0","carpark":"0"}', 's', NULL, NULL, '0', 1, '2017-02-03 17:29:11', '2017-02-03 17:29:11'),
 (55, 2, 1, 'aaa', '', 12000, '{"sqm":""}', '{"rai":"","ngan":"","wa":"","sqm":""}', '{"bedroom":"0","bathroom":"0","living_room":"0","home_office":"0","floors":"0","carpark":"0"}', 's', NULL, NULL, '0', 1, '2017-02-03 20:20:52', '2017-02-03 20:20:52'),
-(56, 2, 1, 'Homeee', '', 120000000, '{"sqm":""}', '{"rai":"","ngan":"","wa":"","sqm":""}', '{"bedroom":"0","bathroom":"0","living_room":"0","home_office":"0","floors":"0","carpark":"0"}', 's', NULL, NULL, '0', 1, '2017-02-13 10:11:20', '2017-02-13 10:11:20');
+(56, 2, 1, 'Homeee', '', 120000000, '{"sqm":""}', '{"rai":"","ngan":"","wa":"","sqm":""}', '{"bedroom":"0","bathroom":"0","living_room":"0","home_office":"0","floors":"0","carpark":"0"}', 's', NULL, NULL, '0', 1, '2017-02-13 10:11:20', '2017-02-13 10:11:20'),
+(57, 2, 1, 'xxx', '', 111, '{"sqm":""}', '{"rai":"","ngan":"","wa":"","sqm":""}', '{"bedroom":"0","bathroom":"0","living_room":"0","home_office":"0","floors":"0","carpark":"0"}', 's', NULL, NULL, '0', 1, '2017-02-15 14:54:22', '2017-02-15 14:54:22');
 
 -- --------------------------------------------------------
 
@@ -3180,6 +3232,29 @@ INSERT INTO `real_estate_types` (`id`, `name`, `can_sale`, `can_rent`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `relate_to_branches`
+--
+
+CREATE TABLE `relate_to_branches` (
+  `model` varchar(255) NOT NULL,
+  `model_id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `relate_to_branches`
+--
+
+INSERT INTO `relate_to_branches` (`model`, `model_id`, `branch_id`) VALUES
+('Advertising', 5, 7),
+('Advertising', 6, 7),
+('Advertising', 7, 7),
+('Advertising', 8, 7),
+('Job', 4, 7);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `roles`
 --
 
@@ -3226,7 +3301,7 @@ CREATE TABLE `shops` (
 INSERT INTO `shops` (`id`, `name`, `description`, `brand_story`, `profile_image_id`, `cover_image_id`, `person_id`, `created_at`, `updated_at`) VALUES
 (1, 'V has come too', '', NULL, 0, 0, 1, '2017-01-28 17:25:21', '2017-01-28 17:25:21'),
 (2, 'aqw', '', NULL, 0, 0, 1, '2017-01-28 17:26:47', '2017-01-28 17:26:47'),
-(3, 'a team', '', NULL, 30, 31, 1, '2017-01-28 17:30:45', '2017-02-14 15:09:14'),
+(3, 'a team', '<p>aaaa</p>', '<p>bbbb</p>', 49, 50, 1, '2017-01-28 17:30:45', '2017-02-15 14:15:19'),
 (13, 'ร้านค้า 1', NULL, NULL, NULL, NULL, 1, '2017-02-14 11:20:13', '2017-02-14 11:20:13'),
 (14, 'ร้านค้าทอสอบ 2', NULL, NULL, NULL, NULL, 1, '2017-02-14 11:24:03', '2017-02-14 11:24:03'),
 (15, 'ร้านค้า 3', NULL, NULL, NULL, NULL, 1, '2017-02-14 11:24:26', '2017-02-14 11:24:26'),
@@ -3237,28 +3312,28 @@ INSERT INTO `shops` (`id`, `name`, `description`, `brand_story`, `profile_image_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shop_tos`
+-- Table structure for table `shop_relate_to`
 --
 
-CREATE TABLE `shop_tos` (
+CREATE TABLE `shop_relate_to` (
   `shop_id` int(11) NOT NULL,
   `model` varchar(255) NOT NULL,
   `model_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `shop_tos`
+-- Dumping data for table `shop_relate_to`
 --
 
-INSERT INTO `shop_tos` (`shop_id`, `model`, `model_id`) VALUES
-(3, 'Branch', 1),
-(3, 'Branch', 2),
-(3, 'Branch', 3),
-(3, 'Branch', 4),
-(3, 'Branch', 5),
-(3, 'Job', 1),
-(3, 'Job', 2),
-(3, 'Job', 3);
+INSERT INTO `shop_relate_to` (`shop_id`, `model`, `model_id`) VALUES
+(3, 'Advertisement', 3),
+(3, 'Advertisement', 4),
+(3, 'Advertising', 5),
+(3, 'Advertising', 6),
+(3, 'Advertising', 7),
+(3, 'Advertising', 8),
+(3, 'Branch', 7),
+(3, 'Job', 4);
 
 -- --------------------------------------------------------
 
@@ -3438,7 +3513,11 @@ INSERT INTO `taggings` (`id`, `model`, `model_id`, `word_id`, `created_at`) VALU
 (17, 'RealEstate', 56, 42, '2017-02-13 10:11:20'),
 (18, 'Job', 2, 43, '2017-02-13 10:27:43'),
 (19, 'Job', 2, 44, '2017-02-13 10:27:44'),
-(20, 'Job', 3, 45, '2017-02-13 11:07:49');
+(20, 'Job', 3, 45, '2017-02-13 11:07:49'),
+(21, 'Advertising', 6, 46, '2017-02-15 11:01:56'),
+(22, 'Advertising', 6, 47, '2017-02-15 11:01:56'),
+(23, 'Advertising', 6, 48, '2017-02-15 11:01:56'),
+(24, 'Advertising', 6, 49, '2017-02-15 11:01:56');
 
 -- --------------------------------------------------------
 
@@ -3556,7 +3635,10 @@ INSERT INTO `temporary_files` (`id`, `model`, `token`, `person_id`, `created_at`
 (121, 'undefined', 'xDpVmhcC', 1, '2017-02-14 13:43:52'),
 (122, 'undefined', 'FibWLIYE', 1, '2017-02-14 13:43:55'),
 (127, 'Shop', 'uKrTPT1K', 1, '2017-02-14 13:48:23'),
-(128, 'Shop', 'ZblR4mWp', 1, '2017-02-14 13:50:20');
+(128, 'Shop', 'ZblR4mWp', 1, '2017-02-14 13:50:20'),
+(132, 'Advertising', 'DZ2Orp6T', 1, '2017-02-15 11:15:51'),
+(133, 'Advertising', 'OMYLaFgW', 1, '2017-02-15 13:49:55'),
+(136, 'Advertising', 'pULMlAlj', 1, '2017-02-15 13:50:39');
 
 -- --------------------------------------------------------
 
@@ -4345,7 +4427,11 @@ INSERT INTO `words` (`id`, `word`, `created_at`) VALUES
 (42, 'mee', '2017-02-13 10:11:20'),
 (43, 'hell', '2017-02-13 10:27:43'),
 (44, 'heven', '2017-02-13 10:27:43'),
-(45, 'HR', '2017-02-13 11:07:49');
+(45, 'HR', '2017-02-13 11:07:49'),
+(46, 'website', '2017-02-15 11:01:56'),
+(47, 'online', '2017-02-15 11:01:56'),
+(48, 'เขียน', '2017-02-15 11:01:56'),
+(49, 'เว็บ', '2017-02-15 11:01:56');
 
 --
 -- Indexes for dumped tables
@@ -4355,6 +4441,18 @@ INSERT INTO `words` (`id`, `word`, `created_at`) VALUES
 -- Indexes for table `addresses`
 --
 ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `advertisings`
+--
+ALTER TABLE `advertisings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `advertising_types`
+--
+ALTER TABLE `advertising_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -4440,12 +4538,6 @@ ALTER TABLE `jobs`
 --
 ALTER TABLE `job_apply_to_branches`
   ADD UNIQUE KEY `person_apply_job_id` (`person_apply_job_id`,`branch_id`);
-
---
--- Indexes for table `job_to_branches`
---
-ALTER TABLE `job_to_branches`
-  ADD UNIQUE KEY `job_id` (`job_id`,`branch_id`);
 
 --
 -- Indexes for table `languages`
@@ -4588,6 +4680,12 @@ ALTER TABLE `real_estate_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `relate_to_branches`
+--
+ALTER TABLE `relate_to_branches`
+  ADD UNIQUE KEY `model` (`model`,`model_id`,`branch_id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -4600,9 +4698,9 @@ ALTER TABLE `shops`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `shop_tos`
+-- Indexes for table `shop_relate_to`
 --
-ALTER TABLE `shop_tos`
+ALTER TABLE `shop_relate_to`
   ADD UNIQUE KEY `shop_id` (`shop_id`,`model`,`model_id`);
 
 --
@@ -4655,7 +4753,17 @@ ALTER TABLE `words`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+--
+-- AUTO_INCREMENT for table `advertisings`
+--
+ALTER TABLE `advertisings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `advertising_types`
+--
+ALTER TABLE `advertising_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `announcement_types`
 --
@@ -4665,7 +4773,7 @@ ALTER TABLE `announcement_types`
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `categories`
 --
@@ -4675,7 +4783,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `districts`
 --
@@ -4695,7 +4803,7 @@ ALTER TABLE `experience_types`
 -- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `image_types`
 --
@@ -4715,7 +4823,7 @@ ALTER TABLE `item_categories`
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `languages`
 --
@@ -4810,7 +4918,7 @@ ALTER TABLE `provinces`
 -- AUTO_INCREMENT for table `real_estates`
 --
 ALTER TABLE `real_estates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT for table `real_estate_features`
 --
@@ -4850,12 +4958,12 @@ ALTER TABLE `sub_districts`
 -- AUTO_INCREMENT for table `taggings`
 --
 ALTER TABLE `taggings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `temporary_files`
 --
 ALTER TABLE `temporary_files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -4870,7 +4978,7 @@ ALTER TABLE `villages`
 -- AUTO_INCREMENT for table `words`
 --
 ALTER TABLE `words`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
