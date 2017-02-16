@@ -13,7 +13,6 @@
     </div>
   </div>
 
-
   <div class="tile-nav-group space-top-bottom-20 clearfix">
 
     <div class="tile-nav small">
@@ -91,7 +90,7 @@
   @else
 
     <div class="shop-notice text-center space-top-20">
-      <img src="/images/common/building.png">
+      <img class="space-bottom-20" src="/images/common/building.png">
       <div>
         <h3>สาขา</h3>
         <p>ยังไม่มีสาขา เพิ่มสาขาเพื่อมให้ผู้ทราบถึงสินค้า งานบริการ หรืออื่นๆ ในแต่ละสาขาของคุณ</p>

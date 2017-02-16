@@ -24,11 +24,12 @@ class ProductController extends Controller
   }
 
   public function add() {
-    $this->formHelper->setModel($this->model);
-    $this->formHelper->district();
-    $this->formHelper->productCategory();
 
-    return $this->view('pages.product.form.add.product');
+    $model = Service::loadModel('Product');
+
+    $this->data = $model->formHelper->build();
+
+    return $this->view('pages.product.form.product_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {

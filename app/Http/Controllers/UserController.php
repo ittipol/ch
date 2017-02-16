@@ -39,7 +39,7 @@ class UserController extends Controller
     if(Auth::check()){
       return redirect('/');
     }else{
-      return $this->view('pages.login');
+      return $this->view('pages.user.login');
     }
 
   }
@@ -56,32 +56,6 @@ class UserController extends Controller
       $person = Person::find(Auth::user()->id);
       Session::put('Person.id',$person->id);
       Session::put('Person.name',$person->name);
-
-      // Get shop
-      // $personToShop = service::loadModel('PersonToShop')
-      // ->where('person_id','=',$person->id);
-
-      // if($personToShop->exists()) {
-
-      //   $url = new Url;
-      //   $slug = service::loadModel('Slug');
-      //   $records = $personToShop->get();
-
-      //   foreach ($records as $record) {
-
-      //     $shop = $record->shop;
-
-      //     $slugName = $slug->where(array(
-      //       array('model','like','Shop'),
-      //       array('model_id','=',$shop->id)
-      //     ))->first()->slug;
-
-      //     $request->session()->put('Shop.'.$shop->id.'.name',$shop->name);
-      //     $request->session()->put('Shop.'.$shop->id.'.url',$url->url('shop/'.$slugName));
-
-      //   }
-
-      // }
 
       $message = new Message;
       $message->loginSuccess();
@@ -127,7 +101,7 @@ class UserController extends Controller
   	// 	'year' => $year
   	// );
 
-    return $this->view('pages.register');
+    return $this->view('pages.user.register');
 
   }
 

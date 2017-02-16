@@ -7,16 +7,6 @@
 
 <div class="container">
 
-<!--   <div class="container-header">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="title">
-          ลงประกาศ ซื้อ ขาย สินค้า
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   @include('components.form_error') 
 
   <?php 

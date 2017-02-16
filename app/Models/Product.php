@@ -5,9 +5,19 @@ namespace App\Models;
 class Product extends Model
 {
   protected $table = 'products';
-  protected $fillable = ['name','description','sku','quantity','stock_status_id','price','weight','weight_id','length','length_id','width','height'];
-  protected $modelRelations = array('Image','Address');
+  protected $fillable = ['name','description','sku','quantity','stock_status_id','price','weight','weight_id','length','length_id','width','height','person_id'];
+  protected $modelRelations = array('Image','Address','Tagging');
   protected $directory = true;
+
+  public $formHelper = true;
+  public $modelData = true;
+  public $paginator = true;
+
+  public $imageTypes = array(
+    'photo' => array(
+      'limit' => 10
+    )
+  );
 
   protected $validation = array(
     'rules' => array(
@@ -21,16 +31,16 @@ class Product extends Model
     )
   );
 
-  protected $behavior = array(
-    'Slug' => array(
-      'field' => 'name'
-    ),
-    'Lookup' => array(
-      'format' =>  array(
-        'keyword' => '{{name}}'
-      )
-    )
-  );
+  // protected $behavior = array(
+  //   'Slug' => array(
+  //     'field' => 'name'
+  //   ),
+  //   'Lookup' => array(
+  //     'format' =>  array(
+  //       'keyword' => '{{name}}'
+  //     )
+  //   )
+  // );
 
   public function __construct() {  
     parent::__construct();

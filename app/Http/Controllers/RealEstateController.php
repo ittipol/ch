@@ -99,7 +99,7 @@ class RealEstateController extends Controller
     $this->mergeData($model->formHelper->build());
     $this->mergeData(array('defaultAnnouncementType' => 2));
 
-    return $this->view('pages.real_estate.form.real_estate_post');
+    return $this->view('pages.real_estate.form.real_estate_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {

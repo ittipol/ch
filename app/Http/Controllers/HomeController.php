@@ -3,19 +3,90 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
+use App\library\service;
 
 class HomeController extends Controller
 {
+
+  public function addXxx() {
+
+    return view('addCat');
+
+  }
+
+  public function addXxxSub() {
+
+    $parentId = request()->get('pid');
+    $str = request()->get('description');
+
+    $str = preg_replace('/(\t)+/', ' ', $str);
+    // $str = preg_replace('/(\v|\s)+/', ' ', $str);
+
+    $str = str_replace('o ', '', $str);
+    $str = str_replace('• ', '', $str);
+    $str = str_replace(' ', '', $str);
+
+
+
+    $str = preg_replace('/( -> \d{2,3})/', '', $str);
+    $str = preg_replace('/(\n)+/', '$$$', $str);
+    $str = preg_replace('/(\v|\s)+/', ' ', $str);
+
+    $strs = explode('$$$', $str);
+
+
+
+    foreach ($strs as $str) {
+      $_str =  trim($str);
+    
+      if(!empty($_str)) {
+
+        $_value = array(
+          'name' => $_str
+        );
+
+        if(!empty($parentId)) {
+          $_value = array(
+            'parent_id' => $parentId,
+            'name' => $_str
+          );
+        }
+
+        $model = Service::loadModel('Category')->newInstance();
+
+        $model->fill($_value)->save();
+
+        echo '['. $_str . '] --> Saved || ID: [' . $model->id . ']<br/>';
+      }
+
+    }
+
+    echo '<br/><a style="font-size:25px;" href="/ac">BACK TO INPUT FORM</a><br/>';
+
+dd('end');
+    // $re = '/[\S]{3,}/';
+
+    // preg_match_all($re, $str, $matches);
+
+    // Print the entire match result
+    dd($matches[0]);
+
+  }
+
   public function addCat() {
     exit('!!!');
         $data = array(
-    'โต๊ะรีดผ้า',
-    'ตะกร้าผ้า',
-    'จักรเย็บผ้าและอุปกรณ์',
-    'อุปกรณ์ดับกลิ่นผ้า'
+          'กระโปรงทำงาน',
+          'กระโปรงยีนส์',
+          'กระโปรงสั่น',
+          'กระโปรงยาว',
+          'กระโปรพลีท',
+          'กระโปรเอวสูง',
+          'กระโปรทรงเอ',
+          'กระโปรแฟชั่น',
         );
 
-        $parentId = 927;
+        $parentId = 80;
 
         foreach ($data as $value) {
 

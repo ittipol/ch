@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-lg-6 col-sm-12">
         <div class="title">
-          งาน
+          สาขา
         </div>
       </div>
     </div>
@@ -17,39 +17,26 @@
 
     <div class="tile-nav small">
       <div class="tile-nav-image">
-        <a href="{{$jobPostUrl}}">
-          <img src="/images/common/career.png">
+        <a href="{{$productPostUrl}}">
+          <img src="/images/common/tag.png">
         </a>
       </div>
       <div class="tile-nav-info">
-        <a href="{{$jobPostUrl}}">
-          <h4 class="tile-nav-title">ลงประกาศงาน</h4>
+        <a href="{{$productPostUrl}}">
+          <h4 class="tile-nav-title">เพิ่มสินค้า</h4>
         </a>
       </div>
     </div>
 
     <div class="tile-nav small">
       <div class="tile-nav-image">
-        <a href="{{$jobApplyListUrl}}">
-          <img src="/images/common/resume.png">
+        <a href="{{$productPostUrl}}">
+          <img src="/images/common/sale2.png">
         </a>
       </div>
       <div class="tile-nav-info">
-        <a href="{{$jobApplyListUrl}}">
-          <h4 class="tile-nav-title">แสดงรายชื่อผู้ที่สมัครงานของคุณ</h4>
-        </a>
-      </div>
-    </div>
-
-    <div class="tile-nav small">
-      <div class="tile-nav-image">
-          <a href="{{$branchUrl}}">
-            <img src="/images/common/building.png">
-          </a>
-      </div>
-      <div class="tile-nav-info">
-        <a href="{{$branchAddUrl}}">
-          <h4 class="tile-nav-title">สาขา</h4>
+        <a href="{{$productPostUrl}}">
+          <h4 class="tile-nav-title">เพิ่มโปรโมชั่น</h4>
         </a>
       </div>
     </div>
@@ -75,11 +62,8 @@
             </div>
             <div class="product-detail">
               <a href="{{$data['detailUrl']}}">
-                <div class="product-title">{{$data['_name_short']}}</div>
+                <div class="product-title">{{$data['name']}}</div>
               </a>
-              <div class="price">
-                {{$data['_salary']}}
-              </div>
             </div>
             <div>
     
@@ -106,11 +90,11 @@
   @else
 
     <div class="shop-notice text-center space-top-20">
-      <img class="space-bottom-20" src="/images/common/career.png">
+      <img class="space-bottom-20" src="/images/common/tag.png">
       <div>
-        <h3>ลงประกาศงาน</h3>
-        <p>ยังไม่มีประกาศงานของคุณ เพิ่มประกาศงานของคุณเพื่อค้นหาพนักงานใหม่</p>
-        <a href="{{$jobPostUrl}}" class="button">ลงประกาศงาน</a>
+        <h3>สินค้า</h3>
+        <p>ยังไม่มีสินค้า เพิ่มสินค้า เพื่อขายสินค้าของคุณ</p>
+        <a href="{{$productPostUrl}}" class="button">เพิ่มสินค้า</a>
       </div>
     </div>
 

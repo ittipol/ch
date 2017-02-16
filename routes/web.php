@@ -13,6 +13,10 @@
 
 //
 
+Route::get('ac','HomeController@addXxx');
+Route::post('ac','HomeController@addXxxSub');
+
+Route::get('cat','HomeController@addCat');
 // Route::get('lan','HomeController@lanAdd');
 
 Route::get('/',function(){
@@ -115,8 +119,6 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => ['auth','shop','person.shop.permission']], function () {
   Route::get('shop/{shopSlug}/manage','ShopController@manage')->name('shop.manage');
 
-  // Route::get('shop/{shopSlug}/product','ShopController@product');
-
   Route::get('shop/{shopSlug}/setting','ShopController@setting')->name('shop.setting');
 
   Route::get('shop/{shopSlug}/profile_image','ShopController@profileImage')->name('shop.edit.profile_image');
@@ -136,18 +138,19 @@ Route::group(['middleware' => ['auth','shop','person.shop.permission']], functio
 });
 
 // PRODUCT
-// Route::group(['middleware' => 'auth'], function () {
-//   Route::get('product/add','ProductController@add');
-//   Route::post('product/add','ProductController@addingSubmit');
+Route::group(['middleware' => 'auth'], function () {
 
-//   Route::get('product/edit/{product_id}','ProductController@edit');
-//   Route::patch('product/edit/{product_id}',[
-//     'as' => 'product.edit',
-//     'uses' => 'ProductController@editingSubmit'
-//   ]);
-// });
-// Route::get('product','ProductController@index');
-// Route::get('product/{product_slug}','ProductController@detail');
+  Route::get('shop/{shopSlug}/product','ShopController@product');
+
+  Route::get('shop/{shopSlug}/product_post','ProductController@add')->name('shop.product.add');
+  Route::post('shop/{shopSlug}/product_post','ProductController@addingSubmit')->name('shop.product.add');
+
+  Route::get('shop/{shopSlug}/product_edit/{id}','ProductController@edit')->name('shop.product.edit');
+  Route::patch('shop/{shopSlug}/product_edit/{id}','ProductController@editingSubmit')->name('shop.product.edit');
+
+});
+Route::get('product','ProductController@index');
+Route::get('product/{product_slug}','ProductController@detail');
 
 // Job
 Route::get('job/list','JobController@listView')->name('job.list');;

@@ -39,15 +39,45 @@ class ShopController extends Controller
     return $this->view('pages.shop.manage');
   }
 
-  // public function product() {
-    
-  //   $page = 1;
-  //   if(!empty($this->query)) {
-  //     $page = $this->query['page'];
-  //   }
+  public function product() {
 
-  //   return $this->view('pages.shop.product');
-  // }
+    $url = new Url;
+    
+    $page = 1;
+    if(!empty($this->query)) {
+      $page = $this->query['page'];
+    }
+
+    $shopTos = Service::loadModel('ShopRelateTo')
+    ->select('model_id')
+    ->where(array(
+      array('model','like','Product'),
+      array('shop_id','=',request()->get('shopId'))
+    ));
+
+    if($shopTos->exists()) {
+
+      $product = Service::loadModel('Product');
+      $product->paginator->criteria(array(
+        'conditions' => array(
+          'in' => array(
+            array('id',Service::getList($shopTos->get(),'model_id'))
+          )
+        ),
+        'order' => array('id','DESC')
+      ));
+      $product->paginator->setPage($page);
+      $product->paginator->setPagingUrl('shop/'.request()->shopSlug.'/product');
+      $product->paginator->setUrl('shop/'.$this->param['shopSlug'].'/product_edit/{id}','editUrl');
+      $product->paginator->setUrl('product/detail/{id}','detailUrl');
+
+      $this->data = $product->paginator->build();
+    }
+
+    $this->setData('productPostUrl',request()->get('shopUrl').'product_post');
+
+    return $this->view('pages.shop.product');
+  }
 
   public function job() {
 

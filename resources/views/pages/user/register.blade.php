@@ -1,5 +1,6 @@
 @extends('layouts.default.main')
 @section('content')
+
 	<div class="register-wrapper">
 		<div class="header-container">
 			<h3><a class="logo" href="{{URL::to('/')}}">CHONBURI SQUARE</a></h3>

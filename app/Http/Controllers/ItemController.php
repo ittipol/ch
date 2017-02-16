@@ -81,7 +81,7 @@ class ItemController extends Controller
     $this->data = $model->formHelper->build();
     $this->setData('defaultAnnouncementType',2);
 
-    return $this->view('pages.item.form.item_post');
+    return $this->view('pages.item.form.item_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {

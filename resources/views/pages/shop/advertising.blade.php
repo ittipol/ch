@@ -78,7 +78,7 @@
   @else
 
     <div class="shop-notice text-center space-top-20">
-      <img src="/images/common/megaphone.png">
+      <img class="space-bottom-20" src="/images/common/megaphone.png">
       <div>
         <h3>โฆษณา</h3>
         <p>ยังไม่มีประกาศงานของคุณ เพิ่มประกาศงานของคุณเพื่อค้นหาพนักงานใหม่</p>

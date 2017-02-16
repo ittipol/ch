@@ -130,7 +130,7 @@ class JobController extends Controller
 
     $this->data = $model->formHelper->build();
 
-    return $this->view('pages.job.form.job_post');
+    return $this->view('pages.job.form.job_add');
   }
 
   public function addingSubmit(CustomFormRequest $request) {
